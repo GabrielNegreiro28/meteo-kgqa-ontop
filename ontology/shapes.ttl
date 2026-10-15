@@ -1,0 +1,58 @@
+@prefix sh:   <http://www.w3.org/ns/shacl#> .
+@prefix met:  <https://example.org/kgqa-met/ontology#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix unit: <http://qudt.org/vocab/unit/> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+# Restrições de DADOS (mundo fechado), separadas da ontologia OWL (mundo aberto).
+# domain/range OWL geram inferências; não rejeitam dados. Quem rejeita é isto aqui.
+
+met:ResultShape a sh:NodeShape ;
+    sh:property [ sh:path qudt:numericValue ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:decimal ] ;
+    sh:property [ sh:path qudt:unit ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:in ( unit:DEG_C unit:PERCENT unit:MilliM ) ] .
+
+met:ObservationShape a sh:NodeShape ;
+    sh:targetClass met:InstantaneousObservation , met:AccumulatedObservation ;
+    sh:property [ sh:path sosa:madeBySensor ; sh:minCount 1 ; sh:maxCount 1 ; sh:class sosa:Sensor ] ;
+    sh:property [ sh:path sosa:observedProperty ; sh:minCount 1 ; sh:maxCount 1 ; sh:class sosa:ObservableProperty ] ;
+    sh:property [ sh:path sosa:hasFeatureOfInterest ; sh:minCount 1 ; sh:maxCount 1 ] ;
+    sh:property [ sh:path sosa:phenomenonTime ; sh:minCount 1 ; sh:maxCount 1 ] ;
+    sh:property [ sh:path sosa:resultTime ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:dateTime ] ;
+    sh:property [ sh:path sosa:hasResult ; sh:minCount 1 ; sh:maxCount 1 ; sh:node met:ResultShape ] .
+
+met:InstantShape a sh:NodeShape ;
+    sh:targetClass met:InstantaneousObservation ;
+    sh:property [ sh:path ( sosa:phenomenonTime time:inXSDDateTime ) ;
+                  sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:dateTime ] .
+
+met:IntervalShape a sh:NodeShape ;
+    sh:targetClass met:AccumulatedObservation ;
+    sh:property [ sh:path ( sosa:phenomenonTime time:hasBeginning time:inXSDDateTime ) ;
+                  sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:dateTime ] ;
+    sh:property [ sh:path ( sosa:phenomenonTime time:hasEnd time:inXSDDateTime ) ;
+                  sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:dateTime ] .
+
+# Faixas físicas plausíveis (detectam erro de geração/ingestão, não "verdade").
+met:PhysicalRangeShape a sh:NodeShape ;
+    sh:targetSubjectsOf qudt:unit ;
+    sh:sparql [
+        sh:message "Valor fora da faixa física da unidade" ;
+        sh:select """
+          PREFIX qudt: <http://qudt.org/schema/qudt/>
+          PREFIX unit: <http://qudt.org/vocab/unit/>
+          SELECT $this ?v WHERE {
+            $this qudt:numericValue ?v ; qudt:unit ?u .
+            FILTER( (?u = unit:PERCENT && (?v < 0 || ?v > 100)) ||
+                    (?u = unit:MilliM  && ?v < 0) ||
+                    (?u = unit:DEG_C   && (?v < -90 || ?v > 60)) )
+          }""" ] .
+
+met:ForecastShape a sh:NodeShape ;
+    sh:targetClass met:Forecast ;
+    sh:property [ sh:path met:forStation ; sh:minCount 1 ; sh:maxCount 1 ; sh:class met:WeatherStation ] ;
+    sh:property [ sh:path met:forecastedProperty ; sh:minCount 1 ; sh:maxCount 1 ] ;
+    sh:property [ sh:path met:issuedAt ; sh:minCount 1 ; sh:datatype xsd:dateTime ] ;
+    sh:property [ sh:path sosa:hasResult ; sh:minCount 1 ; sh:maxCount 1 ; sh:node met:ResultShape ] .

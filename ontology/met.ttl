@@ -1,0 +1,254 @@
+@prefix met:  <https://example.org/kgqa-met/ontology#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix unit: <http://qudt.org/vocab/unit/> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+# =====================================================================
+# Ontologia meteorológica PROVISÓRIA (recurso de desenvolvimento).
+# Não é a ontologia da equipe. Reutiliza SOSA (W3C/OGC 2017), OWL-Time
+# e QUDT. Alinhamento com BFO e com a ontologia oficial: PENDENTE.
+# Regime de inferência no protótipo: NENHUM (consultas usam tipos
+# explícitos). Ver DECISOES.md.
+# =====================================================================
+
+<https://example.org/kgqa-met/ontology> a owl:Ontology ;
+    rdfs:label "Ontologia meteorológica provisória (protótipo KGQA)"@pt ;
+    owl:versionInfo "0.2.0-dev" ;
+    rdfs:comment "Recurso provisório; substituível pela ontologia oficial."@pt .
+
+# ---------- Classes ----------
+
+met:WeatherStation a owl:Class ;
+    rdfs:subClassOf sosa:Platform ;
+    rdfs:label "estação meteorológica"@pt , "weather station"@en ;
+    skos:altLabel "estação"@pt , "posto"@pt ;
+    rdfs:comment "Plataforma fixa que hospeda (sosa:hosts) sensores."@pt .
+
+met:InstantaneousObservation a owl:Class ;
+    rdfs:subClassOf sosa:Observation ;
+    rdfs:label "observação instantânea"@pt ;
+    skos:altLabel "medição"@pt , "leitura"@pt ;
+    rdfs:comment "Valor de uma propriedade num instante (sosa:phenomenonTime -> time:Instant). Ex.: temperatura do ar, umidade relativa."@pt .
+
+met:AccumulatedObservation a owl:Class ;
+    rdfs:subClassOf sosa:Observation ;
+    rdfs:label "observação acumulada"@pt ;
+    skos:altLabel "acumulado"@pt , "total no intervalo"@pt ;
+    rdfs:comment "Valor acumulado ao longo de um intervalo [início, fim) (sosa:phenomenonTime -> time:Interval). Ex.: precipitação na última hora (dados reais) ou em 6 h (sintéticos)."@pt .
+
+met:Forecast a owl:Class ;
+    rdfs:label "previsão"@pt , "forecast"@en ;
+    rdfs:comment "Estimativa de um valor futuro. NÃO é uma sosa:Observation: nada foi medido. Perguntas sobre valores 'registrados' ou 'medidos' devem ignorar previsões."@pt .
+
+met:InstantaneousObservation owl:disjointWith met:AccumulatedObservation .
+met:Forecast owl:disjointWith sosa:Observation .
+
+met:Site a owl:Class ;
+    rdfs:subClassOf sosa:FeatureOfInterest ;
+    rdfs:label "local observado"@pt ;
+    rdfs:comment "A atmosfera junto à estação: o objeto cujas propriedades são observadas."@pt .
+
+# ---------- Propriedades específicas ----------
+
+met:stationCode a owl:DatatypeProperty ;
+    rdfs:domain met:WeatherStation ; rdfs:range xsd:string ;
+    rdfs:label "código da estação"@pt .
+
+met:siteOf a owl:ObjectProperty ;
+    rdfs:domain met:Site ; rdfs:range met:WeatherStation ;
+    rdfs:label "local da estação"@pt .
+
+met:forStation a owl:ObjectProperty ;
+    rdfs:domain met:Forecast ; rdfs:range met:WeatherStation ;
+    rdfs:label "previsão para a estação"@pt .
+
+met:forecastedProperty a owl:ObjectProperty ;
+    rdfs:domain met:Forecast ; rdfs:range sosa:ObservableProperty ;
+    rdfs:label "propriedade prevista"@pt .
+
+met:validTime a owl:ObjectProperty ;
+    rdfs:domain met:Forecast ; rdfs:range time:Instant ;
+    rdfs:label "instante de validade da previsão"@pt .
+
+met:issuedAt a owl:DatatypeProperty ;
+    rdfs:domain met:Forecast ; rdfs:range xsd:dateTime ;
+    rdfs:label "emitida em"@pt .
+
+met:isSynthetic a owl:DatatypeProperty ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "dado sintético"@pt .
+
+# ---------- Propriedades observáveis (indivíduos) ----------
+# Unidade canônica declarada por propriedade (met:canonicalUnit) e
+# repetida em cada resultado (qudt:unit), para que a unidade viaje com o valor.
+
+met:canonicalUnit a owl:AnnotationProperty ;
+    rdfs:label "unidade canônica"@pt .
+
+met:aggregationNote a owl:AnnotationProperty ;
+    rdfs:label "nota sobre agregação"@pt .
+
+met:AirTemperature a sosa:ObservableProperty , owl:NamedIndividual ;
+    rdfs:label "temperatura do ar"@pt , "air temperature"@en ;
+    skos:altLabel "temperatura"@pt , "calor"@pt ;
+    met:canonicalUnit unit:DEG_C ;
+    met:aggregationNote "Instantânea. Média, mínimo e máximo fazem sentido; soma não."@pt .
+
+met:RelativeHumidity a sosa:ObservableProperty , owl:NamedIndividual ;
+    rdfs:label "umidade relativa do ar"@pt , "relative humidity"@en ;
+    skos:altLabel "umidade"@pt ;
+    met:canonicalUnit unit:PERCENT ;
+    met:aggregationNote "Instantânea, 0–100 %. Média, mínimo e máximo; soma não."@pt .
+
+met:Precipitation a sosa:ObservableProperty , owl:NamedIndividual ;
+    rdfs:label "precipitação"@pt , "precipitation"@en ;
+    skos:altLabel "chuva"@pt ;
+    met:canonicalUnit unit:MilliM ;
+    met:aggregationNote "Acumulada em intervalo. Soma de intervalos disjuntos = total do período; média de acumulados só com o intervalo explicitado."@pt .
+
+# =====================================================================
+# v0.2 — variáveis dos dados reais (boletins de superfície de aeródromos).
+# Ver data/DICIONARIO_DADOS.md e data/REGRAS_LIMPEZA.md.
+# =====================================================================
+
+met:WeatherReport a owl:Class ;
+    rdfs:label "boletim meteorológico"@pt , "weather report"@en ;
+    skos:altLabel "boletim"@pt , "METAR"@pt ;
+    rdfs:comment "Conjunto de observações de uma estação num instante. Chave nos dados: (estação, hora)."@pt .
+
+met:inReport a owl:ObjectProperty ;
+    rdfs:domain sosa:Observation ; rdfs:range met:WeatherReport ;
+    rdfs:label "pertence ao boletim"@pt .
+
+met:reportOf a owl:ObjectProperty ;
+    rdfs:domain met:WeatherReport ; rdfs:range met:WeatherStation ;
+    rdfs:label "boletim da estação"@pt .
+
+met:isHourly a owl:DatatypeProperty ;
+    rdfs:domain met:WeatherReport ; rdfs:range xsd:boolean ;
+    rdfs:label "boletim da hora cheia"@pt ;
+    rdfs:comment "Falso para boletins extras (prováveis SPECI)."@pt .
+
+met:localDate a owl:DatatypeProperty ;
+    rdfs:range xsd:date ;
+    rdfs:label "data local"@pt ;
+    rdfs:comment "Dia civil local (UTC−3) a que a observação pertence. Para acumulados, o dia do INÍCIO do intervalo."@pt .
+
+met:runwayDesignator a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "cabeceira da pista"@pt ;
+    rdfs:comment "Cabeceira associada ao anemômetro (ex.: 09R, 27L, 15/33)."@pt .
+
+met:multipleReadings a owl:DatatypeProperty ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "leituras múltiplas"@pt ;
+    rdfs:comment "Verdadeiro quando o mesmo boletim tem mais de um valor distinto para a variável (sensores diferentes, não identificados na fonte)."@pt .
+
+met:windCondition a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "condição do vento"@pt ;
+    rdfs:comment "'calm' (calmaria) ou 'variable' (direção variável)."@pt .
+
+met:sourceFile a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "arquivo de origem"@pt .
+
+met:sourceRow a owl:DatatypeProperty ;
+    rdfs:range xsd:integer ;
+    rdfs:label "linha de origem"@pt ;
+    rdfs:comment "Posição (base 0) da linha no CSV de origem, sem contar o cabeçalho (procedência)."@pt .
+
+met:CloudLayerObservation a owl:Class ;
+    rdfs:subClassOf sosa:Observation ;
+    owl:disjointWith met:AccumulatedObservation ;
+    rdfs:label "observação de camada de nuvens"@pt ;
+    rdfs:comment "Uma camada de nuvens num boletim: cobertura (oitavos), altura da base, gênero e deslocamento."@pt .
+
+met:CloudLayerResult a owl:Class ;
+    rdfs:subClassOf sosa:Result ;
+    rdfs:label "resultado de camada de nuvens"@pt .
+
+met:oktas a owl:DatatypeProperty ;
+    rdfs:domain met:CloudLayerResult ; rdfs:range xsd:integer ;
+    rdfs:label "cobertura em oitavos"@pt ; skos:altLabel "quantidade de nuvens"@pt .
+
+met:skyObscured a owl:DatatypeProperty ;
+    rdfs:domain met:CloudLayerResult ; rdfs:range xsd:boolean ;
+    rdfs:label "céu obscurecido"@pt .
+
+met:cloudBaseHeight a owl:DatatypeProperty ;
+    rdfs:domain met:CloudLayerResult ; rdfs:range xsd:integer ;
+    rdfs:label "altura da base da nuvem (m)"@pt ;
+    met:canonicalUnit unit:M .
+
+met:cloudGenus a owl:ObjectProperty ;
+    rdfs:domain met:CloudLayerResult ; rdfs:range skos:Concept ;
+    rdfs:label "gênero da nuvem"@pt ; skos:altLabel "tipo de nuvem"@pt .
+
+met:cloudMovement a owl:DatatypeProperty ;
+    rdfs:domain met:CloudLayerResult ; rdfs:range xsd:string ;
+    rdfs:label "direção de deslocamento da nuvem"@pt .
+
+met:CloudGenusScheme a skos:ConceptScheme ; rdfs:label "gêneros de nuvem"@pt .
+met:genus_CU a skos:Concept ; skos:inScheme met:CloudGenusScheme ; skos:notation "CU" ; skos:prefLabel "cúmulo"@pt .
+met:genus_TCU a skos:Concept ; skos:inScheme met:CloudGenusScheme ; skos:notation "TCU" ; skos:prefLabel "cúmulo congesto (torre)"@pt .
+met:genus_CB a skos:Concept ; skos:inScheme met:CloudGenusScheme ; skos:notation "CB" ; skos:prefLabel "cumulonimbo"@pt ; skos:altLabel "nuvem de tempestade"@pt .
+met:genus_SC a skos:Concept ; skos:inScheme met:CloudGenusScheme ; skos:notation "SC" ; skos:prefLabel "estratocúmulo"@pt .
+met:genus_ST a skos:Concept ; skos:inScheme met:CloudGenusScheme ; skos:notation "ST" ; skos:prefLabel "estrato"@pt .
+met:genus_NS a skos:Concept ; skos:inScheme met:CloudGenusScheme ; skos:notation "NS" ; skos:prefLabel "nimbo-estrato"@pt .
+met:genus_AC a skos:Concept ; skos:inScheme met:CloudGenusScheme ; skos:notation "AC" ; skos:prefLabel "altocúmulo"@pt .
+met:genus_AS a skos:Concept ; skos:inScheme met:CloudGenusScheme ; skos:notation "AS" ; skos:prefLabel "altoestrato"@pt .
+met:genus_CI a skos:Concept ; skos:inScheme met:CloudGenusScheme ; skos:notation "CI" ; skos:prefLabel "cirro"@pt .
+met:genus_CS a skos:Concept ; skos:inScheme met:CloudGenusScheme ; skos:notation "CS" ; skos:prefLabel "cirro-estrato"@pt .
+met:genus_CI_CC a skos:Concept ; skos:inScheme met:CloudGenusScheme ; skos:notation "CI e/ou CC" ; skos:prefLabel "cirro e/ou cirrocúmulo"@pt .
+
+met:WetBulbTemperature a sosa:ObservableProperty , owl:NamedIndividual ;
+    rdfs:label "temperatura de bulbo úmido"@pt ; skos:altLabel "bulbo úmido"@pt ;
+    met:canonicalUnit unit:DEG_C ; met:aggregationNote "Instantânea."@pt .
+
+met:DewPointTemperature a sosa:ObservableProperty , owl:NamedIndividual ;
+    rdfs:label "temperatura do ponto de orvalho"@pt ; skos:altLabel "ponto de orvalho"@pt ;
+    met:canonicalUnit unit:DEG_C ; met:aggregationNote "Instantânea."@pt .
+
+met:RunwayTemperature a sosa:ObservableProperty , owl:NamedIndividual ;
+    rdfs:label "temperatura da pista"@pt ;
+    met:canonicalUnit unit:DEG_C ;
+    met:aggregationNote "Instantânea. A fonte não identifica a pista; disponível só em parte dos aeródromos."@pt .
+
+met:PressureQNH a sosa:ObservableProperty , owl:NamedIndividual ;
+    rdfs:label "pressão QNH"@pt ; skos:altLabel "pressão"@pt , "pressão atmosférica"@pt , "QNH"@pt ;
+    met:canonicalUnit unit:HectoPA ;
+    met:aggregationNote "Instantânea. Pressão reduzida ao nível médio do mar (padrão ICAO), não a pressão na estação."@pt .
+
+met:PrevailingVisibility a sosa:ObservableProperty , owl:NamedIndividual ;
+    rdfs:label "visibilidade predominante"@pt ; skos:altLabel "visibilidade"@pt ;
+    met:canonicalUnit unit:M ;
+    met:aggregationNote "Instantânea. 20000 m é o teto de registro ('20 km ou mais'): máximo e média ficam truncados."@pt .
+
+met:PrecipitationDuration a sosa:ObservableProperty , owl:NamedIndividual ;
+    rdfs:label "duração da precipitação"@pt ;
+    met:canonicalUnit unit:MIN ;
+    met:aggregationNote "Acumulada na hora anterior ao boletim (0–60 min)."@pt .
+
+met:WindSpeed a sosa:ObservableProperty , owl:NamedIndividual ;
+    rdfs:label "velocidade do vento"@pt ; skos:altLabel "vento"@pt ;
+    met:canonicalUnit unit:KN ;
+    met:aggregationNote "Instantânea (média de 2 a 10 min do METAR). Uma leitura por cabeceira de pista."@pt .
+
+met:WindDirection a sosa:ObservableProperty , owl:NamedIndividual ;
+    rdfs:label "direção do vento"@pt ;
+    met:canonicalUnit unit:DEG ;
+    met:aggregationNote "Direção DE ONDE o vento sopra, em graus. Grandeza circular: média aritmética não faz sentido. Ausente em calmaria e vento variável."@pt .
+
+met:WindGust a sosa:ObservableProperty , owl:NamedIndividual ;
+    rdfs:label "rajada de vento"@pt ; skos:altLabel "rajada"@pt ;
+    met:canonicalUnit unit:KN ;
+    met:aggregationNote "Só reportada quando há rajada; ausência não significa vento calmo."@pt .
+
+met:CloudCover a sosa:ObservableProperty , owl:NamedIndividual ;
+    rdfs:label "nebulosidade"@pt ; skos:altLabel "nuvens"@pt , "camada de nuvens"@pt .

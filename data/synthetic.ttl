@@ -1,0 +1,3147 @@
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix met: <https://example.org/kgqa-met/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix unit: <http://qudt.org/vocab/unit/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://example.org/kgqa-met/data/forecast/FC-EST-A-TEMP-20260309T1200> a met:Forecast ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/FC-EST-A-TEMP-20260309T1200> ;
+    met:forStation <https://example.org/kgqa-met/data/station/EST-A> ;
+    met:forecastedProperty met:AirTemperature ;
+    met:issuedAt "2026-03-08T18:00:00-03:00"^^xsd:dateTime ;
+    met:validTime <https://example.org/kgqa-met/data/time/2026-03-09T12-00> .
+
+<https://example.org/kgqa-met/data/obs/EST-A-PREC-20260302T0000> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-PREC-20260302T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-02T00-00_PT6H> ;
+    sosa:resultTime "2026-03-02T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-PREC-20260302T0600> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-PREC-20260302T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-02T06-00_PT6H> ;
+    sosa:resultTime "2026-03-02T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-PREC-20260302T1200> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-PREC-20260302T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-02T12-00_PT6H> ;
+    sosa:resultTime "2026-03-02T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-PREC-20260302T1800> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-PREC-20260302T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-02T18-00_PT6H> ;
+    sosa:resultTime "2026-03-03T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-PREC-20260303T0000> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-PREC-20260303T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-03T00-00_PT6H> ;
+    sosa:resultTime "2026-03-03T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-PREC-20260303T0600> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-PREC-20260303T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-03T06-00_PT6H> ;
+    sosa:resultTime "2026-03-03T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-PREC-20260303T1200> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-PREC-20260303T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-03T12-00_PT6H> ;
+    sosa:resultTime "2026-03-03T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-PREC-20260303T1800> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-PREC-20260303T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-03T18-00_PT6H> ;
+    sosa:resultTime "2026-03-04T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-PREC-20260304T0000> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-PREC-20260304T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-04T00-00_PT6H> ;
+    sosa:resultTime "2026-03-04T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-PREC-20260304T0600> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-PREC-20260304T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-04T06-00_PT6H> ;
+    sosa:resultTime "2026-03-04T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-PREC-20260304T1200> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-PREC-20260304T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-04T12-00_PT6H> ;
+    sosa:resultTime "2026-03-04T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-PREC-20260304T1800> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-PREC-20260304T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-04T18-00_PT6H> ;
+    sosa:resultTime "2026-03-05T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-PREC-20260305T0000> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-PREC-20260305T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-05T00-00_PT6H> ;
+    sosa:resultTime "2026-03-05T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-PREC-20260305T0600> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-PREC-20260305T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-05T06-00_PT6H> ;
+    sosa:resultTime "2026-03-05T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-PREC-20260305T1200> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-PREC-20260305T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-05T12-00_PT6H> ;
+    sosa:resultTime "2026-03-05T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-PREC-20260305T1800> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-PREC-20260305T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-05T18-00_PT6H> ;
+    sosa:resultTime "2026-03-06T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-PREC-20260306T0000> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-PREC-20260306T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-06T00-00_PT6H> ;
+    sosa:resultTime "2026-03-06T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-PREC-20260306T0600> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-PREC-20260306T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-06T06-00_PT6H> ;
+    sosa:resultTime "2026-03-06T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-PREC-20260306T1200> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-PREC-20260306T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-06T12-00_PT6H> ;
+    sosa:resultTime "2026-03-06T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-PREC-20260306T1800> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-PREC-20260306T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-06T18-00_PT6H> ;
+    sosa:resultTime "2026-03-07T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-PREC-20260307T0000> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-PREC-20260307T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-07T00-00_PT6H> ;
+    sosa:resultTime "2026-03-07T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-PREC-20260307T0600> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-PREC-20260307T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-07T06-00_PT6H> ;
+    sosa:resultTime "2026-03-07T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-PREC-20260307T1200> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-PREC-20260307T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-07T12-00_PT6H> ;
+    sosa:resultTime "2026-03-07T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-PREC-20260307T1800> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-PREC-20260307T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-07T18-00_PT6H> ;
+    sosa:resultTime "2026-03-08T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-PREC-20260308T0000> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-PREC-20260308T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-08T00-00_PT6H> ;
+    sosa:resultTime "2026-03-08T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-PREC-20260308T0600> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-PREC-20260308T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-08T06-00_PT6H> ;
+    sosa:resultTime "2026-03-08T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-PREC-20260308T1200> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-PREC-20260308T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-08T12-00_PT6H> ;
+    sosa:resultTime "2026-03-08T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-PREC-20260308T1800> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-PREC-20260308T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-08T18-00_PT6H> ;
+    sosa:resultTime "2026-03-09T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-RH-20260302T0000> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-RH-20260302T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-02T00-00> ;
+    sosa:resultTime "2026-03-02T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-RH-20260302T0600> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-RH-20260302T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-02T06-00> ;
+    sosa:resultTime "2026-03-02T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-RH-20260302T1200> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-RH-20260302T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-02T12-00> ;
+    sosa:resultTime "2026-03-02T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-RH-20260302T1800> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-RH-20260302T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-02T18-00> ;
+    sosa:resultTime "2026-03-02T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-RH-20260303T0000> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-RH-20260303T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-03T00-00> ;
+    sosa:resultTime "2026-03-03T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-RH-20260303T0600> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-RH-20260303T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-03T06-00> ;
+    sosa:resultTime "2026-03-03T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-RH-20260303T1200> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-RH-20260303T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-03T12-00> ;
+    sosa:resultTime "2026-03-03T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-RH-20260303T1800> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-RH-20260303T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-03T18-00> ;
+    sosa:resultTime "2026-03-03T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-RH-20260304T0000> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-RH-20260304T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-04T00-00> ;
+    sosa:resultTime "2026-03-04T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-RH-20260304T0600> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-RH-20260304T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-04T06-00> ;
+    sosa:resultTime "2026-03-04T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-RH-20260304T1200> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-RH-20260304T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-04T12-00> ;
+    sosa:resultTime "2026-03-04T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-RH-20260304T1800> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-RH-20260304T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-04T18-00> ;
+    sosa:resultTime "2026-03-04T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-RH-20260305T0000> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-RH-20260305T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-05T00-00> ;
+    sosa:resultTime "2026-03-05T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-RH-20260305T0600> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-RH-20260305T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-05T06-00> ;
+    sosa:resultTime "2026-03-05T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-RH-20260305T1200> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-RH-20260305T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-05T12-00> ;
+    sosa:resultTime "2026-03-05T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-RH-20260305T1800> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-RH-20260305T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-05T18-00> ;
+    sosa:resultTime "2026-03-05T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-RH-20260306T0000> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-RH-20260306T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-06T00-00> ;
+    sosa:resultTime "2026-03-06T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-RH-20260306T0600> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-RH-20260306T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-06T06-00> ;
+    sosa:resultTime "2026-03-06T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-RH-20260306T1200> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-RH-20260306T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-06T12-00> ;
+    sosa:resultTime "2026-03-06T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-RH-20260306T1800> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-RH-20260306T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-06T18-00> ;
+    sosa:resultTime "2026-03-06T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-RH-20260307T0000> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-RH-20260307T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-07T00-00> ;
+    sosa:resultTime "2026-03-07T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-RH-20260307T0600> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-RH-20260307T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-07T06-00> ;
+    sosa:resultTime "2026-03-07T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-RH-20260307T1200> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-RH-20260307T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-07T12-00> ;
+    sosa:resultTime "2026-03-07T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-RH-20260307T1800> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-RH-20260307T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-07T18-00> ;
+    sosa:resultTime "2026-03-07T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-RH-20260308T0000> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-RH-20260308T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-08T00-00> ;
+    sosa:resultTime "2026-03-08T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-RH-20260308T0600> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-RH-20260308T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-08T06-00> ;
+    sosa:resultTime "2026-03-08T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-RH-20260308T1200> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-RH-20260308T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-08T12-00> ;
+    sosa:resultTime "2026-03-08T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-RH-20260308T1800> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-RH-20260308T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-08T18-00> ;
+    sosa:resultTime "2026-03-08T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-TEMP-20260302T0000> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-TEMP-20260302T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-02T00-00> ;
+    sosa:resultTime "2026-03-02T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-TEMP-20260302T0600> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-TEMP-20260302T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-02T06-00> ;
+    sosa:resultTime "2026-03-02T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-TEMP-20260302T1200> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-TEMP-20260302T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-02T12-00> ;
+    sosa:resultTime "2026-03-02T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-TEMP-20260302T1800> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-TEMP-20260302T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-02T18-00> ;
+    sosa:resultTime "2026-03-02T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-TEMP-20260303T0000> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-TEMP-20260303T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-03T00-00> ;
+    sosa:resultTime "2026-03-03T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-TEMP-20260303T0600> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-TEMP-20260303T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-03T06-00> ;
+    sosa:resultTime "2026-03-03T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-TEMP-20260303T1200> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-TEMP-20260303T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-03T12-00> ;
+    sosa:resultTime "2026-03-03T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-TEMP-20260303T1800> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-TEMP-20260303T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-03T18-00> ;
+    sosa:resultTime "2026-03-03T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-TEMP-20260304T0000> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-TEMP-20260304T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-04T00-00> ;
+    sosa:resultTime "2026-03-04T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-TEMP-20260304T0600> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-TEMP-20260304T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-04T06-00> ;
+    sosa:resultTime "2026-03-04T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-TEMP-20260304T1200> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-TEMP-20260304T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-04T12-00> ;
+    sosa:resultTime "2026-03-04T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-TEMP-20260304T1800> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-TEMP-20260304T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-04T18-00> ;
+    sosa:resultTime "2026-03-04T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-TEMP-20260305T0000> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-TEMP-20260305T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-05T00-00> ;
+    sosa:resultTime "2026-03-05T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-TEMP-20260305T0600> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-TEMP-20260305T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-05T06-00> ;
+    sosa:resultTime "2026-03-05T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-TEMP-20260305T1200> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-TEMP-20260305T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-05T12-00> ;
+    sosa:resultTime "2026-03-05T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-TEMP-20260305T1800> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-TEMP-20260305T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-05T18-00> ;
+    sosa:resultTime "2026-03-05T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-TEMP-20260306T0000> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-TEMP-20260306T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-06T00-00> ;
+    sosa:resultTime "2026-03-06T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-TEMP-20260306T0600> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-TEMP-20260306T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-06T06-00> ;
+    sosa:resultTime "2026-03-06T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-TEMP-20260306T1200> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-TEMP-20260306T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-06T12-00> ;
+    sosa:resultTime "2026-03-06T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-TEMP-20260306T1800> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-TEMP-20260306T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-06T18-00> ;
+    sosa:resultTime "2026-03-06T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-TEMP-20260307T0000> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-TEMP-20260307T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-07T00-00> ;
+    sosa:resultTime "2026-03-07T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-TEMP-20260307T0600> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-TEMP-20260307T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-07T06-00> ;
+    sosa:resultTime "2026-03-07T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-TEMP-20260307T1200> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-TEMP-20260307T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-07T12-00> ;
+    sosa:resultTime "2026-03-07T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-TEMP-20260307T1800> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-TEMP-20260307T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-07T18-00> ;
+    sosa:resultTime "2026-03-07T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-TEMP-20260308T0000> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-TEMP-20260308T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-08T00-00> ;
+    sosa:resultTime "2026-03-08T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-TEMP-20260308T0600> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-TEMP-20260308T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-08T06-00> ;
+    sosa:resultTime "2026-03-08T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-TEMP-20260308T1200> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-TEMP-20260308T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-08T12-00> ;
+    sosa:resultTime "2026-03-08T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-A-TEMP-20260308T1800> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-A> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-A-TEMP-20260308T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-A-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-08T18-00> ;
+    sosa:resultTime "2026-03-08T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-PREC-20260302T0000> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-PREC-20260302T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-02T00-00_PT6H> ;
+    sosa:resultTime "2026-03-02T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-PREC-20260302T0600> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-PREC-20260302T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-02T06-00_PT6H> ;
+    sosa:resultTime "2026-03-02T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-PREC-20260302T1200> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-PREC-20260302T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-02T12-00_PT6H> ;
+    sosa:resultTime "2026-03-02T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-PREC-20260302T1800> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-PREC-20260302T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-02T18-00_PT6H> ;
+    sosa:resultTime "2026-03-03T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-PREC-20260303T0000> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-PREC-20260303T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-03T00-00_PT6H> ;
+    sosa:resultTime "2026-03-03T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-PREC-20260303T0600> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-PREC-20260303T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-03T06-00_PT6H> ;
+    sosa:resultTime "2026-03-03T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-PREC-20260303T1200> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-PREC-20260303T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-03T12-00_PT6H> ;
+    sosa:resultTime "2026-03-03T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-PREC-20260303T1800> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-PREC-20260303T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-03T18-00_PT6H> ;
+    sosa:resultTime "2026-03-04T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-PREC-20260304T0000> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-PREC-20260304T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-04T00-00_PT6H> ;
+    sosa:resultTime "2026-03-04T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-PREC-20260304T0600> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-PREC-20260304T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-04T06-00_PT6H> ;
+    sosa:resultTime "2026-03-04T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-PREC-20260304T1200> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-PREC-20260304T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-04T12-00_PT6H> ;
+    sosa:resultTime "2026-03-04T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-PREC-20260304T1800> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-PREC-20260304T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-04T18-00_PT6H> ;
+    sosa:resultTime "2026-03-05T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-PREC-20260305T0000> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-PREC-20260305T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-05T00-00_PT6H> ;
+    sosa:resultTime "2026-03-05T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-PREC-20260305T0600> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-PREC-20260305T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-05T06-00_PT6H> ;
+    sosa:resultTime "2026-03-05T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-PREC-20260305T1200> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-PREC-20260305T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-05T12-00_PT6H> ;
+    sosa:resultTime "2026-03-05T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-PREC-20260305T1800> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-PREC-20260305T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-05T18-00_PT6H> ;
+    sosa:resultTime "2026-03-06T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-PREC-20260306T0000> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-PREC-20260306T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-06T00-00_PT6H> ;
+    sosa:resultTime "2026-03-06T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-PREC-20260306T0600> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-PREC-20260306T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-06T06-00_PT6H> ;
+    sosa:resultTime "2026-03-06T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-PREC-20260306T1200> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-PREC-20260306T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-06T12-00_PT6H> ;
+    sosa:resultTime "2026-03-06T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-PREC-20260306T1800> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-PREC-20260306T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-06T18-00_PT6H> ;
+    sosa:resultTime "2026-03-07T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-PREC-20260307T0000> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-PREC-20260307T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-07T00-00_PT6H> ;
+    sosa:resultTime "2026-03-07T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-PREC-20260307T0600> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-PREC-20260307T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-07T06-00_PT6H> ;
+    sosa:resultTime "2026-03-07T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-PREC-20260307T1200> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-PREC-20260307T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-07T12-00_PT6H> ;
+    sosa:resultTime "2026-03-07T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-PREC-20260307T1800> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-PREC-20260307T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-07T18-00_PT6H> ;
+    sosa:resultTime "2026-03-08T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-PREC-20260308T0000> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-PREC-20260308T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-08T00-00_PT6H> ;
+    sosa:resultTime "2026-03-08T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-PREC-20260308T0600> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-PREC-20260308T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-08T06-00_PT6H> ;
+    sosa:resultTime "2026-03-08T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-PREC-20260308T1200> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-PREC-20260308T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-08T12-00_PT6H> ;
+    sosa:resultTime "2026-03-08T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-PREC-20260308T1800> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-PREC-20260308T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-08T18-00_PT6H> ;
+    sosa:resultTime "2026-03-09T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-RH-20260302T0000> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-RH-20260302T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-02T00-00> ;
+    sosa:resultTime "2026-03-02T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-RH-20260302T0600> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-RH-20260302T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-02T06-00> ;
+    sosa:resultTime "2026-03-02T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-RH-20260302T1200> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-RH-20260302T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-02T12-00> ;
+    sosa:resultTime "2026-03-02T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-RH-20260302T1800> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-RH-20260302T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-02T18-00> ;
+    sosa:resultTime "2026-03-02T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-RH-20260303T0000> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-RH-20260303T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-03T00-00> ;
+    sosa:resultTime "2026-03-03T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-RH-20260303T0600> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-RH-20260303T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-03T06-00> ;
+    sosa:resultTime "2026-03-03T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-RH-20260303T1200> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-RH-20260303T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-03T12-00> ;
+    sosa:resultTime "2026-03-03T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-RH-20260303T1800> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-RH-20260303T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-03T18-00> ;
+    sosa:resultTime "2026-03-03T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-RH-20260304T0000> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-RH-20260304T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-04T00-00> ;
+    sosa:resultTime "2026-03-04T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-RH-20260304T0600> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-RH-20260304T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-04T06-00> ;
+    sosa:resultTime "2026-03-04T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-RH-20260304T1200> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-RH-20260304T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-04T12-00> ;
+    sosa:resultTime "2026-03-04T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-RH-20260304T1800> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-RH-20260304T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-04T18-00> ;
+    sosa:resultTime "2026-03-04T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-RH-20260305T0000> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-RH-20260305T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-05T00-00> ;
+    sosa:resultTime "2026-03-05T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-RH-20260305T0600> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-RH-20260305T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-05T06-00> ;
+    sosa:resultTime "2026-03-05T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-RH-20260305T1200> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-RH-20260305T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-05T12-00> ;
+    sosa:resultTime "2026-03-05T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-RH-20260305T1800> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-RH-20260305T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-05T18-00> ;
+    sosa:resultTime "2026-03-05T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-RH-20260306T0000> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-RH-20260306T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-06T00-00> ;
+    sosa:resultTime "2026-03-06T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-RH-20260306T0600> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-RH-20260306T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-06T06-00> ;
+    sosa:resultTime "2026-03-06T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-RH-20260306T1200> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-RH-20260306T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-06T12-00> ;
+    sosa:resultTime "2026-03-06T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-RH-20260306T1800> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-RH-20260306T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-06T18-00> ;
+    sosa:resultTime "2026-03-06T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-RH-20260307T0000> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-RH-20260307T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-07T00-00> ;
+    sosa:resultTime "2026-03-07T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-RH-20260307T0600> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-RH-20260307T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-07T06-00> ;
+    sosa:resultTime "2026-03-07T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-RH-20260307T1200> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-RH-20260307T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-07T12-00> ;
+    sosa:resultTime "2026-03-07T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-RH-20260307T1800> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-RH-20260307T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-07T18-00> ;
+    sosa:resultTime "2026-03-07T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-RH-20260308T0000> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-RH-20260308T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-08T00-00> ;
+    sosa:resultTime "2026-03-08T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-RH-20260308T0600> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-RH-20260308T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-08T06-00> ;
+    sosa:resultTime "2026-03-08T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-RH-20260308T1200> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-RH-20260308T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-08T12-00> ;
+    sosa:resultTime "2026-03-08T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-RH-20260308T1800> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-RH-20260308T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-RH> ;
+    sosa:observedProperty met:RelativeHumidity ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-08T18-00> ;
+    sosa:resultTime "2026-03-08T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-TEMP-20260302T0000> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-TEMP-20260302T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-02T00-00> ;
+    sosa:resultTime "2026-03-02T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-TEMP-20260302T0600> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-TEMP-20260302T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-02T06-00> ;
+    sosa:resultTime "2026-03-02T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-TEMP-20260302T1200> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-TEMP-20260302T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-02T12-00> ;
+    sosa:resultTime "2026-03-02T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-TEMP-20260302T1800> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-TEMP-20260302T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-02T18-00> ;
+    sosa:resultTime "2026-03-02T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-TEMP-20260303T0000> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-TEMP-20260303T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-03T00-00> ;
+    sosa:resultTime "2026-03-03T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-TEMP-20260303T0600> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-TEMP-20260303T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-03T06-00> ;
+    sosa:resultTime "2026-03-03T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-TEMP-20260303T1200> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-TEMP-20260303T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-03T12-00> ;
+    sosa:resultTime "2026-03-03T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-TEMP-20260303T1800> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-TEMP-20260303T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-03T18-00> ;
+    sosa:resultTime "2026-03-03T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-TEMP-20260304T0000> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-TEMP-20260304T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-04T00-00> ;
+    sosa:resultTime "2026-03-04T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-TEMP-20260304T0600> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-TEMP-20260304T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-04T06-00> ;
+    sosa:resultTime "2026-03-04T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-TEMP-20260304T1200> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-TEMP-20260304T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-04T12-00> ;
+    sosa:resultTime "2026-03-04T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-TEMP-20260304T1800> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-TEMP-20260304T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-04T18-00> ;
+    sosa:resultTime "2026-03-04T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-TEMP-20260306T0000> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-TEMP-20260306T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-06T00-00> ;
+    sosa:resultTime "2026-03-06T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-TEMP-20260306T0600> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-TEMP-20260306T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-06T06-00> ;
+    sosa:resultTime "2026-03-06T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-TEMP-20260306T1200> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-TEMP-20260306T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-06T12-00> ;
+    sosa:resultTime "2026-03-06T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-TEMP-20260306T1800> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-TEMP-20260306T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-06T18-00> ;
+    sosa:resultTime "2026-03-06T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-TEMP-20260307T0000> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-TEMP-20260307T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-07T00-00> ;
+    sosa:resultTime "2026-03-07T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-TEMP-20260307T0600> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-TEMP-20260307T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-07T06-00> ;
+    sosa:resultTime "2026-03-07T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-TEMP-20260307T1200> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-TEMP-20260307T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-07T12-00> ;
+    sosa:resultTime "2026-03-07T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-TEMP-20260307T1800> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-TEMP-20260307T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-07T18-00> ;
+    sosa:resultTime "2026-03-07T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-TEMP-20260308T0000> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-TEMP-20260308T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-08T00-00> ;
+    sosa:resultTime "2026-03-08T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-TEMP-20260308T0600> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-TEMP-20260308T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-08T06-00> ;
+    sosa:resultTime "2026-03-08T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-TEMP-20260308T1200> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-TEMP-20260308T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-08T12-00> ;
+    sosa:resultTime "2026-03-08T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-B-TEMP-20260308T1800> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-B> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-B-TEMP-20260308T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-B-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-08T18-00> ;
+    sosa:resultTime "2026-03-08T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-PREC-20260302T0000> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-PREC-20260302T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-02T00-00_PT6H> ;
+    sosa:resultTime "2026-03-02T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-PREC-20260302T0600> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-PREC-20260302T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-02T06-00_PT6H> ;
+    sosa:resultTime "2026-03-02T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-PREC-20260302T1200> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-PREC-20260302T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-02T12-00_PT6H> ;
+    sosa:resultTime "2026-03-02T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-PREC-20260302T1800> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-PREC-20260302T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-02T18-00_PT6H> ;
+    sosa:resultTime "2026-03-03T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-PREC-20260303T0000> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-PREC-20260303T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-03T00-00_PT6H> ;
+    sosa:resultTime "2026-03-03T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-PREC-20260303T0600> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-PREC-20260303T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-03T06-00_PT6H> ;
+    sosa:resultTime "2026-03-03T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-PREC-20260303T1200> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-PREC-20260303T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-03T12-00_PT6H> ;
+    sosa:resultTime "2026-03-03T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-PREC-20260303T1800> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-PREC-20260303T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-03T18-00_PT6H> ;
+    sosa:resultTime "2026-03-04T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-PREC-20260304T0000> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-PREC-20260304T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-04T00-00_PT6H> ;
+    sosa:resultTime "2026-03-04T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-PREC-20260304T0600> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-PREC-20260304T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-04T06-00_PT6H> ;
+    sosa:resultTime "2026-03-04T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-PREC-20260304T1200> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-PREC-20260304T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-04T12-00_PT6H> ;
+    sosa:resultTime "2026-03-04T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-PREC-20260304T1800> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-PREC-20260304T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-04T18-00_PT6H> ;
+    sosa:resultTime "2026-03-05T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-PREC-20260305T0000> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-PREC-20260305T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-05T00-00_PT6H> ;
+    sosa:resultTime "2026-03-05T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-PREC-20260305T0600> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-PREC-20260305T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-05T06-00_PT6H> ;
+    sosa:resultTime "2026-03-05T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-PREC-20260305T1200> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-PREC-20260305T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-05T12-00_PT6H> ;
+    sosa:resultTime "2026-03-05T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-PREC-20260305T1800> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-PREC-20260305T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-05T18-00_PT6H> ;
+    sosa:resultTime "2026-03-06T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-PREC-20260306T0000> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-PREC-20260306T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-06T00-00_PT6H> ;
+    sosa:resultTime "2026-03-06T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-PREC-20260306T0600> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-PREC-20260306T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-06T06-00_PT6H> ;
+    sosa:resultTime "2026-03-06T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-PREC-20260306T1200> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-PREC-20260306T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-06T12-00_PT6H> ;
+    sosa:resultTime "2026-03-06T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-PREC-20260306T1800> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-PREC-20260306T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-06T18-00_PT6H> ;
+    sosa:resultTime "2026-03-07T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-PREC-20260307T0000> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-PREC-20260307T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-07T00-00_PT6H> ;
+    sosa:resultTime "2026-03-07T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-PREC-20260307T0600> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-PREC-20260307T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-07T06-00_PT6H> ;
+    sosa:resultTime "2026-03-07T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-PREC-20260307T1200> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-PREC-20260307T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-07T12-00_PT6H> ;
+    sosa:resultTime "2026-03-07T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-PREC-20260308T0000> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-PREC-20260308T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-08T00-00_PT6H> ;
+    sosa:resultTime "2026-03-08T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-PREC-20260308T0600> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-PREC-20260308T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-08T06-00_PT6H> ;
+    sosa:resultTime "2026-03-08T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-PREC-20260308T1200> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-PREC-20260308T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-08T12-00_PT6H> ;
+    sosa:resultTime "2026-03-08T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-PREC-20260308T1800> a met:AccumulatedObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-PREC-20260308T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-PREC> ;
+    sosa:observedProperty met:Precipitation ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/interval/2026-03-08T18-00_PT6H> ;
+    sosa:resultTime "2026-03-09T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-TEMP-20260302T0000> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-TEMP-20260302T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-02T00-00> ;
+    sosa:resultTime "2026-03-02T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-TEMP-20260302T0600> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-TEMP-20260302T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-02T06-00> ;
+    sosa:resultTime "2026-03-02T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-TEMP-20260302T1200> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-TEMP-20260302T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-02T12-00> ;
+    sosa:resultTime "2026-03-02T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-TEMP-20260302T1800> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-TEMP-20260302T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-02T18-00> ;
+    sosa:resultTime "2026-03-02T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-TEMP-20260303T0000> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-TEMP-20260303T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-03T00-00> ;
+    sosa:resultTime "2026-03-03T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-TEMP-20260303T0600> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-TEMP-20260303T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-03T06-00> ;
+    sosa:resultTime "2026-03-03T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-TEMP-20260303T1200> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-TEMP-20260303T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-03T12-00> ;
+    sosa:resultTime "2026-03-03T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-TEMP-20260303T1800> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-TEMP-20260303T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-03T18-00> ;
+    sosa:resultTime "2026-03-03T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-TEMP-20260304T0000> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-TEMP-20260304T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-04T00-00> ;
+    sosa:resultTime "2026-03-04T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-TEMP-20260304T0600> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-TEMP-20260304T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-04T06-00> ;
+    sosa:resultTime "2026-03-04T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-TEMP-20260304T1200> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-TEMP-20260304T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-04T12-00> ;
+    sosa:resultTime "2026-03-04T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-TEMP-20260304T1800> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-TEMP-20260304T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-04T18-00> ;
+    sosa:resultTime "2026-03-04T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-TEMP-20260305T0000> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-TEMP-20260305T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-05T00-00> ;
+    sosa:resultTime "2026-03-05T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-TEMP-20260305T0600> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-TEMP-20260305T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-05T06-00> ;
+    sosa:resultTime "2026-03-05T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-TEMP-20260305T1200> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-TEMP-20260305T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-05T12-00> ;
+    sosa:resultTime "2026-03-05T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-TEMP-20260305T1800> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-TEMP-20260305T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-05T18-00> ;
+    sosa:resultTime "2026-03-05T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-TEMP-20260306T0000> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-TEMP-20260306T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-06T00-00> ;
+    sosa:resultTime "2026-03-06T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-TEMP-20260306T0600> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-TEMP-20260306T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-06T06-00> ;
+    sosa:resultTime "2026-03-06T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-TEMP-20260306T1200> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-TEMP-20260306T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-06T12-00> ;
+    sosa:resultTime "2026-03-06T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-TEMP-20260306T1800> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-TEMP-20260306T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-06T18-00> ;
+    sosa:resultTime "2026-03-06T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-TEMP-20260307T0000> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-TEMP-20260307T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-07T00-00> ;
+    sosa:resultTime "2026-03-07T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-TEMP-20260307T0600> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-TEMP-20260307T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-07T06-00> ;
+    sosa:resultTime "2026-03-07T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-TEMP-20260307T1200> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-TEMP-20260307T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-07T12-00> ;
+    sosa:resultTime "2026-03-07T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-TEMP-20260307T1800> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-TEMP-20260307T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-07T18-00> ;
+    sosa:resultTime "2026-03-07T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-TEMP-20260308T0000> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-TEMP-20260308T0000> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-08T00-00> ;
+    sosa:resultTime "2026-03-08T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-TEMP-20260308T0600> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-TEMP-20260308T0600> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-08T06-00> ;
+    sosa:resultTime "2026-03-08T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-TEMP-20260308T1200> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-TEMP-20260308T1200> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-08T12-00> ;
+    sosa:resultTime "2026-03-08T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/obs/EST-C-TEMP-20260308T1800> a met:InstantaneousObservation ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hasFeatureOfInterest <https://example.org/kgqa-met/data/site/EST-C> ;
+    sosa:hasResult <https://example.org/kgqa-met/data/result/EST-C-TEMP-20260308T1800> ;
+    sosa:madeBySensor <https://example.org/kgqa-met/data/sensor/EST-C-TEMP> ;
+    sosa:observedProperty met:AirTemperature ;
+    sosa:phenomenonTime <https://example.org/kgqa-met/data/time/2026-03-08T18-00> ;
+    sosa:resultTime "2026-03-08T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/result/EST-A-PREC-20260302T0000> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-A-PREC-20260302T0600> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-A-PREC-20260302T1200> a qudt:QuantityValue ;
+    qudt:numericValue 10.3 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-A-PREC-20260302T1800> a qudt:QuantityValue ;
+    qudt:numericValue 2.4 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-A-PREC-20260303T0000> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-A-PREC-20260303T0600> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-A-PREC-20260303T1200> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-A-PREC-20260303T1800> a qudt:QuantityValue ;
+    qudt:numericValue 1.4 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-A-PREC-20260304T0000> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-A-PREC-20260304T0600> a qudt:QuantityValue ;
+    qudt:numericValue 4.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-A-PREC-20260304T1200> a qudt:QuantityValue ;
+    qudt:numericValue 5.4 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-A-PREC-20260304T1800> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-A-PREC-20260305T0000> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-A-PREC-20260305T0600> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-A-PREC-20260305T1200> a qudt:QuantityValue ;
+    qudt:numericValue 7.5 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-A-PREC-20260305T1800> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-A-PREC-20260306T0000> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-A-PREC-20260306T0600> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-A-PREC-20260306T1200> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-A-PREC-20260306T1800> a qudt:QuantityValue ;
+    qudt:numericValue 13.8 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-A-PREC-20260307T0000> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-A-PREC-20260307T0600> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-A-PREC-20260307T1200> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-A-PREC-20260307T1800> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-A-PREC-20260308T0000> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-A-PREC-20260308T0600> a qudt:QuantityValue ;
+    qudt:numericValue 10.6 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-A-PREC-20260308T1200> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-A-PREC-20260308T1800> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-A-RH-20260302T0000> a qudt:QuantityValue ;
+    qudt:numericValue 85.9 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-A-RH-20260302T0600> a qudt:QuantityValue ;
+    qudt:numericValue 93.9 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-A-RH-20260302T1200> a qudt:QuantityValue ;
+    qudt:numericValue 57.1 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-A-RH-20260302T1800> a qudt:QuantityValue ;
+    qudt:numericValue 74.0 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-A-RH-20260303T0000> a qudt:QuantityValue ;
+    qudt:numericValue 81.3 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-A-RH-20260303T0600> a qudt:QuantityValue ;
+    qudt:numericValue 88.8 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-A-RH-20260303T1200> a qudt:QuantityValue ;
+    qudt:numericValue 55.4 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-A-RH-20260303T1800> a qudt:QuantityValue ;
+    qudt:numericValue 67.2 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-A-RH-20260304T0000> a qudt:QuantityValue ;
+    qudt:numericValue 87.2 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-A-RH-20260304T0600> a qudt:QuantityValue ;
+    qudt:numericValue 90.1 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-A-RH-20260304T1200> a qudt:QuantityValue ;
+    qudt:numericValue 64.0 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-A-RH-20260304T1800> a qudt:QuantityValue ;
+    qudt:numericValue 72.3 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-A-RH-20260305T0000> a qudt:QuantityValue ;
+    qudt:numericValue 88.6 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-A-RH-20260305T0600> a qudt:QuantityValue ;
+    qudt:numericValue 86.8 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-A-RH-20260305T1200> a qudt:QuantityValue ;
+    qudt:numericValue 60.4 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-A-RH-20260305T1800> a qudt:QuantityValue ;
+    qudt:numericValue 69.1 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-A-RH-20260306T0000> a qudt:QuantityValue ;
+    qudt:numericValue 82.9 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-A-RH-20260306T0600> a qudt:QuantityValue ;
+    qudt:numericValue 92.3 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-A-RH-20260306T1200> a qudt:QuantityValue ;
+    qudt:numericValue 56.1 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-A-RH-20260306T1800> a qudt:QuantityValue ;
+    qudt:numericValue 68.9 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-A-RH-20260307T0000> a qudt:QuantityValue ;
+    qudt:numericValue 83.5 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-A-RH-20260307T0600> a qudt:QuantityValue ;
+    qudt:numericValue 94.4 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-A-RH-20260307T1200> a qudt:QuantityValue ;
+    qudt:numericValue 63.7 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-A-RH-20260307T1800> a qudt:QuantityValue ;
+    qudt:numericValue 71.0 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-A-RH-20260308T0000> a qudt:QuantityValue ;
+    qudt:numericValue 88.7 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-A-RH-20260308T0600> a qudt:QuantityValue ;
+    qudt:numericValue 90.8 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-A-RH-20260308T1200> a qudt:QuantityValue ;
+    qudt:numericValue 56.8 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-A-RH-20260308T1800> a qudt:QuantityValue ;
+    qudt:numericValue 74.5 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-A-TEMP-20260302T0000> a qudt:QuantityValue ;
+    qudt:numericValue 17.6 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-A-TEMP-20260302T0600> a qudt:QuantityValue ;
+    qudt:numericValue 17.2 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-A-TEMP-20260302T1200> a qudt:QuantityValue ;
+    qudt:numericValue 24.9 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-A-TEMP-20260302T1800> a qudt:QuantityValue ;
+    qudt:numericValue 22.7 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-A-TEMP-20260303T0000> a qudt:QuantityValue ;
+    qudt:numericValue 20.1 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-A-TEMP-20260303T0600> a qudt:QuantityValue ;
+    qudt:numericValue 18.0 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-A-TEMP-20260303T1200> a qudt:QuantityValue ;
+    qudt:numericValue 26.6 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-A-TEMP-20260303T1800> a qudt:QuantityValue ;
+    qudt:numericValue 23.6 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-A-TEMP-20260304T0000> a qudt:QuantityValue ;
+    qudt:numericValue 20.5 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-A-TEMP-20260304T0600> a qudt:QuantityValue ;
+    qudt:numericValue 18.6 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-A-TEMP-20260304T1200> a qudt:QuantityValue ;
+    qudt:numericValue 30.0 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-A-TEMP-20260304T1800> a qudt:QuantityValue ;
+    qudt:numericValue 23.2 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-A-TEMP-20260305T0000> a qudt:QuantityValue ;
+    qudt:numericValue 19.4 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-A-TEMP-20260305T0600> a qudt:QuantityValue ;
+    qudt:numericValue 18.0 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-A-TEMP-20260305T1200> a qudt:QuantityValue ;
+    qudt:numericValue 24.7 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-A-TEMP-20260305T1800> a qudt:QuantityValue ;
+    qudt:numericValue 22.0 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-A-TEMP-20260306T0000> a qudt:QuantityValue ;
+    qudt:numericValue 19.0 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-A-TEMP-20260306T0600> a qudt:QuantityValue ;
+    qudt:numericValue 17.2 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-A-TEMP-20260306T1200> a qudt:QuantityValue ;
+    qudt:numericValue 25.7 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-A-TEMP-20260306T1800> a qudt:QuantityValue ;
+    qudt:numericValue 24.5 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-A-TEMP-20260307T0000> a qudt:QuantityValue ;
+    qudt:numericValue 18.8 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-A-TEMP-20260307T0600> a qudt:QuantityValue ;
+    qudt:numericValue 17.8 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-A-TEMP-20260307T1200> a qudt:QuantityValue ;
+    qudt:numericValue 27.4 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-A-TEMP-20260307T1800> a qudt:QuantityValue ;
+    qudt:numericValue 21.7 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-A-TEMP-20260308T0000> a qudt:QuantityValue ;
+    qudt:numericValue 20.3 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-A-TEMP-20260308T0600> a qudt:QuantityValue ;
+    qudt:numericValue 19.5 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-A-TEMP-20260308T1200> a qudt:QuantityValue ;
+    qudt:numericValue 26.8 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-A-TEMP-20260308T1800> a qudt:QuantityValue ;
+    qudt:numericValue 23.5 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-B-PREC-20260302T0000> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-B-PREC-20260302T0600> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-B-PREC-20260302T1200> a qudt:QuantityValue ;
+    qudt:numericValue 6.5 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-B-PREC-20260302T1800> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-B-PREC-20260303T0000> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-B-PREC-20260303T0600> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-B-PREC-20260303T1200> a qudt:QuantityValue ;
+    qudt:numericValue 10.7 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-B-PREC-20260303T1800> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-B-PREC-20260304T0000> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-B-PREC-20260304T0600> a qudt:QuantityValue ;
+    qudt:numericValue 12.5 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-B-PREC-20260304T1200> a qudt:QuantityValue ;
+    qudt:numericValue 18.4 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-B-PREC-20260304T1800> a qudt:QuantityValue ;
+    qudt:numericValue 4.9 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-B-PREC-20260305T0000> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-B-PREC-20260305T0600> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-B-PREC-20260305T1200> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-B-PREC-20260305T1800> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-B-PREC-20260306T0000> a qudt:QuantityValue ;
+    qudt:numericValue 5.5 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-B-PREC-20260306T0600> a qudt:QuantityValue ;
+    qudt:numericValue 6.5 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-B-PREC-20260306T1200> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-B-PREC-20260306T1800> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-B-PREC-20260307T0000> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-B-PREC-20260307T0600> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-B-PREC-20260307T1200> a qudt:QuantityValue ;
+    qudt:numericValue 5.9 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-B-PREC-20260307T1800> a qudt:QuantityValue ;
+    qudt:numericValue 6.9 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-B-PREC-20260308T0000> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-B-PREC-20260308T0600> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-B-PREC-20260308T1200> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-B-PREC-20260308T1800> a qudt:QuantityValue ;
+    qudt:numericValue 2.2 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-B-RH-20260302T0000> a qudt:QuantityValue ;
+    qudt:numericValue 79.0 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-B-RH-20260302T0600> a qudt:QuantityValue ;
+    qudt:numericValue 83.7 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-B-RH-20260302T1200> a qudt:QuantityValue ;
+    qudt:numericValue 47.5 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-B-RH-20260302T1800> a qudt:QuantityValue ;
+    qudt:numericValue 55.4 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-B-RH-20260303T0000> a qudt:QuantityValue ;
+    qudt:numericValue 77.1 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-B-RH-20260303T0600> a qudt:QuantityValue ;
+    qudt:numericValue 75.8 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-B-RH-20260303T1200> a qudt:QuantityValue ;
+    qudt:numericValue 48.0 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-B-RH-20260303T1800> a qudt:QuantityValue ;
+    qudt:numericValue 56.2 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-B-RH-20260304T0000> a qudt:QuantityValue ;
+    qudt:numericValue 73.8 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-B-RH-20260304T0600> a qudt:QuantityValue ;
+    qudt:numericValue 84.5 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-B-RH-20260304T1200> a qudt:QuantityValue ;
+    qudt:numericValue 52.8 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-B-RH-20260304T1800> a qudt:QuantityValue ;
+    qudt:numericValue 58.4 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-B-RH-20260305T0000> a qudt:QuantityValue ;
+    qudt:numericValue 72.7 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-B-RH-20260305T0600> a qudt:QuantityValue ;
+    qudt:numericValue 80.7 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-B-RH-20260305T1200> a qudt:QuantityValue ;
+    qudt:numericValue 50.1 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-B-RH-20260305T1800> a qudt:QuantityValue ;
+    qudt:numericValue 58.6 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-B-RH-20260306T0000> a qudt:QuantityValue ;
+    qudt:numericValue 79.5 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-B-RH-20260306T0600> a qudt:QuantityValue ;
+    qudt:numericValue 81.4 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-B-RH-20260306T1200> a qudt:QuantityValue ;
+    qudt:numericValue 47.8 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-B-RH-20260306T1800> a qudt:QuantityValue ;
+    qudt:numericValue 56.3 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-B-RH-20260307T0000> a qudt:QuantityValue ;
+    qudt:numericValue 72.1 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-B-RH-20260307T0600> a qudt:QuantityValue ;
+    qudt:numericValue 79.5 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-B-RH-20260307T1200> a qudt:QuantityValue ;
+    qudt:numericValue 52.4 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-B-RH-20260307T1800> a qudt:QuantityValue ;
+    qudt:numericValue 56.1 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-B-RH-20260308T0000> a qudt:QuantityValue ;
+    qudt:numericValue 74.5 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-B-RH-20260308T0600> a qudt:QuantityValue ;
+    qudt:numericValue 79.5 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-B-RH-20260308T1200> a qudt:QuantityValue ;
+    qudt:numericValue 45.7 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-B-RH-20260308T1800> a qudt:QuantityValue ;
+    qudt:numericValue 63.2 ;
+    qudt:unit unit:PERCENT .
+
+<https://example.org/kgqa-met/data/result/EST-B-TEMP-20260302T0000> a qudt:QuantityValue ;
+    qudt:numericValue 20.7 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-B-TEMP-20260302T0600> a qudt:QuantityValue ;
+    qudt:numericValue 21.2 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-B-TEMP-20260302T1200> a qudt:QuantityValue ;
+    qudt:numericValue 28.4 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-B-TEMP-20260302T1800> a qudt:QuantityValue ;
+    qudt:numericValue 24.9 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-B-TEMP-20260303T0000> a qudt:QuantityValue ;
+    qudt:numericValue 20.6 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-B-TEMP-20260303T0600> a qudt:QuantityValue ;
+    qudt:numericValue 20.1 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-B-TEMP-20260303T1200> a qudt:QuantityValue ;
+    qudt:numericValue 28.6 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-B-TEMP-20260303T1800> a qudt:QuantityValue ;
+    qudt:numericValue 24.8 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-B-TEMP-20260304T0000> a qudt:QuantityValue ;
+    qudt:numericValue 20.6 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-B-TEMP-20260304T0600> a qudt:QuantityValue ;
+    qudt:numericValue 21.4 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-B-TEMP-20260304T1200> a qudt:QuantityValue ;
+    qudt:numericValue 29.6 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-B-TEMP-20260304T1800> a qudt:QuantityValue ;
+    qudt:numericValue 26.3 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-B-TEMP-20260306T0000> a qudt:QuantityValue ;
+    qudt:numericValue 21.9 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-B-TEMP-20260306T0600> a qudt:QuantityValue ;
+    qudt:numericValue 22.3 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-B-TEMP-20260306T1200> a qudt:QuantityValue ;
+    qudt:numericValue 30.5 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-B-TEMP-20260306T1800> a qudt:QuantityValue ;
+    qudt:numericValue 24.6 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-B-TEMP-20260307T0000> a qudt:QuantityValue ;
+    qudt:numericValue 23.2 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-B-TEMP-20260307T0600> a qudt:QuantityValue ;
+    qudt:numericValue 22.2 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-B-TEMP-20260307T1200> a qudt:QuantityValue ;
+    qudt:numericValue 29.0 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-B-TEMP-20260307T1800> a qudt:QuantityValue ;
+    qudt:numericValue 27.1 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-B-TEMP-20260308T0000> a qudt:QuantityValue ;
+    qudt:numericValue 21.0 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-B-TEMP-20260308T0600> a qudt:QuantityValue ;
+    qudt:numericValue 19.9 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-B-TEMP-20260308T1200> a qudt:QuantityValue ;
+    qudt:numericValue 29.2 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-B-TEMP-20260308T1800> a qudt:QuantityValue ;
+    qudt:numericValue 25.0 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-C-PREC-20260302T0000> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-C-PREC-20260302T0600> a qudt:QuantityValue ;
+    qudt:numericValue 14.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-C-PREC-20260302T1200> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-C-PREC-20260302T1800> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-C-PREC-20260303T0000> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-C-PREC-20260303T0600> a qudt:QuantityValue ;
+    qudt:numericValue 2.6 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-C-PREC-20260303T1200> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-C-PREC-20260303T1800> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-C-PREC-20260304T0000> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-C-PREC-20260304T0600> a qudt:QuantityValue ;
+    qudt:numericValue 14.2 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-C-PREC-20260304T1200> a qudt:QuantityValue ;
+    qudt:numericValue 4.5 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-C-PREC-20260304T1800> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-C-PREC-20260305T0000> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-C-PREC-20260305T0600> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-C-PREC-20260305T1200> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-C-PREC-20260305T1800> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-C-PREC-20260306T0000> a qudt:QuantityValue ;
+    qudt:numericValue 15.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-C-PREC-20260306T0600> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-C-PREC-20260306T1200> a qudt:QuantityValue ;
+    qudt:numericValue 3.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-C-PREC-20260306T1800> a qudt:QuantityValue ;
+    qudt:numericValue 5.2 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-C-PREC-20260307T0000> a qudt:QuantityValue ;
+    qudt:numericValue 15.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-C-PREC-20260307T0600> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-C-PREC-20260307T1200> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-C-PREC-20260308T0000> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-C-PREC-20260308T0600> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-C-PREC-20260308T1200> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-C-PREC-20260308T1800> a qudt:QuantityValue ;
+    qudt:numericValue 0.0 ;
+    qudt:unit unit:MilliM .
+
+<https://example.org/kgqa-met/data/result/EST-C-TEMP-20260302T0000> a qudt:QuantityValue ;
+    qudt:numericValue 22.6 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-C-TEMP-20260302T0600> a qudt:QuantityValue ;
+    qudt:numericValue 22.9 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-C-TEMP-20260302T1200> a qudt:QuantityValue ;
+    qudt:numericValue 30.7 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-C-TEMP-20260302T1800> a qudt:QuantityValue ;
+    qudt:numericValue 27.8 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-C-TEMP-20260303T0000> a qudt:QuantityValue ;
+    qudt:numericValue 24.7 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-C-TEMP-20260303T0600> a qudt:QuantityValue ;
+    qudt:numericValue 23.6 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-C-TEMP-20260303T1200> a qudt:QuantityValue ;
+    qudt:numericValue 32.3 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-C-TEMP-20260303T1800> a qudt:QuantityValue ;
+    qudt:numericValue 29.1 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-C-TEMP-20260304T0000> a qudt:QuantityValue ;
+    qudt:numericValue 24.7 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-C-TEMP-20260304T0600> a qudt:QuantityValue ;
+    qudt:numericValue 23.8 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-C-TEMP-20260304T1200> a qudt:QuantityValue ;
+    qudt:numericValue 30.1 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-C-TEMP-20260304T1800> a qudt:QuantityValue ;
+    qudt:numericValue 28.8 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-C-TEMP-20260305T0000> a qudt:QuantityValue ;
+    qudt:numericValue 25.2 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-C-TEMP-20260305T0600> a qudt:QuantityValue ;
+    qudt:numericValue 23.1 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-C-TEMP-20260305T1200> a qudt:QuantityValue ;
+    qudt:numericValue 29.6 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-C-TEMP-20260305T1800> a qudt:QuantityValue ;
+    qudt:numericValue 27.8 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-C-TEMP-20260306T0000> a qudt:QuantityValue ;
+    qudt:numericValue 24.7 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-C-TEMP-20260306T0600> a qudt:QuantityValue ;
+    qudt:numericValue 23.9 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-C-TEMP-20260306T1200> a qudt:QuantityValue ;
+    qudt:numericValue 34.6 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-C-TEMP-20260306T1800> a qudt:QuantityValue ;
+    qudt:numericValue 29.0 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-C-TEMP-20260307T0000> a qudt:QuantityValue ;
+    qudt:numericValue 22.6 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-C-TEMP-20260307T0600> a qudt:QuantityValue ;
+    qudt:numericValue 22.8 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-C-TEMP-20260307T1200> a qudt:QuantityValue ;
+    qudt:numericValue 31.5 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-C-TEMP-20260307T1800> a qudt:QuantityValue ;
+    qudt:numericValue 29.1 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-C-TEMP-20260308T0000> a qudt:QuantityValue ;
+    qudt:numericValue 24.9 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-C-TEMP-20260308T0600> a qudt:QuantityValue ;
+    qudt:numericValue 22.2 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-C-TEMP-20260308T1200> a qudt:QuantityValue ;
+    qudt:numericValue 32.1 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/EST-C-TEMP-20260308T1800> a qudt:QuantityValue ;
+    qudt:numericValue 28.2 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/result/FC-EST-A-TEMP-20260309T1200> a qudt:QuantityValue ;
+    qudt:numericValue 35.0 ;
+    qudt:unit unit:DEG_C .
+
+<https://example.org/kgqa-met/data/station/EST-B> a met:WeatherStation ;
+    rdfs:label "Estação Vale Verde"@pt ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hosts <https://example.org/kgqa-met/data/sensor/EST-B-PREC>,
+        <https://example.org/kgqa-met/data/sensor/EST-B-RH>,
+        <https://example.org/kgqa-met/data/sensor/EST-B-TEMP> ;
+    met:isSynthetic true ;
+    met:stationCode "EST-B" .
+
+<https://example.org/kgqa-met/data/station/EST-C> a met:WeatherStation ;
+    rdfs:label "Estação Litoral Sul"@pt ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hosts <https://example.org/kgqa-met/data/sensor/EST-C-PREC>,
+        <https://example.org/kgqa-met/data/sensor/EST-C-TEMP> ;
+    met:isSynthetic true ;
+    met:stationCode "EST-C" .
+
+<https://example.org/kgqa-met/data/time/2026-03-09T00-00> a time:Instant ;
+    time:inXSDDateTime "2026-03-09T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/time/2026-03-09T12-00> a time:Instant ;
+    time:inXSDDateTime "2026-03-09T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/station/EST-A> a met:WeatherStation ;
+    rdfs:label "Estação Serra Azul"@pt ;
+    prov:wasDerivedFrom <https://example.org/kgqa-met/data/dataset/synthetic-v1> ;
+    sosa:hosts <https://example.org/kgqa-met/data/sensor/EST-A-PREC>,
+        <https://example.org/kgqa-met/data/sensor/EST-A-RH>,
+        <https://example.org/kgqa-met/data/sensor/EST-A-TEMP> ;
+    met:isSynthetic true ;
+    met:stationCode "EST-A" .
+
+<https://example.org/kgqa-met/data/time/interval/2026-03-07T18-00_PT6H> a time:Interval ;
+    time:hasBeginning <https://example.org/kgqa-met/data/time/2026-03-07T18-00> ;
+    time:hasEnd <https://example.org/kgqa-met/data/time/2026-03-08T00-00> .
+
+<https://example.org/kgqa-met/data/time/interval/2026-03-02T00-00_PT6H> a time:Interval ;
+    time:hasBeginning <https://example.org/kgqa-met/data/time/2026-03-02T00-00> ;
+    time:hasEnd <https://example.org/kgqa-met/data/time/2026-03-02T06-00> .
+
+<https://example.org/kgqa-met/data/time/interval/2026-03-02T06-00_PT6H> a time:Interval ;
+    time:hasBeginning <https://example.org/kgqa-met/data/time/2026-03-02T06-00> ;
+    time:hasEnd <https://example.org/kgqa-met/data/time/2026-03-02T12-00> .
+
+<https://example.org/kgqa-met/data/time/interval/2026-03-02T12-00_PT6H> a time:Interval ;
+    time:hasBeginning <https://example.org/kgqa-met/data/time/2026-03-02T12-00> ;
+    time:hasEnd <https://example.org/kgqa-met/data/time/2026-03-02T18-00> .
+
+<https://example.org/kgqa-met/data/time/interval/2026-03-02T18-00_PT6H> a time:Interval ;
+    time:hasBeginning <https://example.org/kgqa-met/data/time/2026-03-02T18-00> ;
+    time:hasEnd <https://example.org/kgqa-met/data/time/2026-03-03T00-00> .
+
+<https://example.org/kgqa-met/data/time/interval/2026-03-03T00-00_PT6H> a time:Interval ;
+    time:hasBeginning <https://example.org/kgqa-met/data/time/2026-03-03T00-00> ;
+    time:hasEnd <https://example.org/kgqa-met/data/time/2026-03-03T06-00> .
+
+<https://example.org/kgqa-met/data/time/interval/2026-03-03T06-00_PT6H> a time:Interval ;
+    time:hasBeginning <https://example.org/kgqa-met/data/time/2026-03-03T06-00> ;
+    time:hasEnd <https://example.org/kgqa-met/data/time/2026-03-03T12-00> .
+
+<https://example.org/kgqa-met/data/time/interval/2026-03-03T12-00_PT6H> a time:Interval ;
+    time:hasBeginning <https://example.org/kgqa-met/data/time/2026-03-03T12-00> ;
+    time:hasEnd <https://example.org/kgqa-met/data/time/2026-03-03T18-00> .
+
+<https://example.org/kgqa-met/data/time/interval/2026-03-03T18-00_PT6H> a time:Interval ;
+    time:hasBeginning <https://example.org/kgqa-met/data/time/2026-03-03T18-00> ;
+    time:hasEnd <https://example.org/kgqa-met/data/time/2026-03-04T00-00> .
+
+<https://example.org/kgqa-met/data/time/interval/2026-03-04T00-00_PT6H> a time:Interval ;
+    time:hasBeginning <https://example.org/kgqa-met/data/time/2026-03-04T00-00> ;
+    time:hasEnd <https://example.org/kgqa-met/data/time/2026-03-04T06-00> .
+
+<https://example.org/kgqa-met/data/time/interval/2026-03-04T06-00_PT6H> a time:Interval ;
+    time:hasBeginning <https://example.org/kgqa-met/data/time/2026-03-04T06-00> ;
+    time:hasEnd <https://example.org/kgqa-met/data/time/2026-03-04T12-00> .
+
+<https://example.org/kgqa-met/data/time/interval/2026-03-04T12-00_PT6H> a time:Interval ;
+    time:hasBeginning <https://example.org/kgqa-met/data/time/2026-03-04T12-00> ;
+    time:hasEnd <https://example.org/kgqa-met/data/time/2026-03-04T18-00> .
+
+<https://example.org/kgqa-met/data/time/interval/2026-03-04T18-00_PT6H> a time:Interval ;
+    time:hasBeginning <https://example.org/kgqa-met/data/time/2026-03-04T18-00> ;
+    time:hasEnd <https://example.org/kgqa-met/data/time/2026-03-05T00-00> .
+
+<https://example.org/kgqa-met/data/time/interval/2026-03-05T00-00_PT6H> a time:Interval ;
+    time:hasBeginning <https://example.org/kgqa-met/data/time/2026-03-05T00-00> ;
+    time:hasEnd <https://example.org/kgqa-met/data/time/2026-03-05T06-00> .
+
+<https://example.org/kgqa-met/data/time/interval/2026-03-05T06-00_PT6H> a time:Interval ;
+    time:hasBeginning <https://example.org/kgqa-met/data/time/2026-03-05T06-00> ;
+    time:hasEnd <https://example.org/kgqa-met/data/time/2026-03-05T12-00> .
+
+<https://example.org/kgqa-met/data/time/interval/2026-03-05T12-00_PT6H> a time:Interval ;
+    time:hasBeginning <https://example.org/kgqa-met/data/time/2026-03-05T12-00> ;
+    time:hasEnd <https://example.org/kgqa-met/data/time/2026-03-05T18-00> .
+
+<https://example.org/kgqa-met/data/time/interval/2026-03-05T18-00_PT6H> a time:Interval ;
+    time:hasBeginning <https://example.org/kgqa-met/data/time/2026-03-05T18-00> ;
+    time:hasEnd <https://example.org/kgqa-met/data/time/2026-03-06T00-00> .
+
+<https://example.org/kgqa-met/data/time/interval/2026-03-06T00-00_PT6H> a time:Interval ;
+    time:hasBeginning <https://example.org/kgqa-met/data/time/2026-03-06T00-00> ;
+    time:hasEnd <https://example.org/kgqa-met/data/time/2026-03-06T06-00> .
+
+<https://example.org/kgqa-met/data/time/interval/2026-03-06T06-00_PT6H> a time:Interval ;
+    time:hasBeginning <https://example.org/kgqa-met/data/time/2026-03-06T06-00> ;
+    time:hasEnd <https://example.org/kgqa-met/data/time/2026-03-06T12-00> .
+
+<https://example.org/kgqa-met/data/time/interval/2026-03-06T12-00_PT6H> a time:Interval ;
+    time:hasBeginning <https://example.org/kgqa-met/data/time/2026-03-06T12-00> ;
+    time:hasEnd <https://example.org/kgqa-met/data/time/2026-03-06T18-00> .
+
+<https://example.org/kgqa-met/data/time/interval/2026-03-06T18-00_PT6H> a time:Interval ;
+    time:hasBeginning <https://example.org/kgqa-met/data/time/2026-03-06T18-00> ;
+    time:hasEnd <https://example.org/kgqa-met/data/time/2026-03-07T00-00> .
+
+<https://example.org/kgqa-met/data/time/interval/2026-03-07T00-00_PT6H> a time:Interval ;
+    time:hasBeginning <https://example.org/kgqa-met/data/time/2026-03-07T00-00> ;
+    time:hasEnd <https://example.org/kgqa-met/data/time/2026-03-07T06-00> .
+
+<https://example.org/kgqa-met/data/time/interval/2026-03-07T06-00_PT6H> a time:Interval ;
+    time:hasBeginning <https://example.org/kgqa-met/data/time/2026-03-07T06-00> ;
+    time:hasEnd <https://example.org/kgqa-met/data/time/2026-03-07T12-00> .
+
+<https://example.org/kgqa-met/data/time/interval/2026-03-07T12-00_PT6H> a time:Interval ;
+    time:hasBeginning <https://example.org/kgqa-met/data/time/2026-03-07T12-00> ;
+    time:hasEnd <https://example.org/kgqa-met/data/time/2026-03-07T18-00> .
+
+<https://example.org/kgqa-met/data/time/interval/2026-03-08T00-00_PT6H> a time:Interval ;
+    time:hasBeginning <https://example.org/kgqa-met/data/time/2026-03-08T00-00> ;
+    time:hasEnd <https://example.org/kgqa-met/data/time/2026-03-08T06-00> .
+
+<https://example.org/kgqa-met/data/time/interval/2026-03-08T06-00_PT6H> a time:Interval ;
+    time:hasBeginning <https://example.org/kgqa-met/data/time/2026-03-08T06-00> ;
+    time:hasEnd <https://example.org/kgqa-met/data/time/2026-03-08T12-00> .
+
+<https://example.org/kgqa-met/data/time/interval/2026-03-08T12-00_PT6H> a time:Interval ;
+    time:hasBeginning <https://example.org/kgqa-met/data/time/2026-03-08T12-00> ;
+    time:hasEnd <https://example.org/kgqa-met/data/time/2026-03-08T18-00> .
+
+<https://example.org/kgqa-met/data/time/interval/2026-03-08T18-00_PT6H> a time:Interval ;
+    time:hasBeginning <https://example.org/kgqa-met/data/time/2026-03-08T18-00> ;
+    time:hasEnd <https://example.org/kgqa-met/data/time/2026-03-09T00-00> .
+
+<https://example.org/kgqa-met/data/time/2026-03-02T00-00> a time:Instant ;
+    time:inXSDDateTime "2026-03-02T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/time/2026-03-05T00-00> a time:Instant ;
+    time:inXSDDateTime "2026-03-05T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/time/2026-03-05T06-00> a time:Instant ;
+    time:inXSDDateTime "2026-03-05T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/time/2026-03-05T12-00> a time:Instant ;
+    time:inXSDDateTime "2026-03-05T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/time/2026-03-05T18-00> a time:Instant ;
+    time:inXSDDateTime "2026-03-05T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/time/2026-03-02T06-00> a time:Instant ;
+    time:inXSDDateTime "2026-03-02T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/time/2026-03-02T12-00> a time:Instant ;
+    time:inXSDDateTime "2026-03-02T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/time/2026-03-02T18-00> a time:Instant ;
+    time:inXSDDateTime "2026-03-02T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/time/2026-03-03T00-00> a time:Instant ;
+    time:inXSDDateTime "2026-03-03T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/time/2026-03-03T06-00> a time:Instant ;
+    time:inXSDDateTime "2026-03-03T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/time/2026-03-03T12-00> a time:Instant ;
+    time:inXSDDateTime "2026-03-03T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/time/2026-03-03T18-00> a time:Instant ;
+    time:inXSDDateTime "2026-03-03T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/time/2026-03-04T00-00> a time:Instant ;
+    time:inXSDDateTime "2026-03-04T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/time/2026-03-04T06-00> a time:Instant ;
+    time:inXSDDateTime "2026-03-04T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/time/2026-03-04T12-00> a time:Instant ;
+    time:inXSDDateTime "2026-03-04T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/time/2026-03-04T18-00> a time:Instant ;
+    time:inXSDDateTime "2026-03-04T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/time/2026-03-06T00-00> a time:Instant ;
+    time:inXSDDateTime "2026-03-06T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/time/2026-03-06T06-00> a time:Instant ;
+    time:inXSDDateTime "2026-03-06T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/time/2026-03-06T12-00> a time:Instant ;
+    time:inXSDDateTime "2026-03-06T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/time/2026-03-06T18-00> a time:Instant ;
+    time:inXSDDateTime "2026-03-06T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/time/2026-03-07T00-00> a time:Instant ;
+    time:inXSDDateTime "2026-03-07T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/time/2026-03-07T06-00> a time:Instant ;
+    time:inXSDDateTime "2026-03-07T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/time/2026-03-07T12-00> a time:Instant ;
+    time:inXSDDateTime "2026-03-07T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/time/2026-03-07T18-00> a time:Instant ;
+    time:inXSDDateTime "2026-03-07T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/time/2026-03-08T00-00> a time:Instant ;
+    time:inXSDDateTime "2026-03-08T00:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/time/2026-03-08T06-00> a time:Instant ;
+    time:inXSDDateTime "2026-03-08T06:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/time/2026-03-08T12-00> a time:Instant ;
+    time:inXSDDateTime "2026-03-08T12:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/time/2026-03-08T18-00> a time:Instant ;
+    time:inXSDDateTime "2026-03-08T18:00:00-03:00"^^xsd:dateTime .
+
+<https://example.org/kgqa-met/data/sensor/EST-B-TEMP> a sosa:Sensor ;
+    rdfs:label "Sensor TEMP da Estação Vale Verde"@pt ;
+    sosa:observes met:AirTemperature .
+
+<https://example.org/kgqa-met/data/sensor/EST-C-PREC> a sosa:Sensor ;
+    rdfs:label "Sensor PREC da Estação Litoral Sul"@pt ;
+    sosa:observes met:Precipitation .
+
+<https://example.org/kgqa-met/data/sensor/EST-A-PREC> a sosa:Sensor ;
+    rdfs:label "Sensor PREC da Estação Serra Azul"@pt ;
+    sosa:observes met:Precipitation .
+
+<https://example.org/kgqa-met/data/sensor/EST-A-RH> a sosa:Sensor ;
+    rdfs:label "Sensor RH da Estação Serra Azul"@pt ;
+    sosa:observes met:RelativeHumidity .
+
+<https://example.org/kgqa-met/data/sensor/EST-A-TEMP> a sosa:Sensor ;
+    rdfs:label "Sensor TEMP da Estação Serra Azul"@pt ;
+    sosa:observes met:AirTemperature .
+
+<https://example.org/kgqa-met/data/sensor/EST-B-PREC> a sosa:Sensor ;
+    rdfs:label "Sensor PREC da Estação Vale Verde"@pt ;
+    sosa:observes met:Precipitation .
+
+<https://example.org/kgqa-met/data/sensor/EST-B-RH> a sosa:Sensor ;
+    rdfs:label "Sensor RH da Estação Vale Verde"@pt ;
+    sosa:observes met:RelativeHumidity .
+
+<https://example.org/kgqa-met/data/sensor/EST-C-TEMP> a sosa:Sensor ;
+    rdfs:label "Sensor TEMP da Estação Litoral Sul"@pt ;
+    sosa:observes met:AirTemperature .
+
+<https://example.org/kgqa-met/data/site/EST-C> a met:Site ;
+    rdfs:label "Atmosfera junto à Estação Litoral Sul"@pt ;
+    met:siteOf <https://example.org/kgqa-met/data/station/EST-C> .
+
+<https://example.org/kgqa-met/data/site/EST-B> a met:Site ;
+    rdfs:label "Atmosfera junto à Estação Vale Verde"@pt ;
+    met:siteOf <https://example.org/kgqa-met/data/station/EST-B> .
+
+<https://example.org/kgqa-met/data/site/EST-A> a met:Site ;
+    rdfs:label "Atmosfera junto à Estação Serra Azul"@pt ;
+    met:siteOf <https://example.org/kgqa-met/data/station/EST-A> .
+
+<https://example.org/kgqa-met/data/dataset/synthetic-v1> a prov:Entity ;
+    dct:description "Dados fictícios gerados por data/generate.py, seed=20260302."@pt ;
+    dct:title "Grafo meteorológico sintético (protótipo)"@pt ;
+    prov:generatedAtTime "2026-09-30T00:00:00-03:00"^^xsd:dateTime ;
+    met:isSynthetic true .
+

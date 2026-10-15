@@ -1,0 +1,2 @@
+forecast_id,station,property,valid_time,issued_at,value,unit
+FC-EST-A-TEMP-20260309T1200,EST-A,AirTemperature,2026-03-09T12:00:00-03:00,2026-03-08T18:00:00-03:00,35.0,DEG_C
