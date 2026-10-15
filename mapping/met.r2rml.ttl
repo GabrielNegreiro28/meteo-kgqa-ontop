@@ -1,0 +1,1825 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#> .
+@prefix : <https://example.org/kgqa-met/data/> .
+@prefix met: <https://example.org/kgqa-met/ontology#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix unit: <http://qudt.org/vocab/unit/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix obda: <https://w3id.org/obda/vocabulary#> .
+
+<urn:r2rml:station-1b9481b0-817b-4351-be6f-fb27904a71c1> a rr:TriplesMap;
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:Literal;
+          rr:datatype xsd:string;
+          rr:column "sigla"
+        ];
+      rr:predicate met:stationCode
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:termType rr:Literal;
+          rr:datatype xsd:string;
+          rr:column "sigla"
+        ];
+      rr:predicate rdfs:label
+    ];
+  rr:subjectMap [ a rr:TermMap, rr:SubjectMap;
+      rr:template "https://example.org/kgqa-met/data/station/{sigla}";
+      rr:termType rr:IRI;
+      rr:class met:WeatherStation
+    ];
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla FROM station"
+    ] .
+
+<urn:r2rml:station-feb4ab70-195f-48fe-a88f-70889212e77b> a rr:TriplesMap;
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:template "https://example.org/kgqa-met/data/station/{sigla}";
+          rr:termType rr:IRI
+        ];
+      rr:predicate met:siteOf
+    ];
+  rr:subjectMap [ a rr:SubjectMap, rr:TermMap;
+      rr:class met:Site;
+      rr:template "https://example.org/kgqa-met/data/site/{sigla}";
+      rr:termType rr:IRI
+    ];
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla FROM station"
+    ] .
+
+<urn:r2rml:station_sensor-ea6e16e0-2fce-42ef-bef5-c08e317518f5> a rr:TriplesMap;
+  rr:subjectMap [ a rr:SubjectMap, rr:TermMap;
+      rr:template "https://example.org/kgqa-met/data/station/{sigla}";
+      rr:termType rr:IRI
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/data/sensor/{sigla}/{var}"
+        ];
+      rr:predicate sosa:hosts
+    ];
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, var FROM station_sensor"
+    ] .
+
+<urn:r2rml:station_sensor-e701e6ef-698a-4754-819f-239c0b40c516> a rr:TriplesMap;
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, var FROM station_sensor"
+    ];
+  rr:subjectMap [ a rr:TermMap, rr:SubjectMap;
+      rr:termType rr:IRI;
+      rr:class sosa:Sensor;
+      rr:template "https://example.org/kgqa-met/data/sensor/{sigla}/{var}"
+    ] .
+
+<urn:r2rml:report-218fd1bd-147e-4214-9388-551dc3e15956> a rr:TriplesMap;
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, t_utc, local_date, is_hourly FROM report"
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:predicate met:isHourly;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:column "is_hourly";
+          rr:datatype xsd:boolean;
+          rr:termType rr:Literal
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate time:hasTime;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:template "https://example.org/kgqa-met/data/time/report/{sigla}/{tmin}";
+          rr:termType rr:IRI
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate met:reportOf;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:template "https://example.org/kgqa-met/data/station/{sigla}";
+          rr:termType rr:IRI
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate met:localDate;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:column "local_date";
+          rr:datatype xsd:date;
+          rr:termType rr:Literal
+        ]
+    ];
+  rr:subjectMap [ a rr:SubjectMap, rr:TermMap;
+      rr:class met:WeatherReport;
+      rr:termType rr:IRI;
+      rr:template "https://example.org/kgqa-met/data/report/{sigla}/{tmin}"
+    ] .
+
+<urn:r2rml:report-721a2c6a-8f44-4a5a-9484-addc959dacd2> a rr:TriplesMap;
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, t_utc, local_date, is_hourly FROM report"
+    ];
+  rr:subjectMap [ a rr:TermMap, rr:SubjectMap;
+      rr:termType rr:IRI;
+      rr:template "https://example.org/kgqa-met/data/time/report/{sigla}/{tmin}";
+      rr:class time:Instant
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:predicate time:inXSDDateTime;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:column "t_utc";
+          rr:datatype xsd:dateTime;
+          rr:termType rr:Literal
+        ]
+    ] .
+
+<urn:r2rml:obs_air_temp-8aad17cf-e451-4d45-a6c1-e549cd857cc2> a rr:TriplesMap;
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row FROM obs_air_temp"
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:column "src_row";
+          rr:datatype xsd:integer;
+          rr:termType rr:Literal
+        ];
+      rr:predicate met:sourceRow
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate sosa:hasResult;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:template "https://example.org/kgqa-met/data/result/air_temp/{sigla}/{tmin}/{seq}";
+          rr:termType rr:IRI
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:template "https://example.org/kgqa-met/data/sensor/{sigla}/air_temp";
+          rr:termType rr:IRI
+        ];
+      rr:predicate sosa:madeBySensor
+    ], [ a rr:PredicateObjectMap;
+      rr:object met:AirTemperature;
+      rr:predicate sosa:observedProperty
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:column "local_date";
+          rr:datatype xsd:date;
+          rr:termType rr:Literal
+        ];
+      rr:predicate met:localDate
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate sosa:hasFeatureOfInterest;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/data/site/{sigla}"
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:template "https://example.org/kgqa-met/data/time/air_temp/{sigla}/{tmin}/{seq}";
+          rr:termType rr:IRI
+        ];
+      rr:predicate sosa:phenomenonTime
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate sosa:resultTime;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:column "t_utc";
+          rr:datatype xsd:dateTime;
+          rr:termType rr:Literal
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:column "multi";
+          rr:termType rr:Literal;
+          rr:datatype xsd:boolean
+        ];
+      rr:predicate met:multipleReadings
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate met:inReport;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:template "https://example.org/kgqa-met/data/report/{sigla}/{tmin}";
+          rr:termType rr:IRI
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:object "temperatura.csv";
+      rr:predicate met:sourceFile
+    ];
+  rr:subjectMap [ a rr:SubjectMap, rr:TermMap;
+      rr:class met:InstantaneousObservation;
+      rr:termType rr:IRI;
+      rr:template "https://example.org/kgqa-met/data/obs/air_temp/{sigla}/{tmin}/{seq}"
+    ] .
+
+<urn:r2rml:obs_air_temp-c0525b0e-90f6-4a51-af4e-33d09334a09c> a rr:TriplesMap;
+  rr:subjectMap [ a rr:SubjectMap, rr:TermMap;
+      rr:class time:Instant;
+      rr:termType rr:IRI;
+      rr:template "https://example.org/kgqa-met/data/time/air_temp/{sigla}/{tmin}/{seq}"
+    ];
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row FROM obs_air_temp"
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:column "t_utc";
+          rr:datatype xsd:dateTime;
+          rr:termType rr:Literal
+        ];
+      rr:predicate time:inXSDDateTime
+    ] .
+
+<urn:r2rml:obs_air_temp-5ffdcc08-92e1-4d67-b394-6e57a7eaebf6> a rr:TriplesMap;
+  rr:subjectMap [ a rr:TermMap, rr:SubjectMap;
+      rr:template "https://example.org/kgqa-met/data/result/air_temp/{sigla}/{tmin}/{seq}";
+      rr:class qudt:QuantityValue;
+      rr:termType rr:IRI
+    ];
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row FROM obs_air_temp"
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:predicate qudt:unit;
+      rr:object unit:DEG_C
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:datatype xsd:decimal;
+          rr:column "value";
+          rr:termType rr:Literal
+        ];
+      rr:predicate qudt:numericValue
+    ] .
+
+<urn:r2rml:obs_wet_bulb-0efd60fb-3169-44ea-8779-3c89427d3315> a rr:TriplesMap;
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row FROM obs_wet_bulb"
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/data/time/wet_bulb/{sigla}/{tmin}/{seq}"
+        ];
+      rr:predicate sosa:phenomenonTime
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate met:inReport;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:template "https://example.org/kgqa-met/data/report/{sigla}/{tmin}";
+          rr:termType rr:IRI
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate met:multipleReadings;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:datatype xsd:boolean;
+          rr:column "multi";
+          rr:termType rr:Literal
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:termType rr:Literal;
+          rr:datatype xsd:dateTime;
+          rr:column "t_utc"
+        ];
+      rr:predicate sosa:resultTime
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate met:localDate;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:column "local_date";
+          rr:termType rr:Literal;
+          rr:datatype xsd:date
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/data/result/wet_bulb/{sigla}/{tmin}/{seq}"
+        ];
+      rr:predicate sosa:hasResult
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate sosa:hasFeatureOfInterest;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/data/site/{sigla}"
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate sosa:madeBySensor;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:template "https://example.org/kgqa-met/data/sensor/{sigla}/wet_bulb";
+          rr:termType rr:IRI
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate sosa:observedProperty;
+      rr:object met:WetBulbTemperature
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate met:sourceFile;
+      rr:object "temperatura.csv"
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate met:sourceRow;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:datatype xsd:integer;
+          rr:column "src_row";
+          rr:termType rr:Literal
+        ]
+    ];
+  rr:subjectMap [ a rr:SubjectMap, rr:TermMap;
+      rr:class met:InstantaneousObservation;
+      rr:termType rr:IRI;
+      rr:template "https://example.org/kgqa-met/data/obs/wet_bulb/{sigla}/{tmin}/{seq}"
+    ] .
+
+<urn:r2rml:obs_wet_bulb-a1671a5d-e77d-430c-a1f2-06163300fa7d> a rr:TriplesMap;
+  rr:subjectMap [ a rr:SubjectMap, rr:TermMap;
+      rr:termType rr:IRI;
+      rr:class time:Instant;
+      rr:template "https://example.org/kgqa-met/data/time/wet_bulb/{sigla}/{tmin}/{seq}"
+    ];
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row FROM obs_wet_bulb"
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:Literal;
+          rr:column "t_utc";
+          rr:datatype xsd:dateTime
+        ];
+      rr:predicate time:inXSDDateTime
+    ] .
+
+<urn:r2rml:obs_wet_bulb-58b0d495-b9c1-4cc6-91ef-c1959ba97096> a rr:TriplesMap;
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row FROM obs_wet_bulb"
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:predicate qudt:numericValue;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:datatype xsd:decimal;
+          rr:termType rr:Literal;
+          rr:column "value"
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:object unit:DEG_C;
+      rr:predicate qudt:unit
+    ];
+  rr:subjectMap [ a rr:SubjectMap, rr:TermMap;
+      rr:termType rr:IRI;
+      rr:template "https://example.org/kgqa-met/data/result/wet_bulb/{sigla}/{tmin}/{seq}";
+      rr:class qudt:QuantityValue
+    ] .
+
+<urn:r2rml:obs_dew_point-0fc8dbe8-67bb-45ac-b857-1da5e4bada00> a rr:TriplesMap;
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/data/site/{sigla}"
+        ];
+      rr:predicate sosa:hasFeatureOfInterest
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/data/time/dew_point/{sigla}/{tmin}/{seq}"
+        ];
+      rr:predicate sosa:phenomenonTime
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate sosa:observedProperty;
+      rr:object met:DewPointTemperature
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate sosa:madeBySensor;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/data/sensor/{sigla}/dew_point"
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/data/report/{sigla}/{tmin}"
+        ];
+      rr:predicate met:inReport
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:column "local_date";
+          rr:datatype xsd:date;
+          rr:termType rr:Literal
+        ];
+      rr:predicate met:localDate
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:column "t_utc";
+          rr:termType rr:Literal;
+          rr:datatype xsd:dateTime
+        ];
+      rr:predicate sosa:resultTime
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate met:sourceRow;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:termType rr:Literal;
+          rr:datatype xsd:integer;
+          rr:column "src_row"
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:termType rr:Literal;
+          rr:datatype xsd:boolean;
+          rr:column "multi"
+        ];
+      rr:predicate met:multipleReadings
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate met:sourceFile;
+      rr:object "temperatura.csv"
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate sosa:hasResult;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/data/result/dew_point/{sigla}/{tmin}/{seq}"
+        ]
+    ];
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row FROM obs_dew_point"
+    ];
+  rr:subjectMap [ a rr:TermMap, rr:SubjectMap;
+      rr:template "https://example.org/kgqa-met/data/obs/dew_point/{sigla}/{tmin}/{seq}";
+      rr:class met:InstantaneousObservation;
+      rr:termType rr:IRI
+    ] .
+
+<urn:r2rml:obs_dew_point-f1b7b7af-9214-48f3-94da-9476855c45d0> a rr:TriplesMap;
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:column "t_utc";
+          rr:termType rr:Literal;
+          rr:datatype xsd:dateTime
+        ];
+      rr:predicate time:inXSDDateTime
+    ];
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row FROM obs_dew_point"
+    ];
+  rr:subjectMap [ a rr:SubjectMap, rr:TermMap;
+      rr:termType rr:IRI;
+      rr:class time:Instant;
+      rr:template "https://example.org/kgqa-met/data/time/dew_point/{sigla}/{tmin}/{seq}"
+    ] .
+
+<urn:r2rml:obs_dew_point-17bd96db-56a6-4ba6-9b24-516da212ff41> a rr:TriplesMap;
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:predicate qudt:unit;
+      rr:object unit:DEG_C
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:Literal;
+          rr:datatype xsd:decimal;
+          rr:column "value"
+        ];
+      rr:predicate qudt:numericValue
+    ];
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row FROM obs_dew_point"
+    ];
+  rr:subjectMap [ a rr:SubjectMap, rr:TermMap;
+      rr:termType rr:IRI;
+      rr:template "https://example.org/kgqa-met/data/result/dew_point/{sigla}/{tmin}/{seq}";
+      rr:class qudt:QuantityValue
+    ] .
+
+<urn:r2rml:obs_rel_humidity-377c4814-c9cc-4fae-ab7e-38c2a5b937ec> a rr:TriplesMap;
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:predicate sosa:phenomenonTime;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:template "https://example.org/kgqa-met/data/time/rel_humidity/{sigla}/{tmin}/{seq}";
+          rr:termType rr:IRI
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:template "https://example.org/kgqa-met/data/sensor/{sigla}/rel_humidity";
+          rr:termType rr:IRI
+        ];
+      rr:predicate sosa:madeBySensor
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate sosa:hasFeatureOfInterest;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/data/site/{sigla}"
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:column "multi";
+          rr:termType rr:Literal;
+          rr:datatype xsd:boolean
+        ];
+      rr:predicate met:multipleReadings
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:datatype xsd:date;
+          rr:termType rr:Literal;
+          rr:column "local_date"
+        ];
+      rr:predicate met:localDate
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:template "https://example.org/kgqa-met/data/report/{sigla}/{tmin}";
+          rr:termType rr:IRI
+        ];
+      rr:predicate met:inReport
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:Literal;
+          rr:column "t_utc";
+          rr:datatype xsd:dateTime
+        ];
+      rr:predicate sosa:resultTime
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate sosa:hasResult;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/data/result/rel_humidity/{sigla}/{tmin}/{seq}"
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:datatype xsd:integer;
+          rr:column "src_row";
+          rr:termType rr:Literal
+        ];
+      rr:predicate met:sourceRow
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate met:sourceFile;
+      rr:object "temperatura.csv"
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate sosa:observedProperty;
+      rr:object met:RelativeHumidity
+    ];
+  rr:subjectMap [ a rr:TermMap, rr:SubjectMap;
+      rr:termType rr:IRI;
+      rr:template "https://example.org/kgqa-met/data/obs/rel_humidity/{sigla}/{tmin}/{seq}";
+      rr:class met:InstantaneousObservation
+    ];
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row FROM obs_rel_humidity"
+    ] .
+
+<urn:r2rml:obs_rel_humidity-aa95d962-b7a0-4596-b882-eae33ca3cafa> a rr:TriplesMap;
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row FROM obs_rel_humidity"
+    ];
+  rr:subjectMap [ a rr:TermMap, rr:SubjectMap;
+      rr:template "https://example.org/kgqa-met/data/time/rel_humidity/{sigla}/{tmin}/{seq}";
+      rr:termType rr:IRI;
+      rr:class time:Instant
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:predicate time:inXSDDateTime;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:datatype xsd:dateTime;
+          rr:column "t_utc";
+          rr:termType rr:Literal
+        ]
+    ] .
+
+<urn:r2rml:obs_rel_humidity-a40ecad7-0172-43f1-b76c-48822f3ced77> a rr:TriplesMap;
+  rr:subjectMap [ a rr:TermMap, rr:SubjectMap;
+      rr:class qudt:QuantityValue;
+      rr:template "https://example.org/kgqa-met/data/result/rel_humidity/{sigla}/{tmin}/{seq}";
+      rr:termType rr:IRI
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:object unit:PERCENT;
+      rr:predicate qudt:unit
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:column "value";
+          rr:termType rr:Literal;
+          rr:datatype xsd:decimal
+        ];
+      rr:predicate qudt:numericValue
+    ];
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row FROM obs_rel_humidity"
+    ] .
+
+<urn:r2rml:obs_runway_temp-bea8ab08-5525-4bb6-bc58-40fac3e211b1> a rr:TriplesMap;
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:datatype xsd:boolean;
+          rr:column "multi";
+          rr:termType rr:Literal
+        ];
+      rr:predicate met:multipleReadings
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate met:inReport;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/data/report/{sigla}/{tmin}"
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:datatype xsd:date;
+          rr:column "local_date";
+          rr:termType rr:Literal
+        ];
+      rr:predicate met:localDate
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate sosa:hasResult;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:template "https://example.org/kgqa-met/data/result/runway_temp/{sigla}/{tmin}/{seq}";
+          rr:termType rr:IRI
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate met:sourceRow;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:datatype xsd:integer;
+          rr:column "src_row";
+          rr:termType rr:Literal
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate met:sourceFile;
+      rr:object "temperatura.csv"
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/data/sensor/{sigla}/runway_temp"
+        ];
+      rr:predicate sosa:madeBySensor
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate sosa:observedProperty;
+      rr:object met:RunwayTemperature
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:column "t_utc";
+          rr:termType rr:Literal;
+          rr:datatype xsd:dateTime
+        ];
+      rr:predicate sosa:resultTime
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/data/time/runway_temp/{sigla}/{tmin}/{seq}"
+        ];
+      rr:predicate sosa:phenomenonTime
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate sosa:hasFeatureOfInterest;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:template "https://example.org/kgqa-met/data/site/{sigla}";
+          rr:termType rr:IRI
+        ]
+    ];
+  rr:subjectMap [ a rr:TermMap, rr:SubjectMap;
+      rr:class met:InstantaneousObservation;
+      rr:termType rr:IRI;
+      rr:template "https://example.org/kgqa-met/data/obs/runway_temp/{sigla}/{tmin}/{seq}"
+    ];
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row FROM obs_runway_temp"
+    ] .
+
+<urn:r2rml:obs_runway_temp-b4206bb1-ee51-4c85-a22b-1130897d45c9> a rr:TriplesMap;
+  rr:subjectMap [ a rr:SubjectMap, rr:TermMap;
+      rr:class time:Instant;
+      rr:template "https://example.org/kgqa-met/data/time/runway_temp/{sigla}/{tmin}/{seq}";
+      rr:termType rr:IRI
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:predicate time:inXSDDateTime;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:termType rr:Literal;
+          rr:datatype xsd:dateTime;
+          rr:column "t_utc"
+        ]
+    ];
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row FROM obs_runway_temp"
+    ] .
+
+<urn:r2rml:obs_runway_temp-48d1696d-3940-4dfc-9fd9-70620786a274> a rr:TriplesMap;
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row FROM obs_runway_temp"
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:column "value";
+          rr:datatype xsd:decimal;
+          rr:termType rr:Literal
+        ];
+      rr:predicate qudt:numericValue
+    ], [ a rr:PredicateObjectMap;
+      rr:object unit:DEG_C;
+      rr:predicate qudt:unit
+    ];
+  rr:subjectMap [ a rr:TermMap, rr:SubjectMap;
+      rr:template "https://example.org/kgqa-met/data/result/runway_temp/{sigla}/{tmin}/{seq}";
+      rr:class qudt:QuantityValue;
+      rr:termType rr:IRI
+    ] .
+
+<urn:r2rml:obs_qnh-eb2a651e-87cf-4114-8199-f00a47402626> a rr:TriplesMap;
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row FROM obs_qnh"
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/data/sensor/{sigla}/qnh"
+        ];
+      rr:predicate sosa:madeBySensor
+    ], [ a rr:PredicateObjectMap;
+      rr:object met:PressureQNH;
+      rr:predicate sosa:observedProperty
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:column "local_date";
+          rr:datatype xsd:date;
+          rr:termType rr:Literal
+        ];
+      rr:predicate met:localDate
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:template "https://example.org/kgqa-met/data/site/{sigla}";
+          rr:termType rr:IRI
+        ];
+      rr:predicate sosa:hasFeatureOfInterest
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate sosa:resultTime;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:column "t_utc";
+          rr:termType rr:Literal;
+          rr:datatype xsd:dateTime
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate sosa:phenomenonTime;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:template "https://example.org/kgqa-met/data/time/qnh/{sigla}/{tmin}/{seq}";
+          rr:termType rr:IRI
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:template "https://example.org/kgqa-met/data/report/{sigla}/{tmin}";
+          rr:termType rr:IRI
+        ];
+      rr:predicate met:inReport
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate met:sourceFile;
+      rr:object "pressao.csv"
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate met:multipleReadings;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:datatype xsd:boolean;
+          rr:termType rr:Literal;
+          rr:column "multi"
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate met:sourceRow;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:Literal;
+          rr:datatype xsd:integer;
+          rr:column "src_row"
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/data/result/qnh/{sigla}/{tmin}/{seq}"
+        ];
+      rr:predicate sosa:hasResult
+    ];
+  rr:subjectMap [ a rr:TermMap, rr:SubjectMap;
+      rr:template "https://example.org/kgqa-met/data/obs/qnh/{sigla}/{tmin}/{seq}";
+      rr:class met:InstantaneousObservation;
+      rr:termType rr:IRI
+    ] .
+
+<urn:r2rml:obs_qnh-63a74e7e-e3c4-4285-b8be-3cbaad54156f> a rr:TriplesMap;
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:termType rr:Literal;
+          rr:column "t_utc";
+          rr:datatype xsd:dateTime
+        ];
+      rr:predicate time:inXSDDateTime
+    ];
+  rr:subjectMap [ a rr:SubjectMap, rr:TermMap;
+      rr:termType rr:IRI;
+      rr:class time:Instant;
+      rr:template "https://example.org/kgqa-met/data/time/qnh/{sigla}/{tmin}/{seq}"
+    ];
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row FROM obs_qnh"
+    ] .
+
+<urn:r2rml:obs_qnh-f8342cea-f927-422a-970c-2dc84ab1e003> a rr:TriplesMap;
+  rr:subjectMap [ a rr:TermMap, rr:SubjectMap;
+      rr:termType rr:IRI;
+      rr:template "https://example.org/kgqa-met/data/result/qnh/{sigla}/{tmin}/{seq}";
+      rr:class qudt:QuantityValue
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:Literal;
+          rr:column "value";
+          rr:datatype xsd:decimal
+        ];
+      rr:predicate qudt:numericValue
+    ], [ a rr:PredicateObjectMap;
+      rr:object unit:HectoPA;
+      rr:predicate qudt:unit
+    ];
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row FROM obs_qnh"
+    ] .
+
+<urn:r2rml:obs_visibility-26ec299f-3e53-428b-854f-1cd9eb175d9f> a rr:TriplesMap;
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:template "https://example.org/kgqa-met/data/site/{sigla}";
+          rr:termType rr:IRI
+        ];
+      rr:predicate sosa:hasFeatureOfInterest
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate sosa:madeBySensor;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/data/sensor/{sigla}/visibility"
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate sosa:observedProperty;
+      rr:object met:PrevailingVisibility
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate sosa:hasResult;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/data/result/visibility/{sigla}/{tmin}/{seq}"
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate met:multipleReadings;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:Literal;
+          rr:column "multi";
+          rr:datatype xsd:boolean
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate met:inReport;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:template "https://example.org/kgqa-met/data/report/{sigla}/{tmin}";
+          rr:termType rr:IRI
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate met:sourceRow;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:Literal;
+          rr:datatype xsd:integer;
+          rr:column "src_row"
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate met:sourceFile;
+      rr:object "visibilidade.csv"
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/data/time/visibility/{sigla}/{tmin}/{seq}"
+        ];
+      rr:predicate sosa:phenomenonTime
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate met:localDate;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:datatype xsd:date;
+          rr:termType rr:Literal;
+          rr:column "local_date"
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:Literal;
+          rr:datatype xsd:dateTime;
+          rr:column "t_utc"
+        ];
+      rr:predicate sosa:resultTime
+    ];
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row FROM obs_visibility"
+    ];
+  rr:subjectMap [ a rr:TermMap, rr:SubjectMap;
+      rr:termType rr:IRI;
+      rr:template "https://example.org/kgqa-met/data/obs/visibility/{sigla}/{tmin}/{seq}";
+      rr:class met:InstantaneousObservation
+    ] .
+
+<urn:r2rml:obs_visibility-4ea04044-bdfe-4596-9c57-ddb83c3e4832> a rr:TriplesMap;
+  rr:subjectMap [ a rr:SubjectMap, rr:TermMap;
+      rr:termType rr:IRI;
+      rr:class time:Instant;
+      rr:template "https://example.org/kgqa-met/data/time/visibility/{sigla}/{tmin}/{seq}"
+    ];
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row FROM obs_visibility"
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:Literal;
+          rr:column "t_utc";
+          rr:datatype xsd:dateTime
+        ];
+      rr:predicate time:inXSDDateTime
+    ] .
+
+<urn:r2rml:obs_visibility-c45766a7-445e-425d-8bb5-0c99bf7a0826> a rr:TriplesMap;
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:object unit:M;
+      rr:predicate qudt:unit
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate qudt:numericValue;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:Literal;
+          rr:datatype xsd:integer;
+          rr:column "value"
+        ]
+    ];
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row FROM obs_visibility"
+    ];
+  rr:subjectMap [ a rr:TermMap, rr:SubjectMap;
+      rr:termType rr:IRI;
+      rr:class qudt:QuantityValue;
+      rr:template "https://example.org/kgqa-met/data/result/visibility/{sigla}/{tmin}/{seq}"
+    ] .
+
+<urn:r2rml:obs_wind_speed-e2b2f57d-6499-41e2-8751-569ed7d52fd6> a rr:TriplesMap;
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:template "https://example.org/kgqa-met/data/site/{sigla}";
+          rr:termType rr:IRI
+        ];
+      rr:predicate sosa:hasFeatureOfInterest
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate sosa:madeBySensor;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:template "https://example.org/kgqa-met/data/sensor/{sigla}/wind_speed";
+          rr:termType rr:IRI
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:object met:WindSpeed;
+      rr:predicate sosa:observedProperty
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/data/time/wind_speed/{sigla}/{tmin}/{seq}"
+        ];
+      rr:predicate sosa:phenomenonTime
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/data/result/wind_speed/{sigla}/{tmin}/{seq}"
+        ];
+      rr:predicate sosa:hasResult
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:termType rr:Literal;
+          rr:column "src_row";
+          rr:datatype xsd:integer
+        ];
+      rr:predicate met:sourceRow
+    ], [ a rr:PredicateObjectMap;
+      rr:object "vento.csv";
+      rr:predicate met:sourceFile
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:datatype xsd:boolean;
+          rr:termType rr:Literal;
+          rr:column "multi"
+        ];
+      rr:predicate met:multipleReadings
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate met:inReport;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/data/report/{sigla}/{tmin}"
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate met:localDate;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:Literal;
+          rr:datatype xsd:date;
+          rr:column "local_date"
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate sosa:resultTime;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:datatype xsd:dateTime;
+          rr:termType rr:Literal;
+          rr:column "t_utc"
+        ]
+    ];
+  rr:subjectMap [ a rr:SubjectMap, rr:TermMap;
+      rr:template "https://example.org/kgqa-met/data/obs/wind_speed/{sigla}/{tmin}/{seq}";
+      rr:class met:InstantaneousObservation;
+      rr:termType rr:IRI
+    ];
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row, runway FROM obs_wind_speed"
+    ] .
+
+<urn:r2rml:obs_wind_speed-2e7320d3-b21f-4f8c-8edc-9edbed8527dd> a rr:TriplesMap;
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row, runway FROM obs_wind_speed"
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:predicate time:inXSDDateTime;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:datatype xsd:dateTime;
+          rr:column "t_utc";
+          rr:termType rr:Literal
+        ]
+    ];
+  rr:subjectMap [ a rr:TermMap, rr:SubjectMap;
+      rr:template "https://example.org/kgqa-met/data/time/wind_speed/{sigla}/{tmin}/{seq}";
+      rr:class time:Instant;
+      rr:termType rr:IRI
+    ] .
+
+<urn:r2rml:obs_wind_speed-29ac0460-9163-4289-9d99-62c4559e5c9d> a rr:TriplesMap;
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:Literal;
+          rr:column "value";
+          rr:datatype xsd:decimal
+        ];
+      rr:predicate qudt:numericValue
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate qudt:unit;
+      rr:object unit:KN
+    ];
+  rr:subjectMap [ a rr:TermMap, rr:SubjectMap;
+      rr:template "https://example.org/kgqa-met/data/result/wind_speed/{sigla}/{tmin}/{seq}";
+      rr:termType rr:IRI;
+      rr:class qudt:QuantityValue
+    ];
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row, runway FROM obs_wind_speed"
+    ] .
+
+<urn:r2rml:obs_wind_speed_runway> a rr:TriplesMap;
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:column "runway";
+          rr:datatype xsd:string;
+          rr:termType rr:Literal
+        ];
+      rr:predicate met:runwayDesignator
+    ];
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, seq, runway FROM obs_wind_speed WHERE runway IS NOT NULL"
+    ];
+  rr:subjectMap [ a rr:TermMap, rr:SubjectMap;
+      rr:template "https://example.org/kgqa-met/data/obs/wind_speed/{sigla}/{tmin}/{seq}";
+      rr:termType rr:IRI
+    ] .
+
+<urn:r2rml:obs_wind_condition> a rr:TriplesMap;
+  rr:subjectMap [ a rr:SubjectMap, rr:TermMap;
+      rr:template "https://example.org/kgqa-met/data/obs/wind_speed/{sigla}/{tmin}/{seq}";
+      rr:termType rr:IRI
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:predicate met:windCondition;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:datatype xsd:string;
+          rr:column "condition";
+          rr:termType rr:Literal
+        ]
+    ];
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, seq, condition FROM obs_wind_speed WHERE condition IS NOT NULL"
+    ] .
+
+<urn:r2rml:obs_wind_dir-eda13ab6-f245-4333-ac0a-1e67246d305f> a rr:TriplesMap;
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:predicate sosa:observedProperty;
+      rr:object met:WindDirection
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate met:sourceFile;
+      rr:object "vento.csv"
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate met:sourceRow;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:column "src_row";
+          rr:datatype xsd:integer;
+          rr:termType rr:Literal
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate sosa:hasResult;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:template "https://example.org/kgqa-met/data/result/wind_dir/{sigla}/{tmin}/{seq}";
+          rr:termType rr:IRI
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:Literal;
+          rr:column "multi";
+          rr:datatype xsd:boolean
+        ];
+      rr:predicate met:multipleReadings
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:Literal;
+          rr:datatype xsd:date;
+          rr:column "local_date"
+        ];
+      rr:predicate met:localDate
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate met:inReport;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:template "https://example.org/kgqa-met/data/report/{sigla}/{tmin}";
+          rr:termType rr:IRI
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate sosa:resultTime;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:datatype xsd:dateTime;
+          rr:column "t_utc";
+          rr:termType rr:Literal
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate sosa:madeBySensor;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:template "https://example.org/kgqa-met/data/sensor/{sigla}/wind_dir";
+          rr:termType rr:IRI
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate sosa:hasFeatureOfInterest;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/data/site/{sigla}"
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate sosa:phenomenonTime;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:template "https://example.org/kgqa-met/data/time/wind_dir/{sigla}/{tmin}/{seq}";
+          rr:termType rr:IRI
+        ]
+    ];
+  rr:subjectMap [ a rr:SubjectMap, rr:TermMap;
+      rr:class met:InstantaneousObservation;
+      rr:termType rr:IRI;
+      rr:template "https://example.org/kgqa-met/data/obs/wind_dir/{sigla}/{tmin}/{seq}"
+    ];
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row, runway FROM obs_wind_dir"
+    ] .
+
+<urn:r2rml:obs_wind_dir-74697147-17a7-4b62-89f0-ad61ffb5ec27> a rr:TriplesMap;
+  rr:subjectMap [ a rr:TermMap, rr:SubjectMap;
+      rr:template "https://example.org/kgqa-met/data/time/wind_dir/{sigla}/{tmin}/{seq}";
+      rr:class time:Instant;
+      rr:termType rr:IRI
+    ];
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row, runway FROM obs_wind_dir"
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:predicate time:inXSDDateTime;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:datatype xsd:dateTime;
+          rr:termType rr:Literal;
+          rr:column "t_utc"
+        ]
+    ] .
+
+<urn:r2rml:obs_wind_dir-89d55e34-6d07-42e9-979a-d0a73c5d834b> a rr:TriplesMap;
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row, runway FROM obs_wind_dir"
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:object unit:DEG;
+      rr:predicate qudt:unit
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:column "value";
+          rr:datatype xsd:integer;
+          rr:termType rr:Literal
+        ];
+      rr:predicate qudt:numericValue
+    ];
+  rr:subjectMap [ a rr:SubjectMap, rr:TermMap;
+      rr:template "https://example.org/kgqa-met/data/result/wind_dir/{sigla}/{tmin}/{seq}";
+      rr:class qudt:QuantityValue;
+      rr:termType rr:IRI
+    ] .
+
+<urn:r2rml:obs_wind_dir_runway> a rr:TriplesMap;
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, seq, runway FROM obs_wind_dir WHERE runway IS NOT NULL"
+    ];
+  rr:subjectMap [ a rr:TermMap, rr:SubjectMap;
+      rr:template "https://example.org/kgqa-met/data/obs/wind_dir/{sigla}/{tmin}/{seq}";
+      rr:termType rr:IRI
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:datatype xsd:string;
+          rr:column "runway";
+          rr:termType rr:Literal
+        ];
+      rr:predicate met:runwayDesignator
+    ] .
+
+<urn:r2rml:obs_wind_gust-2d8b6c68-ab43-4880-997f-c5adec1255fe> a rr:TriplesMap;
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:predicate met:inReport;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:template "https://example.org/kgqa-met/data/report/{sigla}/{tmin}";
+          rr:termType rr:IRI
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:template "https://example.org/kgqa-met/data/time/wind_gust/{sigla}/{tmin}/{seq}";
+          rr:termType rr:IRI
+        ];
+      rr:predicate sosa:phenomenonTime
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate met:localDate;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:datatype xsd:date;
+          rr:termType rr:Literal;
+          rr:column "local_date"
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:datatype xsd:dateTime;
+          rr:column "t_utc";
+          rr:termType rr:Literal
+        ];
+      rr:predicate sosa:resultTime
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/data/site/{sigla}"
+        ];
+      rr:predicate sosa:hasFeatureOfInterest
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate sosa:madeBySensor;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:template "https://example.org/kgqa-met/data/sensor/{sigla}/wind_gust";
+          rr:termType rr:IRI
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate sosa:observedProperty;
+      rr:object met:WindGust
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/data/result/wind_gust/{sigla}/{tmin}/{seq}"
+        ];
+      rr:predicate sosa:hasResult
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate met:sourceRow;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:column "src_row";
+          rr:datatype xsd:integer;
+          rr:termType rr:Literal
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate met:multipleReadings;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:datatype xsd:boolean;
+          rr:column "multi";
+          rr:termType rr:Literal
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:object "vento.csv";
+      rr:predicate met:sourceFile
+    ];
+  rr:subjectMap [ a rr:SubjectMap, rr:TermMap;
+      rr:class met:InstantaneousObservation;
+      rr:termType rr:IRI;
+      rr:template "https://example.org/kgqa-met/data/obs/wind_gust/{sigla}/{tmin}/{seq}"
+    ];
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row, runway FROM obs_wind_gust"
+    ] .
+
+<urn:r2rml:obs_wind_gust-2738c185-ca5c-49f0-a869-02dbb15ede5c> a rr:TriplesMap;
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row, runway FROM obs_wind_gust"
+    ];
+  rr:subjectMap [ a rr:TermMap, rr:SubjectMap;
+      rr:termType rr:IRI;
+      rr:class time:Instant;
+      rr:template "https://example.org/kgqa-met/data/time/wind_gust/{sigla}/{tmin}/{seq}"
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:predicate time:inXSDDateTime;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:datatype xsd:dateTime;
+          rr:column "t_utc";
+          rr:termType rr:Literal
+        ]
+    ] .
+
+<urn:r2rml:obs_wind_gust-1cbb6667-504d-40be-9203-94b21714760b> a rr:TriplesMap;
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:predicate qudt:numericValue;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:Literal;
+          rr:datatype xsd:decimal;
+          rr:column "value"
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:object unit:KN;
+      rr:predicate qudt:unit
+    ];
+  rr:subjectMap [ a rr:TermMap, rr:SubjectMap;
+      rr:termType rr:IRI;
+      rr:class qudt:QuantityValue;
+      rr:template "https://example.org/kgqa-met/data/result/wind_gust/{sigla}/{tmin}/{seq}"
+    ];
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row, runway FROM obs_wind_gust"
+    ] .
+
+<urn:r2rml:obs_wind_gust_runway> a rr:TriplesMap;
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, seq, runway FROM obs_wind_gust WHERE runway IS NOT NULL"
+    ];
+  rr:subjectMap [ a rr:TermMap, rr:SubjectMap;
+      rr:termType rr:IRI;
+      rr:template "https://example.org/kgqa-met/data/obs/wind_gust/{sigla}/{tmin}/{seq}"
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:predicate met:runwayDesignator;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:datatype xsd:string;
+          rr:termType rr:Literal;
+          rr:column "runway"
+        ]
+    ] .
+
+<urn:r2rml:obs_precip-43ed91ce-4b46-4995-b655-aa0d520ce8bb> a rr:TriplesMap;
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row FROM obs_precip"
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:predicate sosa:hasResult;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:template "https://example.org/kgqa-met/data/result/precip/{sigla}/{tmin}/{seq}";
+          rr:termType rr:IRI
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:datatype xsd:integer;
+          rr:column "src_row";
+          rr:termType rr:Literal
+        ];
+      rr:predicate met:sourceRow
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate met:sourceFile;
+      rr:object "precipitacao.csv"
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate met:multipleReadings;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:column "multi";
+          rr:termType rr:Literal;
+          rr:datatype xsd:boolean
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate met:inReport;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/data/report/{sigla}/{tmin}"
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:column "local_date";
+          rr:termType rr:Literal;
+          rr:datatype xsd:date
+        ];
+      rr:predicate met:localDate
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate sosa:resultTime;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:column "t_utc";
+          rr:termType rr:Literal;
+          rr:datatype xsd:dateTime
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/data/interval/precip/{sigla}/{tmin}/{seq}"
+        ];
+      rr:predicate sosa:phenomenonTime
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate sosa:hasFeatureOfInterest;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/data/site/{sigla}"
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate sosa:madeBySensor;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:template "https://example.org/kgqa-met/data/sensor/{sigla}/precip";
+          rr:termType rr:IRI
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate sosa:observedProperty;
+      rr:object met:Precipitation
+    ];
+  rr:subjectMap [ a rr:SubjectMap, rr:TermMap;
+      rr:termType rr:IRI;
+      rr:template "https://example.org/kgqa-met/data/obs/precip/{sigla}/{tmin}/{seq}";
+      rr:class met:AccumulatedObservation
+    ] .
+
+<urn:r2rml:obs_precip-0981b5de-299a-4e92-919f-f115fb26f0de> a rr:TriplesMap;
+  rr:subjectMap [ a rr:SubjectMap, rr:TermMap;
+      rr:template "https://example.org/kgqa-met/data/result/precip/{sigla}/{tmin}/{seq}";
+      rr:termType rr:IRI;
+      rr:class qudt:QuantityValue
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:object unit:MilliM;
+      rr:predicate qudt:unit
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate qudt:numericValue;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:datatype xsd:decimal;
+          rr:termType rr:Literal;
+          rr:column "value"
+        ]
+    ];
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row FROM obs_precip"
+    ] .
+
+<urn:r2rml:interval_precip-f2fe688c-8f70-45aa-8a50-e4f78e71e83a> a rr:TriplesMap;
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/data/time/precip/start/{sigla}/{tmin}/{seq}"
+        ];
+      rr:predicate time:hasBeginning
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate time:hasEnd;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:template "https://example.org/kgqa-met/data/time/precip/end/{sigla}/{tmin}/{seq}";
+          rr:termType rr:IRI
+        ]
+    ];
+  rr:subjectMap [ a rr:SubjectMap, rr:TermMap;
+      rr:template "https://example.org/kgqa-met/data/interval/precip/{sigla}/{tmin}/{seq}";
+      rr:termType rr:IRI;
+      rr:class time:Interval
+    ];
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, seq, start_utc, t_utc FROM obs_precip"
+    ] .
+
+<urn:r2rml:interval_precip-715e2f5a-1c44-4f80-b925-21f326fea545> a rr:TriplesMap;
+  rr:subjectMap [ a rr:TermMap, rr:SubjectMap;
+      rr:termType rr:IRI;
+      rr:template "https://example.org/kgqa-met/data/time/precip/start/{sigla}/{tmin}/{seq}";
+      rr:class time:Instant
+    ];
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, seq, start_utc, t_utc FROM obs_precip"
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:predicate time:inXSDDateTime;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:column "start_utc";
+          rr:termType rr:Literal;
+          rr:datatype xsd:dateTime
+        ]
+    ] .
+
+<urn:r2rml:interval_precip-5ffd5b8b-83a3-4562-8647-b976c8f5b214> a rr:TriplesMap;
+  rr:subjectMap [ a rr:SubjectMap, rr:TermMap;
+      rr:class time:Instant;
+      rr:termType rr:IRI;
+      rr:template "https://example.org/kgqa-met/data/time/precip/end/{sigla}/{tmin}/{seq}"
+    ];
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, seq, start_utc, t_utc FROM obs_precip"
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:predicate time:inXSDDateTime;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:Literal;
+          rr:column "t_utc";
+          rr:datatype xsd:dateTime
+        ]
+    ] .
+
+<urn:r2rml:obs_precip_duration-7bf05839-469b-4ce9-8a50-597d97b55cca> a rr:TriplesMap;
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row FROM obs_precip_duration"
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/data/sensor/{sigla}/precip_duration"
+        ];
+      rr:predicate sosa:madeBySensor
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate sosa:observedProperty;
+      rr:object met:PrecipitationDuration
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/data/site/{sigla}"
+        ];
+      rr:predicate sosa:hasFeatureOfInterest
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:template "https://example.org/kgqa-met/data/interval/precip_duration/{sigla}/{tmin}/{seq}";
+          rr:termType rr:IRI
+        ];
+      rr:predicate sosa:phenomenonTime
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate sosa:resultTime;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:column "t_utc";
+          rr:datatype xsd:dateTime;
+          rr:termType rr:Literal
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:datatype xsd:date;
+          rr:column "local_date";
+          rr:termType rr:Literal
+        ];
+      rr:predicate met:localDate
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:termType rr:Literal;
+          rr:datatype xsd:boolean;
+          rr:column "multi"
+        ];
+      rr:predicate met:multipleReadings
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/data/report/{sigla}/{tmin}"
+        ];
+      rr:predicate met:inReport
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate met:sourceFile;
+      rr:object "precipitacao.csv"
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate met:sourceRow;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:column "src_row";
+          rr:termType rr:Literal;
+          rr:datatype xsd:integer
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/data/result/precip_duration/{sigla}/{tmin}/{seq}"
+        ];
+      rr:predicate sosa:hasResult
+    ];
+  rr:subjectMap [ a rr:TermMap, rr:SubjectMap;
+      rr:template "https://example.org/kgqa-met/data/obs/precip_duration/{sigla}/{tmin}/{seq}";
+      rr:class met:AccumulatedObservation;
+      rr:termType rr:IRI
+    ] .
+
+<urn:r2rml:obs_precip_duration-ce928f1a-bea4-4b61-abdf-a03cd3d3643a> a rr:TriplesMap;
+  rr:subjectMap [ a rr:SubjectMap, rr:TermMap;
+      rr:termType rr:IRI;
+      rr:class qudt:QuantityValue;
+      rr:template "https://example.org/kgqa-met/data/result/precip_duration/{sigla}/{tmin}/{seq}"
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:datatype xsd:integer;
+          rr:column "value";
+          rr:termType rr:Literal
+        ];
+      rr:predicate qudt:numericValue
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate qudt:unit;
+      rr:object unit:MIN
+    ];
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row FROM obs_precip_duration"
+    ] .
+
+<urn:r2rml:interval_precip_duration-c59ad66d-a979-4318-a657-7e8d91af7970> a rr:TriplesMap;
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/data/time/precip_duration/start/{sigla}/{tmin}/{seq}"
+        ];
+      rr:predicate time:hasBeginning
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/data/time/precip_duration/end/{sigla}/{tmin}/{seq}"
+        ];
+      rr:predicate time:hasEnd
+    ];
+  rr:subjectMap [ a rr:SubjectMap, rr:TermMap;
+      rr:class time:Interval;
+      rr:template "https://example.org/kgqa-met/data/interval/precip_duration/{sigla}/{tmin}/{seq}";
+      rr:termType rr:IRI
+    ];
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, seq, start_utc, t_utc FROM obs_precip_duration"
+    ] .
+
+<urn:r2rml:interval_precip_duration-e7195976-57ef-4dca-8108-ba7f0f5f6833> a rr:TriplesMap;
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:column "start_utc";
+          rr:datatype xsd:dateTime;
+          rr:termType rr:Literal
+        ];
+      rr:predicate time:inXSDDateTime
+    ];
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, seq, start_utc, t_utc FROM obs_precip_duration"
+    ];
+  rr:subjectMap [ a rr:SubjectMap, rr:TermMap;
+      rr:template "https://example.org/kgqa-met/data/time/precip_duration/start/{sigla}/{tmin}/{seq}";
+      rr:class time:Instant;
+      rr:termType rr:IRI
+    ] .
+
+<urn:r2rml:interval_precip_duration-218b0c60-214e-4e1e-8ffb-f5a54fee3f44> a rr:TriplesMap;
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, seq, start_utc, t_utc FROM obs_precip_duration"
+    ];
+  rr:subjectMap [ a rr:TermMap, rr:SubjectMap;
+      rr:template "https://example.org/kgqa-met/data/time/precip_duration/end/{sigla}/{tmin}/{seq}";
+      rr:termType rr:IRI;
+      rr:class time:Instant
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:predicate time:inXSDDateTime;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:column "t_utc";
+          rr:termType rr:Literal;
+          rr:datatype xsd:dateTime
+        ]
+    ] .
+
+<urn:r2rml:obs_cloud-36381742-4c39-4bbc-beac-8aa6aafd92e1> a rr:TriplesMap;
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:predicate sosa:observedProperty;
+      rr:object met:CloudCover
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate sosa:madeBySensor;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/data/sensor/{sigla}/cloud"
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:datatype xsd:dateTime;
+          rr:column "t_utc";
+          rr:termType rr:Literal
+        ];
+      rr:predicate sosa:resultTime
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/data/site/{sigla}"
+        ];
+      rr:predicate sosa:hasFeatureOfInterest
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate sosa:phenomenonTime;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:template "https://example.org/kgqa-met/data/time/cloud/{sigla}/{tmin}/{seq}";
+          rr:termType rr:IRI
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:datatype xsd:date;
+          rr:termType rr:Literal;
+          rr:column "local_date"
+        ];
+      rr:predicate met:localDate
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/data/report/{sigla}/{tmin}"
+        ];
+      rr:predicate met:inReport
+    ], [ a rr:PredicateObjectMap;
+      rr:object "nuvem.csv";
+      rr:predicate met:sourceFile
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate sosa:hasResult;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/data/result/cloud/{sigla}/{tmin}/{seq}"
+        ]
+    ], [ a rr:PredicateObjectMap;
+      rr:predicate met:sourceRow;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:column "src_row";
+          rr:datatype xsd:integer;
+          rr:termType rr:Literal
+        ]
+    ];
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, t_utc, local_date, seq, src_row, sky_obscured FROM obs_cloud_layer"
+    ];
+  rr:subjectMap [ a rr:TermMap, rr:SubjectMap;
+      rr:class met:CloudLayerObservation;
+      rr:template "https://example.org/kgqa-met/data/obs/cloud/{sigla}/{tmin}/{seq}";
+      rr:termType rr:IRI
+    ] .
+
+<urn:r2rml:obs_cloud-dd4b7474-7a5c-4428-b39c-2624d942926e> a rr:TriplesMap;
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:predicate time:inXSDDateTime;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:datatype xsd:dateTime;
+          rr:termType rr:Literal;
+          rr:column "t_utc"
+        ]
+    ];
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, t_utc, local_date, seq, src_row, sky_obscured FROM obs_cloud_layer"
+    ];
+  rr:subjectMap [ a rr:SubjectMap, rr:TermMap;
+      rr:template "https://example.org/kgqa-met/data/time/cloud/{sigla}/{tmin}/{seq}";
+      rr:termType rr:IRI;
+      rr:class time:Instant
+    ] .
+
+<urn:r2rml:obs_cloud-66edae40-c9a7-43be-a043-267a77cff80b> a rr:TriplesMap;
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:predicate met:skyObscured;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:column "sky_obscured";
+          rr:datatype xsd:boolean;
+          rr:termType rr:Literal
+        ]
+    ];
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, t_utc, local_date, seq, src_row, sky_obscured FROM obs_cloud_layer"
+    ];
+  rr:subjectMap [ a rr:SubjectMap, rr:TermMap;
+      rr:template "https://example.org/kgqa-met/data/result/cloud/{sigla}/{tmin}/{seq}";
+      rr:termType rr:IRI;
+      rr:class met:CloudLayerResult
+    ] .
+
+<urn:r2rml:cloud_okta> a rr:TriplesMap;
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:termType rr:Literal;
+          rr:column "okta";
+          rr:datatype xsd:integer
+        ];
+      rr:predicate met:oktas
+    ];
+  rr:subjectMap [ a rr:SubjectMap, rr:TermMap;
+      rr:termType rr:IRI;
+      rr:template "https://example.org/kgqa-met/data/result/cloud/{sigla}/{tmin}/{seq}"
+    ];
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, seq, okta FROM obs_cloud_layer WHERE okta IS NOT NULL"
+    ] .
+
+<urn:r2rml:cloud_base_m> a rr:TriplesMap;
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, seq, base_m FROM obs_cloud_layer WHERE base_m IS NOT NULL"
+    ];
+  rr:subjectMap [ a rr:TermMap, rr:SubjectMap;
+      rr:template "https://example.org/kgqa-met/data/result/cloud/{sigla}/{tmin}/{seq}";
+      rr:termType rr:IRI
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:column "base_m";
+          rr:termType rr:Literal;
+          rr:datatype xsd:integer
+        ];
+      rr:predicate met:cloudBaseHeight
+    ] .
+
+<urn:r2rml:cloud_cloud_movement> a rr:TriplesMap;
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:datatype xsd:string;
+          rr:termType rr:Literal;
+          rr:column "cloud_movement"
+        ];
+      rr:predicate met:cloudMovement
+    ];
+  rr:subjectMap [ a rr:SubjectMap, rr:TermMap;
+      rr:template "https://example.org/kgqa-met/data/result/cloud/{sigla}/{tmin}/{seq}";
+      rr:termType rr:IRI
+    ];
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, seq, cloud_movement FROM obs_cloud_layer WHERE cloud_movement IS NOT NULL"
+    ] .
+
+<urn:r2rml:cloud_genus> a rr:TriplesMap;
+  rr:subjectMap [ a rr:TermMap, rr:SubjectMap;
+      rr:termType rr:IRI;
+      rr:template "https://example.org/kgqa-met/data/result/cloud/{sigla}/{tmin}/{seq}"
+    ];
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT sigla, tmin, seq, CASE genus WHEN 'CI e/ou CC' THEN 'CI_CC' ELSE genus END AS genus_code FROM obs_cloud_layer WHERE genus IS NOT NULL"
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:TermMap, rr:ObjectMap;
+          rr:termType rr:IRI;
+          rr:template "https://example.org/kgqa-met/ontology#genus_{genus_code}"
+        ];
+      rr:predicate met:cloudGenus
+    ] .

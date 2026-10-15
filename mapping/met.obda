@@ -1,0 +1,117 @@
+[PrefixDeclaration]
+:		https://example.org/kgqa-met/data/
+met:		https://example.org/kgqa-met/ontology#
+sosa:		http://www.w3.org/ns/sosa/
+time:		http://www.w3.org/2006/time#
+qudt:		http://qudt.org/schema/qudt/
+unit:		http://qudt.org/vocab/unit/
+rdfs:		http://www.w3.org/2000/01/rdf-schema#
+xsd:		http://www.w3.org/2001/XMLSchema#
+skos:		http://www.w3.org/2004/02/skos/core#
+
+[MappingDeclaration] @collection [[
+mappingId	station
+target		:station/{sigla} a met:WeatherStation ; met:stationCode {sigla}^^xsd:string ; rdfs:label {sigla}^^xsd:string . :site/{sigla} a met:Site ; met:siteOf :station/{sigla} .
+source		SELECT sigla FROM station
+
+mappingId	station_sensor
+target		:station/{sigla} sosa:hosts :sensor/{sigla}/{var} . :sensor/{sigla}/{var} a sosa:Sensor .
+source		SELECT sigla, var FROM station_sensor
+
+mappingId	report
+target		:report/{sigla}/{tmin} a met:WeatherReport ; met:reportOf :station/{sigla} ; time:hasTime :time/report/{sigla}/{tmin} ; met:localDate {local_date}^^xsd:date ; met:isHourly {is_hourly}^^xsd:boolean . :time/report/{sigla}/{tmin} a time:Instant ; time:inXSDDateTime {t_utc}^^xsd:dateTime .
+source		SELECT sigla, tmin, t_utc, local_date, is_hourly FROM report
+
+mappingId	obs_air_temp
+target		:obs/air_temp/{sigla}/{tmin}/{seq} a met:InstantaneousObservation ; sosa:observedProperty met:AirTemperature ; sosa:madeBySensor :sensor/{sigla}/air_temp ; sosa:hasFeatureOfInterest :site/{sigla} ; sosa:phenomenonTime :time/air_temp/{sigla}/{tmin}/{seq} ; sosa:resultTime {t_utc}^^xsd:dateTime ; met:localDate {local_date}^^xsd:date ; met:inReport :report/{sigla}/{tmin} ; met:multipleReadings {multi}^^xsd:boolean ; met:sourceFile "temperatura.csv"^^xsd:string ; met:sourceRow {src_row}^^xsd:integer ; sosa:hasResult :result/air_temp/{sigla}/{tmin}/{seq} . :time/air_temp/{sigla}/{tmin}/{seq} a time:Instant ; time:inXSDDateTime {t_utc}^^xsd:dateTime . :result/air_temp/{sigla}/{tmin}/{seq} a qudt:QuantityValue ; qudt:numericValue {value}^^xsd:decimal ; qudt:unit unit:DEG_C .
+source		SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row FROM obs_air_temp
+
+mappingId	obs_wet_bulb
+target		:obs/wet_bulb/{sigla}/{tmin}/{seq} a met:InstantaneousObservation ; sosa:observedProperty met:WetBulbTemperature ; sosa:madeBySensor :sensor/{sigla}/wet_bulb ; sosa:hasFeatureOfInterest :site/{sigla} ; sosa:phenomenonTime :time/wet_bulb/{sigla}/{tmin}/{seq} ; sosa:resultTime {t_utc}^^xsd:dateTime ; met:localDate {local_date}^^xsd:date ; met:inReport :report/{sigla}/{tmin} ; met:multipleReadings {multi}^^xsd:boolean ; met:sourceFile "temperatura.csv"^^xsd:string ; met:sourceRow {src_row}^^xsd:integer ; sosa:hasResult :result/wet_bulb/{sigla}/{tmin}/{seq} . :time/wet_bulb/{sigla}/{tmin}/{seq} a time:Instant ; time:inXSDDateTime {t_utc}^^xsd:dateTime . :result/wet_bulb/{sigla}/{tmin}/{seq} a qudt:QuantityValue ; qudt:numericValue {value}^^xsd:decimal ; qudt:unit unit:DEG_C .
+source		SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row FROM obs_wet_bulb
+
+mappingId	obs_dew_point
+target		:obs/dew_point/{sigla}/{tmin}/{seq} a met:InstantaneousObservation ; sosa:observedProperty met:DewPointTemperature ; sosa:madeBySensor :sensor/{sigla}/dew_point ; sosa:hasFeatureOfInterest :site/{sigla} ; sosa:phenomenonTime :time/dew_point/{sigla}/{tmin}/{seq} ; sosa:resultTime {t_utc}^^xsd:dateTime ; met:localDate {local_date}^^xsd:date ; met:inReport :report/{sigla}/{tmin} ; met:multipleReadings {multi}^^xsd:boolean ; met:sourceFile "temperatura.csv"^^xsd:string ; met:sourceRow {src_row}^^xsd:integer ; sosa:hasResult :result/dew_point/{sigla}/{tmin}/{seq} . :time/dew_point/{sigla}/{tmin}/{seq} a time:Instant ; time:inXSDDateTime {t_utc}^^xsd:dateTime . :result/dew_point/{sigla}/{tmin}/{seq} a qudt:QuantityValue ; qudt:numericValue {value}^^xsd:decimal ; qudt:unit unit:DEG_C .
+source		SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row FROM obs_dew_point
+
+mappingId	obs_rel_humidity
+target		:obs/rel_humidity/{sigla}/{tmin}/{seq} a met:InstantaneousObservation ; sosa:observedProperty met:RelativeHumidity ; sosa:madeBySensor :sensor/{sigla}/rel_humidity ; sosa:hasFeatureOfInterest :site/{sigla} ; sosa:phenomenonTime :time/rel_humidity/{sigla}/{tmin}/{seq} ; sosa:resultTime {t_utc}^^xsd:dateTime ; met:localDate {local_date}^^xsd:date ; met:inReport :report/{sigla}/{tmin} ; met:multipleReadings {multi}^^xsd:boolean ; met:sourceFile "temperatura.csv"^^xsd:string ; met:sourceRow {src_row}^^xsd:integer ; sosa:hasResult :result/rel_humidity/{sigla}/{tmin}/{seq} . :time/rel_humidity/{sigla}/{tmin}/{seq} a time:Instant ; time:inXSDDateTime {t_utc}^^xsd:dateTime . :result/rel_humidity/{sigla}/{tmin}/{seq} a qudt:QuantityValue ; qudt:numericValue {value}^^xsd:decimal ; qudt:unit unit:PERCENT .
+source		SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row FROM obs_rel_humidity
+
+mappingId	obs_runway_temp
+target		:obs/runway_temp/{sigla}/{tmin}/{seq} a met:InstantaneousObservation ; sosa:observedProperty met:RunwayTemperature ; sosa:madeBySensor :sensor/{sigla}/runway_temp ; sosa:hasFeatureOfInterest :site/{sigla} ; sosa:phenomenonTime :time/runway_temp/{sigla}/{tmin}/{seq} ; sosa:resultTime {t_utc}^^xsd:dateTime ; met:localDate {local_date}^^xsd:date ; met:inReport :report/{sigla}/{tmin} ; met:multipleReadings {multi}^^xsd:boolean ; met:sourceFile "temperatura.csv"^^xsd:string ; met:sourceRow {src_row}^^xsd:integer ; sosa:hasResult :result/runway_temp/{sigla}/{tmin}/{seq} . :time/runway_temp/{sigla}/{tmin}/{seq} a time:Instant ; time:inXSDDateTime {t_utc}^^xsd:dateTime . :result/runway_temp/{sigla}/{tmin}/{seq} a qudt:QuantityValue ; qudt:numericValue {value}^^xsd:decimal ; qudt:unit unit:DEG_C .
+source		SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row FROM obs_runway_temp
+
+mappingId	obs_qnh
+target		:obs/qnh/{sigla}/{tmin}/{seq} a met:InstantaneousObservation ; sosa:observedProperty met:PressureQNH ; sosa:madeBySensor :sensor/{sigla}/qnh ; sosa:hasFeatureOfInterest :site/{sigla} ; sosa:phenomenonTime :time/qnh/{sigla}/{tmin}/{seq} ; sosa:resultTime {t_utc}^^xsd:dateTime ; met:localDate {local_date}^^xsd:date ; met:inReport :report/{sigla}/{tmin} ; met:multipleReadings {multi}^^xsd:boolean ; met:sourceFile "pressao.csv"^^xsd:string ; met:sourceRow {src_row}^^xsd:integer ; sosa:hasResult :result/qnh/{sigla}/{tmin}/{seq} . :time/qnh/{sigla}/{tmin}/{seq} a time:Instant ; time:inXSDDateTime {t_utc}^^xsd:dateTime . :result/qnh/{sigla}/{tmin}/{seq} a qudt:QuantityValue ; qudt:numericValue {value}^^xsd:decimal ; qudt:unit unit:HectoPA .
+source		SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row FROM obs_qnh
+
+mappingId	obs_visibility
+target		:obs/visibility/{sigla}/{tmin}/{seq} a met:InstantaneousObservation ; sosa:observedProperty met:PrevailingVisibility ; sosa:madeBySensor :sensor/{sigla}/visibility ; sosa:hasFeatureOfInterest :site/{sigla} ; sosa:phenomenonTime :time/visibility/{sigla}/{tmin}/{seq} ; sosa:resultTime {t_utc}^^xsd:dateTime ; met:localDate {local_date}^^xsd:date ; met:inReport :report/{sigla}/{tmin} ; met:multipleReadings {multi}^^xsd:boolean ; met:sourceFile "visibilidade.csv"^^xsd:string ; met:sourceRow {src_row}^^xsd:integer ; sosa:hasResult :result/visibility/{sigla}/{tmin}/{seq} . :time/visibility/{sigla}/{tmin}/{seq} a time:Instant ; time:inXSDDateTime {t_utc}^^xsd:dateTime . :result/visibility/{sigla}/{tmin}/{seq} a qudt:QuantityValue ; qudt:numericValue {value}^^xsd:integer ; qudt:unit unit:M .
+source		SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row FROM obs_visibility
+
+mappingId	obs_wind_speed
+target		:obs/wind_speed/{sigla}/{tmin}/{seq} a met:InstantaneousObservation ; sosa:observedProperty met:WindSpeed ; sosa:madeBySensor :sensor/{sigla}/wind_speed ; sosa:hasFeatureOfInterest :site/{sigla} ; sosa:phenomenonTime :time/wind_speed/{sigla}/{tmin}/{seq} ; sosa:resultTime {t_utc}^^xsd:dateTime ; met:localDate {local_date}^^xsd:date ; met:inReport :report/{sigla}/{tmin} ; met:multipleReadings {multi}^^xsd:boolean ; met:sourceFile "vento.csv"^^xsd:string ; met:sourceRow {src_row}^^xsd:integer ; sosa:hasResult :result/wind_speed/{sigla}/{tmin}/{seq} . :time/wind_speed/{sigla}/{tmin}/{seq} a time:Instant ; time:inXSDDateTime {t_utc}^^xsd:dateTime . :result/wind_speed/{sigla}/{tmin}/{seq} a qudt:QuantityValue ; qudt:numericValue {value}^^xsd:decimal ; qudt:unit unit:KN .
+source		SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row, runway FROM obs_wind_speed
+
+mappingId	obs_wind_speed_runway
+target		:obs/wind_speed/{sigla}/{tmin}/{seq} met:runwayDesignator {runway}^^xsd:string .
+source		SELECT sigla, tmin, seq, runway FROM obs_wind_speed WHERE runway IS NOT NULL
+
+mappingId	obs_wind_condition
+target		:obs/wind_speed/{sigla}/{tmin}/{seq} met:windCondition {condition}^^xsd:string .
+source		SELECT sigla, tmin, seq, condition FROM obs_wind_speed WHERE condition IS NOT NULL
+
+mappingId	obs_wind_dir
+target		:obs/wind_dir/{sigla}/{tmin}/{seq} a met:InstantaneousObservation ; sosa:observedProperty met:WindDirection ; sosa:madeBySensor :sensor/{sigla}/wind_dir ; sosa:hasFeatureOfInterest :site/{sigla} ; sosa:phenomenonTime :time/wind_dir/{sigla}/{tmin}/{seq} ; sosa:resultTime {t_utc}^^xsd:dateTime ; met:localDate {local_date}^^xsd:date ; met:inReport :report/{sigla}/{tmin} ; met:multipleReadings {multi}^^xsd:boolean ; met:sourceFile "vento.csv"^^xsd:string ; met:sourceRow {src_row}^^xsd:integer ; sosa:hasResult :result/wind_dir/{sigla}/{tmin}/{seq} . :time/wind_dir/{sigla}/{tmin}/{seq} a time:Instant ; time:inXSDDateTime {t_utc}^^xsd:dateTime . :result/wind_dir/{sigla}/{tmin}/{seq} a qudt:QuantityValue ; qudt:numericValue {value}^^xsd:integer ; qudt:unit unit:DEG .
+source		SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row, runway FROM obs_wind_dir
+
+mappingId	obs_wind_dir_runway
+target		:obs/wind_dir/{sigla}/{tmin}/{seq} met:runwayDesignator {runway}^^xsd:string .
+source		SELECT sigla, tmin, seq, runway FROM obs_wind_dir WHERE runway IS NOT NULL
+
+mappingId	obs_wind_gust
+target		:obs/wind_gust/{sigla}/{tmin}/{seq} a met:InstantaneousObservation ; sosa:observedProperty met:WindGust ; sosa:madeBySensor :sensor/{sigla}/wind_gust ; sosa:hasFeatureOfInterest :site/{sigla} ; sosa:phenomenonTime :time/wind_gust/{sigla}/{tmin}/{seq} ; sosa:resultTime {t_utc}^^xsd:dateTime ; met:localDate {local_date}^^xsd:date ; met:inReport :report/{sigla}/{tmin} ; met:multipleReadings {multi}^^xsd:boolean ; met:sourceFile "vento.csv"^^xsd:string ; met:sourceRow {src_row}^^xsd:integer ; sosa:hasResult :result/wind_gust/{sigla}/{tmin}/{seq} . :time/wind_gust/{sigla}/{tmin}/{seq} a time:Instant ; time:inXSDDateTime {t_utc}^^xsd:dateTime . :result/wind_gust/{sigla}/{tmin}/{seq} a qudt:QuantityValue ; qudt:numericValue {value}^^xsd:decimal ; qudt:unit unit:KN .
+source		SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row, runway FROM obs_wind_gust
+
+mappingId	obs_wind_gust_runway
+target		:obs/wind_gust/{sigla}/{tmin}/{seq} met:runwayDesignator {runway}^^xsd:string .
+source		SELECT sigla, tmin, seq, runway FROM obs_wind_gust WHERE runway IS NOT NULL
+
+mappingId	obs_precip
+target		:obs/precip/{sigla}/{tmin}/{seq} a met:AccumulatedObservation ; sosa:observedProperty met:Precipitation ; sosa:madeBySensor :sensor/{sigla}/precip ; sosa:hasFeatureOfInterest :site/{sigla} ; sosa:phenomenonTime :interval/precip/{sigla}/{tmin}/{seq} ; sosa:resultTime {t_utc}^^xsd:dateTime ; met:localDate {local_date}^^xsd:date ; met:inReport :report/{sigla}/{tmin} ; met:multipleReadings {multi}^^xsd:boolean ; met:sourceFile "precipitacao.csv"^^xsd:string ; met:sourceRow {src_row}^^xsd:integer ; sosa:hasResult :result/precip/{sigla}/{tmin}/{seq} . :result/precip/{sigla}/{tmin}/{seq} a qudt:QuantityValue ; qudt:numericValue {value}^^xsd:decimal ; qudt:unit unit:MilliM .
+source		SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row FROM obs_precip
+
+mappingId	interval_precip
+target		:interval/precip/{sigla}/{tmin}/{seq} a time:Interval ; time:hasBeginning :time/precip/start/{sigla}/{tmin}/{seq} ; time:hasEnd :time/precip/end/{sigla}/{tmin}/{seq} . :time/precip/start/{sigla}/{tmin}/{seq} a time:Instant ; time:inXSDDateTime {start_utc}^^xsd:dateTime . :time/precip/end/{sigla}/{tmin}/{seq} a time:Instant ; time:inXSDDateTime {t_utc}^^xsd:dateTime .
+source		SELECT sigla, tmin, seq, start_utc, t_utc FROM obs_precip
+
+mappingId	obs_precip_duration
+target		:obs/precip_duration/{sigla}/{tmin}/{seq} a met:AccumulatedObservation ; sosa:observedProperty met:PrecipitationDuration ; sosa:madeBySensor :sensor/{sigla}/precip_duration ; sosa:hasFeatureOfInterest :site/{sigla} ; sosa:phenomenonTime :interval/precip_duration/{sigla}/{tmin}/{seq} ; sosa:resultTime {t_utc}^^xsd:dateTime ; met:localDate {local_date}^^xsd:date ; met:inReport :report/{sigla}/{tmin} ; met:multipleReadings {multi}^^xsd:boolean ; met:sourceFile "precipitacao.csv"^^xsd:string ; met:sourceRow {src_row}^^xsd:integer ; sosa:hasResult :result/precip_duration/{sigla}/{tmin}/{seq} . :result/precip_duration/{sigla}/{tmin}/{seq} a qudt:QuantityValue ; qudt:numericValue {value}^^xsd:integer ; qudt:unit unit:MIN .
+source		SELECT sigla, tmin, t_utc, local_date, value, seq, multi, src_row FROM obs_precip_duration
+
+mappingId	interval_precip_duration
+target		:interval/precip_duration/{sigla}/{tmin}/{seq} a time:Interval ; time:hasBeginning :time/precip_duration/start/{sigla}/{tmin}/{seq} ; time:hasEnd :time/precip_duration/end/{sigla}/{tmin}/{seq} . :time/precip_duration/start/{sigla}/{tmin}/{seq} a time:Instant ; time:inXSDDateTime {start_utc}^^xsd:dateTime . :time/precip_duration/end/{sigla}/{tmin}/{seq} a time:Instant ; time:inXSDDateTime {t_utc}^^xsd:dateTime .
+source		SELECT sigla, tmin, seq, start_utc, t_utc FROM obs_precip_duration
+
+mappingId	obs_cloud
+target		:obs/cloud/{sigla}/{tmin}/{seq} a met:CloudLayerObservation ; sosa:observedProperty met:CloudCover ; sosa:madeBySensor :sensor/{sigla}/cloud ; sosa:hasFeatureOfInterest :site/{sigla} ; sosa:phenomenonTime :time/cloud/{sigla}/{tmin}/{seq} ; sosa:resultTime {t_utc}^^xsd:dateTime ; met:localDate {local_date}^^xsd:date ; met:inReport :report/{sigla}/{tmin} ; met:sourceFile "nuvem.csv"^^xsd:string ; met:sourceRow {src_row}^^xsd:integer ; sosa:hasResult :result/cloud/{sigla}/{tmin}/{seq} . :time/cloud/{sigla}/{tmin}/{seq} a time:Instant ; time:inXSDDateTime {t_utc}^^xsd:dateTime . :result/cloud/{sigla}/{tmin}/{seq} a met:CloudLayerResult ; met:skyObscured {sky_obscured}^^xsd:boolean .
+source		SELECT sigla, tmin, t_utc, local_date, seq, src_row, sky_obscured FROM obs_cloud_layer
+
+mappingId	cloud_okta
+target		:result/cloud/{sigla}/{tmin}/{seq} met:oktas {okta}^^xsd:integer .
+source		SELECT sigla, tmin, seq, okta FROM obs_cloud_layer WHERE okta IS NOT NULL
+
+mappingId	cloud_base_m
+target		:result/cloud/{sigla}/{tmin}/{seq} met:cloudBaseHeight {base_m}^^xsd:integer .
+source		SELECT sigla, tmin, seq, base_m FROM obs_cloud_layer WHERE base_m IS NOT NULL
+
+mappingId	cloud_cloud_movement
+target		:result/cloud/{sigla}/{tmin}/{seq} met:cloudMovement {cloud_movement}^^xsd:string .
+source		SELECT sigla, tmin, seq, cloud_movement FROM obs_cloud_layer WHERE cloud_movement IS NOT NULL
+
+mappingId	cloud_genus
+target		:result/cloud/{sigla}/{tmin}/{seq} met:cloudGenus <https://example.org/kgqa-met/ontology#genus_{genus_code}> .
+source		SELECT sigla, tmin, seq, CASE genus WHEN 'CI e/ou CC' THEN 'CI_CC' ELSE genus END AS genus_code FROM obs_cloud_layer WHERE genus IS NOT NULL
+
+]]
