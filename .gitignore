@@ -1,0 +1,24 @@
+# Dados reais (ICEA/DECEA) e artefatos derivados: nunca versionar
+*.npz
+*.npz.json
+*.npz.sha256
+*.duckdb
+*.duckdb.wal
+METEOROLOGIA/
+_transferencia/
+
+# Saídas de execução
+eval/reports/
+*.log
+ontop.pid
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+
+# Ferramentas baixadas
+tools/
+*.jar
