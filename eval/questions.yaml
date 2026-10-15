@@ -1,0 +1,358 @@
+# Conjunto inicial de avaliação (v0.1) — grafo SINTÉTICO.
+# split: dev  -> pode ser usado como exemplo few-shot / para depurar prompts
+#        test -> NUNCA entra em prompts; só para medir.
+# expected_status: answered | no_results | needs_clarification | unsupported
+# compare.mode: set (multiconjunto de tuplas) | ordered (sequência; empates pela chave são permutáveis)
+#               | scalar | per_group (chave -> valores)
+# Convenções de datas: dia D = [D 00:00, D+1 00:00) em UTC-03:00; "entre D1 e D2" inclui D2 inteiro.
+# Os resultados esperados vêm de eval/oracle.py (Python sobre o CSV), não das consultas abaixo.
+
+questions:
+
+# ------------------------------ DEV ---------------------------------
+- id: D01
+  split: dev
+  category: busca_simples
+  question: "Quais estações possuem observações de temperatura?"
+  expected_status: answered
+  concepts: [met:WeatherStation, met:AirTemperature, sosa:hosts, sosa:madeBySensor]
+  compare: {mode: set, columns: [station]}
+  sparql: |
+    SELECT DISTINCT ?station WHERE {
+      ?station a met:WeatherStation ; sosa:hosts ?sensor .
+      ?obs a met:InstantaneousObservation ; sosa:madeBySensor ?sensor ;
+           sosa:observedProperty met:AirTemperature .
+    }
+
+- id: D02
+  split: dev
+  category: relacionamento
+  question: "Quais estações registraram umidade relativa?"
+  expected_status: answered
+  concepts: [met:WeatherStation, met:RelativeHumidity]
+  compare: {mode: set, columns: [station]}
+  sparql: |
+    SELECT DISTINCT ?station WHERE {
+      ?station a met:WeatherStation ; sosa:hosts ?sensor .
+      ?obs a met:InstantaneousObservation ; sosa:madeBySensor ?sensor ;
+           sosa:observedProperty met:RelativeHumidity .
+    }
+
+- id: D03
+  split: dev
+  category: filtro_numerico
+  question: "Quais medições registraram temperatura acima de 30 °C?"
+  expected_status: answered
+  concepts: [met:InstantaneousObservation, met:AirTemperature, qudt:numericValue, unit:DEG_C]
+  compare: {mode: set, columns: [obs, value]}
+  units: {value: unit:DEG_C}
+  sparql: |
+    SELECT ?obs ?value WHERE {
+      ?obs a met:InstantaneousObservation ; sosa:observedProperty met:AirTemperature ;
+           sosa:hasResult ?r .
+      ?r qudt:numericValue ?value ; qudt:unit unit:DEG_C .
+      FILTER(?value > 30)
+    } ORDER BY DESC(?value)
+
+- id: D04
+  split: dev
+  category: agregacao_periodo
+  question: "Qual foi a temperatura média por estação entre 03/03/2026 e 05/03/2026?"
+  expected_status: answered
+  concepts: [met:AirTemperature, sosa:phenomenonTime, time:inXSDDateTime]
+  compare: {mode: per_group, columns: [station, avg, n], key: [station], tolerance: {avg: 0.01}}
+  units: {avg: unit:DEG_C}
+  sparql: |
+    SELECT ?station (AVG(?v) AS ?avg) (COUNT(?v) AS ?n) WHERE {
+      ?station a met:WeatherStation ; sosa:hosts ?sensor .
+      ?obs a met:InstantaneousObservation ; sosa:madeBySensor ?sensor ;
+           sosa:observedProperty met:AirTemperature ;
+           sosa:phenomenonTime/time:inXSDDateTime ?t ;
+           sosa:hasResult/qudt:numericValue ?v .
+      FILTER(?t >= "2026-03-03T00:00:00-03:00"^^xsd:dateTime &&
+             ?t <  "2026-03-06T00:00:00-03:00"^^xsd:dateTime)
+    } GROUP BY ?station
+
+- id: D05
+  split: dev
+  category: acumulado_intervalo
+  question: "Quanto choveu na Estação Vale Verde no dia 04/03/2026?"
+  expected_status: answered
+  concepts: [met:AccumulatedObservation, met:Precipitation, time:hasBeginning, time:hasEnd, unit:MilliM]
+  compare: {mode: per_group, columns: [total, n], key: [], tolerance: {total: 0.001}}
+  units: {total: unit:MilliM}
+  sparql: |
+    SELECT (SUM(?v) AS ?total) (COUNT(?v) AS ?n) WHERE {
+      st:EST-B sosa:hosts ?sensor .
+      ?obs a met:AccumulatedObservation ; sosa:madeBySensor ?sensor ;
+           sosa:observedProperty met:Precipitation ;
+           sosa:phenomenonTime ?iv ;
+           sosa:hasResult/qudt:numericValue ?v .
+      ?iv time:hasBeginning/time:inXSDDateTime ?b ; time:hasEnd/time:inXSDDateTime ?e .
+      FILTER(?b >= "2026-03-04T00:00:00-03:00"^^xsd:dateTime &&
+             ?e <= "2026-03-05T00:00:00-03:00"^^xsd:dateTime)
+    }
+
+- id: D06
+  split: dev
+  category: ambiguidade
+  question: "Onde fez mais calor?"
+  expected_status: needs_clarification
+  expected_diagnostic: AMBIGUOUS_SUPERLATIVE
+  expected_alternatives: [max, avg]
+  note: "Ambíguo entre maior temperatura máxima e maior média; período também não informado."
+
+- id: D07
+  split: dev
+  category: fora_da_ontologia
+  question: "Qual foi a velocidade do vento?"
+  expected_status: unsupported
+  expected_diagnostic: UNKNOWN_PROPERTY
+  note: "Vento não existe na ontologia provisória nem no grafo."
+
+- id: D08
+  split: dev
+  category: resultado_vazio
+  question: "Quais medições registraram temperatura acima de 40 °C?"
+  expected_status: no_results
+  compare: {mode: set, columns: [obs, value]}
+  sparql: |
+    SELECT ?obs ?value WHERE {
+      ?obs a met:InstantaneousObservation ; sosa:observedProperty met:AirTemperature ;
+           sosa:hasResult ?r .
+      ?r qudt:numericValue ?value ; qudt:unit unit:DEG_C .
+      FILTER(?value > 40)
+    }
+
+# ------------------------------ TEST --------------------------------
+- id: T01
+  split: test
+  category: contagem
+  question: "Quantas observações de temperatura existem por estação?"
+  expected_status: answered
+  compare: {mode: per_group, columns: [station, n], key: [station]}
+  sparql: |
+    SELECT ?station (COUNT(?obs) AS ?n) WHERE {
+      ?station a met:WeatherStation ; sosa:hosts ?sensor .
+      ?obs a met:InstantaneousObservation ; sosa:madeBySensor ?sensor ;
+           sosa:observedProperty met:AirTemperature .
+    } GROUP BY ?station
+
+- id: T02
+  split: test
+  category: filtro_limite
+  question: "Quais medições registraram temperatura de pelo menos 30 °C?"
+  expected_status: answered
+  compare: {mode: set, columns: [obs, value]}
+  units: {value: unit:DEG_C}
+  sparql: |
+    SELECT ?obs ?value WHERE {
+      ?obs a met:InstantaneousObservation ; sosa:observedProperty met:AirTemperature ;
+           sosa:hasResult ?r .
+      ?r qudt:numericValue ?value ; qudt:unit unit:DEG_C .
+      FILTER(?value >= 30)
+    }
+
+- id: T03
+  split: test
+  category: superlativo
+  question: "Qual estação registrou a maior temperatura entre 02/03/2026 e 08/03/2026?"
+  expected_status: answered
+  note: "Previsões (met:Forecast) não contam como registro: a previsão de 35,0 °C deve ser ignorada."
+  compare: {mode: set, columns: [station, value, t]}
+  units: {value: unit:DEG_C}
+  sparql: |
+    SELECT ?station ?value ?t WHERE {
+      { SELECT (MAX(?v) AS ?value) WHERE {
+          ?o a met:InstantaneousObservation ; sosa:observedProperty met:AirTemperature ;
+             sosa:phenomenonTime/time:inXSDDateTime ?t0 ; sosa:hasResult/qudt:numericValue ?v .
+          FILTER(?t0 >= "2026-03-02T00:00:00-03:00"^^xsd:dateTime &&
+                 ?t0 <  "2026-03-09T00:00:00-03:00"^^xsd:dateTime) } }
+      ?station a met:WeatherStation ; sosa:hosts ?sensor .
+      ?obs a met:InstantaneousObservation ; sosa:madeBySensor ?sensor ;
+           sosa:observedProperty met:AirTemperature ;
+           sosa:phenomenonTime/time:inXSDDateTime ?t ; sosa:hasResult/qudt:numericValue ?value .
+      FILTER(?t >= "2026-03-02T00:00:00-03:00"^^xsd:dateTime &&
+             ?t <  "2026-03-09T00:00:00-03:00"^^xsd:dateTime)
+    }
+
+- id: T04
+  split: test
+  category: agregacao_entidade
+  question: "Qual foi a umidade relativa mínima registrada na Estação Serra Azul?"
+  expected_status: answered
+  compare: {mode: per_group, columns: [min, n], key: [], tolerance: {min: 0.001}}
+  units: {min: unit:PERCENT}
+  sparql: |
+    SELECT (MIN(?v) AS ?min) (COUNT(?v) AS ?n) WHERE {
+      ?station rdfs:label "Estação Serra Azul"@pt ; sosa:hosts ?sensor .
+      ?obs a met:InstantaneousObservation ; sosa:madeBySensor ?sensor ;
+           sosa:observedProperty met:RelativeHumidity ; sosa:hasResult/qudt:numericValue ?v .
+    }
+
+- id: T05
+  split: test
+  category: ordenacao_top_k
+  question: "Quais foram os três maiores acumulados de chuva em 6 horas, do maior para o menor?"
+  expected_status: answered
+  compare: {mode: ordered, columns: [obs, value], order_key: value, descending: true}
+  units: {value: unit:MilliM}
+  sparql: |
+    SELECT ?obs ?value WHERE {
+      ?obs a met:AccumulatedObservation ; sosa:observedProperty met:Precipitation ;
+           sosa:hasResult/qudt:numericValue ?value .
+    } ORDER BY DESC(?value) LIMIT 3
+
+- id: T06
+  split: test
+  category: agregacao_soma
+  question: "Qual foi a precipitação total por estação entre 02/03/2026 e 08/03/2026?"
+  expected_status: answered
+  note: "EST-C tem um intervalo ausente: o total cobre 27 de 28 intervalos e deve ser sinalizado como incompleto."
+  compare: {mode: per_group, columns: [station, total, n], key: [station], tolerance: {total: 0.001}}
+  units: {total: unit:MilliM}
+  sparql: |
+    SELECT ?station (SUM(?v) AS ?total) (COUNT(?v) AS ?n) WHERE {
+      ?station a met:WeatherStation ; sosa:hosts ?sensor .
+      ?obs a met:AccumulatedObservation ; sosa:madeBySensor ?sensor ;
+           sosa:observedProperty met:Precipitation ; sosa:phenomenonTime ?iv ;
+           sosa:hasResult/qudt:numericValue ?v .
+      ?iv time:hasBeginning/time:inXSDDateTime ?b ; time:hasEnd/time:inXSDDateTime ?e .
+      FILTER(?b >= "2026-03-02T00:00:00-03:00"^^xsd:dateTime &&
+             ?e <= "2026-03-09T00:00:00-03:00"^^xsd:dateTime)
+    } GROUP BY ?station
+
+- id: T07
+  split: test
+  category: agrupamento_temporal
+  question: "Em quais dias a Estação Litoral Sul teve temperatura média diária acima de 28 °C?"
+  expected_status: answered
+  note: "Agrupa por data local. SUBSTR funciona porque os instantes estão gravados com offset local -03:00."
+  compare: {mode: set, columns: [day]}
+  sparql: |
+    SELECT ?day (AVG(?v) AS ?avg) WHERE {
+      st:EST-C sosa:hosts ?sensor .
+      ?obs a met:InstantaneousObservation ; sosa:madeBySensor ?sensor ;
+           sosa:observedProperty met:AirTemperature ;
+           sosa:phenomenonTime/time:inXSDDateTime ?t ; sosa:hasResult/qudt:numericValue ?v .
+    } GROUP BY (SUBSTR(STR(?t), 1, 10) AS ?day) HAVING (AVG(?v) > 28)
+
+- id: T08
+  split: test
+  category: ausencia_de_dados
+  question: "Qual foi a umidade relativa média na Estação Litoral Sul?"
+  expected_status: no_results
+  expected_diagnostic: NO_OBSERVATIONS
+  note: "AVG sobre conjunto vazio retorna 0 em SPARQL 1.1. O módulo deve olhar COUNT=0 e NÃO responder 0 %."
+  compare: {mode: per_group, columns: [n], key: []}
+  sparql: |
+    SELECT (AVG(?v) AS ?avg) (COUNT(?v) AS ?n) WHERE {
+      st:EST-C sosa:hosts ?sensor .
+      ?obs a met:InstantaneousObservation ; sosa:madeBySensor ?sensor ;
+           sosa:observedProperty met:RelativeHumidity ; sosa:hasResult/qudt:numericValue ?v .
+    }
+
+- id: T09
+  split: test
+  category: dado_ausente
+  question: "Qual era a temperatura na Estação Vale Verde em 05/03/2026 às 12h?"
+  expected_status: no_results
+  expected_diagnostic: NO_OBSERVATIONS
+  note: "Sensor sem dado nesse dia. Ausência não é zero; não interpolar."
+  compare: {mode: set, columns: [obs, value]}
+  sparql: |
+    SELECT ?obs ?value WHERE {
+      st:EST-B sosa:hosts ?sensor .
+      ?obs a met:InstantaneousObservation ; sosa:madeBySensor ?sensor ;
+           sosa:observedProperty met:AirTemperature ;
+           sosa:phenomenonTime/time:inXSDDateTime "2026-03-05T12:00:00-03:00"^^xsd:dateTime ;
+           sosa:hasResult/qudt:numericValue ?value .
+    }
+
+- id: T10
+  split: test
+  category: previsao
+  question: "Qual é a temperatura prevista para 09/03/2026 ao meio-dia na Estação Serra Azul?"
+  expected_status: answered
+  note: "Resposta deve ser marcada como previsão, com instante de emissão."
+  compare: {mode: set, columns: [forecast, value, issued]}
+  units: {value: unit:DEG_C}
+  sparql: |
+    SELECT ?forecast ?value ?issued WHERE {
+      ?forecast a met:Forecast ; met:forStation st:EST-A ;
+                met:forecastedProperty met:AirTemperature ;
+                met:validTime/time:inXSDDateTime "2026-03-09T12:00:00-03:00"^^xsd:dateTime ;
+                met:issuedAt ?issued ; sosa:hasResult/qudt:numericValue ?value .
+    }
+
+- id: T11
+  split: test
+  category: agregacao_com_ausencia
+  question: "Qual foi a temperatura média da Estação Vale Verde em toda a semana?"
+  expected_status: answered
+  note: "Média sobre os 24 registros existentes; o dia 05/03 sem dados não entra como zero."
+  compare: {mode: per_group, columns: [avg, n], key: [], tolerance: {avg: 0.01}}
+  units: {avg: unit:DEG_C}
+  sparql: |
+    SELECT (AVG(?v) AS ?avg) (COUNT(?v) AS ?n) WHERE {
+      st:EST-B sosa:hosts ?sensor .
+      ?obs a met:InstantaneousObservation ; sosa:madeBySensor ?sensor ;
+           sosa:observedProperty met:AirTemperature ;
+           sosa:phenomenonTime/time:inXSDDateTime ?t ; sosa:hasResult/qudt:numericValue ?v .
+      FILTER(?t >= "2026-03-02T00:00:00-03:00"^^xsd:dateTime &&
+             ?t <  "2026-03-09T00:00:00-03:00"^^xsd:dateTime)
+    }
+
+- id: T12
+  split: test
+  category: comparacao
+  question: "Choveu mais na Estação Serra Azul ou na Estação Vale Verde?"
+  expected_status: answered
+  compare: {mode: ordered, columns: [station, total], order_key: total, descending: true, tolerance: {total: 0.001}}
+  units: {total: unit:MilliM}
+  sparql: |
+    SELECT ?station (SUM(?v) AS ?total) WHERE {
+      VALUES ?station { st:EST-A st:EST-B }
+      ?station sosa:hosts ?sensor .
+      ?obs a met:AccumulatedObservation ; sosa:madeBySensor ?sensor ;
+           sosa:observedProperty met:Precipitation ; sosa:hasResult/qudt:numericValue ?v .
+    } GROUP BY ?station ORDER BY DESC(?total)
+
+- id: T13
+  split: test
+  category: ambiguidade
+  question: "Qual estação é a mais úmida?"
+  expected_status: needs_clarification
+  expected_diagnostic: AMBIGUOUS_SUPERLATIVE
+  expected_alternatives: [avg, max]
+  note: "Média vs. máxima de umidade relativa (e possível confusão com chuva)."
+
+- id: T14
+  split: test
+  category: fora_da_ontologia
+  question: "Qual foi a pressão atmosférica na Estação Serra Azul?"
+  expected_status: unsupported
+  expected_diagnostic: UNKNOWN_PROPERTY
+
+- id: T15
+  split: test
+  category: entidade_desconhecida
+  question: "Qual foi a temperatura média em Campo Grande?"
+  expected_status: unsupported
+  expected_diagnostic: UNKNOWN_ENTITY
+  note: "Nenhuma estação do grafo corresponde; não usar outra estação como substituta."
+
+- id: T16
+  split: test
+  category: serie_ordenada
+  question: "Qual foi a temperatura máxima de cada dia na Estação Serra Azul, em ordem cronológica?"
+  expected_status: answered
+  compare: {mode: ordered, columns: [day, max], order_key: day, descending: false, tolerance: {max: 0.001}}
+  units: {max: unit:DEG_C}
+  sparql: |
+    SELECT ?day (MAX(?v) AS ?max) WHERE {
+      st:EST-A sosa:hosts ?sensor .
+      ?obs a met:InstantaneousObservation ; sosa:madeBySensor ?sensor ;
+           sosa:observedProperty met:AirTemperature ;
+           sosa:phenomenonTime/time:inXSDDateTime ?t ; sosa:hasResult/qudt:numericValue ?v .
+    } GROUP BY (SUBSTR(STR(?t), 1, 10) AS ?day) ORDER BY ?day
