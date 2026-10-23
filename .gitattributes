@@ -15,3 +15,6 @@
 eval/questions_independent_*.yaml binary
 eval/independent_evaluation/*.yaml binary
 eval/independent_evaluation/*.json binary
+# ontologias importadas e a visão QL gerada: o hash vale para os bytes
+ontology/imports/* binary
+ontology/generated/* binary

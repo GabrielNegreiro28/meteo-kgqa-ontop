@@ -13,7 +13,10 @@ case "${1:-start}" in
     # O Ontop lê os caminhos como URI: espaço ou acento no caminho do projeto ("Área de Trabalho") dá "Illegal character in path".
     # Por isso a configuração é copiada para um diretório sem espaços e o Ontop aponta para a cópia.
     CFG="$MET_HOME/ontop_cfg"; mkdir -p "$CFG"
-    cp "$ROOT/ontology/met.ttl" "$ROOT/mapping/met.obda" "$ROOT/mapping/met.properties" "$CFG/"
+    # O Ontop raciocina sobre a visão de execução gerada da fonte única (ontology/build_views.py::build_ontop): sem ela uma consulta por
+    # categoria BFO (`?o a obo:BFO_0000015`) devolvia vazio. É o arquivo versionado; tests/test_ontology_formal.py confere que está em dia.
+    cp "$ROOT/ontology/generated/met-ontop.ttl" "$ROOT/mapping/met.obda" "$ROOT/mapping/met.properties" "$CFG/"
+    rm -f "$CFG/met.ttl" "$CFG/met-ql.ttl"                 # versões antigas desta configuração
     # O endpoint NÃO tem autenticação e responde sobre todo o banco: escutar só no loopback. Sem isto o Ontop (Spring Boot) escutava em
     # *:8080 (todas as interfaces), ao contrário do que este cabeçalho dizia. Verificado com `ss -ltn` (ver tests/test_infra.py).
     export SERVER_ADDRESS="${ONTOP_BIND:-127.0.0.1}"
@@ -22,7 +25,7 @@ case "${1:-start}" in
     # Efeito colateral do --dev: expõe /ontop/restart e o actuator, sem autenticação, o que só é aceitável porque o endpoint
     # escuta apenas no loopback (SERVER_ADDRESS acima).
     DEVFLAG=""; [ "${ONTOP_DEV:-1}" = "1" ] && DEVFLAG="--dev"
-    nohup "$ONTOP" endpoint -t "$CFG/met.ttl" -m "$CFG/met.obda" -p "$CFG/met.properties" \
+    nohup "$ONTOP" endpoint -t "$CFG/met-ontop.ttl" -m "$CFG/met.obda" -p "$CFG/met.properties" \
       --port 8080 --cors-allowed-origins=http://127.0.0.1 $DEVFLAG > "$LOG" 2>&1 &
     echo $! > "$MET_HOME/ontop.pid"
     for i in $(seq 1 60); do curl -s -o /dev/null http://127.0.0.1:8080/sparql && { echo "ontop pronto"; exit 0; }; sleep 2; done

@@ -1,0 +1,926 @@
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix met: <https://example.org/kgqa-met/ontology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://purl.obolibrary.org/obo/BFO_0000009> a owl:Class ;
+    rdfs:label "two-dimensional spatial region"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000006> .
+
+<http://purl.obolibrary.org/obo/BFO_0000018> a owl:Class ;
+    rdfs:label "zero-dimensional spatial region"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000006> .
+
+<http://purl.obolibrary.org/obo/BFO_0000024> a owl:Class ;
+    rdfs:label "fiat object part"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000040> .
+
+<http://purl.obolibrary.org/obo/BFO_0000026> a owl:Class ;
+    rdfs:label "one-dimensional spatial region"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000006> .
+
+<http://purl.obolibrary.org/obo/BFO_0000027> a owl:Class ;
+    rdfs:label "object aggregate"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000040> .
+
+<http://purl.obolibrary.org/obo/BFO_0000028> a owl:Class ;
+    rdfs:label "three-dimensional spatial region"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000006> .
+
+<http://purl.obolibrary.org/obo/BFO_0000029> a owl:Class ;
+    rdfs:label "site"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000141> .
+
+<http://purl.obolibrary.org/obo/BFO_0000030> a owl:Class ;
+    rdfs:label "object"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000040> .
+
+<http://purl.obolibrary.org/obo/BFO_0000035> a owl:Class ;
+    rdfs:label "process boundary"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000003> .
+
+<http://purl.obolibrary.org/obo/BFO_0000054> a owl:ObjectProperty ;
+    rdfs:label "has realization"@en ;
+    rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000017> ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000015> ;
+    owl:inverseOf <http://purl.obolibrary.org/obo/BFO_0000055> .
+
+<http://purl.obolibrary.org/obo/BFO_0000056> a owl:ObjectProperty ;
+    rdfs:label "participates in"@en ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000015> ;
+    owl:inverseOf <http://purl.obolibrary.org/obo/BFO_0000057> .
+
+<http://purl.obolibrary.org/obo/BFO_0000058> a owl:ObjectProperty ;
+    rdfs:label "is concretized by"@en ;
+    rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000031> ;
+    owl:inverseOf <http://purl.obolibrary.org/obo/BFO_0000059> .
+
+<http://purl.obolibrary.org/obo/BFO_0000062> a owl:ObjectProperty ;
+    rdfs:label "preceded by"@en ;
+    rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000003> ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000003> ;
+    owl:inverseOf <http://purl.obolibrary.org/obo/BFO_0000063> .
+
+<http://purl.obolibrary.org/obo/BFO_0000066> a owl:ObjectProperty ;
+    rdfs:label "occurs in"@en ;
+    owl:inverseOf <http://purl.obolibrary.org/obo/BFO_0000183> .
+
+<http://purl.obolibrary.org/obo/BFO_0000084> a owl:ObjectProperty ;
+    rdfs:label "generically depends on"@en ;
+    rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000031> ;
+    owl:inverseOf <http://purl.obolibrary.org/obo/BFO_0000101> .
+
+<http://purl.obolibrary.org/obo/BFO_0000108> a owl:ObjectProperty ;
+    rdfs:label "exists at"@en ;
+    rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000001> ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000008> .
+
+<http://purl.obolibrary.org/obo/BFO_0000115> a owl:ObjectProperty ;
+    rdfs:label "has member part"@en ;
+    rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000040> ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000040> ;
+    rdfs:subPropertyOf <http://purl.obolibrary.org/obo/BFO_0000178> ;
+    owl:inverseOf <http://purl.obolibrary.org/obo/BFO_0000129> .
+
+<http://purl.obolibrary.org/obo/BFO_0000121> a owl:ObjectProperty ;
+    rdfs:label "has temporal part"@en ;
+    rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000003> ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000003> ;
+    rdfs:subPropertyOf <http://purl.obolibrary.org/obo/BFO_0000117> ;
+    owl:inverseOf <http://purl.obolibrary.org/obo/BFO_0000139> .
+
+<http://purl.obolibrary.org/obo/BFO_0000124> a owl:ObjectProperty ;
+    rdfs:label "location of"@en ;
+    owl:inverseOf <http://purl.obolibrary.org/obo/BFO_0000171> .
+
+<http://purl.obolibrary.org/obo/BFO_0000127> a owl:ObjectProperty ;
+    rdfs:label "material basis of"@en ;
+    rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000040> ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000016> ;
+    owl:inverseOf <http://purl.obolibrary.org/obo/BFO_0000218> .
+
+<http://purl.obolibrary.org/obo/BFO_0000142> a owl:Class ;
+    rdfs:label "fiat line"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000140> .
+
+<http://purl.obolibrary.org/obo/BFO_0000145> a owl:Class ;
+    rdfs:label "relational quality"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000019> .
+
+<http://purl.obolibrary.org/obo/BFO_0000146> a owl:Class ;
+    rdfs:label "fiat surface"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000140> .
+
+<http://purl.obolibrary.org/obo/BFO_0000147> a owl:Class ;
+    rdfs:label "fiat point"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000140> .
+
+<http://purl.obolibrary.org/obo/BFO_0000153> a owl:ObjectProperty ;
+    rdfs:label "temporally projects onto"@en ;
+    rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000011> ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000008> .
+
+<http://purl.obolibrary.org/obo/BFO_0000179> a owl:AnnotationProperty .
+
+<http://purl.obolibrary.org/obo/BFO_0000180> a owl:AnnotationProperty .
+
+<http://purl.obolibrary.org/obo/BFO_0000184> a owl:ObjectProperty ;
+    rdfs:label "history of"@en ;
+    rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000182> ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000040> ;
+    owl:inverseOf <http://purl.obolibrary.org/obo/BFO_0000185> .
+
+<http://purl.obolibrary.org/obo/BFO_0000196> a owl:ObjectProperty ;
+    rdfs:label "bearer of"@en ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000020> ;
+    rdfs:subPropertyOf <http://purl.obolibrary.org/obo/BFO_0000194> ;
+    owl:inverseOf <http://purl.obolibrary.org/obo/BFO_0000197> .
+
+<http://purl.obolibrary.org/obo/BFO_0000200> a owl:ObjectProperty ;
+    rdfs:label "occupies spatiotemporal region"@en ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000011> .
+
+<http://purl.obolibrary.org/obo/BFO_0000202> a owl:Class ;
+    rdfs:label "temporal interval"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000038> .
+
+<http://purl.obolibrary.org/obo/BFO_0000210> a owl:ObjectProperty ;
+    rdfs:label "occupies spatial region"@en ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000006> .
+
+<http://purl.obolibrary.org/obo/BFO_0000216> a owl:ObjectProperty ;
+    rdfs:label "spatially projects onto"@en ;
+    rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000011> ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000006> .
+
+<http://purl.obolibrary.org/obo/BFO_0000221> a owl:ObjectProperty ;
+    rdfs:label "first instant of"@en ;
+    rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000203> ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000008> ;
+    owl:inverseOf <http://purl.obolibrary.org/obo/BFO_0000222> .
+
+<http://purl.obolibrary.org/obo/BFO_0000223> a owl:ObjectProperty ;
+    rdfs:label "last instant of"@en ;
+    rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000203> ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000008> ;
+    owl:inverseOf <http://purl.obolibrary.org/obo/BFO_0000224> .
+
+<http://purl.obolibrary.org/obo/IAO_0000002> a owl:NamedIndividual ;
+    rdfs:label "example to be eventually removed"@en .
+
+<http://purl.obolibrary.org/obo/IAO_0000078> a owl:Class ;
+    rdfs:label "curation status specification"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/IAO_0000102> .
+
+<http://purl.obolibrary.org/obo/IAO_0000103> a owl:NamedIndividual ;
+    rdfs:label "failed exploratory term"@en .
+
+<http://purl.obolibrary.org/obo/IAO_0000111> a owl:AnnotationProperty .
+
+<http://purl.obolibrary.org/obo/IAO_0000112> a owl:AnnotationProperty .
+
+<http://purl.obolibrary.org/obo/IAO_0000114> a owl:AnnotationProperty .
+
+<http://purl.obolibrary.org/obo/IAO_0000115> a owl:AnnotationProperty .
+
+<http://purl.obolibrary.org/obo/IAO_0000116> a owl:AnnotationProperty .
+
+<http://purl.obolibrary.org/obo/IAO_0000117> a owl:AnnotationProperty .
+
+<http://purl.obolibrary.org/obo/IAO_0000118> a owl:AnnotationProperty .
+
+<http://purl.obolibrary.org/obo/IAO_0000119> a owl:AnnotationProperty .
+
+<http://purl.obolibrary.org/obo/IAO_0000120> a owl:NamedIndividual ;
+    rdfs:label "metadata complete"@en .
+
+<http://purl.obolibrary.org/obo/IAO_0000121> a owl:NamedIndividual ;
+    rdfs:label "organizational term"@en .
+
+<http://purl.obolibrary.org/obo/IAO_0000122> a owl:NamedIndividual ;
+    rdfs:label "ready for release"@en .
+
+<http://purl.obolibrary.org/obo/IAO_0000123> a owl:NamedIndividual ;
+    rdfs:label "metadata incomplete"@en .
+
+<http://purl.obolibrary.org/obo/IAO_0000124> a owl:NamedIndividual ;
+    rdfs:label "uncurated"@en .
+
+<http://purl.obolibrary.org/obo/IAO_0000125> a owl:NamedIndividual ;
+    rdfs:label "pending final vetting"@en .
+
+<http://purl.obolibrary.org/obo/IAO_0000136> a owl:ObjectProperty ;
+    rdfs:label "is about"@en ;
+    rdfs:domain <http://purl.obolibrary.org/obo/IAO_0000030> .
+
+<http://purl.obolibrary.org/obo/IAO_0000225> a owl:Class ;
+    rdfs:label "obsolescence reason specification"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/IAO_0000102> .
+
+<http://purl.obolibrary.org/obo/IAO_0000226> a owl:NamedIndividual ;
+    rdfs:label "placeholder removed"@en .
+
+<http://purl.obolibrary.org/obo/IAO_0000227> a owl:NamedIndividual ;
+    rdfs:label "terms merged"@en .
+
+<http://purl.obolibrary.org/obo/IAO_0000228> a owl:NamedIndividual ;
+    rdfs:label "term imported"@en .
+
+<http://purl.obolibrary.org/obo/IAO_0000229> a owl:NamedIndividual ;
+    rdfs:label "term split"@en .
+
+<http://purl.obolibrary.org/obo/IAO_0000233> a owl:AnnotationProperty .
+
+<http://purl.obolibrary.org/obo/IAO_0000234> a owl:AnnotationProperty .
+
+<http://purl.obolibrary.org/obo/IAO_0000409> a owl:Class ;
+    rdfs:label "denotator type"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/IAO_0000102> .
+
+<http://purl.obolibrary.org/obo/IAO_0000410> a owl:NamedIndividual ;
+    rdfs:label "universal"@en .
+
+<http://purl.obolibrary.org/obo/IAO_0000420> a owl:NamedIndividual ;
+    rdfs:label "defined class"@en .
+
+<http://purl.obolibrary.org/obo/IAO_0000421> a owl:NamedIndividual ;
+    rdfs:label "named class expression"@en .
+
+<http://purl.obolibrary.org/obo/IAO_0000423> a owl:NamedIndividual ;
+    rdfs:label "to be replaced with external ontology term"@en .
+
+<http://purl.obolibrary.org/obo/IAO_0000428> a owl:NamedIndividual ;
+    rdfs:label "requires discussion"@en .
+
+<http://purl.obolibrary.org/obo/IAO_0000600> a owl:AnnotationProperty .
+
+<http://purl.obolibrary.org/obo/IAO_0000601> a owl:AnnotationProperty .
+
+<http://purl.obolibrary.org/obo/IAO_0000602> a owl:AnnotationProperty .
+
+<http://purl.obolibrary.org/obo/IAO_0010000> a owl:AnnotationProperty .
+
+<http://purl.obolibrary.org/obo/OMO_0001000> a owl:NamedIndividual ;
+    rdfs:label "out of scope" .
+
+<http://purl.obolibrary.org/obo/OMO_0001002> a owl:NamedIndividual ;
+    rdfs:label "domain entity does not exist" .
+
+<http://purl.obolibrary.org/obo/RO_0000079> a owl:ObjectProperty ;
+    rdfs:label "function of"@en ;
+    rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000034> ;
+    rdfs:subPropertyOf <http://purl.obolibrary.org/obo/RO_0000052> ;
+    owl:inverseOf <http://purl.obolibrary.org/obo/RO_0000085> .
+
+<http://purl.obolibrary.org/obo/RO_0000080> a owl:ObjectProperty ;
+    rdfs:label "quality of"@en ;
+    rdfs:subPropertyOf <http://purl.obolibrary.org/obo/RO_0000052> ;
+    owl:inverseOf <http://purl.obolibrary.org/obo/RO_0000086> .
+
+<http://purl.obolibrary.org/obo/RO_0000081> a owl:ObjectProperty ;
+    rdfs:label "role of"@en ;
+    rdfs:subPropertyOf <http://purl.obolibrary.org/obo/RO_0000052> ;
+    owl:inverseOf <http://purl.obolibrary.org/obo/RO_0000087> .
+
+<http://purl.obolibrary.org/obo/RO_0000091> a owl:ObjectProperty ;
+    rdfs:label "has disposition"@en ;
+    rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000004> ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000016> ;
+    rdfs:subPropertyOf <http://purl.obolibrary.org/obo/RO_0000053> ;
+    owl:inverseOf <http://purl.obolibrary.org/obo/RO_0000092> .
+
+<http://purl.obolibrary.org/obo/RO_0001900> a owl:AnnotationProperty .
+
+dc:contributor a owl:AnnotationProperty .
+
+dc:identifier a owl:AnnotationProperty .
+
+dc:license a owl:AnnotationProperty .
+
+dcterms:description a owl:AnnotationProperty .
+
+dcterms:license a owl:AnnotationProperty .
+
+dcterms:title a owl:AnnotationProperty .
+
+<http://qudt.org/schema/qudt/numericValue> a owl:DatatypeProperty ;
+    rdfs:domain <http://qudt.org/schema/qudt/QuantityValue> .
+
+<http://qudt.org/schema/qudt/unit> a owl:ObjectProperty ;
+    rdfs:domain <http://qudt.org/schema/qudt/QuantityValue> ;
+    rdfs:range <http://qudt.org/schema/qudt/Unit> .
+
+skos:ConceptScheme a owl:Class ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/IAO_0000030> .
+
+skos:altLabel a owl:AnnotationProperty .
+
+skos:definition a owl:AnnotationProperty .
+
+skos:example a owl:AnnotationProperty .
+
+skos:inScheme a owl:ObjectProperty .
+
+skos:notation a owl:AnnotationProperty .
+
+skos:prefLabel a owl:AnnotationProperty .
+
+skos:scopeNote a owl:AnnotationProperty .
+
+time:hasBeginning a owl:ObjectProperty ;
+    rdfs:domain time:Interval ;
+    rdfs:range time:Instant .
+
+time:hasEnd a owl:ObjectProperty ;
+    rdfs:domain time:Interval ;
+    rdfs:range time:Instant .
+
+time:hasTime a owl:ObjectProperty .
+
+time:inXSDDateTime a owl:DatatypeProperty ;
+    rdfs:domain time:Instant ;
+    rdfs:range xsd:dateTime .
+
+sosa:hasFeatureOfInterest a owl:ObjectProperty ;
+    rdfs:domain sosa:Observation ;
+    rdfs:range sosa:FeatureOfInterest ;
+    rdfs:subPropertyOf <http://purl.obolibrary.org/obo/BFO_0000057> .
+
+sosa:hasResult a owl:ObjectProperty ;
+    rdfs:range <http://qudt.org/schema/qudt/QuantityValue> .
+
+sosa:hosts a owl:ObjectProperty ;
+    rdfs:domain sosa:Platform ;
+    rdfs:range sosa:Sensor .
+
+sosa:madeBySensor a owl:ObjectProperty ;
+    rdfs:domain sosa:Observation ;
+    rdfs:range sosa:Sensor ;
+    rdfs:subPropertyOf <http://purl.obolibrary.org/obo/BFO_0000057> .
+
+sosa:observedProperty a owl:ObjectProperty ;
+    rdfs:domain sosa:Observation ;
+    rdfs:range sosa:ObservableProperty .
+
+sosa:phenomenonTime a owl:ObjectProperty ;
+    rdfs:domain sosa:Observation ;
+    rdfs:range time:TemporalEntity ;
+    rdfs:subPropertyOf <http://purl.obolibrary.org/obo/BFO_0000199> .
+
+sosa:resultTime a owl:DatatypeProperty ;
+    rdfs:domain sosa:Observation ;
+    rdfs:range xsd:dateTime .
+
+<https://example.org/kgqa-met/ontology> rdfs:label "Ontologia meteorológica provisória (protótipo KGQA)"@pt .
+
+met:AirTemperature a owl:NamedIndividual ;
+    rdfs:label "air temperature"@en,
+        "temperatura do ar"@pt .
+
+met:AirTemperatureQuality a owl:Class ;
+    rdfs:label "temperatura do ar (qualidade)"@pt ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000019> .
+
+met:CloudCover a owl:NamedIndividual ;
+    rdfs:label "nebulosidade"@pt .
+
+met:CloudCoverQuality a owl:Class ;
+    rdfs:label "nebulosidade (qualidade)"@pt ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000019> .
+
+met:CloudGenusScheme rdfs:label "gêneros de nuvem"@pt .
+
+met:CloudLayerObservation a owl:Class ;
+    rdfs:label "observação de camada de nuvens"@pt ;
+    rdfs:subClassOf sosa:Observation ;
+    owl:disjointWith met:AccumulatedObservation .
+
+met:DewPointTemperature a owl:NamedIndividual ;
+    rdfs:label "temperatura do ponto de orvalho"@pt .
+
+met:DewPointTemperatureQuality a owl:Class ;
+    rdfs:label "temperatura do ponto de orvalho (qualidade)"@pt ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000019> .
+
+met:InstantaneousObservation a owl:Class ;
+    rdfs:label "observação instantânea"@pt ;
+    rdfs:subClassOf sosa:Observation ;
+    owl:disjointWith met:AccumulatedObservation .
+
+met:Precipitation a owl:NamedIndividual ;
+    rdfs:label "precipitation"@en,
+        "precipitação"@pt .
+
+met:PrecipitationAmountQuality a owl:Class ;
+    rdfs:label "quantidade de precipitação (qualidade)"@pt ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000019> .
+
+met:PrecipitationDuration a owl:NamedIndividual ;
+    rdfs:label "duração da precipitação"@pt .
+
+met:PrecipitationDurationQuality a owl:Class ;
+    rdfs:label "duração da precipitação (qualidade)"@pt ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000019> .
+
+met:PressureQNH a owl:NamedIndividual ;
+    rdfs:label "pressão QNH"@pt .
+
+met:PressureQNHQuality a owl:Class ;
+    rdfs:label "pressão QNH (qualidade)"@pt ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000019> .
+
+met:PrevailingVisibility a owl:NamedIndividual ;
+    rdfs:label "visibilidade predominante"@pt .
+
+met:PrevailingVisibilityQuality a owl:Class ;
+    rdfs:label "visibilidade predominante (qualidade)"@pt ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000019> .
+
+met:RelativeHumidity a owl:NamedIndividual ;
+    rdfs:label "relative humidity"@en,
+        "umidade relativa do ar"@pt .
+
+met:RelativeHumidityQuality a owl:Class ;
+    rdfs:label "umidade relativa (qualidade)"@pt ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000019> .
+
+met:RunwayTemperature a owl:NamedIndividual ;
+    rdfs:label "temperatura da pista"@pt .
+
+met:RunwayTemperatureQuality a owl:Class ;
+    rdfs:label "temperatura da pista (qualidade)"@pt ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000019> .
+
+met:WetBulbTemperature a owl:NamedIndividual ;
+    rdfs:label "temperatura de bulbo úmido"@pt .
+
+met:WetBulbTemperatureQuality a owl:Class ;
+    rdfs:label "temperatura de bulbo úmido (qualidade)"@pt ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000019> .
+
+met:WindDirection a owl:NamedIndividual ;
+    rdfs:label "direção do vento"@pt .
+
+met:WindDirectionQuality a owl:Class ;
+    rdfs:label "direção do vento (qualidade)"@pt ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000019> .
+
+met:WindGust a owl:NamedIndividual ;
+    rdfs:label "rajada de vento"@pt .
+
+met:WindGustQuality a owl:Class ;
+    rdfs:label "rajada de vento (qualidade)"@pt ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000019> .
+
+met:WindSpeed a owl:NamedIndividual ;
+    rdfs:label "velocidade do vento"@pt .
+
+met:WindSpeedQuality a owl:Class ;
+    rdfs:label "velocidade do vento (qualidade)"@pt ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000019> .
+
+met:aggregationNote a owl:AnnotationProperty ;
+    rdfs:label "nota sobre agregação"@pt .
+
+met:alignmentStatus a owl:AnnotationProperty .
+
+met:allowsAggregation a owl:ObjectProperty ;
+    rdfs:label "admite agregação"@pt ;
+    rdfs:domain sosa:ObservableProperty ;
+    rdfs:range met:AggregationFunction .
+
+met:alsoDomain a owl:AnnotationProperty .
+
+met:answerCaveat a owl:AnnotationProperty .
+
+met:bfoCategory a owl:AnnotationProperty .
+
+met:canonicalUnit a owl:AnnotationProperty ;
+    rdfs:label "unidade canônica"@pt .
+
+met:cloudBaseHeight a owl:DatatypeProperty ;
+    rdfs:label "altura da base da nuvem (m)"@pt ;
+    rdfs:domain met:CloudLayerResult ;
+    rdfs:range xsd:integer .
+
+met:cloudGenus a owl:ObjectProperty ;
+    rdfs:label "gênero da nuvem"@pt ;
+    rdfs:domain met:CloudLayerResult ;
+    rdfs:range skos:Concept .
+
+met:cloudMovement a owl:DatatypeProperty ;
+    rdfs:label "direção de deslocamento da nuvem"@pt ;
+    rdfs:domain met:CloudLayerResult ;
+    rdfs:range xsd:string .
+
+met:denotesQuality a owl:AnnotationProperty .
+
+met:forStation a owl:ObjectProperty ;
+    rdfs:label "previsão para a estação"@pt ;
+    rdfs:domain met:Forecast ;
+    rdfs:range met:WeatherStation .
+
+met:forecastedProperty a owl:ObjectProperty ;
+    rdfs:label "propriedade prevista"@pt ;
+    rdfs:domain met:Forecast ;
+    rdfs:range sosa:ObservableProperty .
+
+met:inReport a owl:ObjectProperty ;
+    rdfs:label "pertence ao boletim"@pt ;
+    rdfs:domain sosa:Observation ;
+    rdfs:range met:WeatherReport .
+
+met:incompatibleWith a owl:AnnotationProperty .
+
+met:isHourly a owl:DatatypeProperty ;
+    rdfs:label "boletim da hora cheia"@pt ;
+    rdfs:domain met:WeatherReport .
+
+met:isSynthetic a owl:DatatypeProperty ;
+    rdfs:label "dado sintético"@pt .
+
+met:issuedAt a owl:DatatypeProperty ;
+    rdfs:label "emitida em"@pt ;
+    rdfs:domain met:Forecast ;
+    rdfs:range xsd:dateTime .
+
+met:localDate a owl:DatatypeProperty ;
+    rdfs:label "data local"@pt .
+
+met:multipleReadings a owl:DatatypeProperty ;
+    rdfs:label "leituras múltiplas"@pt .
+
+met:observedAs a owl:ObjectProperty ;
+    rdfs:label "é observada como"@pt ;
+    rdfs:domain sosa:ObservableProperty .
+
+met:oktas a owl:DatatypeProperty ;
+    rdfs:label "cobertura em oitavos"@pt ;
+    rdfs:domain met:CloudLayerResult ;
+    rdfs:range xsd:integer .
+
+met:reportOf a owl:ObjectProperty ;
+    rdfs:label "boletim da estação"@pt ;
+    rdfs:domain met:WeatherReport ;
+    rdfs:range met:WeatherStation .
+
+met:requiresFullContainment a owl:AnnotationProperty ;
+    rdfs:label "exige intervalo inteiro dentro do período"@pt .
+
+met:runwayDesignator a owl:DatatypeProperty ;
+    rdfs:label "cabeceira da pista"@pt ;
+    rdfs:range xsd:string .
+
+met:siteOf a owl:ObjectProperty ;
+    rdfs:label "local da estação"@pt ;
+    rdfs:domain met:Site ;
+    rdfs:range met:WeatherStation .
+
+met:skyObscured a owl:DatatypeProperty ;
+    rdfs:label "céu obscurecido"@pt ;
+    rdfs:domain met:CloudLayerResult .
+
+met:sourceFile a owl:DatatypeProperty ;
+    rdfs:label "arquivo de origem"@pt ;
+    rdfs:range xsd:string .
+
+met:sourceRow a owl:DatatypeProperty ;
+    rdfs:label "linha de origem"@pt ;
+    rdfs:range xsd:integer .
+
+met:stationCode a owl:DatatypeProperty ;
+    rdfs:label "código da estação"@pt ;
+    rdfs:domain met:WeatherStation ;
+    rdfs:range xsd:string .
+
+met:symbol a owl:AnnotationProperty ;
+    rdfs:label "símbolo"@pt .
+
+met:validTime a owl:ObjectProperty ;
+    rdfs:label "instante de validade da previsão"@pt ;
+    rdfs:domain met:Forecast ;
+    rdfs:range time:Instant .
+
+met:windCondition a owl:DatatypeProperty ;
+    rdfs:label "condição do vento"@pt ;
+    rdfs:range xsd:string .
+
+<http://purl.obolibrary.org/obo/BFO_0000055> a owl:ObjectProperty ;
+    rdfs:label "realizes"@en ;
+    rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000015> ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000017> .
+
+<http://purl.obolibrary.org/obo/BFO_0000059> a owl:ObjectProperty ;
+    rdfs:label "concretizes"@en ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000031> .
+
+<http://purl.obolibrary.org/obo/BFO_0000063> a owl:ObjectProperty ;
+    rdfs:label "precedes"@en ;
+    rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000003> ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000003> .
+
+<http://purl.obolibrary.org/obo/BFO_0000101> a owl:ObjectProperty ;
+    rdfs:label "is carrier of"@en ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000031> .
+
+<http://purl.obolibrary.org/obo/BFO_0000117> a owl:ObjectProperty ;
+    rdfs:label "has occurrent part"@en ;
+    rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000003> ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000003> ;
+    owl:inverseOf <http://purl.obolibrary.org/obo/BFO_0000132> .
+
+<http://purl.obolibrary.org/obo/BFO_0000129> a owl:ObjectProperty ;
+    rdfs:label "member part of"@en ;
+    rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000040> ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000040> ;
+    rdfs:subPropertyOf <http://purl.obolibrary.org/obo/BFO_0000176> .
+
+<http://purl.obolibrary.org/obo/BFO_0000139> a owl:ObjectProperty ;
+    rdfs:label "temporal part of"@en ;
+    rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000003> ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000003> ;
+    rdfs:subPropertyOf <http://purl.obolibrary.org/obo/BFO_0000132> .
+
+<http://purl.obolibrary.org/obo/BFO_0000171> a owl:ObjectProperty ;
+    rdfs:label "located in"@en .
+
+<http://purl.obolibrary.org/obo/BFO_0000176> a owl:ObjectProperty ;
+    rdfs:label "continuant part of"@en ;
+    rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000002> ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000002> ;
+    owl:inverseOf <http://purl.obolibrary.org/obo/BFO_0000178> .
+
+<http://purl.obolibrary.org/obo/BFO_0000183> a owl:ObjectProperty ;
+    rdfs:label "environs"@en .
+
+<http://purl.obolibrary.org/obo/BFO_0000185> a owl:ObjectProperty ;
+    rdfs:label "has history"@en ;
+    rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000040> ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000182> .
+
+<http://purl.obolibrary.org/obo/BFO_0000194> a owl:ObjectProperty ;
+    rdfs:label "specifically depended on by"@en ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000020> ;
+    owl:inverseOf <http://purl.obolibrary.org/obo/BFO_0000195> .
+
+<http://purl.obolibrary.org/obo/BFO_0000197> a owl:ObjectProperty ;
+    rdfs:label "inheres in"@en ;
+    rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000020> ;
+    rdfs:subPropertyOf <http://purl.obolibrary.org/obo/BFO_0000195> .
+
+<http://purl.obolibrary.org/obo/BFO_0000199> a owl:ObjectProperty ;
+    rdfs:label "occupies temporal region"@en ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000008> .
+
+<http://purl.obolibrary.org/obo/BFO_0000218> a owl:ObjectProperty ;
+    rdfs:label "has material basis"@en ;
+    rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000016> ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000040> .
+
+<http://purl.obolibrary.org/obo/BFO_0000222> a owl:ObjectProperty ;
+    rdfs:label "has first instant"@en ;
+    rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000008> ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000203> .
+
+<http://purl.obolibrary.org/obo/BFO_0000224> a owl:ObjectProperty ;
+    rdfs:label "has last instant"@en ;
+    rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000008> ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000203> .
+
+<http://purl.obolibrary.org/obo/IAO_0000109> a owl:Class ;
+    rdfs:label "measurement datum"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/IAO_0000027> .
+
+<http://purl.obolibrary.org/obo/RO_0000085> a owl:ObjectProperty ;
+    rdfs:label "has function"@en ;
+    rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000004> ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000034> ;
+    rdfs:subPropertyOf <http://purl.obolibrary.org/obo/RO_0000053> .
+
+<http://purl.obolibrary.org/obo/RO_0000086> a owl:ObjectProperty ;
+    rdfs:label "has quality"@en ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000019> ;
+    rdfs:subPropertyOf <http://purl.obolibrary.org/obo/RO_0000053> .
+
+<http://purl.obolibrary.org/obo/RO_0000087> a owl:ObjectProperty ;
+    rdfs:label "has role"@en ;
+    rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000004> ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000023> ;
+    rdfs:subPropertyOf <http://purl.obolibrary.org/obo/RO_0000053> .
+
+<http://purl.obolibrary.org/obo/RO_0000092> a owl:ObjectProperty ;
+    rdfs:label "disposition of"@en ;
+    rdfs:subPropertyOf <http://purl.obolibrary.org/obo/RO_0000052> .
+
+<http://qudt.org/schema/qudt/Unit> a owl:Class ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/IAO_0000030> .
+
+skos:Concept a owl:Class ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/IAO_0000030> .
+
+sosa:Result a owl:Class ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/IAO_0000030> .
+
+met:AggregationFunction a owl:Class ;
+    rdfs:label "função de agregação"@pt ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/IAO_0000030> .
+
+met:Site a owl:Class ;
+    rdfs:label "local observado"@pt ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000040>,
+        sosa:FeatureOfInterest .
+
+<http://purl.obolibrary.org/obo/BFO_0000023> a owl:Class ;
+    rdfs:label "role"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000017> .
+
+<http://purl.obolibrary.org/obo/BFO_0000034> a owl:Class ;
+    rdfs:label "function"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000016> .
+
+<http://purl.obolibrary.org/obo/BFO_0000038> a owl:Class ;
+    rdfs:label "one-dimensional temporal region"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000008> ;
+    owl:disjointWith <http://purl.obolibrary.org/obo/BFO_0000148> .
+
+<http://purl.obolibrary.org/obo/BFO_0000132> a owl:ObjectProperty ;
+    rdfs:label "occurrent part of"@en ;
+    rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000003> ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000003> .
+
+<http://purl.obolibrary.org/obo/BFO_0000178> a owl:ObjectProperty ;
+    rdfs:label "has continuant part"@en ;
+    rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000002> ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000002> .
+
+<http://purl.obolibrary.org/obo/BFO_0000182> a owl:Class ;
+    rdfs:label "history"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000015> .
+
+<http://purl.obolibrary.org/obo/BFO_0000195> a owl:ObjectProperty ;
+    rdfs:label "specifically depends on"@en ;
+    rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000020> .
+
+<http://purl.obolibrary.org/obo/IAO_0000027> a owl:Class ;
+    rdfs:label "data entity"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/IAO_0000030> .
+
+sosa:Platform a owl:Class ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000040> ;
+    owl:disjointWith sosa:FeatureOfInterest .
+
+sosa:Sensor a owl:Class ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000040> .
+
+met:AccumulatedObservation a owl:Class ;
+    rdfs:label "observação acumulada"@pt ;
+    rdfs:subClassOf sosa:Observation .
+
+<http://purl.obolibrary.org/obo/BFO_0000001> a owl:Class ;
+    rdfs:label "entity"@en .
+
+<http://purl.obolibrary.org/obo/BFO_0000011> a owl:Class ;
+    rdfs:label "spatiotemporal region"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000003> .
+
+<http://purl.obolibrary.org/obo/BFO_0000057> a owl:ObjectProperty ;
+    rdfs:label "has participant"@en ;
+    rdfs:domain <http://purl.obolibrary.org/obo/BFO_0000015> .
+
+<http://purl.obolibrary.org/obo/BFO_0000140> a owl:Class ;
+    rdfs:label "continuant fiat boundary"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000141> .
+
+<http://purl.obolibrary.org/obo/BFO_0000148> a owl:Class ;
+    rdfs:label "zero-dimensional temporal region"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000008> .
+
+<http://purl.obolibrary.org/obo/IAO_0000102> a owl:Class ;
+    rdfs:label "data about an ontology part"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/IAO_0000027> .
+
+<http://qudt.org/schema/qudt/QuantityValue> a owl:Class ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/IAO_0000109> .
+
+time:Interval a owl:Class ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000038>,
+        time:TemporalEntity .
+
+time:TemporalEntity a owl:Class ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000008> .
+
+sosa:FeatureOfInterest a owl:Class ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000002> .
+
+met:WeatherReport a owl:Class ;
+    rdfs:label "weather report"@en,
+        "boletim meteorológico"@pt ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/IAO_0000030> .
+
+<http://purl.obolibrary.org/obo/BFO_0000016> a owl:Class ;
+    rdfs:label "disposition"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000017> ;
+    owl:disjointWith <http://purl.obolibrary.org/obo/BFO_0000023> .
+
+<http://purl.obolibrary.org/obo/BFO_0000017> a owl:Class ;
+    rdfs:label "realizable entity"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000020> ;
+    owl:disjointWith <http://purl.obolibrary.org/obo/BFO_0000019> .
+
+<http://purl.obolibrary.org/obo/BFO_0000141> a owl:Class ;
+    rdfs:label "immaterial entity"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000004> .
+
+<http://purl.obolibrary.org/obo/BFO_0000203> a owl:Class ;
+    rdfs:label "temporal instant"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000148> .
+
+<http://purl.obolibrary.org/obo/RO_0000052> a owl:ObjectProperty ;
+    rdfs:label "characteristic of"@en ;
+    owl:inverseOf <http://purl.obolibrary.org/obo/RO_0000053> .
+
+time:Instant a owl:Class ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000148>,
+        time:TemporalEntity ;
+    owl:disjointWith time:Interval .
+
+sosa:ObservableProperty a owl:Class ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/IAO_0000030> .
+
+met:Forecast a owl:Class ;
+    rdfs:label "forecast"@en,
+        "previsão"@pt ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/IAO_0000030> ;
+    owl:disjointWith sosa:Observation .
+
+met:WeatherStation a owl:Class ;
+    rdfs:label "weather station"@en,
+        "estação meteorológica"@pt ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000040>,
+        sosa:Platform .
+
+<http://purl.obolibrary.org/obo/BFO_0000004> a owl:Class ;
+    rdfs:label "independent continuant"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000002> ;
+    owl:disjointWith <http://purl.obolibrary.org/obo/BFO_0000020>,
+        <http://purl.obolibrary.org/obo/BFO_0000031> .
+
+<http://purl.obolibrary.org/obo/RO_0000053> a owl:ObjectProperty ;
+    rdfs:label "has characteristic"@en ;
+    rdfs:range <http://purl.obolibrary.org/obo/BFO_0000020> .
+
+met:CloudLayerResult a owl:Class ;
+    rdfs:label "resultado de camada de nuvens"@pt ;
+    rdfs:subClassOf sosa:Result .
+
+<http://purl.obolibrary.org/obo/BFO_0000006> a owl:Class ;
+    rdfs:label "spatial region"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000141> .
+
+<http://purl.obolibrary.org/obo/BFO_0000015> a owl:Class ;
+    rdfs:label "process"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000003> .
+
+<http://purl.obolibrary.org/obo/BFO_0000031> a owl:Class ;
+    rdfs:label "generically dependent continuant"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000002> .
+
+<http://purl.obolibrary.org/obo/BFO_0000002> a owl:Class ;
+    rdfs:label "continuant"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000001> ;
+    owl:disjointWith <http://purl.obolibrary.org/obo/BFO_0000003> .
+
+<http://purl.obolibrary.org/obo/BFO_0000020> a owl:Class ;
+    rdfs:label "specifically dependent continuant"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000002> ;
+    owl:disjointWith <http://purl.obolibrary.org/obo/BFO_0000031> .
+
+<http://purl.obolibrary.org/obo/BFO_0000008> a owl:Class ;
+    rdfs:label "temporal region"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000003> .
+
+<http://purl.obolibrary.org/obo/IAO_0000030> a owl:Class ;
+    rdfs:label "information content entity"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000031> .
+
+sosa:Observation a owl:Class ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000015> .
+
+<http://purl.obolibrary.org/obo/BFO_0000040> a owl:Class ;
+    rdfs:label "material entity"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000004> ;
+    owl:disjointWith <http://purl.obolibrary.org/obo/BFO_0000141> .
+
+<http://purl.obolibrary.org/obo/BFO_0000019> a owl:Class ;
+    rdfs:label "quality"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000020> .
+
+<http://purl.obolibrary.org/obo/BFO_0000003> a owl:Class ;
+    rdfs:label "occurrent"@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000001> .
+

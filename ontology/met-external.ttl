@@ -1,0 +1,62 @@
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+# =====================================================================
+# DECLARAÇÕES dos termos de vocabulários externos que o grafo usa (SOSA, OWL-Time, QUDT, SKOS).
+#
+# Por que existe: o perfil OWL 2 DL exige que toda classe e propriedade usada num axioma esteja DECLARADA como classe, propriedade de
+# objeto, de dados ou de anotação. Sem isto o raciocinador aceita (ele declara sozinho), mas o verificador de perfil recusa.
+# Só o que o grafo usa, no estilo MIREOT: as definições completas ficam nos vocabulários de origem, que NÃO são importados
+# (o QUDT inteiro tem dezenas de milhares de axiomas e nenhuma consulta daqui precisa deles).
+# Só declara; não afirma nada sobre os termos. A colocação sob a BFO está em met-bfo.ttl.
+# =====================================================================
+
+<https://example.org/kgqa-met/ontology/external> a owl:Ontology ;
+    rdfs:comment "Declarações mínimas dos termos externos usados (SOSA, OWL-Time, QUDT, SKOS)."@pt .
+
+# SOSA
+sosa:Observation a owl:Class .
+sosa:Sensor a owl:Class .
+sosa:Platform a owl:Class .
+sosa:FeatureOfInterest a owl:Class .
+sosa:Result a owl:Class .
+sosa:ObservableProperty a owl:Class .
+sosa:hosts a owl:ObjectProperty .
+sosa:madeBySensor a owl:ObjectProperty .
+sosa:observedProperty a owl:ObjectProperty .
+sosa:hasFeatureOfInterest a owl:ObjectProperty .
+sosa:hasResult a owl:ObjectProperty .
+sosa:phenomenonTime a owl:ObjectProperty .
+sosa:resultTime a owl:DatatypeProperty ; rdfs:range xsd:dateTime .
+
+# OWL-Time
+time:TemporalEntity a owl:Class .
+time:Instant a owl:Class .
+time:Interval a owl:Class .
+time:hasBeginning a owl:ObjectProperty .
+time:hasTime a owl:ObjectProperty .
+time:hasEnd a owl:ObjectProperty .
+time:inXSDDateTime a owl:DatatypeProperty ; rdfs:range xsd:dateTime .
+
+# QUDT
+qudt:QuantityValue a owl:Class .
+qudt:Unit a owl:Class .
+qudt:unit a owl:ObjectProperty .
+qudt:numericValue a owl:DatatypeProperty .
+
+# SKOS
+skos:Concept a owl:Class .
+skos:ConceptScheme a owl:Class .
+skos:inScheme a owl:ObjectProperty .
+skos:notation a owl:AnnotationProperty .
+skos:altLabel a owl:AnnotationProperty .
+skos:prefLabel a owl:AnnotationProperty .
+
+# xsd:date NÃO está no mapa de datatypes do OWL 2 (só xsd:dateTime e xsd:dateTimeStamp para datas): precisa ser declarado,
+# senão `met:localDate rdfs:range xsd:date` viola o perfil DL. É declaração de um datatype "não interpretado" pelo raciocinador.
+xsd:date a rdfs:Datatype .

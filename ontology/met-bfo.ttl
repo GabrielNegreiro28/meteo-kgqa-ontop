@@ -3,15 +3,21 @@
 @prefix owl:  <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
 
 # =====================================================================
-# ALINHAMENTO COM A BFO — PROPOSTA PROVISÓRIA, AGUARDANDO A EQUIPE DE ONTOLOGIA (DECISOES.md, P-07).
+# ALINHAMENTO COM A BFO 2020 — PROPOSTA PROVISÓRIA, AGUARDANDO A EQUIPE DE ONTOLOGIA (DECISOES.md, P-07).
 #
-# O documento da arquitetura exige que cada classe do domínio tenha UMA colocação sob a BFO (ou IAO/CCO) e que o
-# Termo do EvoOntology COPIE a categoria da ontologia formal, nunca a invente (§6.4 e §7.4, regra 2). Este arquivo é essa
-# fonte. Ele não é carregado pelo Ontop e não altera met.ttl: o grafo e as consultas continuam iguais.
+# O documento da arquitetura (§6.4) exige que cada classe do domínio tenha UMA colocação sob a BFO (ou IAO/CCO), que a BFO seja
+# reutilizada sem alteração e que o Termo do EvoOntology COPIE a categoria da ontologia formal, nunca a invente (§7.4, regra 2).
 #
-# Toda linha abaixo é uma hipótese de modelagem, não um fato. Os pontos em aberto estão no rdfs:comment de cada uma.
+# Este arquivo tem DUAS partes, e o teste tests/test_ontology_formal.py exige que digam a mesma coisa:
+#   1. AXIOMAS (rdfs:subClassOf e subPropertyOf para termos da BFO e da IAO): é o que o raciocinador (HermiT) e a visão QL leem;
+#   2. REGISTRO DE CATEGORIAS (met:bfoCategory): o que o EvoOntology lê para dar a categoria ao Termo. É derivado dos axiomas.
+#
+# Toda linha é uma hipótese de modelagem, não um fato. Os pontos em aberto estão no rdfs:comment e em docs/DUVIDAS_ONTOLOGIA.md.
 # Identificadores BFO/IAO são códigos opacos (OBO); os rótulos ficam nos nós de categoria, mais abaixo.
 # =====================================================================
 
@@ -21,22 +27,46 @@
 
 met:alignmentStatus a owl:AnnotationProperty .
 met:bfoCategory     a owl:AnnotationProperty ;
-    rdfs:comment "Categoria BFO/IAO da entidade. Uma por entidade."@pt .
+    rdfs:comment "Categoria BFO/IAO da entidade (derivada dos axiomas deste arquivo). Uma por entidade."@pt .
+met:denotesQuality  a owl:AnnotationProperty ;
+    rdfs:comment "Liga uma grandeza observável (indivíduo de sosa:ObservableProperty, que é só uma referência) à classe de qualidade BFO que ela mede."@pt .
 
 # ---------- Categorias usadas (notation = identificador curto que viaja nos Termos) ----------
 
-obo:BFO_0000040 rdfs:label "material entity"@en ; skos:notation "material_entity" .
-obo:BFO_0000015 rdfs:label "process"@en ;         skos:notation "process" .
-obo:BFO_0000019 rdfs:label "quality"@en ;         skos:notation "quality" .
-obo:BFO_0000029 rdfs:label "site"@en ;            skos:notation "site" .
+obo:BFO_0000040 rdfs:label "material entity"@en ;   skos:notation "material_entity" .
+obo:BFO_0000002 rdfs:label "continuant"@en ;         skos:notation "continuant" .
+obo:BFO_0000015 rdfs:label "process"@en ;            skos:notation "process" .
+obo:BFO_0000019 rdfs:label "quality"@en ;            skos:notation "quality" .
+obo:BFO_0000008 rdfs:label "temporal region"@en ;    skos:notation "temporal_region" .
+obo:BFO_0000148 rdfs:label "zero-dimensional temporal region"@en ; skos:notation "zero_dimensional_temporal_region" .
+obo:BFO_0000038 rdfs:label "one-dimensional temporal region"@en ;  skos:notation "one_dimensional_temporal_region" .
 obo:IAO_0000030 rdfs:label "information content entity"@en ; skos:notation "information_content_entity" ;
     rdfs:comment "Vem da IAO, não do núcleo ISO 21838-2 (P-07): confirmar qual extensão a equipe usará."@pt .
+obo:IAO_0000109 rdfs:label "measurement datum"@en ;  skos:notation "measurement_datum" .
 
-# ---------- Classes ----------
+# =====================================================================
+# 1. AXIOMAS DE COLOCAÇÃO
+# =====================================================================
 
-met:WeatherStation met:bfoCategory obo:BFO_0000040 ;
+# ---------- Classes do domínio ----------
+
+met:WeatherStation rdfs:subClassOf obo:BFO_0000040 ;
+    met:bfoCategory obo:BFO_0000040 ;
     rdfs:comment "Estação como entidade material (a plataforma que hospeda sensores). Hipótese: P-07."@pt .
 
+met:Site rdfs:subClassOf obo:BFO_0000040 ;
+    met:bfoCategory obo:BFO_0000040 ;
+    rdfs:comment "Mudou de 'site' para entidade material: o objeto de sosa:hasFeatureOfInterest é a PORÇÃO DE ATMOSFERA junto à estação, que é onde as qualidades (temperatura, umidade…) inerem. Um 'site' da BFO é uma região imaterial: ela é só a LOCALIZAÇÃO desse ar, não é o portador. O rótulo 'local observado' ficou enganoso, e renomear mexe no grafo (EM ABERTO, P-07)."@pt .
+
+met:Forecast rdfs:subClassOf obo:IAO_0000030 ;
+    met:bfoCategory obo:IAO_0000030 ;
+    rdfs:comment "Previsão como conteúdo de informação. EM ABERTO: é sobre o quê, se a qualidade futura ainda não existe? (P-07)"@pt .
+
+met:WeatherReport rdfs:subClassOf obo:IAO_0000030 ;
+    met:bfoCategory obo:IAO_0000030 ;
+    rdfs:comment "Boletim como conteúdo de informação. EM ABERTO: também é a coleção das observações de um instante."@pt .
+
+# As três classes de observação herdam 'processo' de sosa:Observation (abaixo): uma colocação, por herança.
 met:InstantaneousObservation met:bfoCategory obo:BFO_0000015 ;
     rdfs:comment "Observação como processo (a BFO-OBDA exige participante, WF4). Hipótese: P-07."@pt .
 met:AccumulatedObservation   met:bfoCategory obo:BFO_0000015 ;
@@ -44,35 +74,73 @@ met:AccumulatedObservation   met:bfoCategory obo:BFO_0000015 ;
 met:CloudLayerObservation    met:bfoCategory obo:BFO_0000015 ;
     rdfs:comment "Mesma colocação das demais observações."@pt .
 
-met:Forecast met:bfoCategory obo:IAO_0000030 ;
-    rdfs:comment "Previsão como conteúdo de informação. EM ABERTO: é sobre o quê, se a qualidade futura ainda não existe? (P-07)"@pt .
-
-met:Site met:bfoCategory obo:BFO_0000029 ;
-    rdfs:comment "O local observado (a atmosfera junto à estação). EM ABERTO: pode ser porção de ar (entidade material) em vez de sítio."@pt .
-
-met:WeatherReport met:bfoCategory obo:IAO_0000030 ;
-    rdfs:comment "Boletim como conteúdo de informação. EM ABERTO: também é a coleção das observações de um instante."@pt .
-
 met:CloudLayerResult met:bfoCategory obo:IAO_0000030 ;
-    rdfs:comment "Valor medido como entidade de informação (WF5 exige isAbout). Hipótese: P-07."@pt .
+    rdfs:comment "Valor medido como entidade de informação (herda de sosa:Result)."@pt .
 
-# ---------- Grandezas observáveis (indivíduos de sosa:ObservableProperty) ----------
+met:AggregationFunction rdfs:subClassOf obo:IAO_0000030 ;
+    rdfs:comment "Média, mínimo, máximo, soma e contagem são referências a operações, não entidades do mundo: conteúdo de informação."@pt .
+
+# ---------- Classes externas que o grafo usa (colocação feita AQUI porque a BFO é para o domínio, não para a SOSA/OWL-Time/QUDT) ----------
+
+sosa:Observation        rdfs:subClassOf obo:BFO_0000015 .
+sosa:Sensor             rdfs:subClassOf obo:BFO_0000040 .
+sosa:Platform           rdfs:subClassOf obo:BFO_0000040 .
+sosa:FeatureOfInterest  rdfs:subClassOf obo:BFO_0000002 ;
+    rdfs:comment "Restringe a SOSA para este grafo: aqui todo objeto de interesse é um continuante (a porção de atmosfera, met:Site). Em geral poderia ser um processo."@pt .
+sosa:Result             rdfs:subClassOf obo:IAO_0000030 .
+sosa:ObservableProperty rdfs:subClassOf obo:IAO_0000030 ;
+    rdfs:comment "Os indivíduos (met:AirTemperature…) são REFERÊNCIAS ao tipo de grandeza, não qualidades: a qualidade que cada um mede está em met:denotesQuality."@pt .
+qudt:QuantityValue      rdfs:subClassOf obo:IAO_0000109 .
+qudt:Unit               rdfs:subClassOf obo:IAO_0000030 .
+skos:Concept            rdfs:subClassOf obo:IAO_0000030 .
+skos:ConceptScheme      rdfs:subClassOf obo:IAO_0000030 .
+time:TemporalEntity     rdfs:subClassOf obo:BFO_0000008 .
+time:Instant            rdfs:subClassOf obo:BFO_0000148 .
+time:Interval           rdfs:subClassOf obo:BFO_0000038 .
+
+# ---------- Relações da SOSA e do OWL-Time especializando relações da BFO ----------
+# Observação (processo) tem como participantes o sensor e o objeto de interesse, e ocupa uma região temporal.
+
+sosa:madeBySensor         rdfs:subPropertyOf obo:BFO_0000057 .   # has participant
+sosa:hasFeatureOfInterest rdfs:subPropertyOf obo:BFO_0000057 .   # has participant
+sosa:phenomenonTime       rdfs:subPropertyOf obo:BFO_0000199 .   # occupies temporal region
+
+# ---------- Qualidades medidas (classes; os indivíduos sosa:ObservableProperty só as referenciam) ----------
 # EM ABERTO (P-07): a SOSA usa a propriedade GENÉRICA (tipo de grandeza), enquanto a BFO fala de qualidades PARTICULARES
-# que inerem a um portador (WF3 exige inheresIn). A categoria "quality" abaixo é a mais próxima, não uma tese resolvida.
-# Casos que provavelmente não são qualidades do ar e devem ser revistos: precipitação e duração da precipitação (processo
-# ou porção de água), vento e rajada (movimento do ar), visibilidade (disposição do ar de transmitir luz).
+# que inerem a um portador (WF3 exige inheresIn). Aqui há uma classe de qualidade por grandeza, sem indivíduos e sem inheresIn:
+# o grafo não instancia qualidades. Casos que provavelmente não são qualidades do ar e devem ser revistos: precipitação e
+# duração da precipitação (processo ou porção de água), vento e rajada (movimento do ar), visibilidade (disposição do ar de
+# transmitir luz), QNH (valor reduzido ao nível do mar, não uma qualidade do ar na estação).
 
-met:AirTemperature        met:bfoCategory obo:BFO_0000019 .
-met:RelativeHumidity      met:bfoCategory obo:BFO_0000019 .
-met:WetBulbTemperature    met:bfoCategory obo:BFO_0000019 .
-met:DewPointTemperature   met:bfoCategory obo:BFO_0000019 .
-met:RunwayTemperature     met:bfoCategory obo:BFO_0000019 ;
+met:AirTemperatureQuality        a owl:Class ; rdfs:subClassOf obo:BFO_0000019 ; rdfs:label "temperatura do ar (qualidade)"@pt .
+met:WetBulbTemperatureQuality    a owl:Class ; rdfs:subClassOf obo:BFO_0000019 ; rdfs:label "temperatura de bulbo úmido (qualidade)"@pt .
+met:DewPointTemperatureQuality   a owl:Class ; rdfs:subClassOf obo:BFO_0000019 ; rdfs:label "temperatura do ponto de orvalho (qualidade)"@pt .
+met:RelativeHumidityQuality      a owl:Class ; rdfs:subClassOf obo:BFO_0000019 ; rdfs:label "umidade relativa (qualidade)"@pt .
+met:RunwayTemperatureQuality     a owl:Class ; rdfs:subClassOf obo:BFO_0000019 ; rdfs:label "temperatura da pista (qualidade)"@pt ;
     rdfs:comment "Qualidade da pista, não do ar: portador diferente das demais temperaturas."@pt .
-met:PressureQNH           met:bfoCategory obo:BFO_0000019 .
-met:PrevailingVisibility  met:bfoCategory obo:BFO_0000019 .
-met:Precipitation         met:bfoCategory obo:BFO_0000019 .
-met:PrecipitationDuration met:bfoCategory obo:BFO_0000019 .
-met:WindSpeed             met:bfoCategory obo:BFO_0000019 .
-met:WindDirection         met:bfoCategory obo:BFO_0000019 .
-met:WindGust              met:bfoCategory obo:BFO_0000019 .
-met:CloudCover            met:bfoCategory obo:BFO_0000019 .
+met:PressureQNHQuality           a owl:Class ; rdfs:subClassOf obo:BFO_0000019 ; rdfs:label "pressão QNH (qualidade)"@pt .
+met:PrevailingVisibilityQuality  a owl:Class ; rdfs:subClassOf obo:BFO_0000019 ; rdfs:label "visibilidade predominante (qualidade)"@pt .
+met:PrecipitationAmountQuality   a owl:Class ; rdfs:subClassOf obo:BFO_0000019 ; rdfs:label "quantidade de precipitação (qualidade)"@pt .
+met:PrecipitationDurationQuality a owl:Class ; rdfs:subClassOf obo:BFO_0000019 ; rdfs:label "duração da precipitação (qualidade)"@pt .
+met:WindSpeedQuality             a owl:Class ; rdfs:subClassOf obo:BFO_0000019 ; rdfs:label "velocidade do vento (qualidade)"@pt .
+met:WindDirectionQuality         a owl:Class ; rdfs:subClassOf obo:BFO_0000019 ; rdfs:label "direção do vento (qualidade)"@pt .
+met:WindGustQuality              a owl:Class ; rdfs:subClassOf obo:BFO_0000019 ; rdfs:label "rajada de vento (qualidade)"@pt .
+met:CloudCoverQuality            a owl:Class ; rdfs:subClassOf obo:BFO_0000019 ; rdfs:label "nebulosidade (qualidade)"@pt .
+
+# =====================================================================
+# 2. REGISTRO DE CATEGORIAS DAS GRANDEZAS (derivado: categoria da classe de qualidade que cada uma denota)
+# =====================================================================
+
+met:AirTemperature        met:denotesQuality met:AirTemperatureQuality ;        met:bfoCategory obo:BFO_0000019 .
+met:RelativeHumidity      met:denotesQuality met:RelativeHumidityQuality ;      met:bfoCategory obo:BFO_0000019 .
+met:WetBulbTemperature    met:denotesQuality met:WetBulbTemperatureQuality ;    met:bfoCategory obo:BFO_0000019 .
+met:DewPointTemperature   met:denotesQuality met:DewPointTemperatureQuality ;   met:bfoCategory obo:BFO_0000019 .
+met:RunwayTemperature     met:denotesQuality met:RunwayTemperatureQuality ;     met:bfoCategory obo:BFO_0000019 .
+met:PressureQNH           met:denotesQuality met:PressureQNHQuality ;           met:bfoCategory obo:BFO_0000019 .
+met:PrevailingVisibility  met:denotesQuality met:PrevailingVisibilityQuality ;  met:bfoCategory obo:BFO_0000019 .
+met:Precipitation         met:denotesQuality met:PrecipitationAmountQuality ;   met:bfoCategory obo:BFO_0000019 .
+met:PrecipitationDuration met:denotesQuality met:PrecipitationDurationQuality ; met:bfoCategory obo:BFO_0000019 .
+met:WindSpeed             met:denotesQuality met:WindSpeedQuality ;             met:bfoCategory obo:BFO_0000019 .
+met:WindDirection         met:denotesQuality met:WindDirectionQuality ;         met:bfoCategory obo:BFO_0000019 .
+met:WindGust              met:denotesQuality met:WindGustQuality ;              met:bfoCategory obo:BFO_0000019 .
+met:CloudCover            met:denotesQuality met:CloudCoverQuality ;            met:bfoCategory obo:BFO_0000019 .
