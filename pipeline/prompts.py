@@ -125,6 +125,12 @@ INTERPRET_V6 = INTERPRET_V4.replace(
 10. Agrupamento fora da lista (ex.: por gênero de nuvem), ou filtro numérico junto de agrupamento: status "unsupported"."""
 
 
+# v7: v6 + filtros com unidade explícita e consulta montada por código também para agregação simples e contagem com limiar.
+INTERPRET_V7 = INTERPRET_V6 + """
+11. Todo filtro numérico leva "unit" (ex.: "unit:KiloM" se a pergunta diz km, "unit:M" se diz metros, "unit:DEG_C" para °C). Informe o número
+    e a unidade COMO NA PERGUNTA: o sistema converte para a unidade dos dados, não converta você."""
+
+
 @dataclass(frozen=True)
 class PromptSet:
     interpret: str
@@ -135,6 +141,7 @@ class PromptSet:
     grounded: bool = False      # dicas, fundamentação na pergunta, porta de data relativa, compilador e eco (v4)
     answer_plain: bool = False  # etapa 3 devolve texto, não JSON (menos saídas inválidas e menos chamadas de reparo)
     semantic: bool = False      # a etapa 1 recebe <semantica> (exige `semantics=` em run_pipeline)
+    compile_first: bool = False  # v7: monta por código também a agregação simples e a contagem com limiar (compile_structured(force=True))
     structured: bool = False    # a interpretação tem group_by/attributes/order e a consulta estruturada é montada por código (v6)
 
 
@@ -143,4 +150,5 @@ VERSIONS = {"v1": PromptSet(INTERPRET, GENERATE, ANSWER, "labels", "labels"),
             "v3": PromptSet(INTERPRET, GENERATE_V3, ANSWER, "ontology", "ontology"),
             "v4": PromptSet(INTERPRET_V4, GENERATE_V3, ANSWER_V4, "labels", "ontology", grounded=True, answer_plain=True),
             "v5": PromptSet(INTERPRET_V5, GENERATE_V3, ANSWER_V4, "labels", "ontology", grounded=True, answer_plain=True, semantic=True),
-            "v6": PromptSet(INTERPRET_V6, GENERATE_V3, ANSWER_V4, "interpret", "ontology", grounded=True, answer_plain=True, structured=True)}
+            "v6": PromptSet(INTERPRET_V6, GENERATE_V3, ANSWER_V4, "interpret", "ontology", grounded=True, answer_plain=True, structured=True),
+            "v7": PromptSet(INTERPRET_V7, GENERATE_V3, ANSWER_V4, "interpret", "ontology", grounded=True, answer_plain=True, structured=True, compile_first=True)}

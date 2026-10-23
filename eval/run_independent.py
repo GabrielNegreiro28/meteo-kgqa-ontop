@@ -142,7 +142,7 @@ def summarize(rows: list[dict], model: str, prompts: str, spent: float, sha: str
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--env", default=str(ROOT.parent / "METEOROLOGIA" / "kgqa.env"))
-    ap.add_argument("--prompts", choices=["v1", "v2", "v3", "v4", "v5", "v6"], default="v4")
+    ap.add_argument("--prompts", choices=["v1", "v2", "v3", "v4", "v5", "v6", "v7"], default="v4")
     ap.add_argument("--budget", type=float, default=2.0, help="teto desta execução em US$ (estimado)")
     ap.add_argument("--ledger", default=str(ROOT / "eval" / "reports" / "spend_ledger.jsonl"))
     ap.add_argument("--authorize-usd", type=float)

@@ -270,6 +270,11 @@ def _ground_in_question(interp: PipelineInterpretation, question: str, index: On
         in_q = bool(re.search(rf"(?<![\d.]){re.escape(shown)}(?!\d)", q.replace(",", ".")))
         if not in_q and not any(re.search(rf"\b{w}\b", q) for w in _NUMBER_WORDS):
             out.append(_err(L4, "FILTER_VALUE_NOT_IN_QUESTION", f"O valor {f['value']} do filtro não aparece na pergunta", filter=f))
+        # a pergunta diz '1 km' e o filtro ficou sem a unidade (ou em metros): o limiar seria 1 m, não 1000 m (E14 da avaliação independente)
+        if re.search(rf"(?<![\d.]){re.escape(shown)}\s*(km|quilometros?)\b", vocab.fold(q).replace(",", ".")) \
+                and str(f.get("unit", "")).rsplit(":", 1)[-1] != "KiloM":
+            out.append(_err(L4, "FILTER_UNIT_MISMATCH", f"A pergunta dá o limiar {shown} em km; informe \"unit\": \"unit:KiloM\" no filtro "
+                            "(o sistema converte para a unidade dos dados)", filter=f))
     # tempo
     dates = first(question_dates)
     years = first(lambda t: {int(y) for y in _YEAR.findall(t)})
@@ -744,7 +749,16 @@ def _conformance(interp: PipelineInterpretation, facts: QueryFacts, index: Ontol
                         esperado=[interp.aggregation], obtido=[]))
     # filtros numéricos
     numeric = [(c.op, c.value) for c in facts.comparisons if c.kind == "numeric"]
-    wanted = [(f["op"], Decimal(str(f["value"]))) for f in interp.filters if "op" in f and "value" in f]
+    canon = index.properties.get(expand(interp.properties[0])).unit if len(interp.properties) == 1 and expand(interp.properties[0]) in index.properties else None
+    wanted = []
+    for f in interp.filters:
+        if "op" not in f or "value" not in f:
+            continue
+        v = vocab.convert_filter_value(f["value"], f.get("unit"), canon)      # '1 km' numa grandeza em metros vale 1000, não 1
+        if v is None:
+            out.append(_err(L3, "FILTER_UNIT_UNKNOWN", f"Não sei converter a unidade {f.get('unit')} para {canon}: o limiar não pode ser aplicado", filter=f))
+            continue
+        wanted.append((f["op"], v))
     for op, val in wanted:
         if (op, val) not in numeric:
             same_val = [o for o, v in numeric if v == val]

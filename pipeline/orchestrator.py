@@ -406,11 +406,12 @@ def _run_pipeline(question: str, llm: LLMClient, backend: SparqlBackend, index: 
 
     # ---------------- etapa 2: gerar e validar o SPARQL ----------------
     sparql, facts, feedback = "", None, ""
-    structured = interp.structured
+    # v7: a consulta é montada por código sempre que há montagem determinística (inclui agregação simples e limiar); o LLM só escreve SPARQL no resto
+    structured = interp.structured or (ps.compile_first and compile_structured(interp, index, force=True) is not None)
     if structured:
         # Forma do resultado pedida (group_by/attributes/order): a consulta é MONTADA por código, não escrita pelo LLM. É fiel à
         # interpretação por construção e passa pelas mesmas regras; sem montagem determinística a pergunta é `unsupported`.
-        sparql = compile_structured(interp, index) or ""
+        sparql = compile_structured(interp, index, force=ps.compile_first) or ""
         log("compile_structured", sparql=sparql)
         if not sparql:
             return stop(Status.UNSUPPORTED, [Diagnostic("UNSUPPORTED_SHAPE", "info",

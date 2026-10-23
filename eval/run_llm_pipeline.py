@@ -193,7 +193,7 @@ def main() -> int:
     ap.add_argument("--budget", type=float, default=2.0, help="teto desta execução em US$ (estimado)")
     ap.add_argument("--limit", type=int)
     ap.add_argument("--dry-run", action="store_true")
-    ap.add_argument("--prompts", choices=["v1", "v2", "v3", "v4", "v5", "v6"], default="v1")
+    ap.add_argument("--prompts", choices=["v1", "v2", "v3", "v4", "v5", "v6", "v7"], default="v1")
     ap.add_argument("--semantic-workspace", default=str(ROOT / ".evoontology"), help="workspace da camada semântica (só v5)")
     ap.add_argument("--semantic-version", help="versão da camada (padrão: a ativa); a de um Candidate não troca a ativa")
     ap.add_argument("--ledger", default=str(ROOT / "eval" / "reports" / "spend_ledger.jsonl"),

@@ -101,12 +101,28 @@ def _attr_var(iri: str) -> str:
     return ATTRIBUTE_VAR.get(local, re.sub(r"\W", "", local.lower()))
 
 
-def compile_structured(interp: PipelineInterpretation, index: OntologyIndex) -> str | None:
-    """SPARQL da forma pedida, ou None se esta interpretação não tem montagem determinística (a pipeline então responde `unsupported`)."""
+def canonical_filters(interp: PipelineInterpretation, index: OntologyIndex) -> list[tuple[str, Decimal]] | None:
+    """Filtros da interpretação na unidade canônica da grandeza; None se algum não se converte (o chamador recusa em vez de chutar a escala)."""
+    info = index.properties.get(expand(interp.properties[0])) if len(interp.properties) == 1 else None
+    out = []
+    for f in interp.filters:
+        v = vocab.convert_filter_value(f["value"], f.get("unit"), info.unit if info else None)
+        if v is None:
+            return None
+        out.append((f["op"], v))
+    return out
+
+
+def compile_structured(interp: PipelineInterpretation, index: OntologyIndex, force: bool = False) -> str | None:
+    """SPARQL da forma pedida, ou None se esta interpretação não tem montagem determinística (a pipeline então responde `unsupported`).
+    `force=True` (prompt v7): também monta a agregação simples e a contagem com limiar, sem group_by/attributes/order."""
     from .validators import GROUP_DIMS, TIME_DIMS
-    if not interp.structured or interp.record_kind != "observation" or len(interp.properties) != 1 or interp.instant is not None:
+    if not (interp.structured or force) or interp.record_kind != "observation" or len(interp.properties) != 1 or interp.instant is not None:
         return None
-    if interp.filters:
+    if interp.filters and (interp.group_by or interp.attributes or interp.order):
+        return None                                   # filtro das leituras ou dos grupos? ambíguo (GROUPED_FILTER_AMBIGUOUS)
+    filters = canonical_filters(interp, index) if interp.filters else []
+    if filters is None:
         return None
     prop = expand(interp.properties[0])
     info = index.properties.get(prop)
@@ -146,6 +162,8 @@ def compile_structured(interp: PipelineInterpretation, index: OntologyIndex) -> 
         where.append(f"   sosa:hasResult/qudt:numericValue {v} .")
         if interp.period is not None or need_day:
             where.append(f"{obs} met:localDate {d} .")
+        for op, val in filters:
+            where.append(f"FILTER({v} {op} {format(val.normalize(), 'f')})")
         return where + period_filter(d)
 
     try:
@@ -197,6 +215,7 @@ def compile_structured(interp: PipelineInterpretation, index: OntologyIndex) -> 
             order = f"ORDER BY {sense}({main}) {order_keys}".strip() + f" LIMIT {int(interp.order['limit'])}"
         else:
             order = f"ORDER BY {order_keys}"
-        return f"{head} WHERE {{\n  " + "\n  ".join(where) + f"\n}} GROUP BY {' '.join(group_exprs)} {order}"
+        group = f" GROUP BY {' '.join(group_exprs)} {order}" if group_exprs else ""     # sem dimensões: um único valor, sem GROUP BY
+        return f"{head} WHERE {{\n  " + "\n  ".join(where) + f"\n}}{group}"
     except (KeyError, ValueError):
         return None
