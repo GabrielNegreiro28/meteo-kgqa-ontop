@@ -206,9 +206,32 @@ def build_v0(workspace: Path, version: str = "ontology_v0") -> dict[str, Any]:
     return {name: len(items) for name, items in records.items()}
 
 
+def is_stale(workspace: Path) -> bool:
+    """A camada ATIVA difere do que a ontologia atual produziria? (Termos, relações, restrições; a Evidência traz a impressão dos arquivos e
+    por isso também muda quando a ontologia muda.) Uma camada defasada afirma categorias e IRIs que a ontologia já não tem."""
+    from evoontology.ontology.store import SemanticStore
+    _, active = SemanticStore.load_records(workspace)
+    return active != build_records()
+
+
+def rebuild(workspace: Path) -> str | None:
+    """Se a camada ativa está defasada, grava a ontologia atual como a PRÓXIMA versão oficial e a ativa. Versões antigas ficam (reversível).
+    É o passo "Build" do §7.3 repetido quando a ontologia formal muda; devolve a versão criada, ou None se já estava em dia."""
+    from evoontology.ontology.store import SemanticStore
+    if not is_stale(workspace):
+        return None
+    numbers = [int(v.rsplit("_v", 1)[1]) for v in SemanticStore.list_versions(workspace) if v.startswith("ontology_v") and v.rsplit("_v", 1)[1].isdigit()]
+    version = f"ontology_v{max(numbers, default=-1) + 1}"
+    SemanticStore.save_version(workspace, version, build_records())
+    SemanticStore.set_active(workspace, version)
+    return version
+
+
 if __name__ == "__main__":
     import argparse
 
-    ap = argparse.ArgumentParser(description="Gera e publica a v0 da camada semântica a partir da ontologia")
+    ap = argparse.ArgumentParser(description="Gera e publica a v0 da camada semântica a partir da ontologia (ou, com --rebuild, a próxima versão se estiver defasada)")
     ap.add_argument("--workspace", type=Path, default=ROOT / ".evoontology")
-    print(build_v0(ap.parse_args().workspace))
+    ap.add_argument("--rebuild", action="store_true")
+    a = ap.parse_args()
+    print(rebuild(a.workspace) or "camada em dia" if a.rebuild else build_v0(a.workspace))

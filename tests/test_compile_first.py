@@ -162,3 +162,11 @@ def test_E31_two_station_comparison_returns_both_totals_on_the_real_graph():
     for s in ("SBRB", "SBPV"):
         d = oracle_real.between(oracle_real.load("obs_precip", s), date(2024, 10, 1), date(2024, 10, 31))
         assert got[s] == pytest.approx(float(d.value.sum()), rel=1e-6)
+
+
+def test_counting_days_has_its_own_caveat_not_the_readings_one():
+    from pipeline.caveats import answer_caveats
+    days = answer_caveats(_daily(), None, IDX)
+    assert any("DIAS" in c for c in days) and not any("de leituras, não de boletins" in c for c in days)
+    readings = answer_caveats(interp(properties=["met:AirTemperature"], entities=E("SBGR"), aggregation="count", filters=[{"op": ">", "value": 30}]), None, IDX)
+    assert any("de leituras, não de boletins" in c for c in readings)

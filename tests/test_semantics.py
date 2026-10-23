@@ -65,7 +65,8 @@ def test_every_class_and_observable_property_has_a_bfo_category_from_the_alignme
 
 
 def test_published_v0_passes_the_gate(ws):
-    assert validate_candidate(ws, "ontology_v0") == {"passed": True, "version": "ontology_v0", "errors": []}
+    r = validate_candidate(ws, "ontology_v0")
+    assert r["passed"] and r["errors"] == [] and r["version"] == "ontology_v0"
 
 
 def test_evidence_is_provenance_of_the_ontology_only():
@@ -222,3 +223,96 @@ def test_build_never_overwrites_a_published_version(ws):
     with pytest.raises(ValueError, match="não se sobrescrevem"):
         build_v0(ws)
     assert (ws / "versions" / "ontology_v0" / "terms.json").read_bytes() == before
+
+
+# ---------- porta de validação: raciocinador (HermiT) e formas SHACL ----------
+
+from ontology import formal_check as _fc  # noqa: E402
+
+needs_robot = pytest.mark.skipif(not _fc.available(), reason="ROBOT/Java ausentes")
+
+
+def _mini_abox() -> Graph:
+    """Uma observação com boletim, no estilo do que o mapeamento produz: o que a amostra do grafo real faria em escala."""
+    g = Graph()
+    obs, rep, sen = URIRef("https://example.org/x/obs1"), URIRef("https://example.org/x/rep1"), URIRef("https://example.org/x/sen1")
+    sosa = "http://www.w3.org/ns/sosa/"
+    g.add((obs, RDF.type, URIRef(sosa + "Observation")))
+    g.add((obs, RDF.type, URIRef(MET + "InstantaneousObservation")))
+    g.add((obs, URIRef(MET + "inReport"), rep))
+    g.add((rep, RDF.type, URIRef(MET + "WeatherReport")))
+    g.add((obs, URIRef(sosa + "madeBySensor"), sen))
+    g.add((sen, RDF.type, URIRef(sosa + "Sensor")))
+    return g
+
+
+def _relation(rec, source, rel, target):
+    rec["relations"].append({"id": f"rel.{source}.{rel}.{target}", "source": f"term.{source}", "relation_type": rel, "target": f"term.{target}",
+                             "connection_condition": "", "description": "", "evidence": []})
+
+
+def test_gate_shacl_units_include_every_unit_the_ontology_declares():
+    from semantics.gate import shape_units
+    from pipeline.vocab import OntologyIndex
+    idx = OntologyIndex.load()
+    assert {u.rsplit("/", 1)[-1] for u in idx.units} <= shape_units()
+
+
+def test_gate_rejects_a_unit_the_shapes_do_not_accept(ws):
+    def mutate(rec):
+        c = next(c for c in rec["constraints"] if c["id"] == "con.AirTemperature.unit")
+        c["description"] = "Unidade canônica de temperatura do ar: °C (unit:DEG_C) e unit:DEG_F."
+    r = candidate(ws, "m-unit-shape", mutate)
+    assert not r["passed"] and any("formas SHACL" in e for e in r["errors"])
+
+
+@needs_robot
+def test_gate_reasoner_accepts_the_untouched_parent(ws):
+    r = validate_candidate(ws, "ontology_v0", abox=_mini_abox(), require_reasoner=True)
+    assert r["passed"] and r["reasoner"] == "ok", r["errors"]
+
+
+@needs_robot
+def test_gate_reasoner_rejects_a_domain_that_contradicts_bfo(ws):
+    """met:inReport passa a ter como domínio a ESTAÇÃO (entidade material), mas toda observação (processo) a usa: a BFO declara continuante e
+    ocorrente disjuntos. O raciocinador recusa já nos axiomas e, com a amostra do grafo, também (a mesma classe de defeito do Codex C08)."""
+    def mutate(rec):
+        _relation(rec, "inReport", "has_domain", "WeatherStation")
+    _, records = SemanticStore.load_records(ws, version="ontology_v0")
+    records = copy.deepcopy(records)
+    mutate(records)
+    SemanticStore.save_version(ws, "m-bad-domain", records)
+    without = validate_candidate(ws, "m-bad-domain", require_reasoner=True)
+    with_sample = validate_candidate(ws, "m-bad-domain", abox=_mini_abox(), require_reasoner=True)
+    assert not without["passed"] and any("raciocinador recusa" in e for e in without["errors"])
+    assert not with_sample["passed"] and any("raciocinador recusa" in e and "inReport" in e for e in with_sample["errors"])
+
+
+def test_gate_strict_mode_fails_without_the_reasoner(ws, monkeypatch):
+    monkeypatch.setattr(_fc, "available", lambda: False)
+    r = validate_candidate(ws, "ontology_v0", require_reasoner=True)
+    assert not r["passed"] and r["reasoner"] == "unavailable" and any("raciocinador indisponível" in e for e in r["errors"])
+    assert validate_candidate(ws, "ontology_v0")["passed"]            # modo padrão: não bloqueia, só diz que não conferiu
+
+
+# ---------- a camada publicada acompanha a ontologia ----------
+
+def test_the_published_active_layer_is_not_stale_against_the_ontology():
+    """Se a ontologia muda (categoria BFO, rótulo, agregação…) e a camada ativa não é refeita, ela afirma o que a ontologia já não diz e a porta
+    de validação passa a recusar todo Candidate derivado dela. Conserto: `python -m semantics.build --rebuild` (grava a próxima versão e a ativa)."""
+    from semantics.build import is_stale
+    assert not is_stale(ROOT / ".evoontology"), "camada ativa defasada: rode `python -m semantics.build --rebuild`"
+
+
+def test_rebuild_creates_the_next_version_only_when_stale(tmp_path):
+    from semantics.build import rebuild
+    build_v0(tmp_path)
+    assert rebuild(tmp_path) is None                              # em dia: nada a fazer
+    _, records = SemanticStore.load_records(tmp_path, version="ontology_v0")
+    records = copy.deepcopy(records)
+    term(records, "WeatherStation")["bfo_category"] = "site"      # simula uma camada defasada
+    SemanticStore.save_version(tmp_path, "ontology_v1", records)
+    SemanticStore.set_active(tmp_path, "ontology_v1")
+    assert rebuild(tmp_path) == "ontology_v2"
+    assert SemanticStore.active_version(tmp_path) == "ontology_v2"
+    assert "ontology_v1" in SemanticStore.list_versions(tmp_path)  # a anterior continua (reversível)

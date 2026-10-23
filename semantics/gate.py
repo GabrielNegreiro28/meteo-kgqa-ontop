@@ -5,10 +5,16 @@ decidir sozinho:
   1. todo Termo governado tem IRI, e o IRI existe na ontologia formal;
   2. a categoria BFO do Termo é a da ontologia (met-bfo.ttl); ela nunca é inventada, e é obrigatória para classes e grandezas;
   3. dois Termos não disputam o mesmo IRI;
-  4. as Restrições que o grafo formal também afirma (agregações permitidas, unidade) não o contradizem.
+  4. as Restrições que o grafo formal também afirma (agregações permitidas, unidade) não o contradizem;
+  5. a unidade que uma Restrição cita está entre as que as formas SHACL (ontology/shapes.ttl) admitem;
+  6. as Relações do Candidate com semântica OWL (`has_domain`, `has_range`) não tornam a ontologia inconsistente nem deixam classe
+     insatisfatível: o raciocinador (HermiT) roda sobre a visão completa OWL 2 DL MAIS esses axiomas, e opcionalmente sobre uma amostra
+     do grafo real (`abox`), que é o que pega o defeito do Codex C08.
 
 Limite honesto: Restrição em texto livre não pode ser conferida por regra. Só as que têm forma (`allowed_aggregations`,
-`unit`) são comparadas com os axiomas; as demais passam por esta porta e dependem da avaliação pareada e da revisão.
+`unit`) são comparadas com os axiomas; as demais passam por esta porta e dependem da avaliação pareada e da revisão. Relações de outros
+tipos (`observed_as`) não são axiomas OWL e não passam pelo raciocinador. Sem ROBOT/Java o passo 6 é `unavailable`: só vira erro com
+`require_reasoner=True` (o modo da execução de evolução).
 """
 from __future__ import annotations
 
@@ -26,8 +32,76 @@ from .build import BFO_REQUIRED, BFO_TTL, MET_TTL, STRUCTURE_TTL, _bfo_table
 _AGG = re.compile(r":\s*([A-Za-z, ]+)\.?\s*$")
 
 
+SHAPES_TTL = MET_TTL.parent / "shapes.ttl"
+_SH_IN = URIRef("http://www.w3.org/ns/shacl#in")
+_UNIT_TOKEN = re.compile(r"unit:(\w+)")
+
+
+def shape_units(shapes: Path = SHAPES_TTL) -> set[str]:
+    """Unidades que as formas SHACL aceitam em qudt:unit (nomes curtos, ex.: DEG_C)."""
+    from rdflib.collection import Collection
+    g = Graph().parse(shapes)
+    out: set[str] = set()
+    for lst in g.objects(None, _SH_IN):
+        out |= {str(u).rsplit("/", 1)[-1] for u in Collection(g, lst)}
+    return out
+
+
+def _relation_axioms(records: dict[str, Any]) -> list[tuple[URIRef, URIRef, URIRef, str]]:
+    """Relações do Candidate com semântica OWL como (s, p, o, id): has_domain -> rdfs:domain, has_range -> rdfs:range."""
+    from rdflib.namespace import RDFS
+    terms = {t["id"]: t for t in records["terms"]}
+    pred = {"has_domain": RDFS.domain, "has_range": RDFS.range}
+    out = []
+    for r in records["relations"]:
+        s, o = terms.get(r.get("source", ""), {}), terms.get(r.get("target", ""), {})
+        if r.get("relation_type") in pred and s.get("iri") and o.get("iri"):
+            out.append((URIRef(s["iri"]), pred[r["relation_type"]], URIRef(o["iri"]), r["id"]))
+    return out
+
+
+def reasoner_check(records: dict[str, Any], abox: Graph | None = None) -> tuple[str, list[str]]:
+    """('ok'|'unavailable', erros). Visão completa + axiomas das Relações do Candidate (+ amostra do grafo real) no HermiT, num arquivo só
+    (o ROBOT lê cada arquivo sozinho e propriedade não declarada nele vira anotação: ver DECISOES.md D-84)."""
+    import tempfile
+
+    from ontology import build_views as bv
+    from ontology import formal_check as fc
+    if not fc.available():
+        return "unavailable", []
+    base = bv.build_dl()
+    extra = _relation_axioms(records)
+
+    def consistent(axioms, with_abox: bool) -> tuple[bool, str]:
+        g = Graph()
+        for t in base:
+            g.add(t)
+        for s, p, o, _ in axioms:
+            g.add((s, p, o))
+        if with_abox and abox is not None:
+            for t in abox:
+                g.add(t)
+        with tempfile.TemporaryDirectory() as d:
+            f = Path(d) / "candidate.ttl"
+            f.write_text(g.serialize(format="turtle"), encoding="utf-8")
+            return fc.reason(f)
+
+    ok, text = consistent(extra, True)
+    if ok:
+        return "ok", []
+    errors = []
+    for ax in extra:                                           # qual Relação quebra: uma de cada vez
+        if not consistent([ax], True)[0]:
+            errors.append(f"{ax[3]}: o raciocinador recusa este axioma (inconsistência ou classe insatisfatível com a ontologia"
+                          f"{' e a amostra do grafo real' if abox is not None else ''})")
+    if not errors:
+        errors.append("a ontologia (visão completa" + (" + amostra do grafo real" if abox is not None else "") + ") já é inconsistente antes do Candidate: "
+                      + " ".join(text[-300:].split()))
+    return "ok", errors
+
+
 def validate_candidate(workspace: str | Path, version: str, ontology: Path = MET_TTL, structure: Path = STRUCTURE_TTL,
-                       bfo: Path = BFO_TTL) -> dict[str, Any]:
+                       bfo: Path = BFO_TTL, *, abox: Graph | None = None, require_reasoner: bool = False) -> dict[str, Any]:
     _, records = SemanticStore.load_records(workspace, version=version)
     formal = Graph().parse(ontology)
     subjects = {str(s) for s in formal.subjects()}
@@ -72,4 +146,14 @@ def validate_candidate(workspace: str | Path, version: str, ontology: Path = MET
             sym = idx.unit_symbols.get(info.unit, "")
             if _short(info.unit) not in c.get("description", "") and (not sym or sym not in c.get("description", "")):
                 errors.append(f"{c['id']}: unidade diverge da canônica {sym or _short(info.unit)}")
-    return {"passed": not errors, "version": version, "errors": errors}
+    allowed_units = shape_units()
+    for c in records["constraints"]:
+        if c.get("constraint_type") == "unit":
+            unknown = {u for u in _UNIT_TOKEN.findall(c.get("description", ""))} - allowed_units
+            if unknown:
+                errors.append(f"{c['id']}: unidade {sorted(unknown)} não é aceita pelas formas SHACL (ontology/shapes.ttl)")
+    status, rerrors = reasoner_check(records, abox)
+    errors += rerrors
+    if status == "unavailable" and require_reasoner:
+        errors.append("raciocinador indisponível (ROBOT/Java): modo estrito exige a checagem OWL; instale com ontology/imports/fetch.sh")
+    return {"passed": not errors, "version": version, "errors": errors, "reasoner": status}

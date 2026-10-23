@@ -24,14 +24,24 @@ pergunta ──► etapa 1: interpretar (LLM → JSON) ──► regras L2–L4 
 |---|---|---|
 | Dados | `ingest/`, `data/REGRAS_LIMPEZA.md`, `data/DICIONARIO_DADOS.md` | CSV → pacotes verificados → DuckDB (limpeza e quarentena) → PostgreSQL |
 | Grafo virtual | `mapping/`, `ontology/met.ttl` | Ontop expõe o banco como grafo SOSA/OWL-Time/QUDT, sem copiar dados |
-| Camada estrutural | `ontology/met-structure.ttl`, `met-bfo.ttl` | tipos, relações, agregações, ressalvas e alinhamento **provisório** com a BFO (só a pipeline lê) |
+| Ontologia formal | `ontology/` (`met.ttl`, `met-structure.ttl`, `met-bfo.ttl`, `met-external.ttl`, `imports/`, `generated/`) | **uma fonte, três visões**: BFO 2020 importada sem alteração e alinhamento por axiomas; visão OWL 2 DL conferida pelo HermiT, visão QL e a visão que o Ontop carrega (`build_views.py`). O alinhamento é **provisório** (`docs/DUVIDAS_ONTOLOGIA.md`) |
 | Executor | `kgqa/store.py` | SPARQL somente leitura: política, limite de linhas, tempo, reformulação pelo motor |
 | Pipeline | `pipeline/` | interpretação, validadores L1 a L5, compilador, ressalvas, procedência, diálogo |
-| Camada semântica | `semantics/` | EvoOntology ligado à ontologia formal: Termos com IRI e categoria BFO, fachada MCP, porta de validação, trajetórias |
-| Avaliação | `eval/`, `tests/` | 6 conjuntos de perguntas com oráculo independente em pandas, estatística, ~970 testes |
+| Camada semântica | `semantics/` | EvoOntology ligado à ontologia formal: Termos com IRI e categoria BFO, fachada MCP, porta de validação (IRI, BFO, SHACL, raciocinador), trajetórias e o **ciclo de evolução** (`evolve.py`, `run_evolution.py`) |
+| Avaliação | `eval/`, `tests/` | 6 conjuntos de perguntas com oráculo independente em pandas, mais um **conjunto independente congelado** (49 perguntas, `eval/run_independent.py`), estatística, ~1070 testes |
 
 Versões do prompt (`--prompts`): `v1` só rótulos · `v2` correções do dev · `v3` ontologia no contexto · `v4` fundamentação na pergunta (L4), dicas, compilador de
-reserva · `v5` = v4 + bloco da camada semântica · `v6` = v4 + forma do resultado (`group_by`, `attributes`, `order`) com consulta montada por código.
+reserva · `v5` = v4 + bloco da camada semântica · `v6` = v4 + forma do resultado (`group_by`, `attributes`, `order`) com consulta montada por código · `v7` = v6 + filtros com unidade explícita e consulta montada por código também para agregação simples, contagem com limiar e **dias com condição** (`daily`). **`v7` é o padrão da linha de comando e ainda NÃO foi medido com LLM real.**
+
+## Perguntar (linha de comando)
+
+```bash
+python -m kgqa "Qual a temperatura média de SBGL em fevereiro de 2021?"     # precisa do Ontop no ar e do kgqa.env (chave fora do repositório)
+python -m kgqa --show-query "Em SBLO, quantas horas de 2020 acumularam pelo menos 10 mm de chuva?"
+python -m kgqa --interactive < perguntas.txt        # várias perguntas; --json devolve a resposta completa (contrato 0.2.1)
+```
+Mostra como entendeu a pergunta e pede confirmação quando houve suposição, responde com ressalvas e procedência, e recusa (`unsupported`) o que os dados não têm.
+Cada pergunta custa centavos de LLM, limitados por `--budget` e pelo teto do ledger.
 
 ## Instalar e rodar
 
@@ -57,6 +67,14 @@ python -m eval.run_llm_pipeline --suite real_gen --prompts v6 --budget 0.8 --tag
 python -m eval.stats eval/reports/llm_run_v4_real_gen_v4.json eval/reports/llm_run_v6_real_gen_v6.json,eval/reports/llm_run_v6_real_gen_v6_rg24.json   # IC e McNemar; vírgula = arquivos da MESMA condição (RG24 rodou à parte); perguntas diferentes entre condições dão erro
 ```
 A chave vai em `OPENAI_API_KEY` no `kgqa.env` (fora do repositório). Nada é gasto por `pytest`.
+
+**Verificação formal da ontologia e ciclo de evolução** (não gastam LLM):
+```bash
+bash ontology/imports/fetch.sh                        # instala o ROBOT (HermiT e validador de perfis OWL 2) em ~/tools/onto
+python -m ontology.build_views                        # regera ontology/generated/ (um teste confere que está em dia)
+python -m semantics.build --rebuild                   # refaz a camada semântica se a ontologia mudou
+python -m semantics.run_evolution --seed-gold --require-reasoner --sample-graph     # minera, avalia Parent x Candidate, aceita ou rejeita (numa cópia)
+```
 
 ## O que a medição mostra (e o que não mostra)
 
