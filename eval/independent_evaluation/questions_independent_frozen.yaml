@@ -1,0 +1,1442 @@
+questions:
+- id: E01
+  category: simples
+  question: Qual foi a temperatura média do ar em SBAN em maio de 2016?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte solicitados estão disponíveis nos CSV e permitem cálculo direto.
+  assumptions: 'Horários em Brasília, UTC−3 fixo; datas incluem os dias indicados. Vazios, textos não numéricos e valores
+    fora dos limites declarados são ausentes, nunca zero. Faixas aceitas: bseco: de -80 a 60, inclusive, na unidade original.
+    Temperatura em °C. Duplicatas de estação e instante são consolidadas pela média de cada valor válido; cada instante tem
+    peso igual.'
+  oracle_pandas: |
+    import pandas as pd
+    from pathlib import Path
+
+    path = Path('C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\METEOROLOGIA') / 'temperatura.csv'
+    columns = ['sigla', 'hora_observacao', 'bseco']
+    stations = ['SBAN']
+    parts = []
+    for chunk in pd.read_csv(path, usecols=columns, dtype=str, sep=None,
+                             engine="python", chunksize=50000):
+        chunk["sigla"] = chunk["sigla"].str.strip().str.upper()
+        chunk = chunk.loc[chunk["sigla"].isin(stations)].copy()
+        chunk["hora_observacao"] = pd.to_datetime(chunk["hora_observacao"], errors="coerce")
+        chunk = chunk.loc[chunk["hora_observacao"].ge(pd.Timestamp('2016-05-01')) &
+                          chunk["hora_observacao"].lt(pd.Timestamp('2016-06-01'))]
+        if not chunk.empty:
+            parts.append(chunk)
+    d = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=columns)
+    d["hora_observacao"] = pd.to_datetime(d["hora_observacao"], errors="coerce")
+    d['bseco'] = pd.to_numeric(d['bseco'].astype("string").str.strip().str.replace(",", ".", regex=False), errors="coerce")
+    d['bseco'] = d['bseco'].where(d['bseco'].between(-80, 60)).astype(float) * 1
+    d = d.groupby(["sigla", "hora_observacao"], as_index=False)[['bseco']].mean()
+    def value(x):
+        return None if pd.isna(x) else float(x)
+    result = [(value(d["bseco"].mean()),)]
+- id: E02
+  category: simples
+  question: A que temperatura chegou o dia mais quente de 2024 em SBAR?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte solicitados estão disponíveis nos CSV e permitem cálculo direto.
+  assumptions: 'Horários em Brasília, UTC−3 fixo; datas incluem os dias indicados. Vazios, textos não numéricos e valores
+    fora dos limites declarados são ausentes, nunca zero. Faixas aceitas: bseco: de -80 a 60, inclusive, na unidade original.
+    Interpreta-se como a maior temperatura do ar observada, em °C, sem estimar extremos entre medições. Duplicatas de estação
+    e instante são consolidadas pela média de cada valor válido; cada instante tem peso igual.'
+  oracle_pandas: |
+    import pandas as pd
+    from pathlib import Path
+
+    path = Path('C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\METEOROLOGIA') / 'temperatura.csv'
+    columns = ['sigla', 'hora_observacao', 'bseco']
+    stations = ['SBAR']
+    parts = []
+    for chunk in pd.read_csv(path, usecols=columns, dtype=str, sep=None,
+                             engine="python", chunksize=50000):
+        chunk["sigla"] = chunk["sigla"].str.strip().str.upper()
+        chunk = chunk.loc[chunk["sigla"].isin(stations)].copy()
+        chunk["hora_observacao"] = pd.to_datetime(chunk["hora_observacao"], errors="coerce")
+        chunk = chunk.loc[chunk["hora_observacao"].ge(pd.Timestamp('2024-01-01')) &
+                          chunk["hora_observacao"].lt(pd.Timestamp('2025-01-01'))]
+        if not chunk.empty:
+            parts.append(chunk)
+    d = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=columns)
+    d["hora_observacao"] = pd.to_datetime(d["hora_observacao"], errors="coerce")
+    d['bseco'] = pd.to_numeric(d['bseco'].astype("string").str.strip().str.replace(",", ".", regex=False), errors="coerce")
+    d['bseco'] = d['bseco'].where(d['bseco'].between(-80, 60)).astype(float) * 1
+    d = d.groupby(["sigla", "hora_observacao"], as_index=False)[['bseco']].mean()
+    def value(x):
+        return None if pd.isna(x) else float(x)
+    result = [(value(d["bseco"].max()),)]
+- id: E03
+  category: simples
+  question: Quero o menor ponto de orvalho registrado em SBBI durante julho de 2019.
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte solicitados estão disponíveis nos CSV e permitem cálculo direto.
+  assumptions: 'Horários em Brasília, UTC−3 fixo; datas incluem os dias indicados. Vazios, textos não numéricos e valores
+    fora dos limites declarados são ausentes, nunca zero. Faixas aceitas: temppo: de -100 a 60, inclusive, na unidade original.
+    Ponto de orvalho em °C. Duplicatas de estação e instante são consolidadas pela média de cada valor válido; cada instante
+    tem peso igual.'
+  oracle_pandas: |
+    import pandas as pd
+    from pathlib import Path
+
+    path = Path('C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\METEOROLOGIA') / 'temperatura.csv'
+    columns = ['sigla', 'hora_observacao', 'temppo']
+    stations = ['SBBI']
+    parts = []
+    for chunk in pd.read_csv(path, usecols=columns, dtype=str, sep=None,
+                             engine="python", chunksize=50000):
+        chunk["sigla"] = chunk["sigla"].str.strip().str.upper()
+        chunk = chunk.loc[chunk["sigla"].isin(stations)].copy()
+        chunk["hora_observacao"] = pd.to_datetime(chunk["hora_observacao"], errors="coerce")
+        chunk = chunk.loc[chunk["hora_observacao"].ge(pd.Timestamp('2019-07-01')) &
+                          chunk["hora_observacao"].lt(pd.Timestamp('2019-08-01'))]
+        if not chunk.empty:
+            parts.append(chunk)
+    d = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=columns)
+    d["hora_observacao"] = pd.to_datetime(d["hora_observacao"], errors="coerce")
+    d['temppo'] = pd.to_numeric(d['temppo'].astype("string").str.strip().str.replace(",", ".", regex=False), errors="coerce")
+    d['temppo'] = d['temppo'].where(d['temppo'].between(-100, 60)).astype(float) * 1
+    d = d.groupby(["sigla", "hora_observacao"], as_index=False)[['temppo']].mean()
+    def value(x):
+        return None if pd.isna(x) else float(x)
+    result = [(value(d["temppo"].min()),)]
+- id: E04
+  category: simples
+  question: Em 2021, qual foi a umidade relativa média de SBBV?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte solicitados estão disponíveis nos CSV e permitem cálculo direto.
+  assumptions: 'Horários em Brasília, UTC−3 fixo; datas incluem os dias indicados. Vazios, textos não numéricos e valores
+    fora dos limites declarados são ausentes, nunca zero. Faixas aceitas: ur: de 0 a 100, inclusive, na unidade original.
+    Umidade relativa em %. Duplicatas de estação e instante são consolidadas pela média de cada valor válido; cada instante
+    tem peso igual.'
+  oracle_pandas: |
+    import pandas as pd
+    from pathlib import Path
+
+    path = Path('C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\METEOROLOGIA') / 'temperatura.csv'
+    columns = ['sigla', 'hora_observacao', 'ur']
+    stations = ['SBBV']
+    parts = []
+    for chunk in pd.read_csv(path, usecols=columns, dtype=str, sep=None,
+                             engine="python", chunksize=50000):
+        chunk["sigla"] = chunk["sigla"].str.strip().str.upper()
+        chunk = chunk.loc[chunk["sigla"].isin(stations)].copy()
+        chunk["hora_observacao"] = pd.to_datetime(chunk["hora_observacao"], errors="coerce")
+        chunk = chunk.loc[chunk["hora_observacao"].ge(pd.Timestamp('2021-01-01')) &
+                          chunk["hora_observacao"].lt(pd.Timestamp('2022-01-01'))]
+        if not chunk.empty:
+            parts.append(chunk)
+    d = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=columns)
+    d["hora_observacao"] = pd.to_datetime(d["hora_observacao"], errors="coerce")
+    d['ur'] = pd.to_numeric(d['ur'].astype("string").str.strip().str.replace(",", ".", regex=False), errors="coerce")
+    d['ur'] = d['ur'].where(d['ur'].between(0, 100)).astype(float) * 1
+    d = d.groupby(["sigla", "hora_observacao"], as_index=False)[['ur']].mean()
+    def value(x):
+        return None if pd.isna(x) else float(x)
+    result = [(value(d["ur"].mean()),)]
+- id: E05
+  category: simples
+  question: Preciso da média do QNH de SBCF entre 1º e 15 de setembro de 2022.
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte solicitados estão disponíveis nos CSV e permitem cálculo direto.
+  assumptions: 'Horários em Brasília, UTC−3 fixo; datas incluem os dias indicados. Vazios, textos não numéricos e valores
+    fora dos limites declarados são ausentes, nunca zero. Faixas aceitas: qnh: de 850 a 1100, inclusive, na unidade original.
+    QNH em hPa. Duplicatas de estação e instante são consolidadas pela média de cada valor válido; cada instante tem peso
+    igual.'
+  oracle_pandas: |
+    import pandas as pd
+    from pathlib import Path
+
+    path = Path('C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\METEOROLOGIA') / 'pressao.csv'
+    columns = ['sigla', 'hora_observacao', 'qnh']
+    stations = ['SBCF']
+    parts = []
+    for chunk in pd.read_csv(path, usecols=columns, dtype=str, sep=None,
+                             engine="python", chunksize=50000):
+        chunk["sigla"] = chunk["sigla"].str.strip().str.upper()
+        chunk = chunk.loc[chunk["sigla"].isin(stations)].copy()
+        chunk["hora_observacao"] = pd.to_datetime(chunk["hora_observacao"], errors="coerce")
+        chunk = chunk.loc[chunk["hora_observacao"].ge(pd.Timestamp('2022-09-01')) &
+                          chunk["hora_observacao"].lt(pd.Timestamp('2022-09-16'))]
+        if not chunk.empty:
+            parts.append(chunk)
+    d = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=columns)
+    d["hora_observacao"] = pd.to_datetime(d["hora_observacao"], errors="coerce")
+    d['qnh'] = pd.to_numeric(d['qnh'].astype("string").str.strip().str.replace(",", ".", regex=False), errors="coerce")
+    d['qnh'] = d['qnh'].where(d['qnh'].between(850, 1100)).astype(float) * 1
+    d = d.groupby(["sigla", "hora_observacao"], as_index=False)[['qnh']].mean()
+    def value(x):
+        return None if pd.isna(x) else float(x)
+    result = [(value(d["qnh"].mean()),)]
+- id: E06
+  category: simples
+  question: Qual a menor visibilidade que apareceu em SBCG em agosto de 2020?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte solicitados estão disponíveis nos CSV e permitem cálculo direto.
+  assumptions: 'Horários em Brasília, UTC−3 fixo; datas incluem os dias indicados. Vazios, textos não numéricos e valores
+    fora dos limites declarados são ausentes, nunca zero. Faixas aceitas: visibpre: de 0 a 2000, inclusive, na unidade original.
+    Visibilidade multiplicada por 10 para obter metros; 2000 representa pelo menos 20000 m e é tratado como 20000 m, portanto
+    médias ficam limitadas pelo teto de registro. Duplicatas de estação e instante são consolidadas pela média de cada valor
+    válido; cada instante tem peso igual.'
+  oracle_pandas: |
+    import pandas as pd
+    from pathlib import Path
+
+    path = Path('C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\METEOROLOGIA') / 'visibilidade.csv'
+    columns = ['sigla', 'hora_observacao', 'visibpre']
+    stations = ['SBCG']
+    parts = []
+    for chunk in pd.read_csv(path, usecols=columns, dtype=str, sep=None,
+                             engine="python", chunksize=50000):
+        chunk["sigla"] = chunk["sigla"].str.strip().str.upper()
+        chunk = chunk.loc[chunk["sigla"].isin(stations)].copy()
+        chunk["hora_observacao"] = pd.to_datetime(chunk["hora_observacao"], errors="coerce")
+        chunk = chunk.loc[chunk["hora_observacao"].ge(pd.Timestamp('2020-08-01')) &
+                          chunk["hora_observacao"].lt(pd.Timestamp('2020-09-01'))]
+        if not chunk.empty:
+            parts.append(chunk)
+    d = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=columns)
+    d["hora_observacao"] = pd.to_datetime(d["hora_observacao"], errors="coerce")
+    d['visibpre'] = pd.to_numeric(d['visibpre'].astype("string").str.strip().str.replace(",", ".", regex=False), errors="coerce")
+    d['visibpre'] = d['visibpre'].where(d['visibpre'].between(0, 2000)).astype(float) * 10
+    d = d.groupby(["sigla", "hora_observacao"], as_index=False)[['visibpre']].mean()
+    def value(x):
+        return None if pd.isna(x) else float(x)
+    result = [(value(d["visibpre"].min()),)]
+- id: E07
+  category: simples
+  question: Quanto choveu ao todo em SBCH em junho de 2023?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte solicitados estão disponíveis nos CSV e permitem cálculo direto.
+  assumptions: 'Horários em Brasília, UTC−3 fixo; datas incluem os dias indicados. Vazios, textos não numéricos e valores
+    fora dos limites declarados são ausentes, nunca zero. Faixas aceitas: precip: de 0 a 300, inclusive, na unidade original.
+    Chuva em mm; o total soma apenas medições válidas disponíveis, sem preencher lacunas. Sem nenhuma medição válida, o total
+    é nulo. Duplicatas de estação e instante são consolidadas pela média de cada valor válido; cada instante tem peso igual.
+    Usam-se somente instantes exatamente na hora cheia para não somar janelas horárias sobrepostas ou contar uma hora várias
+    vezes.'
+  oracle_pandas: |
+    import pandas as pd
+    from pathlib import Path
+
+    path = Path('C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\METEOROLOGIA') / 'precipitacao.csv'
+    columns = ['sigla', 'hora_observacao', 'precip']
+    stations = ['SBCH']
+    parts = []
+    for chunk in pd.read_csv(path, usecols=columns, dtype=str, sep=None,
+                             engine="python", chunksize=50000):
+        chunk["sigla"] = chunk["sigla"].str.strip().str.upper()
+        chunk = chunk.loc[chunk["sigla"].isin(stations)].copy()
+        chunk["hora_observacao"] = pd.to_datetime(chunk["hora_observacao"], errors="coerce")
+        chunk = chunk.loc[chunk["hora_observacao"].ge(pd.Timestamp('2023-06-01')) &
+                          chunk["hora_observacao"].lt(pd.Timestamp('2023-07-01'))]
+        if not chunk.empty:
+            parts.append(chunk)
+    d = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=columns)
+    d["hora_observacao"] = pd.to_datetime(d["hora_observacao"], errors="coerce")
+    d['precip'] = pd.to_numeric(d['precip'].astype("string").str.strip().str.replace(",", ".", regex=False), errors="coerce")
+    d['precip'] = d['precip'].where(d['precip'].between(0, 300)).astype(float) * 1
+    d = d.loc[d["hora_observacao"].eq(d["hora_observacao"].dt.floor("h"))].copy()
+    d = d.groupby(["sigla", "hora_observacao"], as_index=False)[['precip']].mean()
+    def value(x):
+        return None if pd.isna(x) else float(x)
+    result = [(value(d["precip"].sum(min_count=1)),)]
+- id: E08
+  category: simples
+  question: Qual foi a média da temperatura de bulbo úmido em SBEG no ano de 2025?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte solicitados estão disponíveis nos CSV e permitem cálculo direto.
+  assumptions: 'Horários em Brasília, UTC−3 fixo; datas incluem os dias indicados. Vazios, textos não numéricos e valores
+    fora dos limites declarados são ausentes, nunca zero. Faixas aceitas: bumido: de -80 a 60, inclusive, na unidade original.
+    Bulbo úmido em °C. Duplicatas de estação e instante são consolidadas pela média de cada valor válido; cada instante tem
+    peso igual.'
+  oracle_pandas: |
+    import pandas as pd
+    from pathlib import Path
+
+    path = Path('C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\METEOROLOGIA') / 'temperatura.csv'
+    columns = ['sigla', 'hora_observacao', 'bumido']
+    stations = ['SBEG']
+    parts = []
+    for chunk in pd.read_csv(path, usecols=columns, dtype=str, sep=None,
+                             engine="python", chunksize=50000):
+        chunk["sigla"] = chunk["sigla"].str.strip().str.upper()
+        chunk = chunk.loc[chunk["sigla"].isin(stations)].copy()
+        chunk["hora_observacao"] = pd.to_datetime(chunk["hora_observacao"], errors="coerce")
+        chunk = chunk.loc[chunk["hora_observacao"].ge(pd.Timestamp('2025-01-01')) &
+                          chunk["hora_observacao"].lt(pd.Timestamp('2026-01-01'))]
+        if not chunk.empty:
+            parts.append(chunk)
+    d = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=columns)
+    d["hora_observacao"] = pd.to_datetime(d["hora_observacao"], errors="coerce")
+    d['bumido'] = pd.to_numeric(d['bumido'].astype("string").str.strip().str.replace(",", ".", regex=False), errors="coerce")
+    d['bumido'] = d['bumido'].where(d['bumido'].between(-80, 60)).astype(float) * 1
+    d = d.groupby(["sigla", "hora_observacao"], as_index=False)[['bumido']].mean()
+    def value(x):
+        return None if pd.isna(x) else float(x)
+    result = [(value(d["bumido"].mean()),)]
+- id: E09
+  category: simples
+  question: Qual foi o vento mais forte medido em SBFZ em 2018, sem considerar rajadas?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte solicitados estão disponíveis nos CSV e permitem cálculo direto.
+  assumptions: 'Horários em Brasília, UTC−3 fixo; datas incluem os dias indicados. Vazios, textos não numéricos e valores
+    fora dos limites declarados são ausentes, nunca zero. Faixas aceitas: velvento: de 0 a 150, inclusive, na unidade original.
+    Velocidade em nós, usando o maior vento entre as cabeceiras em cada boletim. Cabeceiras do mesmo instante são consolidadas
+    pelo máximo válido; contam-se boletins distintos, não linhas de cabeceira.'
+  oracle_pandas: |
+    import pandas as pd
+    from pathlib import Path
+
+    path = Path('C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\METEOROLOGIA') / 'vento.csv'
+    columns = ['sigla', 'hora_observacao', 'velvento']
+    stations = ['SBFZ']
+    parts = []
+    for chunk in pd.read_csv(path, usecols=columns, dtype=str, sep=None,
+                             engine="python", chunksize=50000):
+        chunk["sigla"] = chunk["sigla"].str.strip().str.upper()
+        chunk = chunk.loc[chunk["sigla"].isin(stations)].copy()
+        chunk["hora_observacao"] = pd.to_datetime(chunk["hora_observacao"], errors="coerce")
+        chunk = chunk.loc[chunk["hora_observacao"].ge(pd.Timestamp('2018-01-01')) &
+                          chunk["hora_observacao"].lt(pd.Timestamp('2019-01-01'))]
+        if not chunk.empty:
+            parts.append(chunk)
+    d = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=columns)
+    d["hora_observacao"] = pd.to_datetime(d["hora_observacao"], errors="coerce")
+    d['velvento'] = pd.to_numeric(d['velvento'].astype("string").str.strip().str.replace(",", ".", regex=False), errors="coerce")
+    d['velvento'] = d['velvento'].where(d['velvento'].between(0, 150)).astype(float) * 1
+    d = d.groupby(["sigla", "hora_observacao"], as_index=False)[['velvento']].max()
+    def value(x):
+        return None if pd.isna(x) else float(x)
+    result = [(value(d["velvento"].max()),)]
+- id: E10
+  category: simples
+  question: Quantas observações válidas de visibilidade há para SBGL em dezembro de 2017?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte solicitados estão disponíveis nos CSV e permitem cálculo direto.
+  assumptions: 'Horários em Brasília, UTC−3 fixo; datas incluem os dias indicados. Vazios, textos não numéricos e valores
+    fora dos limites declarados são ausentes, nunca zero. Faixas aceitas: visibpre: de 0 a 2000, inclusive, na unidade original.
+    Visibilidade multiplicada por 10 para obter metros; 2000 representa pelo menos 20000 m e é tratado como 20000 m, portanto
+    médias ficam limitadas pelo teto de registro. Uma observação é um instante distinto com valor válido. Duplicatas de estação
+    e instante são consolidadas pela média de cada valor válido; cada instante tem peso igual.'
+  oracle_pandas: |
+    import pandas as pd
+    from pathlib import Path
+
+    path = Path('C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\METEOROLOGIA') / 'visibilidade.csv'
+    columns = ['sigla', 'hora_observacao', 'visibpre']
+    stations = ['SBGL']
+    parts = []
+    for chunk in pd.read_csv(path, usecols=columns, dtype=str, sep=None,
+                             engine="python", chunksize=50000):
+        chunk["sigla"] = chunk["sigla"].str.strip().str.upper()
+        chunk = chunk.loc[chunk["sigla"].isin(stations)].copy()
+        chunk["hora_observacao"] = pd.to_datetime(chunk["hora_observacao"], errors="coerce")
+        chunk = chunk.loc[chunk["hora_observacao"].ge(pd.Timestamp('2017-12-01')) &
+                          chunk["hora_observacao"].lt(pd.Timestamp('2018-01-01'))]
+        if not chunk.empty:
+            parts.append(chunk)
+    d = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=columns)
+    d["hora_observacao"] = pd.to_datetime(d["hora_observacao"], errors="coerce")
+    d['visibpre'] = pd.to_numeric(d['visibpre'].astype("string").str.strip().str.replace(",", ".", regex=False), errors="coerce")
+    d['visibpre'] = d['visibpre'].where(d['visibpre'].between(0, 2000)).astype(float) * 10
+    d = d.groupby(["sigla", "hora_observacao"], as_index=False)[['visibpre']].mean()
+    def value(x):
+        return None if pd.isna(x) else float(x)
+    result = [(int(d["visibpre"].notna().sum()),)]
+- id: E11
+  category: simples
+  question: Em SBGO, qual foi a altura média da camada mais baixa de nuvens em 2020?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte solicitados estão disponíveis nos CSV e permitem cálculo direto.
+  assumptions: 'Horários em Brasília, UTC−3 fixo; datas incluem os dias indicados. Vazios, textos não numéricos e valores
+    fora dos limites declarados são ausentes, nunca zero. Faixas aceitas: altnuvem: de 0 a 2500, inclusive, na unidade original.
+    Altura multiplicada por 10, em metros. A média usa só boletins com base de nuvem válida; ausência de camada não significa
+    altura zero. As camadas de cada estação e instante são consolidadas pela menor base válida; cada boletim conta uma vez.'
+  oracle_pandas: |
+    import pandas as pd
+    from pathlib import Path
+
+    path = Path('C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\METEOROLOGIA') / 'nuvem.csv'
+    columns = ['sigla', 'hora_observacao', 'altnuvem']
+    stations = ['SBGO']
+    parts = []
+    for chunk in pd.read_csv(path, usecols=columns, dtype=str, sep=None,
+                             engine="python", chunksize=50000):
+        chunk["sigla"] = chunk["sigla"].str.strip().str.upper()
+        chunk = chunk.loc[chunk["sigla"].isin(stations)].copy()
+        chunk["hora_observacao"] = pd.to_datetime(chunk["hora_observacao"], errors="coerce")
+        chunk = chunk.loc[chunk["hora_observacao"].ge(pd.Timestamp('2020-01-01')) &
+                          chunk["hora_observacao"].lt(pd.Timestamp('2021-01-01'))]
+        if not chunk.empty:
+            parts.append(chunk)
+    d = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=columns)
+    d["hora_observacao"] = pd.to_datetime(d["hora_observacao"], errors="coerce")
+    d['altnuvem'] = pd.to_numeric(d['altnuvem'].astype("string").str.strip().str.replace(",", ".", regex=False), errors="coerce")
+    d['altnuvem'] = d['altnuvem'].where(d['altnuvem'].between(0, 2500)).astype(float) * 10
+    d = d.groupby(["sigla", "hora_observacao"], as_index=False)[['altnuvem']].min()
+    def value(x):
+        return None if pd.isna(x) else float(x)
+    result = [(value(d["altnuvem"].mean()),)]
+- id: E12
+  category: simples
+  question: Em SBGR, qual foi a duração média da chuva por hora em abril de 2021?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte solicitados estão disponíveis nos CSV e permitem cálculo direto.
+  assumptions: 'Horários em Brasília, UTC−3 fixo; datas incluem os dias indicados. Vazios, textos não numéricos e valores
+    fora dos limites declarados são ausentes, nunca zero. Faixas aceitas: durpreci: de 0 a 60, inclusive, na unidade original.
+    Duração da chuva em minutos por hora; inclui durações zero registradas. Durações ausentes não entram na média. Duplicatas
+    de estação e instante são consolidadas pela média de cada valor válido; cada instante tem peso igual. Usam-se somente
+    instantes exatamente na hora cheia para não somar janelas horárias sobrepostas ou contar uma hora várias vezes.'
+  oracle_pandas: |
+    import pandas as pd
+    from pathlib import Path
+
+    path = Path('C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\METEOROLOGIA') / 'precipitacao.csv'
+    columns = ['sigla', 'hora_observacao', 'durpreci']
+    stations = ['SBGR']
+    parts = []
+    for chunk in pd.read_csv(path, usecols=columns, dtype=str, sep=None,
+                             engine="python", chunksize=50000):
+        chunk["sigla"] = chunk["sigla"].str.strip().str.upper()
+        chunk = chunk.loc[chunk["sigla"].isin(stations)].copy()
+        chunk["hora_observacao"] = pd.to_datetime(chunk["hora_observacao"], errors="coerce")
+        chunk = chunk.loc[chunk["hora_observacao"].ge(pd.Timestamp('2021-04-01')) &
+                          chunk["hora_observacao"].lt(pd.Timestamp('2021-05-01'))]
+        if not chunk.empty:
+            parts.append(chunk)
+    d = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=columns)
+    d["hora_observacao"] = pd.to_datetime(d["hora_observacao"], errors="coerce")
+    d['durpreci'] = pd.to_numeric(d['durpreci'].astype("string").str.strip().str.replace(",", ".", regex=False), errors="coerce")
+    d['durpreci'] = d['durpreci'].where(d['durpreci'].between(0, 60)).astype(float) * 1
+    d = d.loc[d["hora_observacao"].eq(d["hora_observacao"].dt.floor("h"))].copy()
+    d = d.groupby(["sigla", "hora_observacao"], as_index=False)[['durpreci']].mean()
+    def value(x):
+        return None if pd.isna(x) else float(x)
+    result = [(value(d["durpreci"].mean()),)]
+- id: E13
+  category: condicao
+  question: Quantas vezes a temperatura do ar passou de 35 °C em SBCY em 2023?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte solicitados estão disponíveis nos CSV e permitem cálculo direto.
+  assumptions: 'Horários em Brasília, UTC−3 fixo; datas incluem os dias indicados. Vazios, textos não numéricos e valores
+    fora dos limites declarados são ausentes, nunca zero. Faixas aceitas: bseco: de -80 a 60, inclusive, na unidade original.
+    Conta instantes observados com temperatura estritamente maior que 35 °C; não episódios contínuos. Duplicatas de estação
+    e instante são consolidadas pela média de cada valor válido; cada instante tem peso igual.'
+  oracle_pandas: |
+    import pandas as pd
+    from pathlib import Path
+
+    path = Path('C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\METEOROLOGIA') / 'temperatura.csv'
+    columns = ['sigla', 'hora_observacao', 'bseco']
+    stations = ['SBCY']
+    parts = []
+    for chunk in pd.read_csv(path, usecols=columns, dtype=str, sep=None,
+                             engine="python", chunksize=50000):
+        chunk["sigla"] = chunk["sigla"].str.strip().str.upper()
+        chunk = chunk.loc[chunk["sigla"].isin(stations)].copy()
+        chunk["hora_observacao"] = pd.to_datetime(chunk["hora_observacao"], errors="coerce")
+        chunk = chunk.loc[chunk["hora_observacao"].ge(pd.Timestamp('2023-01-01')) &
+                          chunk["hora_observacao"].lt(pd.Timestamp('2024-01-01'))]
+        if not chunk.empty:
+            parts.append(chunk)
+    d = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=columns)
+    d["hora_observacao"] = pd.to_datetime(d["hora_observacao"], errors="coerce")
+    d['bseco'] = pd.to_numeric(d['bseco'].astype("string").str.strip().str.replace(",", ".", regex=False), errors="coerce")
+    d['bseco'] = d['bseco'].where(d['bseco'].between(-80, 60)).astype(float) * 1
+    d = d.groupby(["sigla", "hora_observacao"], as_index=False)[['bseco']].mean()
+    def value(x):
+        return None if pd.isna(x) else float(x)
+    result = [(int(d["bseco"].gt(35).sum()),)]
+- id: E14
+  category: condicao
+  question: Durante junho de 2022, quantas horas tiveram visibilidade abaixo de 1 km em SBCT?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte solicitados estão disponíveis nos CSV e permitem cálculo direto.
+  assumptions: 'Horários em Brasília, UTC−3 fixo; datas incluem os dias indicados. Vazios, textos não numéricos e valores
+    fora dos limites declarados são ausentes, nunca zero. Faixas aceitas: visibpre: de 0 a 2000, inclusive, na unidade original.
+    Visibilidade multiplicada por 10 para obter metros; 2000 representa pelo menos 20000 m e é tratado como 20000 m, portanto
+    médias ficam limitadas pelo teto de registro. O limiar é estrito. Duplicatas de estação e instante são consolidadas pela
+    média de cada valor válido; cada instante tem peso igual. Usam-se somente instantes exatamente na hora cheia para não
+    somar janelas horárias sobrepostas ou contar uma hora várias vezes.'
+  oracle_pandas: |
+    import pandas as pd
+    from pathlib import Path
+
+    path = Path('C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\METEOROLOGIA') / 'visibilidade.csv'
+    columns = ['sigla', 'hora_observacao', 'visibpre']
+    stations = ['SBCT']
+    parts = []
+    for chunk in pd.read_csv(path, usecols=columns, dtype=str, sep=None,
+                             engine="python", chunksize=50000):
+        chunk["sigla"] = chunk["sigla"].str.strip().str.upper()
+        chunk = chunk.loc[chunk["sigla"].isin(stations)].copy()
+        chunk["hora_observacao"] = pd.to_datetime(chunk["hora_observacao"], errors="coerce")
+        chunk = chunk.loc[chunk["hora_observacao"].ge(pd.Timestamp('2022-06-01')) &
+                          chunk["hora_observacao"].lt(pd.Timestamp('2022-07-01'))]
+        if not chunk.empty:
+            parts.append(chunk)
+    d = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=columns)
+    d["hora_observacao"] = pd.to_datetime(d["hora_observacao"], errors="coerce")
+    d['visibpre'] = pd.to_numeric(d['visibpre'].astype("string").str.strip().str.replace(",", ".", regex=False), errors="coerce")
+    d['visibpre'] = d['visibpre'].where(d['visibpre'].between(0, 2000)).astype(float) * 10
+    d = d.loc[d["hora_observacao"].eq(d["hora_observacao"].dt.floor("h"))].copy()
+    d = d.groupby(["sigla", "hora_observacao"], as_index=False)[['visibpre']].mean()
+    def value(x):
+        return None if pd.isna(x) else float(x)
+    result = [(int(d["visibpre"].lt(1000).sum()),)]
+- id: E15
+  category: condicao
+  question: Em quantos dias de janeiro de 2024 a máxima de SBFL ficou acima de 30 °C?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte solicitados estão disponíveis nos CSV e permitem cálculo direto.
+  assumptions: 'Horários em Brasília, UTC−3 fixo; datas incluem os dias indicados. Vazios, textos não numéricos e valores
+    fora dos limites declarados são ausentes, nunca zero. Faixas aceitas: bseco: de -80 a 60, inclusive, na unidade original.
+    Máxima diária da temperatura do ar observada, em °C; dias sem temperatura válida não satisfazem a condição. Duplicatas
+    de estação e instante são consolidadas pela média de cada valor válido; cada instante tem peso igual.'
+  oracle_pandas: |
+    import pandas as pd
+    from pathlib import Path
+
+    path = Path('C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\METEOROLOGIA') / 'temperatura.csv'
+    columns = ['sigla', 'hora_observacao', 'bseco']
+    stations = ['SBFL']
+    parts = []
+    for chunk in pd.read_csv(path, usecols=columns, dtype=str, sep=None,
+                             engine="python", chunksize=50000):
+        chunk["sigla"] = chunk["sigla"].str.strip().str.upper()
+        chunk = chunk.loc[chunk["sigla"].isin(stations)].copy()
+        chunk["hora_observacao"] = pd.to_datetime(chunk["hora_observacao"], errors="coerce")
+        chunk = chunk.loc[chunk["hora_observacao"].ge(pd.Timestamp('2024-01-01')) &
+                          chunk["hora_observacao"].lt(pd.Timestamp('2024-02-01'))]
+        if not chunk.empty:
+            parts.append(chunk)
+    d = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=columns)
+    d["hora_observacao"] = pd.to_datetime(d["hora_observacao"], errors="coerce")
+    d['bseco'] = pd.to_numeric(d['bseco'].astype("string").str.strip().str.replace(",", ".", regex=False), errors="coerce")
+    d['bseco'] = d['bseco'].where(d['bseco'].between(-80, 60)).astype(float) * 1
+    d = d.groupby(["sigla", "hora_observacao"], as_index=False)[['bseco']].mean()
+    def value(x):
+        return None if pd.isna(x) else float(x)
+    daily = d.groupby(d["hora_observacao"].dt.date)["bseco"].max()
+    result = [(int(daily.gt(30).sum()),)]
+- id: E16
+  category: condicao
+  question: Houve quantos registros de umidade relativa inferior a 40% em SBJP no ano de 2019?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte solicitados estão disponíveis nos CSV e permitem cálculo direto.
+  assumptions: 'Horários em Brasília, UTC−3 fixo; datas incluem os dias indicados. Vazios, textos não numéricos e valores
+    fora dos limites declarados são ausentes, nunca zero. Faixas aceitas: ur: de 0 a 100, inclusive, na unidade original.
+    Contam-se instantes com umidade válida estritamente inferior a 40%. Duplicatas de estação e instante são consolidadas
+    pela média de cada valor válido; cada instante tem peso igual.'
+  oracle_pandas: |
+    import pandas as pd
+    from pathlib import Path
+
+    path = Path('C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\METEOROLOGIA') / 'temperatura.csv'
+    columns = ['sigla', 'hora_observacao', 'ur']
+    stations = ['SBJP']
+    parts = []
+    for chunk in pd.read_csv(path, usecols=columns, dtype=str, sep=None,
+                             engine="python", chunksize=50000):
+        chunk["sigla"] = chunk["sigla"].str.strip().str.upper()
+        chunk = chunk.loc[chunk["sigla"].isin(stations)].copy()
+        chunk["hora_observacao"] = pd.to_datetime(chunk["hora_observacao"], errors="coerce")
+        chunk = chunk.loc[chunk["hora_observacao"].ge(pd.Timestamp('2019-01-01')) &
+                          chunk["hora_observacao"].lt(pd.Timestamp('2020-01-01'))]
+        if not chunk.empty:
+            parts.append(chunk)
+    d = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=columns)
+    d["hora_observacao"] = pd.to_datetime(d["hora_observacao"], errors="coerce")
+    d['ur'] = pd.to_numeric(d['ur'].astype("string").str.strip().str.replace(",", ".", regex=False), errors="coerce")
+    d['ur'] = d['ur'].where(d['ur'].between(0, 100)).astype(float) * 1
+    d = d.groupby(["sigla", "hora_observacao"], as_index=False)[['ur']].mean()
+    def value(x):
+        return None if pd.isna(x) else float(x)
+    result = [(int(d["ur"].lt(40).sum()),)]
+- id: E17
+  category: condicao
+  question: Quantos boletins de SBKP trouxeram QNH abaixo de 1000 hPa em agosto de 2021?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte solicitados estão disponíveis nos CSV e permitem cálculo direto.
+  assumptions: 'Horários em Brasília, UTC−3 fixo; datas incluem os dias indicados. Vazios, textos não numéricos e valores
+    fora dos limites declarados são ausentes, nunca zero. Faixas aceitas: qnh: de 850 a 1100, inclusive, na unidade original.
+    QNH em hPa; cada instante válido abaixo do limiar conta um boletim. Duplicatas de estação e instante são consolidadas
+    pela média de cada valor válido; cada instante tem peso igual.'
+  oracle_pandas: |
+    import pandas as pd
+    from pathlib import Path
+
+    path = Path('C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\METEOROLOGIA') / 'pressao.csv'
+    columns = ['sigla', 'hora_observacao', 'qnh']
+    stations = ['SBKP']
+    parts = []
+    for chunk in pd.read_csv(path, usecols=columns, dtype=str, sep=None,
+                             engine="python", chunksize=50000):
+        chunk["sigla"] = chunk["sigla"].str.strip().str.upper()
+        chunk = chunk.loc[chunk["sigla"].isin(stations)].copy()
+        chunk["hora_observacao"] = pd.to_datetime(chunk["hora_observacao"], errors="coerce")
+        chunk = chunk.loc[chunk["hora_observacao"].ge(pd.Timestamp('2021-08-01')) &
+                          chunk["hora_observacao"].lt(pd.Timestamp('2021-09-01'))]
+        if not chunk.empty:
+            parts.append(chunk)
+    d = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=columns)
+    d["hora_observacao"] = pd.to_datetime(d["hora_observacao"], errors="coerce")
+    d['qnh'] = pd.to_numeric(d['qnh'].astype("string").str.strip().str.replace(",", ".", regex=False), errors="coerce")
+    d['qnh'] = d['qnh'].where(d['qnh'].between(850, 1100)).astype(float) * 1
+    d = d.groupby(["sigla", "hora_observacao"], as_index=False)[['qnh']].mean()
+    def value(x):
+        return None if pd.isna(x) else float(x)
+    result = [(int(d["qnh"].lt(1000).sum()),)]
+- id: E18
+  category: condicao
+  question: Em SBLO, quantas horas de 2020 acumularam pelo menos 10 mm de chuva?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte solicitados estão disponíveis nos CSV e permitem cálculo direto.
+  assumptions: 'Horários em Brasília, UTC−3 fixo; datas incluem os dias indicados. Vazios, textos não numéricos e valores
+    fora dos limites declarados são ausentes, nunca zero. Faixas aceitas: precip: de 0 a 300, inclusive, na unidade original.
+    Precipitação da última hora em mm; inclui exatamente 10 mm. Duplicatas de estação e instante são consolidadas pela média
+    de cada valor válido; cada instante tem peso igual. Usam-se somente instantes exatamente na hora cheia para não somar
+    janelas horárias sobrepostas ou contar uma hora várias vezes.'
+  oracle_pandas: |
+    import pandas as pd
+    from pathlib import Path
+
+    path = Path('C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\METEOROLOGIA') / 'precipitacao.csv'
+    columns = ['sigla', 'hora_observacao', 'precip']
+    stations = ['SBLO']
+    parts = []
+    for chunk in pd.read_csv(path, usecols=columns, dtype=str, sep=None,
+                             engine="python", chunksize=50000):
+        chunk["sigla"] = chunk["sigla"].str.strip().str.upper()
+        chunk = chunk.loc[chunk["sigla"].isin(stations)].copy()
+        chunk["hora_observacao"] = pd.to_datetime(chunk["hora_observacao"], errors="coerce")
+        chunk = chunk.loc[chunk["hora_observacao"].ge(pd.Timestamp('2020-01-01')) &
+                          chunk["hora_observacao"].lt(pd.Timestamp('2021-01-01'))]
+        if not chunk.empty:
+            parts.append(chunk)
+    d = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=columns)
+    d["hora_observacao"] = pd.to_datetime(d["hora_observacao"], errors="coerce")
+    d['precip'] = pd.to_numeric(d['precip'].astype("string").str.strip().str.replace(",", ".", regex=False), errors="coerce")
+    d['precip'] = d['precip'].where(d['precip'].between(0, 300)).astype(float) * 1
+    d = d.loc[d["hora_observacao"].eq(d["hora_observacao"].dt.floor("h"))].copy()
+    d = d.groupby(["sigla", "hora_observacao"], as_index=False)[['precip']].mean()
+    def value(x):
+        return None if pd.isna(x) else float(x)
+    result = [(int(d["precip"].ge(10).sum()),)]
+- id: E19
+  category: condicao
+  question: Em quantas horas de 2025 o vento em SBMQ atingiu ou superou 20 nós?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte solicitados estão disponíveis nos CSV e permitem cálculo direto.
+  assumptions: 'Horários em Brasília, UTC−3 fixo; datas incluem os dias indicados. Vazios, textos não numéricos e valores
+    fora dos limites declarados são ausentes, nunca zero. Faixas aceitas: velvento: de 0 a 150, inclusive, na unidade original.
+    Velocidade em nós, usando o maior vento entre as cabeceiras em cada boletim. Inclui exatamente 20 nós. Cabeceiras do mesmo
+    instante são consolidadas pelo máximo válido; contam-se boletins distintos, não linhas de cabeceira. Usam-se somente instantes
+    exatamente na hora cheia para não somar janelas horárias sobrepostas ou contar uma hora várias vezes.'
+  oracle_pandas: |
+    import pandas as pd
+    from pathlib import Path
+
+    path = Path('C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\METEOROLOGIA') / 'vento.csv'
+    columns = ['sigla', 'hora_observacao', 'velvento']
+    stations = ['SBMQ']
+    parts = []
+    for chunk in pd.read_csv(path, usecols=columns, dtype=str, sep=None,
+                             engine="python", chunksize=50000):
+        chunk["sigla"] = chunk["sigla"].str.strip().str.upper()
+        chunk = chunk.loc[chunk["sigla"].isin(stations)].copy()
+        chunk["hora_observacao"] = pd.to_datetime(chunk["hora_observacao"], errors="coerce")
+        chunk = chunk.loc[chunk["hora_observacao"].ge(pd.Timestamp('2025-01-01')) &
+                          chunk["hora_observacao"].lt(pd.Timestamp('2026-01-01'))]
+        if not chunk.empty:
+            parts.append(chunk)
+    d = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=columns)
+    d["hora_observacao"] = pd.to_datetime(d["hora_observacao"], errors="coerce")
+    d['velvento'] = pd.to_numeric(d['velvento'].astype("string").str.strip().str.replace(",", ".", regex=False), errors="coerce")
+    d['velvento'] = d['velvento'].where(d['velvento'].between(0, 150)).astype(float) * 1
+    d = d.loc[d["hora_observacao"].eq(d["hora_observacao"].dt.floor("h"))].copy()
+    d = d.groupby(["sigla", "hora_observacao"], as_index=False)[['velvento']].max()
+    def value(x):
+        return None if pd.isna(x) else float(x)
+    result = [(int(d["velvento"].ge(20).sum()),)]
+- id: E21
+  category: serie_ranking
+  question: Pode mostrar a temperatura média do ar de SBMA mês a mês em 2022?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte solicitados estão disponíveis nos CSV e permitem cálculo direto.
+  assumptions: 'Horários em Brasília, UTC−3 fixo; datas incluem os dias indicados. Vazios, textos não numéricos e valores
+    fora dos limites declarados são ausentes, nunca zero. Faixas aceitas: bseco: de -80 a 60, inclusive, na unidade original.
+    Temperatura em °C; saída cronológica (ano-mês, média), com nulo para mês sem valor válido. Duplicatas de estação e instante
+    são consolidadas pela média de cada valor válido; cada instante tem peso igual.'
+  oracle_pandas: |
+    import pandas as pd
+    from pathlib import Path
+
+    path = Path('C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\METEOROLOGIA') / 'temperatura.csv'
+    columns = ['sigla', 'hora_observacao', 'bseco']
+    stations = ['SBMA']
+    parts = []
+    for chunk in pd.read_csv(path, usecols=columns, dtype=str, sep=None,
+                             engine="python", chunksize=50000):
+        chunk["sigla"] = chunk["sigla"].str.strip().str.upper()
+        chunk = chunk.loc[chunk["sigla"].isin(stations)].copy()
+        chunk["hora_observacao"] = pd.to_datetime(chunk["hora_observacao"], errors="coerce")
+        chunk = chunk.loc[chunk["hora_observacao"].ge(pd.Timestamp('2022-01-01')) &
+                          chunk["hora_observacao"].lt(pd.Timestamp('2023-01-01'))]
+        if not chunk.empty:
+            parts.append(chunk)
+    d = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=columns)
+    d["hora_observacao"] = pd.to_datetime(d["hora_observacao"], errors="coerce")
+    d['bseco'] = pd.to_numeric(d['bseco'].astype("string").str.strip().str.replace(",", ".", regex=False), errors="coerce")
+    d['bseco'] = d['bseco'].where(d['bseco'].between(-80, 60)).astype(float) * 1
+    d = d.groupby(["sigla", "hora_observacao"], as_index=False)[['bseco']].mean()
+    def value(x):
+        return None if pd.isna(x) else float(x)
+    s = d.groupby(d["hora_observacao"].dt.to_period("M"))["bseco"].mean()
+    s = s.reindex(pd.period_range("2022-01", "2022-12", freq="M"))
+    result = [(str(month), value(v)) for month, v in s.items()]
+- id: E22
+  category: serie_ranking
+  question: Como variou o QNH médio anual de SBME de 2016 a 2025?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte solicitados estão disponíveis nos CSV e permitem cálculo direto.
+  assumptions: 'Horários em Brasília, UTC−3 fixo; datas incluem os dias indicados. Vazios, textos não numéricos e valores
+    fora dos limites declarados são ausentes, nunca zero. Faixas aceitas: qnh: de 850 a 1100, inclusive, na unidade original.
+    QNH em hPa; saída (ano, média), em ordem crescente de ano; anos sem valor válido ficam nulos. Duplicatas de estação e
+    instante são consolidadas pela média de cada valor válido; cada instante tem peso igual.'
+  oracle_pandas: |
+    import pandas as pd
+    from pathlib import Path
+
+    path = Path('C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\METEOROLOGIA') / 'pressao.csv'
+    columns = ['sigla', 'hora_observacao', 'qnh']
+    stations = ['SBME']
+    parts = []
+    for chunk in pd.read_csv(path, usecols=columns, dtype=str, sep=None,
+                             engine="python", chunksize=50000):
+        chunk["sigla"] = chunk["sigla"].str.strip().str.upper()
+        chunk = chunk.loc[chunk["sigla"].isin(stations)].copy()
+        chunk["hora_observacao"] = pd.to_datetime(chunk["hora_observacao"], errors="coerce")
+        chunk = chunk.loc[chunk["hora_observacao"].ge(pd.Timestamp('2016-01-01')) &
+                          chunk["hora_observacao"].lt(pd.Timestamp('2026-01-01'))]
+        if not chunk.empty:
+            parts.append(chunk)
+    d = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=columns)
+    d["hora_observacao"] = pd.to_datetime(d["hora_observacao"], errors="coerce")
+    d['qnh'] = pd.to_numeric(d['qnh'].astype("string").str.strip().str.replace(",", ".", regex=False), errors="coerce")
+    d['qnh'] = d['qnh'].where(d['qnh'].between(850, 1100)).astype(float) * 1
+    d = d.groupby(["sigla", "hora_observacao"], as_index=False)[['qnh']].mean()
+    def value(x):
+        return None if pd.isna(x) else float(x)
+    s = d.groupby(d["hora_observacao"].dt.year)["qnh"].mean().reindex(range(2016, 2026))
+    result = [(int(year), value(v)) for year, v in s.items()]
+- id: E23
+  category: serie_ranking
+  question: Entre SBBE, SBEG, SBMN, SBRB, SBPV, SBSN, SBMQ e SBMA, quais foram as cinco estações com maior chuva acumulada
+    em 2023?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte solicitados estão disponíveis nos CSV e permitem cálculo direto.
+  assumptions: 'Horários em Brasília, UTC−3 fixo; datas incluem os dias indicados. Vazios, textos não numéricos e valores
+    fora dos limites declarados são ausentes, nunca zero. Faixas aceitas: precip: de 0 a 300, inclusive, na unidade original.
+    Chuva em mm; o total soma apenas medições válidas disponíveis, sem preencher lacunas. Sem nenhuma medição válida, o total
+    é nulo. Ranking dos totais disponíveis, sem ajuste por cobertura; desempate pela sigla em ordem alfabética. Duplicatas
+    de estação e instante são consolidadas pela média de cada valor válido; cada instante tem peso igual. Usam-se somente
+    instantes exatamente na hora cheia para não somar janelas horárias sobrepostas ou contar uma hora várias vezes.'
+  oracle_pandas: |
+    import pandas as pd
+    from pathlib import Path
+
+    path = Path('C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\METEOROLOGIA') / 'precipitacao.csv'
+    columns = ['sigla', 'hora_observacao', 'precip']
+    stations = ['SBBE', 'SBEG', 'SBMN', 'SBRB', 'SBPV', 'SBSN', 'SBMQ', 'SBMA']
+    parts = []
+    for chunk in pd.read_csv(path, usecols=columns, dtype=str, sep=None,
+                             engine="python", chunksize=50000):
+        chunk["sigla"] = chunk["sigla"].str.strip().str.upper()
+        chunk = chunk.loc[chunk["sigla"].isin(stations)].copy()
+        chunk["hora_observacao"] = pd.to_datetime(chunk["hora_observacao"], errors="coerce")
+        chunk = chunk.loc[chunk["hora_observacao"].ge(pd.Timestamp('2023-01-01')) &
+                          chunk["hora_observacao"].lt(pd.Timestamp('2024-01-01'))]
+        if not chunk.empty:
+            parts.append(chunk)
+    d = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=columns)
+    d["hora_observacao"] = pd.to_datetime(d["hora_observacao"], errors="coerce")
+    d['precip'] = pd.to_numeric(d['precip'].astype("string").str.strip().str.replace(",", ".", regex=False), errors="coerce")
+    d['precip'] = d['precip'].where(d['precip'].between(0, 300)).astype(float) * 1
+    d = d.loc[d["hora_observacao"].eq(d["hora_observacao"].dt.floor("h"))].copy()
+    d = d.groupby(["sigla", "hora_observacao"], as_index=False)[['precip']].mean()
+    def value(x):
+        return None if pd.isna(x) else float(x)
+    s = d.groupby("sigla")["precip"].sum(min_count=1).dropna().rename("total").reset_index()
+    s = s.sort_values(["total", "sigla"], ascending=[False, True]).head(5)
+    result = [(str(row.sigla), float(row.total)) for row in s.itertuples(index=False)]
+- id: E24
+  category: serie_ranking
+  question: Em qual mês de 2020 SBMN teve a menor visibilidade média?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte solicitados estão disponíveis nos CSV e permitem cálculo direto.
+  assumptions: 'Horários em Brasília, UTC−3 fixo; datas incluem os dias indicados. Vazios, textos não numéricos e valores
+    fora dos limites declarados são ausentes, nunca zero. Faixas aceitas: visibpre: de 0 a 2000, inclusive, na unidade original.
+    Visibilidade multiplicada por 10 para obter metros; 2000 representa pelo menos 20000 m e é tratado como 20000 m, portanto
+    médias ficam limitadas pelo teto de registro. Retorna todos os meses empatados na menor média, em ordem cronológica. Duplicatas
+    de estação e instante são consolidadas pela média de cada valor válido; cada instante tem peso igual.'
+  oracle_pandas: |
+    import pandas as pd
+    from pathlib import Path
+
+    path = Path('C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\METEOROLOGIA') / 'visibilidade.csv'
+    columns = ['sigla', 'hora_observacao', 'visibpre']
+    stations = ['SBMN']
+    parts = []
+    for chunk in pd.read_csv(path, usecols=columns, dtype=str, sep=None,
+                             engine="python", chunksize=50000):
+        chunk["sigla"] = chunk["sigla"].str.strip().str.upper()
+        chunk = chunk.loc[chunk["sigla"].isin(stations)].copy()
+        chunk["hora_observacao"] = pd.to_datetime(chunk["hora_observacao"], errors="coerce")
+        chunk = chunk.loc[chunk["hora_observacao"].ge(pd.Timestamp('2020-01-01')) &
+                          chunk["hora_observacao"].lt(pd.Timestamp('2021-01-01'))]
+        if not chunk.empty:
+            parts.append(chunk)
+    d = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=columns)
+    d["hora_observacao"] = pd.to_datetime(d["hora_observacao"], errors="coerce")
+    d['visibpre'] = pd.to_numeric(d['visibpre'].astype("string").str.strip().str.replace(",", ".", regex=False), errors="coerce")
+    d['visibpre'] = d['visibpre'].where(d['visibpre'].between(0, 2000)).astype(float) * 10
+    d = d.groupby(["sigla", "hora_observacao"], as_index=False)[['visibpre']].mean()
+    def value(x):
+        return None if pd.isna(x) else float(x)
+    s = d.groupby(d["hora_observacao"].dt.to_period("M"))["visibpre"].mean().dropna()
+    result = [(str(month), float(v)) for month, v in s.items() if v == s.min()]
+- id: E25
+  category: serie_ranking
+  question: 'Qual estação registrou a maior temperatura do ar em 2024: SBCY, SBTE, SBPL, SBBV, SBPJ ou SBGO?'
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte solicitados estão disponíveis nos CSV e permitem cálculo direto.
+  assumptions: 'Horários em Brasília, UTC−3 fixo; datas incluem os dias indicados. Vazios, textos não numéricos e valores
+    fora dos limites declarados são ausentes, nunca zero. Faixas aceitas: bseco: de -80 a 60, inclusive, na unidade original.
+    Máximo observado em °C. Retorna todas as estações empatadas no maior valor, em ordem alfabética. Duplicatas de estação
+    e instante são consolidadas pela média de cada valor válido; cada instante tem peso igual.'
+  oracle_pandas: |
+    import pandas as pd
+    from pathlib import Path
+
+    path = Path('C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\METEOROLOGIA') / 'temperatura.csv'
+    columns = ['sigla', 'hora_observacao', 'bseco']
+    stations = ['SBCY', 'SBTE', 'SBPL', 'SBBV', 'SBPJ', 'SBGO']
+    parts = []
+    for chunk in pd.read_csv(path, usecols=columns, dtype=str, sep=None,
+                             engine="python", chunksize=50000):
+        chunk["sigla"] = chunk["sigla"].str.strip().str.upper()
+        chunk = chunk.loc[chunk["sigla"].isin(stations)].copy()
+        chunk["hora_observacao"] = pd.to_datetime(chunk["hora_observacao"], errors="coerce")
+        chunk = chunk.loc[chunk["hora_observacao"].ge(pd.Timestamp('2024-01-01')) &
+                          chunk["hora_observacao"].lt(pd.Timestamp('2025-01-01'))]
+        if not chunk.empty:
+            parts.append(chunk)
+    d = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=columns)
+    d["hora_observacao"] = pd.to_datetime(d["hora_observacao"], errors="coerce")
+    d['bseco'] = pd.to_numeric(d['bseco'].astype("string").str.strip().str.replace(",", ".", regex=False), errors="coerce")
+    d['bseco'] = d['bseco'].where(d['bseco'].between(-80, 60)).astype(float) * 1
+    d = d.groupby(["sigla", "hora_observacao"], as_index=False)[['bseco']].mean()
+    def value(x):
+        return None if pd.isna(x) else float(x)
+    s = d.groupby("sigla")["bseco"].max().dropna()
+    result = [(str(station), float(v)) for station, v in s.items() if v == s.max()]
+- id: E26
+  category: serie_ranking
+  question: Liste a umidade relativa média de SBMO para cada ano de 2020 a 2025.
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte solicitados estão disponíveis nos CSV e permitem cálculo direto.
+  assumptions: 'Horários em Brasília, UTC−3 fixo; datas incluem os dias indicados. Vazios, textos não numéricos e valores
+    fora dos limites declarados são ausentes, nunca zero. Faixas aceitas: ur: de 0 a 100, inclusive, na unidade original.
+    Umidade em %; saída anual cronológica; ano sem dado válido tem média nula. Duplicatas de estação e instante são consolidadas
+    pela média de cada valor válido; cada instante tem peso igual.'
+  oracle_pandas: |
+    import pandas as pd
+    from pathlib import Path
+
+    path = Path('C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\METEOROLOGIA') / 'temperatura.csv'
+    columns = ['sigla', 'hora_observacao', 'ur']
+    stations = ['SBMO']
+    parts = []
+    for chunk in pd.read_csv(path, usecols=columns, dtype=str, sep=None,
+                             engine="python", chunksize=50000):
+        chunk["sigla"] = chunk["sigla"].str.strip().str.upper()
+        chunk = chunk.loc[chunk["sigla"].isin(stations)].copy()
+        chunk["hora_observacao"] = pd.to_datetime(chunk["hora_observacao"], errors="coerce")
+        chunk = chunk.loc[chunk["hora_observacao"].ge(pd.Timestamp('2020-01-01')) &
+                          chunk["hora_observacao"].lt(pd.Timestamp('2026-01-01'))]
+        if not chunk.empty:
+            parts.append(chunk)
+    d = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=columns)
+    d["hora_observacao"] = pd.to_datetime(d["hora_observacao"], errors="coerce")
+    d['ur'] = pd.to_numeric(d['ur'].astype("string").str.strip().str.replace(",", ".", regex=False), errors="coerce")
+    d['ur'] = d['ur'].where(d['ur'].between(0, 100)).astype(float) * 1
+    d = d.groupby(["sigla", "hora_observacao"], as_index=False)[['ur']].mean()
+    def value(x):
+        return None if pd.isna(x) else float(x)
+    s = d.groupby(d["hora_observacao"].dt.year)["ur"].mean().reindex(range(2020, 2026))
+    result = [(int(year), value(v)) for year, v in s.items()]
+- id: E27
+  category: serie_ranking
+  question: De 2018 a 2025, quantos boletins por ano de SBNF registraram uma base de nuvem abaixo de 200 metros?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte solicitados estão disponíveis nos CSV e permitem cálculo direto.
+  assumptions: 'Horários em Brasília, UTC−3 fixo; datas incluem os dias indicados. Vazios, textos não numéricos e valores
+    fora dos limites declarados são ausentes, nunca zero. Faixas aceitas: altnuvem: de 0 a 2500, inclusive, na unidade original.
+    Altura em metros após multiplicar por 10. Conta qualquer camada com base válida inferior a 200 m, sem exigência de cobertura;
+    zero significa nenhum boletim observado que satisfaça o critério. As camadas de cada estação e instante são consolidadas
+    pela menor base válida; cada boletim conta uma vez.'
+  oracle_pandas: |
+    import pandas as pd
+    from pathlib import Path
+
+    path = Path('C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\METEOROLOGIA') / 'nuvem.csv'
+    columns = ['sigla', 'hora_observacao', 'altnuvem']
+    stations = ['SBNF']
+    parts = []
+    for chunk in pd.read_csv(path, usecols=columns, dtype=str, sep=None,
+                             engine="python", chunksize=50000):
+        chunk["sigla"] = chunk["sigla"].str.strip().str.upper()
+        chunk = chunk.loc[chunk["sigla"].isin(stations)].copy()
+        chunk["hora_observacao"] = pd.to_datetime(chunk["hora_observacao"], errors="coerce")
+        chunk = chunk.loc[chunk["hora_observacao"].ge(pd.Timestamp('2018-01-01')) &
+                          chunk["hora_observacao"].lt(pd.Timestamp('2026-01-01'))]
+        if not chunk.empty:
+            parts.append(chunk)
+    d = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=columns)
+    d["hora_observacao"] = pd.to_datetime(d["hora_observacao"], errors="coerce")
+    d['altnuvem'] = pd.to_numeric(d['altnuvem'].astype("string").str.strip().str.replace(",", ".", regex=False), errors="coerce")
+    d['altnuvem'] = d['altnuvem'].where(d['altnuvem'].between(0, 2500)).astype(float) * 10
+    d = d.groupby(["sigla", "hora_observacao"], as_index=False)[['altnuvem']].min()
+    def value(x):
+        return None if pd.isna(x) else float(x)
+    low = d.loc[d["altnuvem"].lt(200)]
+    s = low.groupby(low["hora_observacao"].dt.year).size().reindex(range(2018, 2026), fill_value=0)
+    result = [(int(year), int(n)) for year, n in s.items()]
+- id: E28
+  category: serie_ranking
+  question: Quero a mediana da velocidade do vento de SBRF em cada mês de 2021.
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte solicitados estão disponíveis nos CSV e permitem cálculo direto.
+  assumptions: 'Horários em Brasília, UTC−3 fixo; datas incluem os dias indicados. Vazios, textos não numéricos e valores
+    fora dos limites declarados são ausentes, nunca zero. Faixas aceitas: velvento: de 0 a 150, inclusive, na unidade original.
+    Velocidade em nós, usando o maior vento entre as cabeceiras em cada boletim. Medianas mensais em ordem cronológica; mês
+    sem dado válido tem valor nulo. Cabeceiras do mesmo instante são consolidadas pelo máximo válido; contam-se boletins distintos,
+    não linhas de cabeceira.'
+  oracle_pandas: |
+    import pandas as pd
+    from pathlib import Path
+
+    path = Path('C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\METEOROLOGIA') / 'vento.csv'
+    columns = ['sigla', 'hora_observacao', 'velvento']
+    stations = ['SBRF']
+    parts = []
+    for chunk in pd.read_csv(path, usecols=columns, dtype=str, sep=None,
+                             engine="python", chunksize=50000):
+        chunk["sigla"] = chunk["sigla"].str.strip().str.upper()
+        chunk = chunk.loc[chunk["sigla"].isin(stations)].copy()
+        chunk["hora_observacao"] = pd.to_datetime(chunk["hora_observacao"], errors="coerce")
+        chunk = chunk.loc[chunk["hora_observacao"].ge(pd.Timestamp('2021-01-01')) &
+                          chunk["hora_observacao"].lt(pd.Timestamp('2022-01-01'))]
+        if not chunk.empty:
+            parts.append(chunk)
+    d = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=columns)
+    d["hora_observacao"] = pd.to_datetime(d["hora_observacao"], errors="coerce")
+    d['velvento'] = pd.to_numeric(d['velvento'].astype("string").str.strip().str.replace(",", ".", regex=False), errors="coerce")
+    d['velvento'] = d['velvento'].where(d['velvento'].between(0, 150)).astype(float) * 1
+    d = d.groupby(["sigla", "hora_observacao"], as_index=False)[['velvento']].max()
+    def value(x):
+        return None if pd.isna(x) else float(x)
+    s = d.groupby(d["hora_observacao"].dt.to_period("M"))["velvento"].median()
+    s = s.reindex(pd.period_range("2021-01", "2021-12", freq="M"))
+    result = [(str(month), value(v)) for month, v in s.items()]
+- id: E29
+  category: comparacao
+  question: SBNT ou SBSG teve a maior temperatura média do ar em 2020? Mostre as duas médias.
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte solicitados estão disponíveis nos CSV e permitem cálculo direto.
+  assumptions: 'Horários em Brasília, UTC−3 fixo; datas incluem os dias indicados. Vazios, textos não numéricos e valores
+    fora dos limites declarados são ausentes, nunca zero. Faixas aceitas: bseco: de -80 a 60, inclusive, na unidade original.
+    Médias em °C, calculadas com os registros válidos de cada estação, sem restringir aos horários comuns. As duas médias
+    determinam o maior valor ou empate. Duplicatas de estação e instante são consolidadas pela média de cada valor válido;
+    cada instante tem peso igual.'
+  oracle_pandas: |
+    import pandas as pd
+    from pathlib import Path
+
+    path = Path('C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\METEOROLOGIA') / 'temperatura.csv'
+    columns = ['sigla', 'hora_observacao', 'bseco']
+    stations = ['SBNT', 'SBSG']
+    parts = []
+    for chunk in pd.read_csv(path, usecols=columns, dtype=str, sep=None,
+                             engine="python", chunksize=50000):
+        chunk["sigla"] = chunk["sigla"].str.strip().str.upper()
+        chunk = chunk.loc[chunk["sigla"].isin(stations)].copy()
+        chunk["hora_observacao"] = pd.to_datetime(chunk["hora_observacao"], errors="coerce")
+        chunk = chunk.loc[chunk["hora_observacao"].ge(pd.Timestamp('2020-01-01')) &
+                          chunk["hora_observacao"].lt(pd.Timestamp('2021-01-01'))]
+        if not chunk.empty:
+            parts.append(chunk)
+    d = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=columns)
+    d["hora_observacao"] = pd.to_datetime(d["hora_observacao"], errors="coerce")
+    d['bseco'] = pd.to_numeric(d['bseco'].astype("string").str.strip().str.replace(",", ".", regex=False), errors="coerce")
+    d['bseco'] = d['bseco'].where(d['bseco'].between(-80, 60)).astype(float) * 1
+    d = d.groupby(["sigla", "hora_observacao"], as_index=False)[['bseco']].mean()
+    def value(x):
+        return None if pd.isna(x) else float(x)
+    s = d.groupby("sigla")["bseco"].mean().reindex(["SBNT", "SBSG"])
+    result = [(station, value(v)) for station, v in s.items()]
+- id: E30
+  category: comparacao
+  question: Quanto mudou o QNH médio de SBRJ de 2022 para 2023?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte solicitados estão disponíveis nos CSV e permitem cálculo direto.
+  assumptions: 'Horários em Brasília, UTC−3 fixo; datas incluem os dias indicados. Vazios, textos não numéricos e valores
+    fora dos limites declarados são ausentes, nunca zero. Faixas aceitas: qnh: de 850 a 1100, inclusive, na unidade original.
+    QNH em hPa; saída (média de 2022, média de 2023, diferença 2023 menos 2022). Sem dados para um ano, sua média e a diferença
+    são nulas. Duplicatas de estação e instante são consolidadas pela média de cada valor válido; cada instante tem peso igual.'
+  oracle_pandas: |
+    import pandas as pd
+    from pathlib import Path
+
+    path = Path('C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\METEOROLOGIA') / 'pressao.csv'
+    columns = ['sigla', 'hora_observacao', 'qnh']
+    stations = ['SBRJ']
+    parts = []
+    for chunk in pd.read_csv(path, usecols=columns, dtype=str, sep=None,
+                             engine="python", chunksize=50000):
+        chunk["sigla"] = chunk["sigla"].str.strip().str.upper()
+        chunk = chunk.loc[chunk["sigla"].isin(stations)].copy()
+        chunk["hora_observacao"] = pd.to_datetime(chunk["hora_observacao"], errors="coerce")
+        chunk = chunk.loc[chunk["hora_observacao"].ge(pd.Timestamp('2022-01-01')) &
+                          chunk["hora_observacao"].lt(pd.Timestamp('2024-01-01'))]
+        if not chunk.empty:
+            parts.append(chunk)
+    d = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=columns)
+    d["hora_observacao"] = pd.to_datetime(d["hora_observacao"], errors="coerce")
+    d['qnh'] = pd.to_numeric(d['qnh'].astype("string").str.strip().str.replace(",", ".", regex=False), errors="coerce")
+    d['qnh'] = d['qnh'].where(d['qnh'].between(850, 1100)).astype(float) * 1
+    d = d.groupby(["sigla", "hora_observacao"], as_index=False)[['qnh']].mean()
+    def value(x):
+        return None if pd.isna(x) else float(x)
+    s = d.groupby(d["hora_observacao"].dt.year)["qnh"].mean().reindex([2022, 2023])
+    result = [(value(s.loc[2022]), value(s.loc[2023]), value(s.loc[2023] - s.loc[2022]))]
+- id: E31
+  category: comparacao
+  question: Quem acumulou mais chuva em outubro de 2024, SBRB ou SBPV, e qual foi a diferença?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte solicitados estão disponíveis nos CSV e permitem cálculo direto.
+  assumptions: 'Horários em Brasília, UTC−3 fixo; datas incluem os dias indicados. Vazios, textos não numéricos e valores
+    fora dos limites declarados são ausentes, nunca zero. Faixas aceitas: precip: de 0 a 300, inclusive, na unidade original.
+    Chuva em mm; o total soma apenas medições válidas disponíveis, sem preencher lacunas. Sem nenhuma medição válida, o total
+    é nulo. Compara totais disponíveis, sem normalização por cobertura; saída (total SBRB, total SBPV, estação com maior total
+    ou empate, diferença absoluta). Duplicatas de estação e instante são consolidadas pela média de cada valor válido; cada
+    instante tem peso igual. Usam-se somente instantes exatamente na hora cheia para não somar janelas horárias sobrepostas
+    ou contar uma hora várias vezes.'
+  oracle_pandas: |
+    import pandas as pd
+    from pathlib import Path
+
+    path = Path('C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\METEOROLOGIA') / 'precipitacao.csv'
+    columns = ['sigla', 'hora_observacao', 'precip']
+    stations = ['SBRB', 'SBPV']
+    parts = []
+    for chunk in pd.read_csv(path, usecols=columns, dtype=str, sep=None,
+                             engine="python", chunksize=50000):
+        chunk["sigla"] = chunk["sigla"].str.strip().str.upper()
+        chunk = chunk.loc[chunk["sigla"].isin(stations)].copy()
+        chunk["hora_observacao"] = pd.to_datetime(chunk["hora_observacao"], errors="coerce")
+        chunk = chunk.loc[chunk["hora_observacao"].ge(pd.Timestamp('2024-10-01')) &
+                          chunk["hora_observacao"].lt(pd.Timestamp('2024-11-01'))]
+        if not chunk.empty:
+            parts.append(chunk)
+    d = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=columns)
+    d["hora_observacao"] = pd.to_datetime(d["hora_observacao"], errors="coerce")
+    d['precip'] = pd.to_numeric(d['precip'].astype("string").str.strip().str.replace(",", ".", regex=False), errors="coerce")
+    d['precip'] = d['precip'].where(d['precip'].between(0, 300)).astype(float) * 1
+    d = d.loc[d["hora_observacao"].eq(d["hora_observacao"].dt.floor("h"))].copy()
+    d = d.groupby(["sigla", "hora_observacao"], as_index=False)[['precip']].mean()
+    def value(x):
+        return None if pd.isna(x) else float(x)
+    s = d.groupby("sigla")["precip"].sum(min_count=1).reindex(["SBRB", "SBPV"])
+    a, b = s.loc["SBRB"], s.loc["SBPV"]
+    winner = None if pd.isna(a) or pd.isna(b) else ("empate" if a == b else ("SBRB" if a > b else "SBPV"))
+    result = [(value(a), value(b), winner, value(abs(a-b)))]
+- id: E32
+  category: comparacao
+  question: A mediana da visibilidade em SBSC foi maior em abril ou em outubro de 2021?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte solicitados estão disponíveis nos CSV e permitem cálculo direto.
+  assumptions: 'Horários em Brasília, UTC−3 fixo; datas incluem os dias indicados. Vazios, textos não numéricos e valores
+    fora dos limites declarados são ausentes, nunca zero. Faixas aceitas: visibpre: de 0 a 2000, inclusive, na unidade original.
+    Visibilidade multiplicada por 10 para obter metros; 2000 representa pelo menos 20000 m e é tratado como 20000 m, portanto
+    médias ficam limitadas pelo teto de registro. Saída com as duas medianas em metros; igualdade é empate, e mês sem dados
+    é nulo. Duplicatas de estação e instante são consolidadas pela média de cada valor válido; cada instante tem peso igual.'
+  oracle_pandas: |
+    import pandas as pd
+    from pathlib import Path
+
+    path = Path('C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\METEOROLOGIA') / 'visibilidade.csv'
+    columns = ['sigla', 'hora_observacao', 'visibpre']
+    stations = ['SBSC']
+    parts = []
+    for chunk in pd.read_csv(path, usecols=columns, dtype=str, sep=None,
+                             engine="python", chunksize=50000):
+        chunk["sigla"] = chunk["sigla"].str.strip().str.upper()
+        chunk = chunk.loc[chunk["sigla"].isin(stations)].copy()
+        chunk["hora_observacao"] = pd.to_datetime(chunk["hora_observacao"], errors="coerce")
+        chunk = chunk.loc[chunk["hora_observacao"].ge(pd.Timestamp('2021-04-01')) &
+                          chunk["hora_observacao"].lt(pd.Timestamp('2021-11-01'))]
+        if not chunk.empty:
+            parts.append(chunk)
+    d = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=columns)
+    d["hora_observacao"] = pd.to_datetime(d["hora_observacao"], errors="coerce")
+    d['visibpre'] = pd.to_numeric(d['visibpre'].astype("string").str.strip().str.replace(",", ".", regex=False), errors="coerce")
+    d['visibpre'] = d['visibpre'].where(d['visibpre'].between(0, 2000)).astype(float) * 10
+    d = d.groupby(["sigla", "hora_observacao"], as_index=False)[['visibpre']].mean()
+    def value(x):
+        return None if pd.isna(x) else float(x)
+    d = d.loc[d["hora_observacao"].dt.month.isin([4, 10])]
+    s = d.groupby(d["hora_observacao"].dt.month)["visibpre"].median().reindex([4, 10])
+    result = [("2021-04", value(s.loc[4])), ("2021-10", value(s.loc[10]))]
+- id: E33
+  category: impossivel
+  question: Em qual cidade e estado fica a estação SBSP?
+  expected_behavior: unsupported
+  rationale: Os CSV não contêm cadastro de cidades ou estados associado às siglas.
+  assumptions: nenhuma
+- id: E34
+  category: impossivel
+  question: Qual é a latitude de SBRP?
+  expected_behavior: unsupported
+  rationale: Não há coordenadas geográficas nos arquivos disponíveis.
+  assumptions: nenhuma
+- id: E35
+  category: impossivel
+  question: Vai chover em SBVT no dia 10 de janeiro de 2027?
+  expected_behavior: unsupported
+  rationale: Há apenas observações históricas até 2025, sem previsão meteorológica para 2027.
+  assumptions: nenhuma
+- id: E36
+  category: impossivel
+  question: Qual foi a radiação solar média diária de SBTE em 2020?
+  expected_behavior: unsupported
+  rationale: Nenhum dos arquivos contém medidas de radiação solar.
+  assumptions: nenhuma
+- id: E37
+  category: impossivel
+  question: Quanto choveu em SBUL durante 2015?
+  expected_behavior: unsupported
+  rationale: O ano de 2015 está fora da cobertura temporal de todos os arquivos.
+  assumptions: nenhuma
+- id: E38
+  category: impossivel
+  question: Qual foi a temperatura média do ar na estação SBZZ em 2024?
+  expected_behavior: unsupported
+  rationale: SBZZ não está na lista de estações fornecida.
+  assumptions: nenhuma
+- id: E39
+  category: ambigua
+  question: Qual foi o pior dia de 2023 em SBPS?
+  expected_behavior: needs_clarification
+  rationale: É necessário esclarecer qual grandeza ou critério define o pior dia.
+  assumptions: nenhuma
+- id: E40
+  category: ambigua
+  question: Está quente em SBPL?
+  expected_behavior: needs_clarification
+  rationale: Faltam o instante ou período de interesse e o critério de referência para considerar quente.
+  assumptions: nenhuma
+- id: E41
+  category: ambigua
+  question: Me passa a média da umidade relativa de julho.
+  expected_behavior: needs_clarification
+  rationale: Não foram informados a estação nem o ano de julho a analisar.
+  assumptions: nenhuma
+- id: E42
+  category: ambigua
+  question: Qual foi a direção predominante em SBRF em setembro de 2022?
+  expected_behavior: needs_clarification
+  rationale: É necessário esclarecer se a direção solicitada é a do vento ou a das nuvens.
+  assumptions: nenhuma
+- id: E43
+  category: informal
+  question: qual foi a média da temperat ua do ar em sbsv no dia 13 de março de 2021?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte solicitados estão disponíveis nos CSV e permitem cálculo direto.
+  assumptions: 'Horários em Brasília, UTC−3 fixo; datas incluem os dias indicados. Vazios, textos não numéricos e valores
+    fora dos limites declarados são ausentes, nunca zero. Faixas aceitas: bseco: de -80 a 60, inclusive, na unidade original.
+    Interpreta-se o erro de digitação como temperatura; sigla normalizada para SBSV; resultado em °C. Duplicatas de estação
+    e instante são consolidadas pela média de cada valor válido; cada instante tem peso igual.'
+  oracle_pandas: |
+    import pandas as pd
+    from pathlib import Path
+
+    path = Path('C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\METEOROLOGIA') / 'temperatura.csv'
+    columns = ['sigla', 'hora_observacao', 'bseco']
+    stations = ['SBSV']
+    parts = []
+    for chunk in pd.read_csv(path, usecols=columns, dtype=str, sep=None,
+                             engine="python", chunksize=50000):
+        chunk["sigla"] = chunk["sigla"].str.strip().str.upper()
+        chunk = chunk.loc[chunk["sigla"].isin(stations)].copy()
+        chunk["hora_observacao"] = pd.to_datetime(chunk["hora_observacao"], errors="coerce")
+        chunk = chunk.loc[chunk["hora_observacao"].ge(pd.Timestamp('2021-03-13')) &
+                          chunk["hora_observacao"].lt(pd.Timestamp('2021-03-14'))]
+        if not chunk.empty:
+            parts.append(chunk)
+    d = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=columns)
+    d["hora_observacao"] = pd.to_datetime(d["hora_observacao"], errors="coerce")
+    d['bseco'] = pd.to_numeric(d['bseco'].astype("string").str.strip().str.replace(",", ".", regex=False), errors="coerce")
+    d['bseco'] = d['bseco'].where(d['bseco'].between(-80, 60)).astype(float) * 1
+    d = d.groupby(["sigla", "hora_observacao"], as_index=False)[['bseco']].mean()
+    def value(x):
+        return None if pd.isna(x) else float(x)
+    result = [(value(d["bseco"].mean()),)]
+- id: E44
+  category: informal
+  question: em sbsl, o vento bateu quantos nós no máximo em 2022? sem contar rajada
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte solicitados estão disponíveis nos CSV e permitem cálculo direto.
+  assumptions: 'Horários em Brasília, UTC−3 fixo; datas incluem os dias indicados. Vazios, textos não numéricos e valores
+    fora dos limites declarados são ausentes, nunca zero. Faixas aceitas: velvento: de 0 a 150, inclusive, na unidade original.
+    Velocidade em nós, usando o maior vento entre as cabeceiras em cada boletim. Sigla em minúsculas interpretada como SBSL.
+    Cabeceiras do mesmo instante são consolidadas pelo máximo válido; contam-se boletins distintos, não linhas de cabeceira.'
+  oracle_pandas: |
+    import pandas as pd
+    from pathlib import Path
+
+    path = Path('C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\METEOROLOGIA') / 'vento.csv'
+    columns = ['sigla', 'hora_observacao', 'velvento']
+    stations = ['SBSL']
+    parts = []
+    for chunk in pd.read_csv(path, usecols=columns, dtype=str, sep=None,
+                             engine="python", chunksize=50000):
+        chunk["sigla"] = chunk["sigla"].str.strip().str.upper()
+        chunk = chunk.loc[chunk["sigla"].isin(stations)].copy()
+        chunk["hora_observacao"] = pd.to_datetime(chunk["hora_observacao"], errors="coerce")
+        chunk = chunk.loc[chunk["hora_observacao"].ge(pd.Timestamp('2022-01-01')) &
+                          chunk["hora_observacao"].lt(pd.Timestamp('2023-01-01'))]
+        if not chunk.empty:
+            parts.append(chunk)
+    d = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=columns)
+    d["hora_observacao"] = pd.to_datetime(d["hora_observacao"], errors="coerce")
+    d['velvento'] = pd.to_numeric(d['velvento'].astype("string").str.strip().str.replace(",", ".", regex=False), errors="coerce")
+    d['velvento'] = d['velvento'].where(d['velvento'].between(0, 150)).astype(float) * 1
+    d = d.groupby(["sigla", "hora_observacao"], as_index=False)[['velvento']].max()
+    def value(x):
+        return None if pd.isna(x) else float(x)
+    result = [(value(d["velvento"].max()),)]
+- id: E45
+  category: informal
+  question: De julho de 2020 em SBTG, me diz o menor ponto de orvalho que teve.
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte solicitados estão disponíveis nos CSV e permitem cálculo direto.
+  assumptions: 'Horários em Brasília, UTC−3 fixo; datas incluem os dias indicados. Vazios, textos não numéricos e valores
+    fora dos limites declarados são ausentes, nunca zero. Faixas aceitas: temppo: de -100 a 60, inclusive, na unidade original.
+    Ponto de orvalho em °C, mínimo das observações válidas do mês. Duplicatas de estação e instante são consolidadas pela
+    média de cada valor válido; cada instante tem peso igual.'
+  oracle_pandas: |
+    import pandas as pd
+    from pathlib import Path
+
+    path = Path('C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\METEOROLOGIA') / 'temperatura.csv'
+    columns = ['sigla', 'hora_observacao', 'temppo']
+    stations = ['SBTG']
+    parts = []
+    for chunk in pd.read_csv(path, usecols=columns, dtype=str, sep=None,
+                             engine="python", chunksize=50000):
+        chunk["sigla"] = chunk["sigla"].str.strip().str.upper()
+        chunk = chunk.loc[chunk["sigla"].isin(stations)].copy()
+        chunk["hora_observacao"] = pd.to_datetime(chunk["hora_observacao"], errors="coerce")
+        chunk = chunk.loc[chunk["hora_observacao"].ge(pd.Timestamp('2020-07-01')) &
+                          chunk["hora_observacao"].lt(pd.Timestamp('2020-08-01'))]
+        if not chunk.empty:
+            parts.append(chunk)
+    d = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=columns)
+    d["hora_observacao"] = pd.to_datetime(d["hora_observacao"], errors="coerce")
+    d['temppo'] = pd.to_numeric(d['temppo'].astype("string").str.strip().str.replace(",", ".", regex=False), errors="coerce")
+    d['temppo'] = d['temppo'].where(d['temppo'].between(-100, 60)).astype(float) * 1
+    d = d.groupby(["sigla", "hora_observacao"], as_index=False)[['temppo']].mean()
+    def value(x):
+        return None if pd.isna(x) else float(x)
+    result = [(value(d["temppo"].min()),)]
+- id: E46
+  category: informal
+  question: E aí, quanto de chuva juntou em sbug em junho de 2018?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte solicitados estão disponíveis nos CSV e permitem cálculo direto.
+  assumptions: 'Horários em Brasília, UTC−3 fixo; datas incluem os dias indicados. Vazios, textos não numéricos e valores
+    fora dos limites declarados são ausentes, nunca zero. Faixas aceitas: precip: de 0 a 300, inclusive, na unidade original.
+    Chuva em mm; o total soma apenas medições válidas disponíveis, sem preencher lacunas. Sem nenhuma medição válida, o total
+    é nulo. Sigla em minúsculas interpretada como SBUG. Duplicatas de estação e instante são consolidadas pela média de cada
+    valor válido; cada instante tem peso igual. Usam-se somente instantes exatamente na hora cheia para não somar janelas
+    horárias sobrepostas ou contar uma hora várias vezes.'
+  oracle_pandas: |
+    import pandas as pd
+    from pathlib import Path
+
+    path = Path('C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\METEOROLOGIA') / 'precipitacao.csv'
+    columns = ['sigla', 'hora_observacao', 'precip']
+    stations = ['SBUG']
+    parts = []
+    for chunk in pd.read_csv(path, usecols=columns, dtype=str, sep=None,
+                             engine="python", chunksize=50000):
+        chunk["sigla"] = chunk["sigla"].str.strip().str.upper()
+        chunk = chunk.loc[chunk["sigla"].isin(stations)].copy()
+        chunk["hora_observacao"] = pd.to_datetime(chunk["hora_observacao"], errors="coerce")
+        chunk = chunk.loc[chunk["hora_observacao"].ge(pd.Timestamp('2018-06-01')) &
+                          chunk["hora_observacao"].lt(pd.Timestamp('2018-07-01'))]
+        if not chunk.empty:
+            parts.append(chunk)
+    d = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=columns)
+    d["hora_observacao"] = pd.to_datetime(d["hora_observacao"], errors="coerce")
+    d['precip'] = pd.to_numeric(d['precip'].astype("string").str.strip().str.replace(",", ".", regex=False), errors="coerce")
+    d['precip'] = d['precip'].where(d['precip'].between(0, 300)).astype(float) * 1
+    d = d.loc[d["hora_observacao"].eq(d["hora_observacao"].dt.floor("h"))].copy()
+    d = d.groupby(["sigla", "hora_observacao"], as_index=False)[['precip']].mean()
+    def value(x):
+        return None if pd.isna(x) else float(x)
+    result = [(value(d["precip"].sum(min_count=1)),)]
+- id: E47
+  category: tempo
+  question: Qual foi a temperatura média do ar em SBBR no verão de 2022, considerando dezembro de 2021 a fevereiro de 2022?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte solicitados estão disponíveis nos CSV e permitem cálculo direto.
+  assumptions: 'Horários em Brasília, UTC−3 fixo; datas incluem os dias indicados. Vazios, textos não numéricos e valores
+    fora dos limites declarados são ausentes, nunca zero. Faixas aceitas: bseco: de -80 a 60, inclusive, na unidade original.
+    Verão definido na pergunta como os três meses completos de dezembro de 2021 a fevereiro de 2022; temperatura em °C. Duplicatas
+    de estação e instante são consolidadas pela média de cada valor válido; cada instante tem peso igual.'
+  oracle_pandas: |
+    import pandas as pd
+    from pathlib import Path
+
+    path = Path('C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\METEOROLOGIA') / 'temperatura.csv'
+    columns = ['sigla', 'hora_observacao', 'bseco']
+    stations = ['SBBR']
+    parts = []
+    for chunk in pd.read_csv(path, usecols=columns, dtype=str, sep=None,
+                             engine="python", chunksize=50000):
+        chunk["sigla"] = chunk["sigla"].str.strip().str.upper()
+        chunk = chunk.loc[chunk["sigla"].isin(stations)].copy()
+        chunk["hora_observacao"] = pd.to_datetime(chunk["hora_observacao"], errors="coerce")
+        chunk = chunk.loc[chunk["hora_observacao"].ge(pd.Timestamp('2021-12-01')) &
+                          chunk["hora_observacao"].lt(pd.Timestamp('2022-03-01'))]
+        if not chunk.empty:
+            parts.append(chunk)
+    d = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=columns)
+    d["hora_observacao"] = pd.to_datetime(d["hora_observacao"], errors="coerce")
+    d['bseco'] = pd.to_numeric(d['bseco'].astype("string").str.strip().str.replace(",", ".", regex=False), errors="coerce")
+    d['bseco'] = d['bseco'].where(d['bseco'].between(-80, 60)).astype(float) * 1
+    d = d.groupby(["sigla", "hora_observacao"], as_index=False)[['bseco']].mean()
+    def value(x):
+        return None if pd.isna(x) else float(x)
+    result = [(value(d["bseco"].mean()),)]
+- id: E48
+  category: tempo
+  question: Em SBJV, qual foi a visibilidade média de madrugada, entre meia-noite e antes das seis, ao longo de 2023?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte solicitados estão disponíveis nos CSV e permitem cálculo direto.
+  assumptions: 'Horários em Brasília, UTC−3 fixo; datas incluem os dias indicados. Vazios, textos não numéricos e valores
+    fora dos limites declarados são ausentes, nunca zero. Faixas aceitas: visibpre: de 0 a 2000, inclusive, na unidade original.
+    Visibilidade multiplicada por 10 para obter metros; 2000 representa pelo menos 20000 m e é tratado como 20000 m, portanto
+    médias ficam limitadas pelo teto de registro. Madrugada é o intervalo diário 00:00 inclusive a 06:00 exclusivo, no horário
+    local fixo de Brasília. Duplicatas de estação e instante são consolidadas pela média de cada valor válido; cada instante
+    tem peso igual.'
+  oracle_pandas: |
+    import pandas as pd
+    from pathlib import Path
+
+    path = Path('C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\METEOROLOGIA') / 'visibilidade.csv'
+    columns = ['sigla', 'hora_observacao', 'visibpre']
+    stations = ['SBJV']
+    parts = []
+    for chunk in pd.read_csv(path, usecols=columns, dtype=str, sep=None,
+                             engine="python", chunksize=50000):
+        chunk["sigla"] = chunk["sigla"].str.strip().str.upper()
+        chunk = chunk.loc[chunk["sigla"].isin(stations)].copy()
+        chunk["hora_observacao"] = pd.to_datetime(chunk["hora_observacao"], errors="coerce")
+        chunk = chunk.loc[chunk["hora_observacao"].ge(pd.Timestamp('2023-01-01')) &
+                          chunk["hora_observacao"].lt(pd.Timestamp('2024-01-01'))]
+        if not chunk.empty:
+            parts.append(chunk)
+    d = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=columns)
+    d["hora_observacao"] = pd.to_datetime(d["hora_observacao"], errors="coerce")
+    d['visibpre'] = pd.to_numeric(d['visibpre'].astype("string").str.strip().str.replace(",", ".", regex=False), errors="coerce")
+    d['visibpre'] = d['visibpre'].where(d['visibpre'].between(0, 2000)).astype(float) * 10
+    d = d.groupby(["sigla", "hora_observacao"], as_index=False)[['visibpre']].mean()
+    def value(x):
+        return None if pd.isna(x) else float(x)
+    d = d.loc[d["hora_observacao"].dt.hour.lt(6)]
+    result = [(value(d["visibpre"].mean()),)]
+- id: E49
+  category: tempo
+  question: No primeiro trimestre de 2019, qual foi a maior temperatura do ar registrada em SBTB?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte solicitados estão disponíveis nos CSV e permitem cálculo direto.
+  assumptions: 'Horários em Brasília, UTC−3 fixo; datas incluem os dias indicados. Vazios, textos não numéricos e valores
+    fora dos limites declarados são ausentes, nunca zero. Faixas aceitas: bseco: de -80 a 60, inclusive, na unidade original.
+    Primeiro trimestre inclui janeiro, fevereiro e março completos; máximo em °C. Duplicatas de estação e instante são consolidadas
+    pela média de cada valor válido; cada instante tem peso igual.'
+  oracle_pandas: |
+    import pandas as pd
+    from pathlib import Path
+
+    path = Path('C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\METEOROLOGIA') / 'temperatura.csv'
+    columns = ['sigla', 'hora_observacao', 'bseco']
+    stations = ['SBTB']
+    parts = []
+    for chunk in pd.read_csv(path, usecols=columns, dtype=str, sep=None,
+                             engine="python", chunksize=50000):
+        chunk["sigla"] = chunk["sigla"].str.strip().str.upper()
+        chunk = chunk.loc[chunk["sigla"].isin(stations)].copy()
+        chunk["hora_observacao"] = pd.to_datetime(chunk["hora_observacao"], errors="coerce")
+        chunk = chunk.loc[chunk["hora_observacao"].ge(pd.Timestamp('2019-01-01')) &
+                          chunk["hora_observacao"].lt(pd.Timestamp('2019-04-01'))]
+        if not chunk.empty:
+            parts.append(chunk)
+    d = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=columns)
+    d["hora_observacao"] = pd.to_datetime(d["hora_observacao"], errors="coerce")
+    d['bseco'] = pd.to_numeric(d['bseco'].astype("string").str.strip().str.replace(",", ".", regex=False), errors="coerce")
+    d['bseco'] = d['bseco'].where(d['bseco'].between(-80, 60)).astype(float) * 1
+    d = d.groupby(["sigla", "hora_observacao"], as_index=False)[['bseco']].mean()
+    def value(x):
+        return None if pd.isna(x) else float(x)
+    result = [(value(d["bseco"].max()),)]
+- id: E50
+  category: tempo
+  question: Qual foi a umidade relativa média em SBUA só nos fins de semana de 2024?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte solicitados estão disponíveis nos CSV e permitem cálculo direto.
+  assumptions: 'Horários em Brasília, UTC−3 fixo; datas incluem os dias indicados. Vazios, textos não numéricos e valores
+    fora dos limites declarados são ausentes, nunca zero. Faixas aceitas: ur: de 0 a 100, inclusive, na unidade original.
+    Fim de semana corresponde a sábado e domingo no horário local fixo de Brasília; média em %, com cada instante observado
+    tendo o mesmo peso. Duplicatas de estação e instante são consolidadas pela média de cada valor válido; cada instante tem
+    peso igual.'
+  oracle_pandas: |
+    import pandas as pd
+    from pathlib import Path
+
+    path = Path('C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\METEOROLOGIA') / 'temperatura.csv'
+    columns = ['sigla', 'hora_observacao', 'ur']
+    stations = ['SBUA']
+    parts = []
+    for chunk in pd.read_csv(path, usecols=columns, dtype=str, sep=None,
+                             engine="python", chunksize=50000):
+        chunk["sigla"] = chunk["sigla"].str.strip().str.upper()
+        chunk = chunk.loc[chunk["sigla"].isin(stations)].copy()
+        chunk["hora_observacao"] = pd.to_datetime(chunk["hora_observacao"], errors="coerce")
+        chunk = chunk.loc[chunk["hora_observacao"].ge(pd.Timestamp('2024-01-01')) &
+                          chunk["hora_observacao"].lt(pd.Timestamp('2025-01-01'))]
+        if not chunk.empty:
+            parts.append(chunk)
+    d = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=columns)
+    d["hora_observacao"] = pd.to_datetime(d["hora_observacao"], errors="coerce")
+    d['ur'] = pd.to_numeric(d['ur'].astype("string").str.strip().str.replace(",", ".", regex=False), errors="coerce")
+    d['ur'] = d['ur'].where(d['ur'].between(0, 100)).astype(float) * 1
+    d = d.groupby(["sigla", "hora_observacao"], as_index=False)[['ur']].mean()
+    def value(x):
+        return None if pd.isna(x) else float(x)
+    d = d.loc[d["hora_observacao"].dt.dayofweek.ge(5)]
+    result = [(value(d["ur"].mean()),)]

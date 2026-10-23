@@ -11,3 +11,7 @@
 # dados compactados e relatórios binários: nunca converter
 *.npz       binary
 *.duckdb    binary
+# conjunto independente congelado: o hash do manifesto vale para os bytes; não normalizar fim de linha
+eval/questions_independent_*.yaml binary
+eval/independent_evaluation/*.yaml binary
+eval/independent_evaluation/*.json binary

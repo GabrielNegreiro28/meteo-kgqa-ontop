@@ -1,0 +1,55 @@
+{
+  "frozen_utc": "2026-10-23T17:25:26.187977+00:00",
+  "pipeline_executed": false,
+  "generation_context": "fresh subagent, fork_turns=none; only user prompt, original pressure station coverage, raw CSV directory and output instructions; no pipeline rules, decisions, previous evaluation sets, or audit supplied",
+  "generator_model": "inherited session model; distinctness from pipeline model not independently verified",
+  "raw_question_count": 50,
+  "retained_question_count": 49,
+  "removed_ids": [
+    "E20"
+  ],
+  "raw_categories": {
+    "simples": 12,
+    "condicao": 8,
+    "serie_ranking": 8,
+    "comparacao": 4,
+    "impossivel": 6,
+    "ambigua": 4,
+    "informal": 4,
+    "tempo": 4
+  },
+  "frozen_categories": {
+    "simples": 12,
+    "condicao": 7,
+    "serie_ranking": 8,
+    "comparacao": 4,
+    "impossivel": 6,
+    "ambigua": 4,
+    "informal": 4,
+    "tempo": 4
+  },
+  "frozen_expected_behaviors": {
+    "answerable": 39,
+    "unsupported": 6,
+    "needs_clarification": 4
+  },
+  "oracle_statuses": {
+    "ok": 40,
+    "not_applicable": 10
+  },
+  "files": {
+    "build_independent.py": "7edcf30c7b40c7e82eff47ee245d74df6e766a5c1f158309990d152340ff309e",
+    "check_coverage.py": "c121d077f8285201a8e4a152247c76d7a63f16fdd9c5847b5c597ccb0c92be06",
+    "generation_prompt.txt": "3091db2d1589f9613f55e170e7eefd01487d59aec4f0d535d7906d77f742a0c7",
+    "independent_review.md": "b6a3ef4767c84bf66894a6c510255fa8d06fa35344cfe252613ea1d4d2542869",
+    "independent_review_decisions.json": "dde9c12d68f1193d95559d6569082d26aa535fa0f8fc84abb54fe35648e73ea4",
+    "independent_validation.json": "32b87129e6264310264e290bb507122debbc77177432a9a452f7ca8981e8d0dd",
+    "input_coverage.json": "14e8d75eb13b920b952bc0c46a72c0bd5189d426c184245c1acbb6524c0abf44",
+    "oracle_worker.py": "aa10ab9c66aabccc3276d63f4d12e3c820eb18f9210ef1fa3ee39b0ca70ffe48",
+    "questions_independent_frozen.yaml": "0d05a4a32f2197352a750d04af8bad72410c582519bbf9429662af5664d2691b",
+    "questions_independent_raw.yaml": "b750e75fc8f1c2314894dac6721369d85f993b7ff716bfb7bde695737e15abae",
+    "source_manifest.json": "f65d70cccdaa90f5f6774d61b89cf46de89acff542bf455107f5d3ff883888d3",
+    "stations.txt": "bf3179da202e3a65906f37e79044205a4f29b09935c56f4adfab1e6cb7f5ca7a",
+    "validate_independent.py": "aac279e0dc7d0bd764fc4a013f7f2d552a1fa1212672bd5bf7da62269b952a1c"
+  }
+}

@@ -1,0 +1,8 @@
+[
+  {
+    "id": "E20",
+    "decision": "remove",
+    "reason": "Não há nenhuma linha de nuvem.csv para SBPA entre 2024-07-01 inclusive e 2024-08-01 exclusivo. O oracle de contagem devolve zero mesmo quando não existem observações; isso não estabelece uma resposta meteorológica observada. Exclusão por ausência de dados, sem editar pergunta, expected_behavior ou código.",
+    "evidence": "input_coverage.json: raw_rows=0; valid_rows=0"
+  }
+]

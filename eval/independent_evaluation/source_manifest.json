@@ -1,0 +1,44 @@
+{
+  "files": [
+    {
+      "name": "temperatura.csv",
+      "bytes": 497441962,
+      "mtime_ns": 1777908627272670100,
+      "sha256": "a4c82046c70bb432fed80f10a8db9c898eee7843ee92e63224aaf54a3a95e33e"
+    },
+    {
+      "name": "pressao.csv",
+      "bytes": 319294917,
+      "mtime_ns": 1777908564960746300,
+      "sha256": "5400f9f03e4002676eabc1531bbd1253534261f902a6b4d2bd0c09674f5d3f14"
+    },
+    {
+      "name": "visibilidade.csv",
+      "bytes": 301069187,
+      "mtime_ns": 1777908566518128200,
+      "sha256": "e79b92be6ba25d3ea41e008f248acb3b878d071ba38ffc3101f7227cf18984da"
+    },
+    {
+      "name": "precipitacao.csv",
+      "bytes": 294131033,
+      "mtime_ns": 1777908526510449200,
+      "sha256": "8cf44157c97f30a399f3e9edc6df5ff76eb8727a6b17e0be73f4eef6f92326e4"
+    },
+    {
+      "name": "vento.csv",
+      "bytes": 555216361,
+      "mtime_ns": 1777908636116697300,
+      "sha256": "ad200db0e542b45f623ba0597fbebbb3cc5e90ec0f1bd2a55592bb8b3caa6275"
+    },
+    {
+      "name": "nuvem.csv",
+      "bytes": 551484791,
+      "mtime_ns": 1777909511093066900,
+      "sha256": "96a24d6cf89745be27971c275b241d35845bb2d4e881ffe4b1a769443f773449"
+    }
+  ],
+  "python": "3.13.3 (tags/v3.13.3:6280bb5, Apr  8 2025, 14:47:33) [MSC v.1943 64 bit (AMD64)]",
+  "pandas": "2.2.3",
+  "pyyaml": "6.0.2",
+  "platform": "Windows-11-10.0.26200-SP0"
+}

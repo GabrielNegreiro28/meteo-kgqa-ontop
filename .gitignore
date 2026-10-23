@@ -37,3 +37,8 @@ tools/
 
 # Documento do professor: fica fora do repositório até ele autorizar a versão
 docs/Ontology_Agentic_Architecture_revised.docx
+
+# Conjunto independente: agregados calculados dos dados reais (resultados dos oráculos, cobertura, contagens por estação) ficam fora do git
+eval/independent_evaluation/independent_validation.json
+eval/independent_evaluation/input_coverage.json
+eval/independent_evaluation/stations.txt
