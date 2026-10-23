@@ -27,7 +27,7 @@ vento 0…150 kt · rajada 0…200 kt · cobertura 1–9 oitavos (9 = céu obscu
 |---|---|---|---|
 | Q1a código de erro | mesmo valor de chuva ≥ 50 mm repetido ≥ 5 vezes na estação | 1.351 | SBIT: 941× "100,2 mm" com duração 0 min |
 | Q1b par inconsistente | chuva > 0 com duração 0 → descarta a **duração**, mantém a chuva | 9.027 | 2018–2020 em estações do Norte: duração não registrada |
-| Q2 sensor travado | mesmo valor ≥ 20 mm em ≥ 3 boletins horários seguidos | 9 | SBSC: 99,1 mm por 11 horas seguidas |
+| Q2 sensor travado | mesmo valor ≥ 20 mm em ≥ 3 boletins horários seguidos (de hora em hora, sem lacuna; regra corrigida em 23/10/2026; o rebuild confirmou as mesmas 9 linhas) | 9 | SBSC: 99,1 mm por 11 horas seguidas |
 | Q3 pico isolado | difere > 8 (°C ou hPa) dos dois instantes vizinhos (≤ 3 h), no mesmo sentido | 1.851 temp. · 2.296 orvalho · 1.853 QNH | SBCF: 49,6 °C às 3h |
 | Q4 rajada | rajada < vento médio, ou > média + 50 kt (mesma cabeceira) | 281 | SBBR: rajada 177 kt com média 3 kt |
 | Q5 pico de vento | > 25 kt acima dos dois vizinhos (mesma cabeceira) | 481 | — |

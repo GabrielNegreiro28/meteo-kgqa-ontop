@@ -1,0 +1,141 @@
+@prefix met:  <https://example.org/kgqa-met/ontology#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+# =====================================================================
+# CAMADA ESTRUTURAL: como as coisas do grafo se RELACIONAM.
+# met.ttl diz quais termos existem; aqui a ontologia diz que relação liga o quê, qual tipo de tempo cada
+# observação tem e que agregações cada grandeza admite. É daqui que se derivam (sem texto escrito à mão):
+#   - o contexto entregue ao LLM para montar a consulta;
+#   - a checagem de tipos de caminhos da consulta (um caminho que exige tipos disjuntos é vazio por construção);
+#   - a regra de agregações permitidas.
+# NÃO é carregada pelo Ontop: usa owl:allValuesFrom e classes como valores (fora do OWL 2 QL). O mapeamento e o
+# raciocínio do Ontop continuam usando só ontology/met.ttl.
+# =====================================================================
+
+<https://example.org/kgqa-met/ontology/structure> a owl:Ontology ;
+    rdfs:comment "Camada estrutural da ontologia meteorológica provisória: relações, formas de tempo, agregações."@pt .
+
+# ---------- Relações dos vocabulários externos que o grafo usa (domínio -> imagem) ----------
+# sosa:hasResult fica SEM domínio de propósito: previsões (met:Forecast) também a usam e não são sosa:Observation (D-08).
+
+sosa:hosts                 rdfs:domain sosa:Platform ;           rdfs:range sosa:Sensor .
+sosa:madeBySensor          rdfs:domain sosa:Observation ;        rdfs:range sosa:Sensor .
+sosa:observedProperty      rdfs:domain sosa:Observation ;        rdfs:range sosa:ObservableProperty .
+sosa:hasFeatureOfInterest  rdfs:domain sosa:Observation ;        rdfs:range sosa:FeatureOfInterest .
+sosa:hasResult             rdfs:range  qudt:QuantityValue .   # neste grafo o resultado é um qudt:QuantityValue (met:CloudLayerResult não é numérico)
+sosa:phenomenonTime        rdfs:domain sosa:Observation ;        rdfs:range time:TemporalEntity .
+sosa:resultTime            rdfs:domain sosa:Observation .
+time:inXSDDateTime         rdfs:domain time:Instant .
+time:hasBeginning          rdfs:domain time:Interval ;           rdfs:range time:Instant .
+time:hasEnd                rdfs:domain time:Interval ;           rdfs:range time:Instant .
+qudt:numericValue          rdfs:domain qudt:QuantityValue .
+met:localDate              rdfs:domain sosa:Observation ; met:alsoDomain met:WeatherReport .   # dia civil local (UTC−3); só aparece no contexto quando o grafo o popula (grafo real)
+qudt:unit                  rdfs:domain qudt:QuantityValue ;      rdfs:range qudt:Unit .   # a unidade é um RECURSO (unit:DEG_C), nunca um texto
+
+time:Instant  rdfs:subClassOf time:TemporalEntity .
+time:Interval rdfs:subClassOf time:TemporalEntity .
+time:Instant  owl:disjointWith time:Interval .
+
+# A estação é uma plataforma que HOSPEDA sensores; o objeto de sosa:hasFeatureOfInterest é o LOCAL observado (met:Site),
+# nunca a estação. Sem esta disjunção, hasFeatureOfInterest apontando para a estação é uma consulta vazia por construção.
+sosa:Platform owl:disjointWith sosa:FeatureOfInterest .
+
+# Tipos que NUNCA coincidem no mesmo nó, usados SÓ para checar consultas (não entram no contexto do LLM nem no Ontop). Sem estas
+# declarações, `?station met:reportOf ?r` (o certo é `?r met:reportOf ?station`) tipava ?station como estação E boletim sem conflito e a
+# consulta, vazia por construção, chegava ao usuário como "sem registros" (medido no grafo real: RD02, RG09 e RG18).
+met:incompatibleWith a owl:AnnotationProperty .
+# Propriedade com mais de um domínio (o rdfs:domain é único): o mapeamento emite met:localDate em observações E em boletins (Codex C08).
+met:alsoDomain a owl:AnnotationProperty .
+met:WeatherStation met:incompatibleWith met:WeatherReport , sosa:Observation .
+met:WeatherReport  met:incompatibleWith sosa:Observation .
+sosa:Platform      met:incompatibleWith met:WeatherReport , sosa:Observation .
+
+# ---------- Forma do tempo por tipo de observação ----------
+met:InstantaneousObservation rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:phenomenonTime ; owl:allValuesFrom time:Instant ] .
+met:CloudLayerObservation    rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:phenomenonTime ; owl:allValuesFrom time:Instant ] .
+met:AccumulatedObservation   rdfs:subClassOf [ a owl:Restriction ; owl:onProperty sosa:phenomenonTime ; owl:allValuesFrom time:Interval ] .
+
+# ---------- Semântica de período dos acumulados (D-06) ----------
+met:requiresFullContainment a owl:AnnotationProperty ;
+    rdfs:label "exige intervalo inteiro dentro do período"@pt ;
+    rdfs:comment "Um acumulado só entra num período se o intervalo inteiro estiver contido nele: início >= começo e fim <= fim (exclusivo). Evita contar parcialmente um acumulado."@pt .
+
+met:AccumulatedObservation met:requiresFullContainment true .
+
+# ---------- Símbolos das unidades (para a resposta em linguagem natural) ----------
+met:symbol a owl:AnnotationProperty ; rdfs:label "símbolo"@pt .
+
+<http://qudt.org/vocab/unit/DEG_C>  met:symbol "°C" .
+<http://qudt.org/vocab/unit/PERCENT> met:symbol "%" .
+<http://qudt.org/vocab/unit/MilliM> met:symbol "mm" .
+<http://qudt.org/vocab/unit/HectoPA> met:symbol "hPa" .
+<http://qudt.org/vocab/unit/KN>     met:symbol "kt" .
+<http://qudt.org/vocab/unit/M>      met:symbol "m" .
+<http://qudt.org/vocab/unit/DEG>    met:symbol "°" .
+<http://qudt.org/vocab/unit/MIN>    met:symbol "min" .
+
+# ---------- Qual tipo de observação cada grandeza produz ----------
+met:observedAs a owl:ObjectProperty ;
+    rdfs:domain sosa:ObservableProperty ;
+    rdfs:label "é observada como"@pt ;
+    rdfs:comment "Liga a grandeza à classe de observação que a registra (e, por ela, à forma do tempo)."@pt .
+
+met:AirTemperature        met:observedAs met:InstantaneousObservation .
+met:WetBulbTemperature    met:observedAs met:InstantaneousObservation .
+met:DewPointTemperature   met:observedAs met:InstantaneousObservation .
+met:RelativeHumidity      met:observedAs met:InstantaneousObservation .
+met:RunwayTemperature     met:observedAs met:InstantaneousObservation .
+met:PressureQNH           met:observedAs met:InstantaneousObservation .
+met:PrevailingVisibility  met:observedAs met:InstantaneousObservation .
+met:WindSpeed             met:observedAs met:InstantaneousObservation .
+met:WindDirection         met:observedAs met:InstantaneousObservation .
+met:WindGust              met:observedAs met:InstantaneousObservation .
+met:Precipitation         met:observedAs met:AccumulatedObservation .
+met:PrecipitationDuration met:observedAs met:AccumulatedObservation .
+met:CloudCover            met:observedAs met:CloudLayerObservation .
+
+# ---------- Agregações que cada grandeza admite ----------
+met:AggregationFunction a owl:Class ; rdfs:label "função de agregação"@pt .
+met:Avg   a met:AggregationFunction ; skos:notation "avg" .
+met:Min   a met:AggregationFunction ; skos:notation "min" .
+met:Max   a met:AggregationFunction ; skos:notation "max" .
+met:Sum   a met:AggregationFunction ; skos:notation "sum" .
+met:Count a met:AggregationFunction ; skos:notation "count" .
+
+met:allowsAggregation a owl:ObjectProperty ;
+    rdfs:domain sosa:ObservableProperty ; rdfs:range met:AggregationFunction ;
+    rdfs:label "admite agregação"@pt ;
+    rdfs:comment "Soma só para acumulados; média não faz sentido para grandezas circulares (direção) nem categóricas (nuvens)."@pt .
+
+# grandezas instantâneas contínuas: média, mínimo, máximo e contagem
+met:AirTemperature       met:allowsAggregation met:Avg, met:Min, met:Max, met:Count .
+met:WetBulbTemperature   met:allowsAggregation met:Avg, met:Min, met:Max, met:Count .
+met:DewPointTemperature  met:allowsAggregation met:Avg, met:Min, met:Max, met:Count .
+met:RelativeHumidity     met:allowsAggregation met:Avg, met:Min, met:Max, met:Count .
+met:RunwayTemperature    met:allowsAggregation met:Avg, met:Min, met:Max, met:Count .
+met:PressureQNH          met:allowsAggregation met:Avg, met:Min, met:Max, met:Count .
+met:PrevailingVisibility met:allowsAggregation met:Avg, met:Min, met:Max, met:Count .
+met:WindSpeed            met:allowsAggregation met:Avg, met:Min, met:Max, met:Count .
+met:WindGust             met:allowsAggregation met:Avg, met:Min, met:Max, met:Count .
+# acumulados: soma permitida; média de acumulados não (exige o intervalo explicitado)
+met:Precipitation        met:allowsAggregation met:Sum, met:Max, met:Min, met:Count .
+met:PrecipitationDuration met:allowsAggregation met:Sum, met:Max, met:Count .
+met:WindDirection        met:allowsAggregation met:Count .
+met:CloudCover           met:allowsAggregation met:Count .
+
+# ---------- Ressalvas que acompanham a RESPOSTA (pipeline/caveats.py) ----------
+# Texto curto, em português, para o usuário. Só entra o que muda a leitura de um número e o usuário não adivinha. Cada uma foi
+# verificada nos dados (docs/ANALISE_CRITICA.md, seção 4). Não vão ao prompt do LLM e o Ontop não as carrega.
+met:answerCaveat a owl:AnnotationProperty ;
+    rdfs:comment "Ressalva exibida junto da resposta sempre que a grandeza participa dela."@pt .
+
+met:PrevailingVisibility met:answerCaveat "Visibilidade: 20.000 m é o teto do registro (significa 20 km ou mais); a maior parte das leituras (cerca de 80%) está nesse teto, então a média e o máximo ficam limitados por ele. A escala da fonte (dam convertido para metros) é uma hipótese ainda não confirmada com o fornecedor dos dados."@pt .
+met:WindGust             met:answerCaveat "Rajada só é registrada quando há rajada: a ausência de registro não significa vento calmo."@pt .
+met:RunwayTemperature    met:answerCaveat "A fonte não identifica a pista, e a temperatura da pista existe só em parte dos aeródromos."@pt .
+met:PressureQNH          met:answerCaveat "QNH é a pressão reduzida ao nível médio do mar (padrão ICAO), não a pressão medida na estação."@pt .

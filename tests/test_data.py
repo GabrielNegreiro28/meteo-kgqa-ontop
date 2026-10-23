@@ -59,3 +59,30 @@ def test_shacl_catches_bad_data():
     assert not conforms
     assert "faixa física" in report
     assert "unit" in report
+
+
+def test_shapes_accept_every_unit_and_datatype_the_real_mapping_emits():
+    """Codex C17: os shapes só conheciam 3 unidades do grafo sintético e teriam rejeitado vento, pressão e visibilidade do grafo real."""
+    import re
+    from rdflib import RDF
+    from rdflib.collection import Collection
+    from rdflib.namespace import SH
+    obda = (ROOT / "mapping" / "met.obda").read_text(encoding="utf-8")
+    emitted = set(re.findall(r"qudt:unit unit:(\w+)", obda))
+    shapes = _shapes()
+    allowed = set()
+    for unit_prop in shapes.subjects(SH.path, QUDT.unit):
+        for lst in shapes.objects(unit_prop, SH["in"]):
+            allowed |= {str(u).rsplit("/", 1)[-1] for u in Collection(shapes, lst)}
+    assert emitted and emitted <= allowed, emitted - allowed
+    assert "xsd:integer" in obda and "datatype" in (ROOT / "ontology" / "shapes.ttl").read_text(encoding="utf-8")
+
+
+def test_shacl_still_catches_real_world_impossible_values():
+    from rdflib import Namespace
+    g = _data()
+    r = URIRef("https://example.org/kgqa-met/data/result/EST-A-P-X")
+    g.add((r, QUDT.numericValue, Literal("2000.0", datatype=XSD.decimal)))
+    g.add((r, QUDT.unit, URIRef("http://qudt.org/vocab/unit/HectoPA")))        # 2000 hPa não existe
+    conforms, _, report = validate(g, shacl_graph=_shapes(), inference="none")
+    assert not conforms and "faixa física" in report

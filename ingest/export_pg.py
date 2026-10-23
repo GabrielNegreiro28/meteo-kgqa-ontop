@@ -7,9 +7,9 @@ Uso: python ingest/export_pg.py <duckdb> "<conninfo postgres>"
 import os, sys, time
 import duckdb, psycopg
 
-DUCK = sys.argv[1] if len(sys.argv) > 1 else "/home/claude/metdata/met.duckdb"
+DUCK = sys.argv[1] if len(sys.argv) > 1 else os.environ.get("MET_HOME", "/home/claude/metdata") + "/met.duckdb"
 PG = sys.argv[2] if len(sys.argv) > 2 else "host=127.0.0.1 port=5433 user=postgres dbname=met"
-TMP = "/home/claude/metdata/_export.csv"
+TMP = os.environ.get("MET_HOME", "/home/claude/metdata") + "/_export.csv"
 
 SCALAR = ["air_temp", "wet_bulb", "dew_point", "rel_humidity", "runway_temp", "qnh", "visibility"]
 T = "epoch(t_utc)::BIGINT // 60 AS tmin, strftime(t_utc, '%Y-%m-%d %H:%M:%S+00') AS t_utc"

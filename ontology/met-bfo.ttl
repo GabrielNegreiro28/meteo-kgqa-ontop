@@ -1,0 +1,78 @@
+@prefix met:  <https://example.org/kgqa-met/ontology#> .
+@prefix obo:  <http://purl.obolibrary.org/obo/> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+# =====================================================================
+# ALINHAMENTO COM A BFO — PROPOSTA PROVISÓRIA, AGUARDANDO A EQUIPE DE ONTOLOGIA (DECISOES.md, P-07).
+#
+# O documento da arquitetura exige que cada classe do domínio tenha UMA colocação sob a BFO (ou IAO/CCO) e que o
+# Termo do EvoOntology COPIE a categoria da ontologia formal, nunca a invente (§6.4 e §7.4, regra 2). Este arquivo é essa
+# fonte. Ele não é carregado pelo Ontop e não altera met.ttl: o grafo e as consultas continuam iguais.
+#
+# Toda linha abaixo é uma hipótese de modelagem, não um fato. Os pontos em aberto estão no rdfs:comment de cada uma.
+# Identificadores BFO/IAO são códigos opacos (OBO); os rótulos ficam nos nós de categoria, mais abaixo.
+# =====================================================================
+
+<https://example.org/kgqa-met/ontology/bfo-alignment> a owl:Ontology ;
+    rdfs:comment "Alinhamento provisório da ontologia meteorológica com a BFO 2020 (ISO/IEC 21838-2) e a IAO."@pt ;
+    met:alignmentStatus "provisional" .
+
+met:alignmentStatus a owl:AnnotationProperty .
+met:bfoCategory     a owl:AnnotationProperty ;
+    rdfs:comment "Categoria BFO/IAO da entidade. Uma por entidade."@pt .
+
+# ---------- Categorias usadas (notation = identificador curto que viaja nos Termos) ----------
+
+obo:BFO_0000040 rdfs:label "material entity"@en ; skos:notation "material_entity" .
+obo:BFO_0000015 rdfs:label "process"@en ;         skos:notation "process" .
+obo:BFO_0000019 rdfs:label "quality"@en ;         skos:notation "quality" .
+obo:BFO_0000029 rdfs:label "site"@en ;            skos:notation "site" .
+obo:IAO_0000030 rdfs:label "information content entity"@en ; skos:notation "information_content_entity" ;
+    rdfs:comment "Vem da IAO, não do núcleo ISO 21838-2 (P-07): confirmar qual extensão a equipe usará."@pt .
+
+# ---------- Classes ----------
+
+met:WeatherStation met:bfoCategory obo:BFO_0000040 ;
+    rdfs:comment "Estação como entidade material (a plataforma que hospeda sensores). Hipótese: P-07."@pt .
+
+met:InstantaneousObservation met:bfoCategory obo:BFO_0000015 ;
+    rdfs:comment "Observação como processo (a BFO-OBDA exige participante, WF4). Hipótese: P-07."@pt .
+met:AccumulatedObservation   met:bfoCategory obo:BFO_0000015 ;
+    rdfs:comment "Mesma colocação da observação instantânea; a diferença (instante x intervalo) é temporal, não de categoria."@pt .
+met:CloudLayerObservation    met:bfoCategory obo:BFO_0000015 ;
+    rdfs:comment "Mesma colocação das demais observações."@pt .
+
+met:Forecast met:bfoCategory obo:IAO_0000030 ;
+    rdfs:comment "Previsão como conteúdo de informação. EM ABERTO: é sobre o quê, se a qualidade futura ainda não existe? (P-07)"@pt .
+
+met:Site met:bfoCategory obo:BFO_0000029 ;
+    rdfs:comment "O local observado (a atmosfera junto à estação). EM ABERTO: pode ser porção de ar (entidade material) em vez de sítio."@pt .
+
+met:WeatherReport met:bfoCategory obo:IAO_0000030 ;
+    rdfs:comment "Boletim como conteúdo de informação. EM ABERTO: também é a coleção das observações de um instante."@pt .
+
+met:CloudLayerResult met:bfoCategory obo:IAO_0000030 ;
+    rdfs:comment "Valor medido como entidade de informação (WF5 exige isAbout). Hipótese: P-07."@pt .
+
+# ---------- Grandezas observáveis (indivíduos de sosa:ObservableProperty) ----------
+# EM ABERTO (P-07): a SOSA usa a propriedade GENÉRICA (tipo de grandeza), enquanto a BFO fala de qualidades PARTICULARES
+# que inerem a um portador (WF3 exige inheresIn). A categoria "quality" abaixo é a mais próxima, não uma tese resolvida.
+# Casos que provavelmente não são qualidades do ar e devem ser revistos: precipitação e duração da precipitação (processo
+# ou porção de água), vento e rajada (movimento do ar), visibilidade (disposição do ar de transmitir luz).
+
+met:AirTemperature        met:bfoCategory obo:BFO_0000019 .
+met:RelativeHumidity      met:bfoCategory obo:BFO_0000019 .
+met:WetBulbTemperature    met:bfoCategory obo:BFO_0000019 .
+met:DewPointTemperature   met:bfoCategory obo:BFO_0000019 .
+met:RunwayTemperature     met:bfoCategory obo:BFO_0000019 ;
+    rdfs:comment "Qualidade da pista, não do ar: portador diferente das demais temperaturas."@pt .
+met:PressureQNH           met:bfoCategory obo:BFO_0000019 .
+met:PrevailingVisibility  met:bfoCategory obo:BFO_0000019 .
+met:Precipitation         met:bfoCategory obo:BFO_0000019 .
+met:PrecipitationDuration met:bfoCategory obo:BFO_0000019 .
+met:WindSpeed             met:bfoCategory obo:BFO_0000019 .
+met:WindDirection         met:bfoCategory obo:BFO_0000019 .
+met:WindGust              met:bfoCategory obo:BFO_0000019 .
+met:CloudCover            met:bfoCategory obo:BFO_0000019 .

@@ -14,10 +14,10 @@ Regras (documentadas em data/REGRAS_LIMPEZA.md):
   R7 Vazio nunca vira zero.
 Uso: python ingest/transform.py /home/claude/metdata/met.duckdb
 """
-import sys, time
+import os, sys, time
 import duckdb
 
-DB = sys.argv[1] if len(sys.argv) > 1 else "/home/claude/metdata/met.duckdb"
+DB = sys.argv[1] if len(sys.argv) > 1 else os.environ.get("MET_HOME", "/home/claude/metdata") + "/met.duckdb"
 DST = ("(CAST(hora_observacao AS DATE) IN (DATE '2016-10-16', DATE '2017-10-15', DATE '2018-11-04') "
        "AND hour(hora_observacao) = 1)")
 
@@ -61,7 +61,7 @@ def main():
     con = duckdb.connect(DB)
     # Limite de memória com transbordo para disco: o ambiente também roda PostgreSQL e Ontop (JVM).
     con.execute("SET memory_limit = '2GB'")
-    con.execute("SET temp_directory = '/home/claude/metdata/duckdb_tmp'")
+    con.execute(f"SET temp_directory = '{os.environ.get('MET_HOME', '/home/claude/metdata')}/duckdb_tmp'")
     con.execute("SET preserve_insertion_order = false")
     con.execute("CREATE SCHEMA IF NOT EXISTS clean")
     con.execute("""CREATE OR REPLACE TABLE clean.quarantine (
@@ -204,14 +204,19 @@ def quality_control(con):
         value = 0 AND EXISTS (SELECT 1 FROM clean.obs_precip p
           WHERE p.sigla = obs_precip_duration.sigla AND p.t_local = obs_precip_duration.t_local AND p.value > 0)""",
         "inconsistente_duracao_zero_com_chuva")
-    # Q2 sensor travado: mesmo valor ≥ 20 mm em ≥ 3 boletins horários consecutivos
+    # Q2 sensor travado: mesmo valor ≥ 20 mm em ≥ 3 boletins horários CONSECUTIVOS. "Consecutivo" é de hora em hora: LAG/LEAD por linha
+    # juntava leituras espaçadas (25 mm em 01/01/2019, 01/06/2019 e 01/01/2020 marcavam as três como travadas; Codex C09).
     con.execute("""CREATE OR REPLACE TEMP TABLE stuck AS
       WITH s AS (SELECT sigla, t_local, value,
-                 LAG(value,1) OVER w AS p1, LAG(value,2) OVER w AS p2,
-                 LEAD(value,1) OVER w AS n1, LEAD(value,2) OVER w AS n2
+                 value = LAG(value,1) OVER w AND t_local - LAG(t_local,1) OVER w = INTERVAL 1 HOUR AS same_prev,
+                 value = LEAD(value,1) OVER w AND LEAD(t_local,1) OVER w - t_local = INTERVAL 1 HOUR AS same_next,
+                 value = LAG(value,2) OVER w AND t_local - LAG(t_local,1) OVER w = INTERVAL 1 HOUR
+                       AND LAG(t_local,1) OVER w - LAG(t_local,2) OVER w = INTERVAL 1 HOUR AS same_prev2,
+                 value = LEAD(value,2) OVER w AND LEAD(t_local,1) OVER w - t_local = INTERVAL 1 HOUR
+                       AND LEAD(t_local,2) OVER w - LEAD(t_local,1) OVER w = INTERVAL 1 HOUR AS same_next2
                  FROM clean.obs_precip WHERE seq = 0 WINDOW w AS (PARTITION BY sigla ORDER BY t_local))
       SELECT sigla, t_local FROM s WHERE value >= 20 AND (
-        (value = p1 AND value = p2) OR (value = p1 AND value = n1) OR (value = n1 AND value = n2))""")
+        (same_prev AND same_prev2) OR (same_prev AND same_next) OR (same_next AND same_next2))""")
     out["Q2"] = _move(con, "obs_precip", "precipitacao", "precip",
                       "(sigla, t_local) IN (SELECT sigla, t_local FROM stuck)", "sensor_travado")
     # Q3 pico isolado: difere > limiar da média dos instantes vizinhos (≤ 3 h) dos dois lados, no mesmo sentido
@@ -249,6 +254,7 @@ def quality_control(con):
     out["Q5"] = _move(con, "obs_wind_speed", "vento", "velvento",
                       "(sigla, t_local, seq) IN (SELECT sigla, t_local, seq FROM wspk)", "pico_isolado")
     print("controle de qualidade (linhas movidas para quarentena):", out)
+    return out
 
 
 if __name__ == "__main__":
