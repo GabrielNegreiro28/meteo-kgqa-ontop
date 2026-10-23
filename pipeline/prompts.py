@@ -126,8 +126,14 @@ INTERPRET_V6 = INTERPRET_V4.replace(
 
 
 # v7: v6 + filtros com unidade explícita e consulta montada por código também para agregação simples e contagem com limiar.
-INTERPRET_V7 = INTERPRET_V6 + """
-11. Todo filtro numérico leva "unit" (ex.: "unit:KiloM" se a pergunta diz km, "unit:M" se diz metros, "unit:DEG_C" para °C). Informe o número
+INTERPRET_V7 = INTERPRET_V6.replace(
+    ''' "order": null | {"by": "aggregate", "direction": "desc" | "asc", "limit": N},''',
+    ''' "order": null | {"by": "aggregate", "direction": "desc" | "asc", "limit": N},
+ "daily": null | {"agg": "max" | "min" | "avg" | "sum", "op": ">" | ">=" | "<" | "<=" | "=", "value": número, "unit": "unit:..."},''') + """
+11. "Em quantos DIAS a máxima/mínima/média/soma do dia passou de X": "aggregation": "count" e "daily": {"agg": a estatística do dia, "op", "value"}, sem
+    "filters", sem group_by. "Dia com chuva acima de 10 mm" = soma do dia (agg "sum"); "dia com temperatura acima de 30" sem dizer máxima ou média
+    é ambíguo: peça esclarecimento. Contar LEITURAS ("quantas vezes", "quantas horas") NÃO é daily: use "filters" e "aggregation": "count".
+12. Todo filtro numérico leva "unit" (ex.: "unit:KiloM" se a pergunta diz km, "unit:M" se diz metros, "unit:DEG_C" para °C). Informe o número
     e a unidade COMO NA PERGUNTA: o sistema converte para a unidade dos dados, não converta você."""
 
 

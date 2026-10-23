@@ -20,7 +20,7 @@ PROPS = {"met:AirTemperature": ("obs_air_temp", "DEG_C", (-5, 38)), "met:Precipi
          "met:PressureQNH": ("obs_qnh", "HectoPA", (1000, 1022)), "met:RelativeHumidity": ("obs_rel_humidity", "PERCENT", (30, 95)),
          "met:PrevailingVisibility": ("obs_visibility", "M", (1000, 9000))}
 STATIONS = ["SBGL", "SBPA", "SBCT", "SBFZ", "SBBR"]
-N_SPECS = 40
+N_SPECS = 56
 CHECKED = []                                     # especificações cuja comparação teve linhas de verdade (não só vazio = vazio)
 
 
@@ -34,7 +34,7 @@ def _specs():
         a = date(year, rnd.randint(1, 12), rnd.randint(1, 28))
         b = a + timedelta(days=rnd.choice([0, 6, 14, 30, 90, 200]))
         b = min(b, date(2025, 12, 31))
-        shape = rnd.choice(["plain", "plain", "filter", "station", "year", "month"])
+        shape = rnd.choice(["plain", "plain", "filter", "station", "year", "month", "daily", "daily"])
         spec = dict(properties=[prop], aggregation=rnd.choice(aggs), period={"start": a.isoformat(), "end": b.isoformat(), "tz": "-03:00", "inclusive_end": True},
                     entities=[], filters=[], group_by=[], record_kind="observation")
         sts = rnd.sample(STATIONS, 3 if shape == "station" else 1)
@@ -42,6 +42,11 @@ def _specs():
         if shape == "filter":
             lo, hi = PROPS[prop][2]
             spec["filters"] = [{"op": rnd.choice([">", ">=", "<", "<="]), "value": rnd.randint(lo, hi), "unit": f"unit:{PROPS[prop][1]}"}]
+        elif shape == "daily":
+            lo, hi = PROPS[prop][2]
+            spec["aggregation"] = "count"
+            spec["daily"] = {"agg": rnd.choice(["max", "min", "avg"] + (["sum"] if prop == "met:Precipitation" else [])),
+                             "op": rnd.choice([">", ">=", "<", "<="]), "value": rnd.randint(lo, hi), "unit": f"unit:{PROPS[prop][1]}"}
         elif shape != "plain":
             spec["group_by"] = [shape]
         if shape == "year":
@@ -79,6 +84,18 @@ def test_compiled_query_equals_pandas_on_the_real_graph(world, k, spec):
         v = f["value"]
         d = d[{">": d.value > v, ">=": d.value >= v, "<": d.value < v, "<=": d.value <= v}[f["op"]]]
     agg = spec["aggregation"]
+    if "daily" in spec:                              # value = dias que cumprem a condição; n = dias com dados
+        dd = spec["daily"]
+        per_day = d.groupby("local_date").value.agg({"max": "max", "min": "min", "avg": "mean", "sum": "sum"}[dd["agg"]])
+        hit = {">": per_day > dd["value"], ">=": per_day >= dd["value"], "<": per_day < dd["value"], "<=": per_day <= dd["value"]}[dd["op"]]
+        CHECKED.append(bool(len(per_day)))
+        row = ex.results["results"]["bindings"]
+        assert len(row) == 1
+        got_n = int(row[0]["n"]["value"])
+        assert got_n == len(per_day), (got_n, len(per_day))
+        if len(per_day):
+            assert float(row[0]["value"]["value"]) == int(hit.sum()), (row[0], int(hit.sum()))
+        return
     fn = {"avg": "mean", "min": "min", "max": "max", "sum": "sum", "count": "size"}[agg]
     gb = spec["group_by"]
     if gb == ["station"]:

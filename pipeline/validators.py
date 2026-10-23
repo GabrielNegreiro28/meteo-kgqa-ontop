@@ -38,10 +38,12 @@ class PipelineInterpretation(Interpretation):
     group_by: list = field(default_factory=list)    # "station"|"year"|"month"|"day"|"value"|"met:<atributo próprio da grandeza>"
     attributes: list = field(default_factory=list)  # atributos a mostrar junto do superlativo (ex.: "em qual cabeceira")
     order: dict | None = None                        # {"by": "aggregate", "direction": "asc"|"desc", "limit": 1..100}
+    # "em quantos DIAS a máxima passou de 30": agrega cada dia (agg) e conta os dias que cumprem a condição; aggregation = "count"
+    daily: dict | None = None                        # {"agg": "max"|"min"|"avg"|"sum", "op": ">"|..., "value": número, "unit": opcional}
 
     @property
     def structured(self) -> bool:
-        return bool(self.group_by or self.attributes or self.order)
+        return bool(self.group_by or self.attributes or self.order or self.daily)
 
 
 GROUP_DIMS = ("station", "year", "month", "day", "value")
@@ -109,6 +111,11 @@ def _schema(interp: PipelineInterpretation) -> list[Finding]:
         if not (isinstance(o, dict) and o.get("by") == "aggregate" and o.get("direction") in ("asc", "desc")
                 and isinstance(o.get("limit"), int) and not isinstance(o.get("limit"), bool) and 1 <= o["limit"] <= MAX_LIMIT):
             bad.append(f'order deve ser null ou {{"by": "aggregate", "direction": "asc"|"desc", "limit": 1 a {MAX_LIMIT}}}')
+    if interp.daily is not None:
+        d = interp.daily
+        if not (isinstance(d, dict) and d.get("agg") in ("max", "min", "avg", "sum") and d.get("op") in (">", ">=", "<", "<=", "=")
+                and isinstance(d.get("value"), (int, float)) and not isinstance(d.get("value"), bool)):
+            bad.append('daily deve ser null ou {"agg": "max"|"min"|"avg"|"sum", "op": ">"|">="|"<"|"<="|"=", "value": número, "unit": opcional}')
     return [_err(L3, "BAD_SCHEMA", f"Formato inválido da interpretação: {m}") for m in bad]
 
 
@@ -259,7 +266,7 @@ def _ground_in_question(interp: PipelineInterpretation, question: str, index: On
                 out.append(_err(L4, "ENTITY_TEXT_MISMATCH",
                                 f"A pergunta diz '{e.get('text')}', que não corresponde a nenhum rótulo ou código da estação {e['iri']} nos dados. "
                                 f"Não há nome de cidade nos dados: se a estação não aparece na lista, responda status \"unsupported\"", entity=e))
-    for f in interp.filters:
+    for f in [*interp.filters, *([interp.daily] if isinstance(interp.daily, dict) else [])]:
         try:
             val = Decimal(str(f["value"]))
         except (KeyError, ArithmeticError):
@@ -336,9 +343,14 @@ def _ground_in_question(interp: PipelineInterpretation, question: str, index: On
                         out.append(_err(L4, "PERIOD_PARTIAL_YEAR",
                                         f"A pergunta traz só o(s) ano(s) {sorted(years)}, sem recorte dentro dele; o período vai de {start} a {last}. "
                                         f"Use o ano inteiro", period=interp.period))
-        if _THRESHOLD.search(q) and not interp.filters:
+        if _THRESHOLD.search(q) and not interp.filters and not interp.daily:
             out.append(_err(L4, "FILTER_OMITTED", "A pergunta traz um limiar (acima/abaixo de um valor) e a interpretação não tem filtro: "
                             "a consulta ignoraria a condição. Preencha 'filters' com o operador e o valor"))
+        if interp.daily and not re.search(r"\bdias?\b", q):
+            out.append(_err(L4, "DAILY_NOT_IN_QUESTION", "A interpretação conta DIAS (daily) e a pergunta não fala em dias"))
+        if not interp.daily and _THRESHOLD.search(q) and re.search(r"\b(?:quantos|quantas|numero de|total de) dias\b", q):
+            out.append(_err(L4, "DAILY_OMITTED", "A pergunta conta DIAS que cumprem uma condição; use aggregation \"count\" e daily "
+                            '{"agg": "max"|"min"|"avg"|"sum", "op", "value"} (contar leituras daria outro número)'))
         if _DAY_PART.search(q):
             out.append(_err(L4, "DAYPART_UNSUPPORTED", "A pergunta restringe a parte do dia (dia, noite, manhã, tarde) e a interpretação não tem "
                             "como representar isso: a consulta usaria o dia inteiro. Responda status \"unsupported\""))
@@ -391,6 +403,14 @@ def _structure_rules(interp: PipelineInterpretation, index: OntologyIndex) -> li
         out.append(_err(L3, "ATTRIBUTES_NEED_SUPERLATIVE", "attributes só vale com aggregation 'max' ou 'min' (a leitura que atinge o máximo/mínimo)"))
     if interp.order and not interp.group_by:
         out.append(_err(L3, "ORDER_NEEDS_GROUP_BY", "order ordena os GRUPOS: precisa de group_by"))
+    if interp.daily:
+        if interp.aggregation != "count" or interp.group_by or interp.attributes or interp.order or interp.filters:
+            out.append(_err(L3, "DAILY_SHAPE", "daily conta DIAS: use aggregation \"count\" e nenhum group_by, attributes, order ou filters"))
+        info = index.properties.get(prop)
+        if info is not None and info.aggregations and interp.daily["agg"] not in info.aggregations:
+            out.append(_err(L3, "AGGREGATION_NOT_ALLOWED", f"A ontologia não admite '{interp.daily['agg']}' para {interp.properties[0]}"))
+        if not day_data:
+            out.append(_err(L2, "DIMENSION_WITHOUT_DATA", "daily agrupa pelo dia local (met:localDate), que este grafo não tem"))
     return out
 
 
@@ -735,6 +755,8 @@ def _conformance(interp: PipelineInterpretation, facts: QueryFacts, index: Ontol
     # agregação: exatamente a pedida (mais a contagem ?n exigida por D-10)
     if facts.aggregates:
         expected = ({interp.aggregation} if interp.aggregation else set()) | {"count"}
+        if interp.daily:                              # dias que cumprem a condição: agrega cada dia (agg) e soma os acertos
+            expected |= {interp.daily["agg"]}
         extra = facts.aggregates - expected
         if extra or (interp.aggregation and interp.aggregation not in facts.aggregates):
             out.append(_err(L3, "AGGREGATION_MISMATCH", "Agregação da consulta difere da interpretação",
@@ -751,7 +773,7 @@ def _conformance(interp: PipelineInterpretation, facts: QueryFacts, index: Ontol
     numeric = [(c.op, c.value) for c in facts.comparisons if c.kind == "numeric"]
     canon = index.properties.get(expand(interp.properties[0])).unit if len(interp.properties) == 1 and expand(interp.properties[0]) in index.properties else None
     wanted = []
-    for f in interp.filters:
+    for f in [*interp.filters, *([interp.daily] if isinstance(interp.daily, dict) else [])]:
         if "op" not in f or "value" not in f:
             continue
         v = vocab.convert_filter_value(f["value"], f.get("unit"), canon)      # '1 km' numa grandeza em metros vale 1000, não 1

@@ -68,6 +68,9 @@ def describe(interp: PipelineInterpretation, index: OntologyIndex) -> str:
             parts.append("resultado por: " + ", ".join(short(d) for d in interp.group_by))
         if interp.attributes:
             parts.append("mostrando também: " + ", ".join(short(a) for a in interp.attributes))
+        if interp.daily:
+            d = interp.daily
+            parts.append(f"conta DIAS em que o {d['agg']} do dia {d['op']} {d['value']}")
         if interp.order:
             parts.append(f"ordem: {'decrescente' if interp.order['direction'] == 'desc' else 'crescente'} pela agregação, só os {interp.order['limit']} primeiros")
     return " · ".join(parts)

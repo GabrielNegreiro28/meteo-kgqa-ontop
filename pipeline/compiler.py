@@ -167,6 +167,19 @@ def compile_structured(interp: PipelineInterpretation, index: OntologyIndex, for
         return where + period_filter(d)
 
     try:
+        # ---- dias que cumprem uma condição: agrega cada dia (daily.agg) e conta os dias; value = dias que cumprem, n = dias com dados ----
+        if interp.daily:
+            dv = vocab.convert_filter_value(interp.daily["value"], interp.daily.get("unit"), info.unit)
+            if dv is None or len(ents) != 1 or agg != "count":
+                return None
+            hit = "\n      ".join(base("1", need_day=True))
+            seen = "\n      ".join(base("0", need_day=True))
+            cond = f"{interp.daily['agg'].upper()}(?v1) {interp.daily['op']} {format(dv.normalize(), 'f')}"
+            # dois subselects independentes: os dias que cumprem (value) e os dias com dados (n); sem cálculo sobre o argumento de agregação
+            return (f"SELECT ?value ?n WHERE {{\n"
+                    f"  {{ SELECT (COUNT(?d1) AS ?value) WHERE {{ SELECT ?d1 WHERE {{\n      {hit}\n    }} GROUP BY ?d1 HAVING ({cond}) }} }}\n"
+                    f"  {{ SELECT (COUNT(?d0) AS ?n) WHERE {{ SELECT ?d0 WHERE {{\n      {seen}\n    }} GROUP BY ?d0 }} }}\n}}")
+
         # ---- superlativo com atributo: a(s) leitura(s) que atingem o máximo/mínimo, com o atributo e o instante ----
         if interp.attributes:
             fn = agg.upper()

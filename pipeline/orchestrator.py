@@ -35,7 +35,7 @@ from .validators import (RELATIVE_TIME, Finding, PipelineInterpretation, parse_p
 from .vocab import MET, STATION_NS, OntologyIndex, expand, fold
 
 MAX_TOKENS = {"interpret": 600, "generate": 900, "answer": 600}
-STRUCTURE_KEYS = {"group_by", "attributes", "order"}
+STRUCTURE_KEYS = {"group_by", "attributes", "order", "daily"}
 INTERP_KEYS = {"status", "properties", "entities", "filters", "period", "instant", "aggregation", "record_kind",
                "alternatives", "reason"} | STRUCTURE_KEYS
 VALUE_VARS = {"value", "avg", "min", "max", "total", "sum"}
@@ -182,7 +182,7 @@ def _to_interpretation(obj: dict[str, Any]) -> PipelineInterpretation:
         entities=d("entities", []), properties=d("properties", []), filters=d("filters", []), period=obj.get("period"),
         aggregation=obj.get("aggregation"), alternatives=list(alts) if isinstance(alts, list) else [],
         record_kind=d("record_kind", "observation"), instant=obj.get("instant"),
-        group_by=d("group_by", []), attributes=d("attributes", []), order=obj.get("order"))
+        group_by=d("group_by", []), attributes=d("attributes", []), order=obj.get("order"), daily=obj.get("daily"))
 
 
 def _safe_text(question: str) -> str:
@@ -559,7 +559,7 @@ def _interp_dict(i: PipelineInterpretation) -> dict[str, Any]:
     out = {"properties": i.properties, "entities": i.entities, "filters": i.filters, "period": i.period,
            "instant": i.instant, "aggregation": i.aggregation, "record_kind": i.record_kind}
     if i.structured:                                  # só quando há: o JSON de v1–v5 (e os prompts deles) não muda
-        out.update({"group_by": i.group_by, "attributes": i.attributes, "order": i.order})
+        out.update({"group_by": i.group_by, "attributes": i.attributes, "order": i.order, "daily": i.daily})
     return out
 
 

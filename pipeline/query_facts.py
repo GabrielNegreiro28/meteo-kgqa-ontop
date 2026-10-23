@@ -145,6 +145,9 @@ def _expand(s: str, p: Any, o: str, fresh) -> list[tuple[str, str, str]]:
 
 
 def _comparison(op: str, other: Any, var: str | None = None) -> Comparison | None:
+    if getattr(other, "name", None) == "UnaryMinus" and isinstance(other.get("expr"), Literal):    # limiar negativo (-5): o parser o dá como `-` sobre 5
+        base = _comparison(op, other.get("expr"), var)
+        return Comparison(op, -base.value, "numeric", var) if base is not None and base.kind == "numeric" else None
     if not isinstance(other, Literal):
         return None
     dt = str(other.datatype) if other.datatype else ""

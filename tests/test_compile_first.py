@@ -59,3 +59,36 @@ def test_grouped_filter_stays_unsupported_and_v6_behaviour_is_unchanged():
     assert compile_structured(i, IDX, force=True) is None
     plain = interp(properties=["met:AirTemperature"], entities=E("SBGR"), aggregation="avg")
     assert compile_structured(plain, IDX) is None         # sem force (v6) a agregação simples continua com o LLM
+
+
+def _daily(**kw):
+    base = dict(properties=["met:AirTemperature"], entities=E("SBGR"), period=P("2024-01-01", "2024-01-31"), aggregation="count",
+                daily={"agg": "max", "op": ">", "value": 30, "unit": "unit:DEG_C"})
+    return interp(**{**base, **kw})
+
+
+def test_days_over_a_threshold_are_counted_per_day_not_per_reading_E15():
+    i = _daily()
+    q = compile_structured(i, IDX)                      # daily conta como forma estruturada: vale já na v6 do compilador
+    assert q and "GROUP BY ?d1 HAVING (MAX(?v1) > 30)" in q and "COUNT(?d0) AS ?n" in q
+    assert not validate_query(q, i, IDX, True)[1]
+
+
+def test_counting_days_in_the_question_requires_daily_not_filters():
+    q = "Em quantos dias de janeiro de 2024 a máxima de SBGR ficou acima de 30 °C?"
+    assert "DAILY_OMITTED" in codes(interp(properties=["met:AirTemperature"], entities=E("SBGR"), period=P("2024-01-01", "2024-01-31"),
+                                           aggregation="count", filters=[{"op": ">", "value": 30}]), q)
+    assert not [c for c in codes(_daily(), q) if c.startswith("DAILY") or c == "FILTER_OMITTED"]
+
+
+def test_daily_shape_rules():
+    assert "DAILY_SHAPE" in codes(_daily(aggregation="max"), "em quantos dias a máxima ficou acima de 30 em SBGR em janeiro de 2024")
+    assert "DAILY_SHAPE" in codes(_daily(filters=[{"op": ">", "value": 30}]), "em quantos dias a máxima ficou acima de 30 em SBGR em janeiro de 2024")
+    assert "BAD_SCHEMA" in codes(_daily(daily={"agg": "median", "op": ">", "value": 30}), "x")
+    assert "DAILY_NOT_IN_QUESTION" in codes(_daily(), "quantas vezes a temperatura passou de 30 em SBGR em janeiro de 2024")
+
+
+def test_negative_threshold_is_recognised_by_the_query_rules():
+    i = interp(properties=["met:AirTemperature"], entities=E("SBGR"), aggregation="count", filters=[{"op": "<", "value": -2, "unit": "unit:DEG_C"}])
+    q = compile_structured(i, IDX, force=True)
+    assert "FILTER(?v < -2)" in q and not validate_query(q, i, IDX, True)[1]
