@@ -1,0 +1,188 @@
+# Conjunto NOVO de perguntas sobre o grafo real (Ontop), escrito DEPOIS de todas as correções feitas a partir de dev e test
+# (eval/questions_real.yaml) e ANTES de rodar qualquer LLM nele. Nunca use para ajustar regra ou prompt: existe para uma medida limpa.
+# Exercita a forma do resultado do prompt v6 (agrupamento, atributo, ranking), formas simples que já funcionavam e recusas.
+# Oráculo: eval/oracle_real_fresh.py (pandas sobre a camada limpa). A consulta de referência de cada respondível é conferida
+# contra o oráculo por `python -m eval.run_reference --suite real_fresh`.
+questions:
+- id: RF01
+  split: fresh
+  category: agrupar_por_mes
+  question: Qual foi a precipitação total de SBSP em cada mês de 2021?
+  expected_status: answered
+  compare: {mode: per_group, columns: [year, month, value, n], key: [year, month], tolerance: {value: 0.001}}
+  sparql: |
+    SELECT ?year ?month (SUM(?v) AS ?value) (COUNT(?v) AS ?n) WHERE {
+      st:SBSP sosa:hosts ?s .
+      ?o a met:AccumulatedObservation ; sosa:madeBySensor ?s ; sosa:observedProperty met:Precipitation ;
+         met:localDate ?d ; sosa:hasResult/qudt:numericValue ?v .
+      FILTER(?d >= "2021-01-01"^^xsd:date && ?d <= "2021-12-31"^^xsd:date)
+    } GROUP BY (YEAR(?d) AS ?year) (MONTH(?d) AS ?month) ORDER BY ?year ?month
+- id: RF02
+  split: fresh
+  category: ranking_de_estacoes
+  question: Quais foram as 3 estações com maior temperatura média em 2022?
+  expected_status: answered
+  compare: {mode: ordered, columns: [station, value, n], order_key: value, descending: true, tolerance: {value: 0.001}}
+  sparql: |
+    SELECT ?station (AVG(?v) AS ?value) (COUNT(?v) AS ?n) WHERE {
+      ?station sosa:hosts ?s .
+      ?o a met:InstantaneousObservation ; sosa:madeBySensor ?s ; sosa:observedProperty met:AirTemperature ;
+         met:localDate ?d ; sosa:hasResult/qudt:numericValue ?v .
+      FILTER(?d >= "2022-01-01"^^xsd:date && ?d <= "2022-12-31"^^xsd:date)
+    } GROUP BY ?station ORDER BY DESC(?value) LIMIT 3
+- id: RF03
+  split: fresh
+  category: agrupar_por_atributo
+  question: Qual foi a velocidade média do vento em cada cabeceira de SBPA em 2020?
+  expected_status: answered
+  compare: {mode: per_group, columns: [runway, value, n], key: [runway], tolerance: {value: 0.001}}
+  sparql: |
+    SELECT ?runway (AVG(?v) AS ?value) (COUNT(?v) AS ?n) WHERE {
+      st:SBPA sosa:hosts ?s .
+      ?o sosa:madeBySensor ?s ; sosa:observedProperty met:WindSpeed ; met:runwayDesignator ?runway ;
+         met:localDate ?d ; sosa:hasResult/qudt:numericValue ?v .
+      FILTER(?d >= "2020-01-01"^^xsd:date && ?d <= "2020-12-31"^^xsd:date)
+    } GROUP BY ?runway
+- id: RF04
+  split: fresh
+  category: superlativo_com_atributo
+  question: Qual foi a maior velocidade do vento registrada em SBCT em 2020 e em qual cabeceira?
+  expected_status: answered
+  compare: {mode: set, columns: [runway, value, t]}
+  sparql: |
+    SELECT ?runway ?value ?t WHERE {
+      { SELECT (MAX(?v) AS ?value) WHERE {
+          st:SBCT sosa:hosts ?s0 .
+          ?o0 sosa:madeBySensor ?s0 ; sosa:observedProperty met:WindSpeed ; met:localDate ?d0 ;
+              sosa:hasResult/qudt:numericValue ?v .
+          FILTER(?d0 >= "2020-01-01"^^xsd:date && ?d0 <= "2020-12-31"^^xsd:date) } }
+      st:SBCT sosa:hosts ?s .
+      ?o sosa:madeBySensor ?s ; sosa:observedProperty met:WindSpeed ; met:localDate ?d ;
+         met:runwayDesignator ?runway ; sosa:resultTime ?t ; sosa:hasResult/qudt:numericValue ?value .
+      FILTER(?d >= "2020-01-01"^^xsd:date && ?d <= "2020-12-31"^^xsd:date)
+    }
+- id: RF05
+  split: fresh
+  category: agrupar_por_dia
+  question: Qual foi a precipitação total de SBRJ por dia em março de 2022?
+  expected_status: answered
+  compare: {mode: per_group, columns: [day, value, n], key: [day], tolerance: {value: 0.001}}
+  sparql: |
+    SELECT ?day (SUM(?v) AS ?value) (COUNT(?v) AS ?n) WHERE {
+      st:SBRJ sosa:hosts ?s .
+      ?o a met:AccumulatedObservation ; sosa:madeBySensor ?s ; sosa:observedProperty met:Precipitation ;
+         met:localDate ?day ; sosa:hasResult/qudt:numericValue ?v .
+      FILTER(?day >= "2022-03-01"^^xsd:date && ?day <= "2022-03-31"^^xsd:date)
+    } GROUP BY ?day ORDER BY ?day
+- id: RF06
+  split: fresh
+  category: contagem_por_ano
+  question: Quantas medições de pressão SBCF registrou em cada ano?
+  expected_status: answered
+  compare: {mode: per_group, columns: [year, n], key: [year]}
+  sparql: |
+    SELECT ?year (COUNT(?v) AS ?n) WHERE {
+      st:SBCF sosa:hosts ?s .
+      ?o sosa:madeBySensor ?s ; sosa:observedProperty met:PressureQNH ; met:localDate ?d ;
+         sosa:hasResult/qudt:numericValue ?v .
+    } GROUP BY (YEAR(?d) AS ?year) ORDER BY ?year
+- id: RF07
+  split: fresh
+  category: moda
+  question: Quais foram as duas direções de vento mais frequentes em SBFZ em 2021?
+  expected_status: answered
+  compare: {mode: ordered, columns: [measured, n], order_key: n, descending: true}
+  sparql: |
+    SELECT ?measured (COUNT(?o) AS ?n) WHERE {
+      st:SBFZ sosa:hosts ?s .
+      ?o sosa:madeBySensor ?s ; sosa:observedProperty met:WindDirection ; met:localDate ?d ;
+         sosa:hasResult/qudt:numericValue ?measured .
+      FILTER(?d >= "2021-01-01"^^xsd:date && ?d <= "2021-12-31"^^xsd:date)
+    } GROUP BY ?measured ORDER BY DESC(?n) LIMIT 2
+- id: RF08
+  split: fresh
+  category: agrupar_por_estacao
+  question: Qual foi a umidade relativa mínima de SBRJ, SBGL e SBSP em 2019, por estação?
+  expected_status: answered
+  compare: {mode: per_group, columns: [station, value, n], key: [station], tolerance: {value: 0.001}}
+  sparql: |
+    SELECT ?station (MIN(?v) AS ?value) (COUNT(?v) AS ?n) WHERE {
+      VALUES ?station { st:SBRJ st:SBGL st:SBSP }
+      ?station sosa:hosts ?s .
+      ?o a met:InstantaneousObservation ; sosa:madeBySensor ?s ; sosa:observedProperty met:RelativeHumidity ;
+         met:localDate ?d ; sosa:hasResult/qudt:numericValue ?v .
+      FILTER(?d >= "2019-01-01"^^xsd:date && ?d <= "2019-12-31"^^xsd:date)
+    } GROUP BY ?station
+- id: RF09
+  split: fresh
+  category: media_simples
+  question: Qual foi a temperatura média de SBKP em 2019?
+  expected_status: answered
+  compare: {mode: per_group, columns: [value, n], key: [], tolerance: {value: 0.001}}
+  sparql: |
+    SELECT (AVG(?v) AS ?value) (COUNT(?v) AS ?n) WHERE {
+      st:SBKP sosa:hosts ?s .
+      ?o a met:InstantaneousObservation ; sosa:madeBySensor ?s ; sosa:observedProperty met:AirTemperature ;
+         met:localDate ?d ; sosa:hasResult/qudt:numericValue ?v .
+      FILTER(?d >= "2019-01-01"^^xsd:date && ?d <= "2019-12-31"^^xsd:date)
+    }
+- id: RF10
+  split: fresh
+  category: acumulado_dia_local
+  question: Quanto choveu em SBSV no dia 11/05/2022?
+  expected_status: answered
+  compare: {mode: per_group, columns: [value, n], key: [], tolerance: {value: 0.001}}
+  sparql: |
+    SELECT (SUM(?v) AS ?value) (COUNT(?v) AS ?n) WHERE {
+      st:SBSV sosa:hosts ?s .
+      ?o a met:AccumulatedObservation ; sosa:madeBySensor ?s ; sosa:observedProperty met:Precipitation ;
+         met:localDate "2022-05-11"^^xsd:date ; sosa:hasResult/qudt:numericValue ?v .
+    }
+- id: RF11
+  split: fresh
+  category: contagem_com_filtro
+  question: Quantas medições de visibilidade abaixo de 800 metros SBSP registrou em 2019?
+  expected_status: answered
+  compare: {mode: per_group, columns: [n], key: []}
+  sparql: |
+    SELECT (COUNT(?v) AS ?n) WHERE {
+      st:SBSP sosa:hosts ?s .
+      ?o a met:InstantaneousObservation ; sosa:madeBySensor ?s ; sosa:observedProperty met:PrevailingVisibility ;
+         met:localDate ?d ; sosa:hasResult/qudt:numericValue ?v .
+      FILTER(?d >= "2019-01-01"^^xsd:date && ?d <= "2019-12-31"^^xsd:date)
+      FILTER(?v < 800)
+    }
+- id: RF12
+  split: fresh
+  category: nome_de_cidade
+  question: Qual foi a temperatura média em Curitiba em 2020?
+  expected_status: unsupported
+  expected_diagnostic: ENTITY_TEXT_MISMATCH
+  note: Os dados só têm o código ICAO (SBCT é Curitiba), nunca o nome da cidade. O sistema não pode adivinhar com conhecimento externo.
+- id: RF13
+  split: fresh
+  category: grandeza_inexistente
+  question: Qual foi o índice ultravioleta em SBSP em 2019?
+  expected_status: unsupported
+  expected_diagnostic: UNKNOWN_PROPERTY
+  note: A ontologia não tem índice ultravioleta.
+- id: RF14
+  split: fresh
+  category: periodo_fora_da_cobertura
+  question: Qual foi a temperatura média de SBSP em 2012?
+  expected_status: no_results
+  expected_diagnostic: OUT_OF_COVERAGE
+  note: Os dados cobrem 2016-01-01 a 2025-12-31.
+- id: RF15
+  split: fresh
+  category: data_relativa
+  question: Qual foi a temperatura em SBSP ontem?
+  expected_status: needs_clarification
+  expected_diagnostic: RELATIVE_DATE
+  note: O sistema não tem relógio.
+- id: RF16
+  split: fresh
+  category: agrupamento_nao_suportado
+  question: Qual foi a precipitação total de SBSP por gênero de nuvem em 2019?
+  expected_status: unsupported
+  note: Não existe agrupamento por gênero de nuvem. Responder o total ignorando o "por gênero de nuvem" seria responder outra pergunta.

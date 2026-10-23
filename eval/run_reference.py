@@ -16,7 +16,7 @@ from pathlib import Path
 
 import yaml
 
-from eval import oracle, oracle_real
+from eval import oracle, oracle_fresh, oracle_heldout, oracle_real, oracle_real_fresh, oracle_real_gen, oracle_real_probe
 from eval.compare import compare, rows_from_sparql
 from kgqa.contract import Status
 from kgqa.store import PREFIXES, LocalRdflibBackend, OntopBackend
@@ -28,6 +28,11 @@ ROOT = Path(__file__).resolve().parent.parent
 SUITES = {
     "synthetic": ("questions.yaml", oracle, LocalRdflibBackend, 20),
     "real": ("questions_real.yaml", oracle_real, OntopBackend, 60),
+    "real_fresh": ("questions_real_fresh.yaml", oracle_real_fresh, OntopBackend, 60),
+    "real_gen": ("questions_real_gen.yaml", oracle_real_gen, OntopBackend, 60),
+    "real_probe": ("questions_real_probe.yaml", oracle_real_probe, OntopBackend, 60),
+    "heldout": ("questions_heldout.yaml", oracle_heldout, LocalRdflibBackend, 20),
+    "fresh": ("questions_fresh.yaml", oracle_fresh, LocalRdflibBackend, 20),
 }
 
 

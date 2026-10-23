@@ -7,6 +7,7 @@ Normaliza SPARQL JSON e saída do oráculo para o mesmo espaço de valores:
 """
 from __future__ import annotations
 
+import itertools
 from collections import Counter, defaultdict
 from datetime import datetime
 from decimal import Decimal
@@ -108,3 +109,59 @@ def compare(actual: list[tuple], expected: list[tuple], spec: dict) -> tuple[boo
         return True, "ok"
 
     raise ValueError(f"modo desconhecido: {mode}")
+
+
+def judge(results: dict, expected: list, spec: dict) -> tuple[bool, str, str]:
+    """Veredito com a CAUSA da divergência: (igual, nota, qualidade).
+
+    qualidade: "exact" | "incomplete" | "order_only" | "wrong".
+    - incomplete: os valores presentes batem, mas faltam colunas de identificação/tempo que a referência pede (ex.: a previsão sem o
+      instante de emissão). O valor numérico está certo; falta informação exigida. NÃO é resposta errada.
+    - order_only: mesmas linhas e valores, em outra ordem, onde a referência ordena (mode ordered).
+    Tudo o mais é "wrong". As duas exceções ficam SEPARADAS nas métricas, nunca somem dentro de "corretas"."""
+    same, why = compare_flexible(results, expected, spec)
+    if same:
+        return True, why, "exact"
+    cols = spec["columns"]
+    if len(expected) == 1:
+        # só uma LINHA: sem associação entidade-valor a perder (com várias, omitir a coluna da entidade esconderia valores
+        # trocados entre entidades). E só colunas SEM número: omitir o valor numérico nunca é "incompleto", é errado
+        non_numeric = [c for i, c in enumerate(cols) if not any(isinstance(norm_py(r[i]), Decimal) for r in expected)]
+        if non_numeric and len(non_numeric) < len(cols):
+            ok, w = compare_flexible(results, expected, {**spec, "optional": non_numeric})
+            if ok:
+                return True, f"incompleta: {w}", "incomplete"
+    if spec.get("mode") == "ordered":
+        key = [c for c in cols if c != spec.get("order_key")][:1] or cols[:1]
+        ok, w = compare_flexible(results, expected, {**spec, "mode": "per_group", "key": key})
+        if ok:
+            return True, "outra ordem", "order_only"
+    return False, why, "wrong"
+
+
+def compare_flexible(results: dict, expected: list, spec: dict) -> tuple[bool, str]:
+    """Compara por VALOR, não por nome de variável: o LLM escolhe os nomes (?observation, ?average...).
+
+    Casa as colunas esperadas com as do resultado em qualquer ordem. A única flexibilidade extra é a omissão de
+    colunas que a própria referência declara em `compare.optional` (ex.: o instante, quando a pergunta só pede a
+    estação e o valor); omitir qualquer outra coluna é erro, senão o comparador aceitaria respostas sem o valor."""
+    if not results.get("results", {}).get("bindings") and not expected:
+        return True, "ok (ambos vazios)"          # vazio é vazio, quaisquer que sejam as colunas projetadas
+    cols, got = spec["columns"], results["head"]["vars"]
+    optional = [c for c in spec.get("optional", []) if c in cols]
+    last = "colunas insuficientes"
+    for n_drop in range(len(optional) + 1):
+        for drop in itertools.combinations(optional, n_drop):
+            keep = [i for i, c in enumerate(cols) if c not in drop]
+            kept = [cols[i] for i in keep]
+            if len(got) < len(kept):
+                continue
+            spec2 = {**spec, "columns": kept, "key": [c for c in spec.get("key", []) if c in kept],
+                     "tolerance": {c: t for c, t in spec.get("tolerance", {}).items() if c in kept}}
+            exp2 = [tuple(row[i] for i in keep) for row in expected]
+            for perm in itertools.permutations(got, len(kept)):
+                ok, why = compare(rows_from_sparql(results, list(perm)), exp2, spec2)
+                if ok:
+                    return True, "ok" if not drop else f"ok (colunas omitidas: {list(drop)})"
+                last = why
+    return False, last

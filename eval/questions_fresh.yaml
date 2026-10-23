@@ -1,0 +1,129 @@
+# Conjunto "fresh" (G01–G10) sobre o grafo sintético: escrito DEPOIS da revisão crítica e das correções motivadas pela
+# 1ª execução da v4, e NUNCA usado para ajustar regra ou prompt. É a única medida limpa da versão final.
+# Cobre o que as revisões mudaram: consulta de instante, data fora da cobertura, grandeza sem dados, data relativa,
+# estação desconhecida, agregação com e sem estação, lista de estações por filtro.
+# Mesmas convenções de questions.yaml. Respostas esperadas: eval/oracle_fresh.py (Python sobre o CSV).
+# Dia D = [D 00:00, D+1 00:00) em UTC-03:00; "entre D1 e D2" inclui D2 inteiro; acumulado entra se o intervalo
+# inteiro estiver contido no período (D-06).
+
+questions:
+
+- id: G01
+  split: fresh
+  category: minimo_periodo_entidade
+  question: "Qual foi a umidade relativa mínima da Estação Vale Verde entre 03/03/2026 e 05/03/2026?"
+  expected_status: answered
+  compare: {mode: per_group, columns: [min, n], key: [], tolerance: {min: 0.001}}
+  sparql: |
+    SELECT (MIN(?v) AS ?min) (COUNT(?v) AS ?n) WHERE {
+      st:EST-B sosa:hosts ?s .
+      ?o a met:InstantaneousObservation ; sosa:madeBySensor ?s ; sosa:observedProperty met:RelativeHumidity ;
+         sosa:phenomenonTime/time:inXSDDateTime ?t ; sosa:hasResult/qudt:numericValue ?v .
+      FILTER(?t >= "2026-03-03T00:00:00-03:00"^^xsd:dateTime && ?t < "2026-03-06T00:00:00-03:00"^^xsd:dateTime)
+    }
+
+- id: G02
+  split: fresh
+  category: soma_rede_periodo
+  question: "Qual foi a precipitação total da rede entre 02/03/2026 e 08/03/2026?"
+  expected_status: answered
+  compare: {mode: per_group, columns: [total, n], key: [], tolerance: {total: 0.001}}
+  sparql: |
+    SELECT (SUM(?v) AS ?total) (COUNT(?v) AS ?n) WHERE {
+      ?o a met:AccumulatedObservation ; sosa:observedProperty met:Precipitation ;
+         sosa:phenomenonTime ?iv ; sosa:hasResult/qudt:numericValue ?v .
+      ?iv time:hasBeginning/time:inXSDDateTime ?b ; time:hasEnd/time:inXSDDateTime ?e .
+      FILTER(?b >= "2026-03-02T00:00:00-03:00"^^xsd:dateTime && ?e <= "2026-03-09T00:00:00-03:00"^^xsd:dateTime)
+    }
+
+- id: G03
+  split: fresh
+  category: instante
+  question: "Qual era a umidade relativa na Estação Serra Azul em 04/03/2026 às 6h?"
+  expected_status: answered
+  compare: {mode: set, columns: [value]}
+  sparql: |
+    SELECT ?value WHERE {
+      st:EST-A sosa:hosts ?s .
+      ?o a met:InstantaneousObservation ; sosa:madeBySensor ?s ; sosa:observedProperty met:RelativeHumidity ;
+         sosa:phenomenonTime/time:inXSDDateTime "2026-03-04T06:00:00-03:00"^^xsd:dateTime ;
+         sosa:hasResult/qudt:numericValue ?value .
+    }
+
+- id: G04
+  split: fresh
+  category: periodo_fora_da_cobertura
+  question: "Qual foi a temperatura média da Estação Litoral Sul em 12/03/2026?"
+  expected_status: no_results
+  expected_diagnostic: OUT_OF_COVERAGE
+  note: "Os dados cobrem 02/03 a 09/03/2026. Ausência não é zero: ?n = 0, sem média."
+  compare: {mode: per_group, columns: [n], key: []}
+  sparql: |
+    SELECT (AVG(?v) AS ?avg) (COUNT(?v) AS ?n) WHERE {
+      st:EST-C sosa:hosts ?s .
+      ?o a met:InstantaneousObservation ; sosa:madeBySensor ?s ; sosa:observedProperty met:AirTemperature ;
+         sosa:phenomenonTime/time:inXSDDateTime ?t ; sosa:hasResult/qudt:numericValue ?v .
+      FILTER(?t >= "2026-03-12T00:00:00-03:00"^^xsd:dateTime && ?t < "2026-03-13T00:00:00-03:00"^^xsd:dateTime)
+    }
+
+- id: G05
+  split: fresh
+  category: contagem_entidade
+  question: "Quantas leituras de umidade relativa a Estação Vale Verde registrou?"
+  expected_status: answered
+  compare: {mode: per_group, columns: [n], key: []}
+  sparql: |
+    SELECT (COUNT(?v) AS ?n) WHERE {
+      st:EST-B sosa:hosts ?s .
+      ?o a met:InstantaneousObservation ; sosa:madeBySensor ?s ; sosa:observedProperty met:RelativeHumidity ;
+         sosa:hasResult/qudt:numericValue ?v .
+    }
+
+- id: G06
+  split: fresh
+  category: filtro_conjunto
+  question: "Em quais estações a umidade relativa passou de 80 %?"
+  expected_status: answered
+  compare: {mode: set, columns: [station]}
+  sparql: |
+    SELECT DISTINCT ?station WHERE {
+      ?station a met:WeatherStation ; sosa:hosts ?s .
+      ?o sosa:madeBySensor ?s ; sosa:observedProperty met:RelativeHumidity ; sosa:hasResult/qudt:numericValue ?v .
+      FILTER(?v > 80)
+    }
+
+- id: G07
+  split: fresh
+  category: grandeza_sem_dados
+  question: "Qual foi a velocidade média do vento em 03/03/2026?"
+  expected_status: unsupported
+  expected_diagnostic: PROPERTY_WITHOUT_DATA
+  note: "met:WindSpeed existe na ontologia (v0.2), mas este grafo não tem nenhuma observação dela."
+
+- id: G08
+  split: fresh
+  category: data_relativa
+  question: "Qual foi a temperatura média ontem na Estação Serra Azul?"
+  expected_status: needs_clarification
+  expected_diagnostic: RELATIVE_DATE
+  note: "O sistema não tem relógio: 'ontem' não pode ser resolvido sem inventar uma data."
+
+- id: G09
+  split: fresh
+  category: entidade_desconhecida
+  question: "Qual foi a temperatura média da Estação Praia Grande entre 03/03/2026 e 05/03/2026?"
+  expected_status: unsupported
+  expected_diagnostic: UNKNOWN_ENTITY
+
+- id: G10
+  split: fresh
+  category: minimo_por_estacao
+  question: "Qual foi a menor temperatura registrada por estação?"
+  expected_status: answered
+  compare: {mode: per_group, columns: [station, min, n], key: [station], tolerance: {min: 0.001}}
+  sparql: |
+    SELECT ?station (MIN(?v) AS ?min) (COUNT(?v) AS ?n) WHERE {
+      ?station a met:WeatherStation ; sosa:hosts ?s .
+      ?o a met:InstantaneousObservation ; sosa:madeBySensor ?s ; sosa:observedProperty met:AirTemperature ;
+         sosa:hasResult/qudt:numericValue ?v .
+    } GROUP BY ?station

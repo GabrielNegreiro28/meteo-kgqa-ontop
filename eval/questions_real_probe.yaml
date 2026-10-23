@@ -1,0 +1,96 @@
+# Conjunto-SONDA sobre o grafo real (Ontop): 8 perguntas escritas DEPOIS das correções D-53..D-58 e D-67..D-77 e ANTES de rodar qualquer LLM nele.
+# Objetivo: ver se as regras novas (mês nomeado, semestre, limiar, parte do dia, superlativo singular, lugar que não é estação) barram
+# perguntas BOAS, e se as recusas esperadas acontecem. Tamanho limitado pelo saldo do ledger (US$ 0,40). Mesmo autor das regras (viés).
+# Oráculo: eval/oracle_real_probe.py. Nunca use para ajustar regra ou prompt depois de medido.
+questions:
+- id: RP01
+  split: probe
+  category: mes_nomeado
+  question: Qual foi a temperatura média de SBCT em fevereiro de 2021?
+  expected_status: answered
+  compare: {mode: per_group, columns: [value, n], key: [], tolerance: {value: 0.001}}
+  sparql: |
+    SELECT (AVG(?v) AS ?value) (COUNT(?v) AS ?n) WHERE {
+      st:SBCT sosa:hosts ?s .
+      ?o a met:InstantaneousObservation ; sosa:madeBySensor ?s ; sosa:observedProperty met:AirTemperature ;
+         met:localDate ?d ; sosa:hasResult/qudt:numericValue ?v .
+      FILTER(?d >= "2021-02-01"^^xsd:date && ?d <= "2021-02-28"^^xsd:date)
+    }
+- id: RP02
+  split: probe
+  category: semestre
+  question: Qual foi a chuva total de SBGL no primeiro semestre de 2022?
+  expected_status: answered
+  compare: {mode: per_group, columns: [value, n], key: [], tolerance: {value: 0.001}}
+  sparql: |
+    SELECT (SUM(?v) AS ?value) (COUNT(?v) AS ?n) WHERE {
+      st:SBGL sosa:hosts ?s .
+      ?o a met:AccumulatedObservation ; sosa:madeBySensor ?s ; sosa:observedProperty met:Precipitation ;
+         met:localDate ?d ; sosa:hasResult/qudt:numericValue ?v .
+      FILTER(?d >= "2022-01-01"^^xsd:date && ?d <= "2022-06-30"^^xsd:date)
+    }
+- id: RP03
+  split: probe
+  category: contagem_com_limiar
+  question: Quantas vezes a temperatura passou de 35 graus em SBPA em 2019?
+  expected_status: answered
+  compare: {mode: per_group, columns: [n], key: []}
+  sparql: |
+    SELECT (COUNT(?v) AS ?n) WHERE {
+      st:SBPA sosa:hosts ?s .
+      ?o a met:InstantaneousObservation ; sosa:madeBySensor ?s ; sosa:observedProperty met:AirTemperature ;
+         met:localDate ?d ; sosa:hasResult/qudt:numericValue ?v .
+      FILTER(?d >= "2019-01-01"^^xsd:date && ?d <= "2019-12-31"^^xsd:date)
+      FILTER(?v > 35)
+    }
+- id: RP04
+  split: probe
+  category: parte_do_dia
+  question: Qual a temperatura média de SBGR durante a noite em 2019?
+  expected_status: unsupported
+  note: A interpretação não tem como representar a parte do dia; responder com o dia inteiro seria uma resposta errada apresentada como certa (Codex C02).
+- id: RP05
+  split: probe
+  category: superlativo_singular_mes
+  question: Qual foi o mês mais chuvoso de 2019 em SBFZ?
+  expected_status: answered
+  compare: {mode: ordered, columns: [month, value, n], order_key: value, descending: true, tolerance: {value: 0.001}}
+  sparql: |
+    SELECT ?month (SUM(?v) AS ?value) (COUNT(?v) AS ?n) WHERE {
+      st:SBFZ sosa:hosts ?s .
+      ?o a met:AccumulatedObservation ; sosa:madeBySensor ?s ; sosa:observedProperty met:Precipitation ;
+         met:localDate ?d ; sosa:hasResult/qudt:numericValue ?v .
+      FILTER(?d >= "2019-01-01"^^xsd:date && ?d <= "2019-12-31"^^xsd:date)
+    } GROUP BY (MONTH(?d) AS ?month) ORDER BY DESC(?value) LIMIT 1
+- id: RP06
+  split: probe
+  category: nome_de_cidade
+  question: Qual a temperatura média em Campinas em 2020?
+  expected_status: unsupported
+  note: Os dados só têm o código ICAO, nunca a cidade.
+- id: RP07
+  split: probe
+  category: intervalo_de_meses
+  question: Qual foi a chuva total de SBPA entre março e maio de 2021?
+  expected_status: answered
+  compare: {mode: per_group, columns: [value, n], key: [], tolerance: {value: 0.001}}
+  sparql: |
+    SELECT (SUM(?v) AS ?value) (COUNT(?v) AS ?n) WHERE {
+      st:SBPA sosa:hosts ?s .
+      ?o a met:AccumulatedObservation ; sosa:madeBySensor ?s ; sosa:observedProperty met:Precipitation ;
+         met:localDate ?d ; sosa:hasResult/qudt:numericValue ?v .
+      FILTER(?d >= "2021-03-01"^^xsd:date && ?d <= "2021-05-31"^^xsd:date)
+    }
+- id: RP08
+  split: probe
+  category: controle_ano_inteiro
+  question: Qual foi a umidade relativa média de SBGL em 2018?
+  expected_status: answered
+  compare: {mode: per_group, columns: [value, n], key: [], tolerance: {value: 0.001}}
+  sparql: |
+    SELECT (AVG(?v) AS ?value) (COUNT(?v) AS ?n) WHERE {
+      st:SBGL sosa:hosts ?s .
+      ?o a met:InstantaneousObservation ; sosa:madeBySensor ?s ; sosa:observedProperty met:RelativeHumidity ;
+         met:localDate ?d ; sosa:hasResult/qudt:numericValue ?v .
+      FILTER(?d >= "2018-01-01"^^xsd:date && ?d <= "2018-12-31"^^xsd:date)
+    }

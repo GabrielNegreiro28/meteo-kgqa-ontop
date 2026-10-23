@@ -15,10 +15,12 @@ from __future__ import annotations
 from datetime import date, datetime, timezone
 from functools import lru_cache
 
+import os
+
 import duckdb
 import pandas as pd
 
-DB = "/home/claude/metdata/met.duckdb"
+DB = os.environ.get("MET_HOME", "/home/claude/metdata") + "/met.duckdb"
 
 
 @lru_cache(maxsize=None)

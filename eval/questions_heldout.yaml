@@ -1,0 +1,128 @@
+# Conjunto NOVO (held-out) sobre o grafo sintético: criado DEPOIS das regras derivadas da ontologia e sem olhar
+# as falhas do modelo nele. As regras e os prompts não foram ajustados com estas perguntas.
+# Mesmas convenções de questions.yaml. Respostas esperadas: eval/oracle_heldout.py (Python sobre o CSV).
+# Dia D = [D 00:00, D+1 00:00) em UTC-03:00; "entre D1 e D2" inclui D2 inteiro; acumulado entra se o intervalo
+# inteiro estiver contido no período (D-06).
+
+questions:
+
+- id: H01
+  split: heldout
+  category: maximo_periodo_entidade
+  question: "Qual foi a temperatura máxima da Estação Vale Verde entre 02/03/2026 e 04/03/2026?"
+  expected_status: answered
+  compare: {mode: per_group, columns: [max, n], key: [], tolerance: {max: 0.001}}
+  sparql: |
+    SELECT (MAX(?v) AS ?max) (COUNT(?v) AS ?n) WHERE {
+      st:EST-B sosa:hosts ?s .
+      ?o a met:InstantaneousObservation ; sosa:madeBySensor ?s ; sosa:observedProperty met:AirTemperature ;
+         sosa:phenomenonTime/time:inXSDDateTime ?t ; sosa:hasResult/qudt:numericValue ?v .
+      FILTER(?t >= "2026-03-02T00:00:00-03:00"^^xsd:dateTime && ?t < "2026-03-05T00:00:00-03:00"^^xsd:dateTime)
+    }
+
+- id: H02
+  split: heldout
+  category: acumulado_periodo
+  question: "Quanto choveu na Estação Serra Azul entre 05/03/2026 e 06/03/2026?"
+  expected_status: answered
+  compare: {mode: per_group, columns: [total, n], key: [], tolerance: {total: 0.001}}
+  sparql: |
+    SELECT (SUM(?v) AS ?total) (COUNT(?v) AS ?n) WHERE {
+      st:EST-A sosa:hosts ?s .
+      ?o a met:AccumulatedObservation ; sosa:madeBySensor ?s ; sosa:observedProperty met:Precipitation ;
+         sosa:phenomenonTime ?iv ; sosa:hasResult/qudt:numericValue ?v .
+      ?iv time:hasBeginning/time:inXSDDateTime ?b ; time:hasEnd/time:inXSDDateTime ?e .
+      FILTER(?b >= "2026-03-05T00:00:00-03:00"^^xsd:dateTime && ?e <= "2026-03-07T00:00:00-03:00"^^xsd:dateTime)
+    }
+
+- id: H03
+  split: heldout
+  category: media_dia_entidade
+  question: "Qual foi a umidade relativa média da Estação Serra Azul em 03/03/2026?"
+  expected_status: answered
+  compare: {mode: per_group, columns: [avg, n], key: [], tolerance: {avg: 0.001}}
+  sparql: |
+    SELECT (AVG(?v) AS ?avg) (COUNT(?v) AS ?n) WHERE {
+      st:EST-A sosa:hosts ?s .
+      ?o a met:InstantaneousObservation ; sosa:madeBySensor ?s ; sosa:observedProperty met:RelativeHumidity ;
+         sosa:phenomenonTime/time:inXSDDateTime ?t ; sosa:hasResult/qudt:numericValue ?v .
+      FILTER(?t >= "2026-03-03T00:00:00-03:00"^^xsd:dateTime && ?t < "2026-03-04T00:00:00-03:00"^^xsd:dateTime)
+    }
+
+- id: H04
+  split: heldout
+  category: contagem_entidade
+  question: "Quantas leituras de temperatura a Estação Litoral Sul registrou?"
+  expected_status: answered
+  compare: {mode: per_group, columns: [n], key: []}
+  sparql: |
+    SELECT (COUNT(?o) AS ?n) WHERE {
+      st:EST-C sosa:hosts ?s .
+      ?o a met:InstantaneousObservation ; sosa:madeBySensor ?s ; sosa:observedProperty met:AirTemperature .
+    }
+
+- id: H05
+  split: heldout
+  category: maximo_global_acumulado
+  question: "Qual foi o maior acumulado de chuva em 6 horas já registrado na rede?"
+  expected_status: answered
+  compare: {mode: per_group, columns: [max, n], key: [], tolerance: {max: 0.001}}
+  sparql: |
+    SELECT (MAX(?v) AS ?max) (COUNT(?v) AS ?n) WHERE {
+      ?o a met:AccumulatedObservation ; sosa:observedProperty met:Precipitation ; sosa:hasResult/qudt:numericValue ?v .
+    }
+
+- id: H06
+  split: heldout
+  category: filtro_conjunto
+  question: "Em quais estações a temperatura passou de 32 °C?"
+  expected_status: answered
+  compare: {mode: set, columns: [station]}
+  sparql: |
+    SELECT DISTINCT ?station WHERE {
+      ?station a met:WeatherStation ; sosa:hosts ?s .
+      ?o sosa:madeBySensor ?s ; sosa:observedProperty met:AirTemperature ; sosa:hasResult/qudt:numericValue ?v .
+      FILTER(?v > 32)
+    }
+
+- id: H07
+  split: heldout
+  category: previsao_atributo
+  question: "Quando foi emitida a previsão de temperatura para a Estação Serra Azul?"
+  expected_status: answered
+  compare: {mode: set, columns: [issued]}
+  sparql: |
+    SELECT ?issued WHERE {
+      ?f a met:Forecast ; met:forStation st:EST-A ; met:forecastedProperty met:AirTemperature ; met:issuedAt ?issued .
+    }
+
+- id: H08
+  split: heldout
+  category: acumulado_dado_ausente
+  question: "Qual foi a precipitação total da Estação Litoral Sul em 07/03/2026?"
+  expected_status: answered
+  note: "Um dos 4 intervalos de 6 h do dia está ausente (n=3): a resposta deve refletir isso, não tratar como zero."
+  compare: {mode: per_group, columns: [total, n], key: [], tolerance: {total: 0.001}}
+  sparql: |
+    SELECT (SUM(?v) AS ?total) (COUNT(?v) AS ?n) WHERE {
+      st:EST-C sosa:hosts ?s .
+      ?o a met:AccumulatedObservation ; sosa:madeBySensor ?s ; sosa:observedProperty met:Precipitation ;
+         sosa:phenomenonTime ?iv ; sosa:hasResult/qudt:numericValue ?v .
+      ?iv time:hasBeginning/time:inXSDDateTime ?b ; time:hasEnd/time:inXSDDateTime ?e .
+      FILTER(?b >= "2026-03-07T00:00:00-03:00"^^xsd:dateTime && ?e <= "2026-03-08T00:00:00-03:00"^^xsd:dateTime)
+    }
+
+- id: H09
+  split: heldout
+  category: ambiguidade
+  question: "Qual estação é a mais fria?"
+  expected_status: needs_clarification
+  expected_diagnostic: AMBIGUOUS_SUPERLATIVE
+  expected_alternatives: [menor_minima, menor_media, periodo]
+
+- id: H10
+  split: heldout
+  category: fora_da_ontologia
+  question: "Qual foi a concentração de ozônio na Estação Serra Azul?"
+  expected_status: unsupported
+  expected_diagnostic: UNKNOWN_PROPERTY

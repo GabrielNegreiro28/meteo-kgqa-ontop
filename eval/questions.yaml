@@ -159,11 +159,11 @@ questions:
   question: "Qual estação registrou a maior temperatura entre 02/03/2026 e 08/03/2026?"
   expected_status: answered
   note: "Previsões (met:Forecast) não contam como registro: a previsão de 35,0 °C deve ser ignorada."
-  compare: {mode: set, columns: [station, value, t]}
+  compare: {mode: set, columns: [station, value, t], optional: [t]}
   units: {value: unit:DEG_C}
   sparql: |
-    SELECT ?station ?value ?t WHERE {
-      { SELECT (MAX(?v) AS ?value) WHERE {
+    SELECT ?station ?value ?t ?n WHERE {
+      { SELECT (MAX(?v) AS ?value) (COUNT(?v) AS ?n) WHERE {
           ?o a met:InstantaneousObservation ; sosa:observedProperty met:AirTemperature ;
              sosa:phenomenonTime/time:inXSDDateTime ?t0 ; sosa:hasResult/qudt:numericValue ?v .
           FILTER(?t0 >= "2026-03-02T00:00:00-03:00"^^xsd:dateTime &&
@@ -230,7 +230,7 @@ questions:
   note: "Agrupa por data local. SUBSTR funciona porque os instantes estão gravados com offset local -03:00."
   compare: {mode: set, columns: [day]}
   sparql: |
-    SELECT ?day (AVG(?v) AS ?avg) WHERE {
+    SELECT ?day (AVG(?v) AS ?avg) (COUNT(?v) AS ?n) WHERE {
       st:EST-C sosa:hosts ?sensor .
       ?obs a met:InstantaneousObservation ; sosa:madeBySensor ?sensor ;
            sosa:observedProperty met:AirTemperature ;
@@ -311,7 +311,7 @@ questions:
   compare: {mode: ordered, columns: [station, total], order_key: total, descending: true, tolerance: {total: 0.001}}
   units: {total: unit:MilliM}
   sparql: |
-    SELECT ?station (SUM(?v) AS ?total) WHERE {
+    SELECT ?station (SUM(?v) AS ?total) (COUNT(?v) AS ?n) WHERE {
       VALUES ?station { st:EST-A st:EST-B }
       ?station sosa:hosts ?sensor .
       ?obs a met:AccumulatedObservation ; sosa:madeBySensor ?sensor ;
@@ -350,7 +350,7 @@ questions:
   compare: {mode: ordered, columns: [day, max], order_key: day, descending: false, tolerance: {max: 0.001}}
   units: {max: unit:DEG_C}
   sparql: |
-    SELECT ?day (MAX(?v) AS ?max) WHERE {
+    SELECT ?day (MAX(?v) AS ?max) (COUNT(?v) AS ?n) WHERE {
       st:EST-A sosa:hosts ?sensor .
       ?obs a met:InstantaneousObservation ; sosa:madeBySensor ?sensor ;
            sosa:observedProperty met:AirTemperature ;
