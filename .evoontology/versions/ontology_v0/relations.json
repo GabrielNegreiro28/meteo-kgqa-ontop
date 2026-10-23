@@ -1,0 +1,272 @@
+[
+  {
+    "id": "rel.cloudBaseHeight.has_domain.CloudLayerResult",
+    "source": "term.cloudBaseHeight",
+    "relation_type": "has_domain",
+    "target": "term.CloudLayerResult",
+    "connection_condition": "",
+    "description": "",
+    "evidence": []
+  },
+  {
+    "id": "rel.cloudGenus.has_domain.CloudLayerResult",
+    "source": "term.cloudGenus",
+    "relation_type": "has_domain",
+    "target": "term.CloudLayerResult",
+    "connection_condition": "",
+    "description": "",
+    "evidence": []
+  },
+  {
+    "id": "rel.cloudMovement.has_domain.CloudLayerResult",
+    "source": "term.cloudMovement",
+    "relation_type": "has_domain",
+    "target": "term.CloudLayerResult",
+    "connection_condition": "",
+    "description": "",
+    "evidence": []
+  },
+  {
+    "id": "rel.forStation.has_domain.Forecast",
+    "source": "term.forStation",
+    "relation_type": "has_domain",
+    "target": "term.Forecast",
+    "connection_condition": "",
+    "description": "",
+    "evidence": []
+  },
+  {
+    "id": "rel.forStation.has_range.WeatherStation",
+    "source": "term.forStation",
+    "relation_type": "has_range",
+    "target": "term.WeatherStation",
+    "connection_condition": "",
+    "description": "",
+    "evidence": []
+  },
+  {
+    "id": "rel.forecastedProperty.has_domain.Forecast",
+    "source": "term.forecastedProperty",
+    "relation_type": "has_domain",
+    "target": "term.Forecast",
+    "connection_condition": "",
+    "description": "",
+    "evidence": []
+  },
+  {
+    "id": "rel.inReport.has_range.WeatherReport",
+    "source": "term.inReport",
+    "relation_type": "has_range",
+    "target": "term.WeatherReport",
+    "connection_condition": "",
+    "description": "",
+    "evidence": []
+  },
+  {
+    "id": "rel.isHourly.has_domain.WeatherReport",
+    "source": "term.isHourly",
+    "relation_type": "has_domain",
+    "target": "term.WeatherReport",
+    "connection_condition": "",
+    "description": "",
+    "evidence": []
+  },
+  {
+    "id": "rel.issuedAt.has_domain.Forecast",
+    "source": "term.issuedAt",
+    "relation_type": "has_domain",
+    "target": "term.Forecast",
+    "connection_condition": "",
+    "description": "",
+    "evidence": []
+  },
+  {
+    "id": "rel.oktas.has_domain.CloudLayerResult",
+    "source": "term.oktas",
+    "relation_type": "has_domain",
+    "target": "term.CloudLayerResult",
+    "connection_condition": "",
+    "description": "",
+    "evidence": []
+  },
+  {
+    "id": "rel.reportOf.has_domain.WeatherReport",
+    "source": "term.reportOf",
+    "relation_type": "has_domain",
+    "target": "term.WeatherReport",
+    "connection_condition": "",
+    "description": "",
+    "evidence": []
+  },
+  {
+    "id": "rel.reportOf.has_range.WeatherStation",
+    "source": "term.reportOf",
+    "relation_type": "has_range",
+    "target": "term.WeatherStation",
+    "connection_condition": "",
+    "description": "",
+    "evidence": []
+  },
+  {
+    "id": "rel.siteOf.has_domain.Site",
+    "source": "term.siteOf",
+    "relation_type": "has_domain",
+    "target": "term.Site",
+    "connection_condition": "",
+    "description": "",
+    "evidence": []
+  },
+  {
+    "id": "rel.siteOf.has_range.WeatherStation",
+    "source": "term.siteOf",
+    "relation_type": "has_range",
+    "target": "term.WeatherStation",
+    "connection_condition": "",
+    "description": "",
+    "evidence": []
+  },
+  {
+    "id": "rel.skyObscured.has_domain.CloudLayerResult",
+    "source": "term.skyObscured",
+    "relation_type": "has_domain",
+    "target": "term.CloudLayerResult",
+    "connection_condition": "",
+    "description": "",
+    "evidence": []
+  },
+  {
+    "id": "rel.stationCode.has_domain.WeatherStation",
+    "source": "term.stationCode",
+    "relation_type": "has_domain",
+    "target": "term.WeatherStation",
+    "connection_condition": "",
+    "description": "",
+    "evidence": []
+  },
+  {
+    "id": "rel.validTime.has_domain.Forecast",
+    "source": "term.validTime",
+    "relation_type": "has_domain",
+    "target": "term.Forecast",
+    "connection_condition": "",
+    "description": "",
+    "evidence": []
+  },
+  {
+    "id": "rel.AirTemperature.observed_as.InstantaneousObservation",
+    "source": "term.AirTemperature",
+    "relation_type": "observed_as",
+    "target": "term.InstantaneousObservation",
+    "connection_condition": "",
+    "description": "Classe de observação que registra esta grandeza.",
+    "evidence": []
+  },
+  {
+    "id": "rel.RelativeHumidity.observed_as.InstantaneousObservation",
+    "source": "term.RelativeHumidity",
+    "relation_type": "observed_as",
+    "target": "term.InstantaneousObservation",
+    "connection_condition": "",
+    "description": "Classe de observação que registra esta grandeza.",
+    "evidence": []
+  },
+  {
+    "id": "rel.Precipitation.observed_as.AccumulatedObservation",
+    "source": "term.Precipitation",
+    "relation_type": "observed_as",
+    "target": "term.AccumulatedObservation",
+    "connection_condition": "",
+    "description": "Classe de observação que registra esta grandeza.",
+    "evidence": []
+  },
+  {
+    "id": "rel.WetBulbTemperature.observed_as.InstantaneousObservation",
+    "source": "term.WetBulbTemperature",
+    "relation_type": "observed_as",
+    "target": "term.InstantaneousObservation",
+    "connection_condition": "",
+    "description": "Classe de observação que registra esta grandeza.",
+    "evidence": []
+  },
+  {
+    "id": "rel.DewPointTemperature.observed_as.InstantaneousObservation",
+    "source": "term.DewPointTemperature",
+    "relation_type": "observed_as",
+    "target": "term.InstantaneousObservation",
+    "connection_condition": "",
+    "description": "Classe de observação que registra esta grandeza.",
+    "evidence": []
+  },
+  {
+    "id": "rel.RunwayTemperature.observed_as.InstantaneousObservation",
+    "source": "term.RunwayTemperature",
+    "relation_type": "observed_as",
+    "target": "term.InstantaneousObservation",
+    "connection_condition": "",
+    "description": "Classe de observação que registra esta grandeza.",
+    "evidence": []
+  },
+  {
+    "id": "rel.PressureQNH.observed_as.InstantaneousObservation",
+    "source": "term.PressureQNH",
+    "relation_type": "observed_as",
+    "target": "term.InstantaneousObservation",
+    "connection_condition": "",
+    "description": "Classe de observação que registra esta grandeza.",
+    "evidence": []
+  },
+  {
+    "id": "rel.PrevailingVisibility.observed_as.InstantaneousObservation",
+    "source": "term.PrevailingVisibility",
+    "relation_type": "observed_as",
+    "target": "term.InstantaneousObservation",
+    "connection_condition": "",
+    "description": "Classe de observação que registra esta grandeza.",
+    "evidence": []
+  },
+  {
+    "id": "rel.PrecipitationDuration.observed_as.AccumulatedObservation",
+    "source": "term.PrecipitationDuration",
+    "relation_type": "observed_as",
+    "target": "term.AccumulatedObservation",
+    "connection_condition": "",
+    "description": "Classe de observação que registra esta grandeza.",
+    "evidence": []
+  },
+  {
+    "id": "rel.WindSpeed.observed_as.InstantaneousObservation",
+    "source": "term.WindSpeed",
+    "relation_type": "observed_as",
+    "target": "term.InstantaneousObservation",
+    "connection_condition": "",
+    "description": "Classe de observação que registra esta grandeza.",
+    "evidence": []
+  },
+  {
+    "id": "rel.WindDirection.observed_as.InstantaneousObservation",
+    "source": "term.WindDirection",
+    "relation_type": "observed_as",
+    "target": "term.InstantaneousObservation",
+    "connection_condition": "",
+    "description": "Classe de observação que registra esta grandeza.",
+    "evidence": []
+  },
+  {
+    "id": "rel.WindGust.observed_as.InstantaneousObservation",
+    "source": "term.WindGust",
+    "relation_type": "observed_as",
+    "target": "term.InstantaneousObservation",
+    "connection_condition": "",
+    "description": "Classe de observação que registra esta grandeza.",
+    "evidence": []
+  },
+  {
+    "id": "rel.CloudCover.observed_as.CloudLayerObservation",
+    "source": "term.CloudCover",
+    "relation_type": "observed_as",
+    "target": "term.CloudLayerObservation",
+    "connection_condition": "",
+    "description": "Classe de observação que registra esta grandeza.",
+    "evidence": []
+  }
+]

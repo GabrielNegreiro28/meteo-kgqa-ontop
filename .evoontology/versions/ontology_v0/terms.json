@@ -1,0 +1,677 @@
+[
+  {
+    "id": "term.AccumulatedObservation",
+    "name": "observação acumulada",
+    "type": "class",
+    "definition": "Valor acumulado ao longo de um intervalo [início, fim) (sosa:phenomenonTime -> time:Interval). Ex.: precipitação na última hora (dados reais) ou em 6 h (sintéticos).",
+    "scope": "",
+    "aliases": [
+      "acumulado",
+      "total no intervalo",
+      "observacao acumulada"
+    ],
+    "iri": "https://example.org/kgqa-met/ontology#AccumulatedObservation",
+    "bfo_category": "process",
+    "bfo_iri": "http://purl.obolibrary.org/obo/BFO_0000015",
+    "evidence": [
+      "ev.AccumulatedObservation"
+    ]
+  },
+  {
+    "id": "term.CloudLayerObservation",
+    "name": "observação de camada de nuvens",
+    "type": "class",
+    "definition": "Uma camada de nuvens num boletim: cobertura (oitavos), altura da base, gênero e deslocamento.",
+    "scope": "",
+    "aliases": [
+      "observacao de camada de nuvens"
+    ],
+    "iri": "https://example.org/kgqa-met/ontology#CloudLayerObservation",
+    "bfo_category": "process",
+    "bfo_iri": "http://purl.obolibrary.org/obo/BFO_0000015",
+    "evidence": [
+      "ev.CloudLayerObservation"
+    ]
+  },
+  {
+    "id": "term.CloudLayerResult",
+    "name": "resultado de camada de nuvens",
+    "type": "class",
+    "definition": "resultado de camada de nuvens",
+    "scope": "",
+    "aliases": [],
+    "iri": "https://example.org/kgqa-met/ontology#CloudLayerResult",
+    "bfo_category": "information_content_entity",
+    "bfo_iri": "http://purl.obolibrary.org/obo/IAO_0000030",
+    "evidence": [
+      "ev.CloudLayerResult"
+    ]
+  },
+  {
+    "id": "term.Forecast",
+    "name": "previsão",
+    "type": "class",
+    "definition": "Estimativa de um valor futuro. NÃO é uma sosa:Observation: nada foi medido. Perguntas sobre valores 'registrados' ou 'medidos' devem ignorar previsões.",
+    "scope": "",
+    "aliases": [
+      "forecast",
+      "previsao"
+    ],
+    "iri": "https://example.org/kgqa-met/ontology#Forecast",
+    "bfo_category": "information_content_entity",
+    "bfo_iri": "http://purl.obolibrary.org/obo/IAO_0000030",
+    "evidence": [
+      "ev.Forecast"
+    ]
+  },
+  {
+    "id": "term.InstantaneousObservation",
+    "name": "observação instantânea",
+    "type": "class",
+    "definition": "Valor de uma propriedade num instante (sosa:phenomenonTime -> time:Instant). Ex.: temperatura do ar, umidade relativa.",
+    "scope": "",
+    "aliases": [
+      "medição",
+      "medicao",
+      "leitura",
+      "observacao instantanea"
+    ],
+    "iri": "https://example.org/kgqa-met/ontology#InstantaneousObservation",
+    "bfo_category": "process",
+    "bfo_iri": "http://purl.obolibrary.org/obo/BFO_0000015",
+    "evidence": [
+      "ev.InstantaneousObservation"
+    ]
+  },
+  {
+    "id": "term.Site",
+    "name": "local observado",
+    "type": "class",
+    "definition": "A atmosfera junto à estação: o objeto cujas propriedades são observadas.",
+    "scope": "",
+    "aliases": [],
+    "iri": "https://example.org/kgqa-met/ontology#Site",
+    "bfo_category": "site",
+    "bfo_iri": "http://purl.obolibrary.org/obo/BFO_0000029",
+    "evidence": [
+      "ev.Site"
+    ]
+  },
+  {
+    "id": "term.WeatherReport",
+    "name": "boletim meteorológico",
+    "type": "class",
+    "definition": "Conjunto de observações de uma estação num instante. Chave nos dados: (estação, hora).",
+    "scope": "",
+    "aliases": [
+      "weather report",
+      "boletim",
+      "METAR",
+      "boletim meteorologico"
+    ],
+    "iri": "https://example.org/kgqa-met/ontology#WeatherReport",
+    "bfo_category": "information_content_entity",
+    "bfo_iri": "http://purl.obolibrary.org/obo/IAO_0000030",
+    "evidence": [
+      "ev.WeatherReport"
+    ]
+  },
+  {
+    "id": "term.WeatherStation",
+    "name": "estação meteorológica",
+    "type": "class",
+    "definition": "Plataforma fixa que hospeda (sosa:hosts) sensores.",
+    "scope": "",
+    "aliases": [
+      "weather station",
+      "estação",
+      "estacao",
+      "posto",
+      "estacao meteorologica"
+    ],
+    "iri": "https://example.org/kgqa-met/ontology#WeatherStation",
+    "bfo_category": "material_entity",
+    "bfo_iri": "http://purl.obolibrary.org/obo/BFO_0000040",
+    "evidence": [
+      "ev.WeatherStation"
+    ]
+  },
+  {
+    "id": "term.AirTemperature",
+    "name": "temperatura do ar",
+    "type": "observable_property",
+    "definition": "Grandeza observável: temperatura do ar. Unidade canônica: °C.",
+    "scope": "observação instantânea",
+    "aliases": [
+      "air temperature",
+      "temperatura",
+      "calor"
+    ],
+    "iri": "https://example.org/kgqa-met/ontology#AirTemperature",
+    "bfo_category": "quality",
+    "bfo_iri": "http://purl.obolibrary.org/obo/BFO_0000019",
+    "evidence": [
+      "ev.AirTemperature"
+    ]
+  },
+  {
+    "id": "term.RelativeHumidity",
+    "name": "umidade relativa do ar",
+    "type": "observable_property",
+    "definition": "Grandeza observável: umidade relativa do ar. Unidade canônica: %.",
+    "scope": "observação instantânea",
+    "aliases": [
+      "relative humidity",
+      "umidade"
+    ],
+    "iri": "https://example.org/kgqa-met/ontology#RelativeHumidity",
+    "bfo_category": "quality",
+    "bfo_iri": "http://purl.obolibrary.org/obo/BFO_0000019",
+    "evidence": [
+      "ev.RelativeHumidity"
+    ]
+  },
+  {
+    "id": "term.Precipitation",
+    "name": "precipitação",
+    "type": "observable_property",
+    "definition": "Grandeza observável: precipitação. Unidade canônica: mm.",
+    "scope": "observação acumulada",
+    "aliases": [
+      "precipitation",
+      "chuva",
+      "precipitacao"
+    ],
+    "iri": "https://example.org/kgqa-met/ontology#Precipitation",
+    "bfo_category": "quality",
+    "bfo_iri": "http://purl.obolibrary.org/obo/BFO_0000019",
+    "evidence": [
+      "ev.Precipitation"
+    ]
+  },
+  {
+    "id": "term.WetBulbTemperature",
+    "name": "temperatura de bulbo úmido",
+    "type": "observable_property",
+    "definition": "Grandeza observável: temperatura de bulbo úmido. Unidade canônica: °C.",
+    "scope": "observação instantânea",
+    "aliases": [
+      "bulbo úmido",
+      "bulbo umido",
+      "temperatura de bulbo umido"
+    ],
+    "iri": "https://example.org/kgqa-met/ontology#WetBulbTemperature",
+    "bfo_category": "quality",
+    "bfo_iri": "http://purl.obolibrary.org/obo/BFO_0000019",
+    "evidence": [
+      "ev.WetBulbTemperature"
+    ]
+  },
+  {
+    "id": "term.DewPointTemperature",
+    "name": "temperatura do ponto de orvalho",
+    "type": "observable_property",
+    "definition": "Grandeza observável: temperatura do ponto de orvalho. Unidade canônica: °C.",
+    "scope": "observação instantânea",
+    "aliases": [
+      "ponto de orvalho"
+    ],
+    "iri": "https://example.org/kgqa-met/ontology#DewPointTemperature",
+    "bfo_category": "quality",
+    "bfo_iri": "http://purl.obolibrary.org/obo/BFO_0000019",
+    "evidence": [
+      "ev.DewPointTemperature"
+    ]
+  },
+  {
+    "id": "term.RunwayTemperature",
+    "name": "temperatura da pista",
+    "type": "observable_property",
+    "definition": "Grandeza observável: temperatura da pista. Unidade canônica: °C.",
+    "scope": "observação instantânea",
+    "aliases": [],
+    "iri": "https://example.org/kgqa-met/ontology#RunwayTemperature",
+    "bfo_category": "quality",
+    "bfo_iri": "http://purl.obolibrary.org/obo/BFO_0000019",
+    "evidence": [
+      "ev.RunwayTemperature"
+    ]
+  },
+  {
+    "id": "term.PressureQNH",
+    "name": "pressão QNH",
+    "type": "observable_property",
+    "definition": "Grandeza observável: pressão QNH. Unidade canônica: hPa.",
+    "scope": "observação instantânea",
+    "aliases": [
+      "pressão",
+      "pressao",
+      "pressão atmosférica",
+      "pressao atmosferica",
+      "QNH",
+      "pressao qnh"
+    ],
+    "iri": "https://example.org/kgqa-met/ontology#PressureQNH",
+    "bfo_category": "quality",
+    "bfo_iri": "http://purl.obolibrary.org/obo/BFO_0000019",
+    "evidence": [
+      "ev.PressureQNH"
+    ]
+  },
+  {
+    "id": "term.PrevailingVisibility",
+    "name": "visibilidade predominante",
+    "type": "observable_property",
+    "definition": "Grandeza observável: visibilidade predominante. Unidade canônica: m.",
+    "scope": "observação instantânea",
+    "aliases": [
+      "visibilidade"
+    ],
+    "iri": "https://example.org/kgqa-met/ontology#PrevailingVisibility",
+    "bfo_category": "quality",
+    "bfo_iri": "http://purl.obolibrary.org/obo/BFO_0000019",
+    "evidence": [
+      "ev.PrevailingVisibility"
+    ]
+  },
+  {
+    "id": "term.PrecipitationDuration",
+    "name": "duração da precipitação",
+    "type": "observable_property",
+    "definition": "Grandeza observável: duração da precipitação. Unidade canônica: min.",
+    "scope": "observação acumulada",
+    "aliases": [
+      "duracao da precipitacao"
+    ],
+    "iri": "https://example.org/kgqa-met/ontology#PrecipitationDuration",
+    "bfo_category": "quality",
+    "bfo_iri": "http://purl.obolibrary.org/obo/BFO_0000019",
+    "evidence": [
+      "ev.PrecipitationDuration"
+    ]
+  },
+  {
+    "id": "term.WindSpeed",
+    "name": "velocidade do vento",
+    "type": "observable_property",
+    "definition": "Grandeza observável: velocidade do vento. Unidade canônica: kt.",
+    "scope": "observação instantânea",
+    "aliases": [
+      "vento"
+    ],
+    "iri": "https://example.org/kgqa-met/ontology#WindSpeed",
+    "bfo_category": "quality",
+    "bfo_iri": "http://purl.obolibrary.org/obo/BFO_0000019",
+    "evidence": [
+      "ev.WindSpeed"
+    ]
+  },
+  {
+    "id": "term.WindDirection",
+    "name": "direção do vento",
+    "type": "observable_property",
+    "definition": "Grandeza observável: direção do vento. Unidade canônica: °.",
+    "scope": "observação instantânea",
+    "aliases": [
+      "direcao do vento"
+    ],
+    "iri": "https://example.org/kgqa-met/ontology#WindDirection",
+    "bfo_category": "quality",
+    "bfo_iri": "http://purl.obolibrary.org/obo/BFO_0000019",
+    "evidence": [
+      "ev.WindDirection"
+    ]
+  },
+  {
+    "id": "term.WindGust",
+    "name": "rajada de vento",
+    "type": "observable_property",
+    "definition": "Grandeza observável: rajada de vento. Unidade canônica: kt.",
+    "scope": "observação instantânea",
+    "aliases": [
+      "rajada"
+    ],
+    "iri": "https://example.org/kgqa-met/ontology#WindGust",
+    "bfo_category": "quality",
+    "bfo_iri": "http://purl.obolibrary.org/obo/BFO_0000019",
+    "evidence": [
+      "ev.WindGust"
+    ]
+  },
+  {
+    "id": "term.CloudCover",
+    "name": "nebulosidade",
+    "type": "observable_property",
+    "definition": "Grandeza observável: nebulosidade. Sem unidade.",
+    "scope": "observação de camada de nuvens",
+    "aliases": [
+      "nuvens",
+      "camada de nuvens"
+    ],
+    "iri": "https://example.org/kgqa-met/ontology#CloudCover",
+    "bfo_category": "quality",
+    "bfo_iri": "http://purl.obolibrary.org/obo/BFO_0000019",
+    "evidence": [
+      "ev.CloudCover"
+    ]
+  },
+  {
+    "id": "term.cloudBaseHeight",
+    "name": "altura da base da nuvem (m)",
+    "type": "property",
+    "definition": "altura da base da nuvem (m)",
+    "scope": "",
+    "aliases": [],
+    "iri": "https://example.org/kgqa-met/ontology#cloudBaseHeight",
+    "bfo_category": null,
+    "bfo_iri": null,
+    "evidence": [
+      "ev.cloudBaseHeight"
+    ]
+  },
+  {
+    "id": "term.cloudGenus",
+    "name": "gênero da nuvem",
+    "type": "property",
+    "definition": "gênero da nuvem",
+    "scope": "",
+    "aliases": [
+      "tipo de nuvem",
+      "genero da nuvem"
+    ],
+    "iri": "https://example.org/kgqa-met/ontology#cloudGenus",
+    "bfo_category": null,
+    "bfo_iri": null,
+    "evidence": [
+      "ev.cloudGenus"
+    ]
+  },
+  {
+    "id": "term.cloudMovement",
+    "name": "direção de deslocamento da nuvem",
+    "type": "property",
+    "definition": "direção de deslocamento da nuvem",
+    "scope": "",
+    "aliases": [
+      "direcao de deslocamento da nuvem"
+    ],
+    "iri": "https://example.org/kgqa-met/ontology#cloudMovement",
+    "bfo_category": null,
+    "bfo_iri": null,
+    "evidence": [
+      "ev.cloudMovement"
+    ]
+  },
+  {
+    "id": "term.forStation",
+    "name": "previsão para a estação",
+    "type": "property",
+    "definition": "previsão para a estação",
+    "scope": "",
+    "aliases": [
+      "previsao para a estacao"
+    ],
+    "iri": "https://example.org/kgqa-met/ontology#forStation",
+    "bfo_category": null,
+    "bfo_iri": null,
+    "evidence": [
+      "ev.forStation"
+    ]
+  },
+  {
+    "id": "term.forecastedProperty",
+    "name": "propriedade prevista",
+    "type": "property",
+    "definition": "propriedade prevista",
+    "scope": "",
+    "aliases": [],
+    "iri": "https://example.org/kgqa-met/ontology#forecastedProperty",
+    "bfo_category": null,
+    "bfo_iri": null,
+    "evidence": [
+      "ev.forecastedProperty"
+    ]
+  },
+  {
+    "id": "term.inReport",
+    "name": "pertence ao boletim",
+    "type": "property",
+    "definition": "pertence ao boletim",
+    "scope": "",
+    "aliases": [],
+    "iri": "https://example.org/kgqa-met/ontology#inReport",
+    "bfo_category": null,
+    "bfo_iri": null,
+    "evidence": [
+      "ev.inReport"
+    ]
+  },
+  {
+    "id": "term.isHourly",
+    "name": "boletim da hora cheia",
+    "type": "property",
+    "definition": "Falso para boletins extras (prováveis SPECI).",
+    "scope": "",
+    "aliases": [],
+    "iri": "https://example.org/kgqa-met/ontology#isHourly",
+    "bfo_category": null,
+    "bfo_iri": null,
+    "evidence": [
+      "ev.isHourly"
+    ]
+  },
+  {
+    "id": "term.isSynthetic",
+    "name": "dado sintético",
+    "type": "property",
+    "definition": "dado sintético",
+    "scope": "",
+    "aliases": [
+      "dado sintetico"
+    ],
+    "iri": "https://example.org/kgqa-met/ontology#isSynthetic",
+    "bfo_category": null,
+    "bfo_iri": null,
+    "evidence": [
+      "ev.isSynthetic"
+    ]
+  },
+  {
+    "id": "term.issuedAt",
+    "name": "emitida em",
+    "type": "property",
+    "definition": "emitida em",
+    "scope": "",
+    "aliases": [],
+    "iri": "https://example.org/kgqa-met/ontology#issuedAt",
+    "bfo_category": null,
+    "bfo_iri": null,
+    "evidence": [
+      "ev.issuedAt"
+    ]
+  },
+  {
+    "id": "term.localDate",
+    "name": "data local",
+    "type": "property",
+    "definition": "Dia civil local (UTC−3) a que a observação pertence. Para acumulados, o dia do INÍCIO do intervalo.",
+    "scope": "",
+    "aliases": [],
+    "iri": "https://example.org/kgqa-met/ontology#localDate",
+    "bfo_category": null,
+    "bfo_iri": null,
+    "evidence": [
+      "ev.localDate"
+    ]
+  },
+  {
+    "id": "term.multipleReadings",
+    "name": "leituras múltiplas",
+    "type": "property",
+    "definition": "Verdadeiro quando o mesmo boletim tem mais de um valor distinto para a variável (sensores diferentes, não identificados na fonte).",
+    "scope": "",
+    "aliases": [
+      "leituras multiplas"
+    ],
+    "iri": "https://example.org/kgqa-met/ontology#multipleReadings",
+    "bfo_category": null,
+    "bfo_iri": null,
+    "evidence": [
+      "ev.multipleReadings"
+    ]
+  },
+  {
+    "id": "term.oktas",
+    "name": "cobertura em oitavos",
+    "type": "property",
+    "definition": "cobertura em oitavos",
+    "scope": "",
+    "aliases": [
+      "quantidade de nuvens"
+    ],
+    "iri": "https://example.org/kgqa-met/ontology#oktas",
+    "bfo_category": null,
+    "bfo_iri": null,
+    "evidence": [
+      "ev.oktas"
+    ]
+  },
+  {
+    "id": "term.reportOf",
+    "name": "boletim da estação",
+    "type": "property",
+    "definition": "boletim da estação",
+    "scope": "",
+    "aliases": [
+      "boletim da estacao"
+    ],
+    "iri": "https://example.org/kgqa-met/ontology#reportOf",
+    "bfo_category": null,
+    "bfo_iri": null,
+    "evidence": [
+      "ev.reportOf"
+    ]
+  },
+  {
+    "id": "term.runwayDesignator",
+    "name": "cabeceira da pista",
+    "type": "property",
+    "definition": "Cabeceira associada ao anemômetro (ex.: 09R, 27L, 15/33).",
+    "scope": "",
+    "aliases": [],
+    "iri": "https://example.org/kgqa-met/ontology#runwayDesignator",
+    "bfo_category": null,
+    "bfo_iri": null,
+    "evidence": [
+      "ev.runwayDesignator"
+    ]
+  },
+  {
+    "id": "term.siteOf",
+    "name": "local da estação",
+    "type": "property",
+    "definition": "local da estação",
+    "scope": "",
+    "aliases": [
+      "local da estacao"
+    ],
+    "iri": "https://example.org/kgqa-met/ontology#siteOf",
+    "bfo_category": null,
+    "bfo_iri": null,
+    "evidence": [
+      "ev.siteOf"
+    ]
+  },
+  {
+    "id": "term.skyObscured",
+    "name": "céu obscurecido",
+    "type": "property",
+    "definition": "céu obscurecido",
+    "scope": "",
+    "aliases": [
+      "ceu obscurecido"
+    ],
+    "iri": "https://example.org/kgqa-met/ontology#skyObscured",
+    "bfo_category": null,
+    "bfo_iri": null,
+    "evidence": [
+      "ev.skyObscured"
+    ]
+  },
+  {
+    "id": "term.sourceFile",
+    "name": "arquivo de origem",
+    "type": "property",
+    "definition": "arquivo de origem",
+    "scope": "",
+    "aliases": [],
+    "iri": "https://example.org/kgqa-met/ontology#sourceFile",
+    "bfo_category": null,
+    "bfo_iri": null,
+    "evidence": [
+      "ev.sourceFile"
+    ]
+  },
+  {
+    "id": "term.sourceRow",
+    "name": "linha de origem",
+    "type": "property",
+    "definition": "Posição (base 0) da linha no CSV de origem, sem contar o cabeçalho (procedência).",
+    "scope": "",
+    "aliases": [],
+    "iri": "https://example.org/kgqa-met/ontology#sourceRow",
+    "bfo_category": null,
+    "bfo_iri": null,
+    "evidence": [
+      "ev.sourceRow"
+    ]
+  },
+  {
+    "id": "term.stationCode",
+    "name": "código da estação",
+    "type": "property",
+    "definition": "código da estação",
+    "scope": "",
+    "aliases": [
+      "codigo da estacao"
+    ],
+    "iri": "https://example.org/kgqa-met/ontology#stationCode",
+    "bfo_category": null,
+    "bfo_iri": null,
+    "evidence": [
+      "ev.stationCode"
+    ]
+  },
+  {
+    "id": "term.validTime",
+    "name": "instante de validade da previsão",
+    "type": "property",
+    "definition": "instante de validade da previsão",
+    "scope": "",
+    "aliases": [
+      "instante de validade da previsao"
+    ],
+    "iri": "https://example.org/kgqa-met/ontology#validTime",
+    "bfo_category": null,
+    "bfo_iri": null,
+    "evidence": [
+      "ev.validTime"
+    ]
+  },
+  {
+    "id": "term.windCondition",
+    "name": "condição do vento",
+    "type": "property",
+    "definition": "'calm' (calmaria) ou 'variable' (direção variável).",
+    "scope": "",
+    "aliases": [
+      "condicao do vento"
+    ],
+    "iri": "https://example.org/kgqa-met/ontology#windCondition",
+    "bfo_category": null,
+    "bfo_iri": null,
+    "evidence": [
+      "ev.windCondition"
+    ]
+  }
+]
