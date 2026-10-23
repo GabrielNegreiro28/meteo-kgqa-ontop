@@ -16,6 +16,8 @@ def result_status(results: dict[str, Any]) -> tuple[Status, list[str]]:
     Por isso as consultas agregadas devem sempre projetar uma contagem (?n).
     """
     notes: list[str] = []
+    if "boolean" in results:                      # ASK: "falso" é uma resposta ("Não"), não ausência de registros
+        return Status.ANSWERED, ["ASK"]
     bindings = results.get("results", {}).get("bindings", [])
     if not bindings:
         return Status.NO_RESULTS, ["zero linhas"]

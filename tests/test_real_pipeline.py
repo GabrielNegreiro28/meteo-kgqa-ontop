@@ -13,7 +13,7 @@ from decimal import Decimal
 
 import pytest
 
-DUCK = "/home/claude/metdata/met.duckdb"
+DUCK = os.environ.get("MET_HOME", "/home/claude/metdata") + "/met.duckdb"
 duck_ok = os.path.exists(DUCK)
 try:
     urllib.request.urlopen(urllib.request.Request(

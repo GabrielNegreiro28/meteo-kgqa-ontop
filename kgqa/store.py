@@ -34,6 +34,8 @@ PREFIX prov: <http://www.w3.org/ns/prov#>
 """
 
 ALLOWED_FORMS = {"SelectQuery", "AskQuery"}
+MAX_QUERY_CHARS = 6000                      # consulta gigante = custo de análise, aninhamento profundo e superfície de ataque
+UNBOUNDED_PATH_MODS = {"*", "+"}            # p* e p+ percorrem o grafo sem limite; nenhuma pergunta suportada precisa deles
 FORBIDDEN_NODES = {"ServiceGraphPattern"}   # SERVICE faria requisição de rede a partir do executor
 
 
@@ -76,8 +78,12 @@ def check_policy(query: str) -> str:
     Atualizações (INSERT/DELETE/LOAD/CLEAR...) não são aceitas pelo parser de *consultas*;
     se o texto for uma atualização SPARQL válida, é classificado como violação de política.
     """
+    if len(query) > MAX_QUERY_CHARS:
+        raise PolicyError(f"Consulta longa demais ({len(query)} > {MAX_QUERY_CHARS} caracteres).")
     try:
         pq = prepareQuery(query)
+    except RecursionError as e:             # aninhamento profundo derruba o analisador: recusa, não propaga
+        raise PolicyError("Consulta aninhada demais.") from e
     except Exception as e:  # pyparsing.ParseException e afins
         try:
             parseUpdate(query)
@@ -92,7 +98,19 @@ def check_policy(query: str) -> str:
     for n in _walk(pq.algebra):
         if n.name in FORBIDDEN_NODES:
             raise PolicyError("SERVICE não permitido.")
+        for s_, p_, o_ in (n.get("triples") or []) if n.name == "BGP" else []:
+            if _unbounded(p_):
+                raise PolicyError("Caminho de comprimento ilimitado (* ou +) não permitido.")
     return form
+
+
+def _unbounded(path: Any) -> bool:
+    from rdflib.paths import MulPath, Path
+    if isinstance(path, MulPath) and path.mod in UNBOUNDED_PATH_MODS:
+        return True
+    if isinstance(path, Path):
+        return any(_unbounded(a) for a in (getattr(path, "args", None) or [getattr(path, "arg", None)]) if a is not None)
+    return False
 
 
 def term_to_json(t: Any) -> dict[str, str]:
@@ -192,7 +210,8 @@ import urllib.error as _uerr
 import urllib.parse as _uparse
 import urllib.request as _ureq
 
-_LIMIT_RE = _re.compile(r"\bLIMIT\s+(\d+)\s*(OFFSET\s+\d+\s*)?$", _re.IGNORECASE)
+_LIMIT_RE = _re.compile(r"\bLIMIT\s+(\d+)\s*(OFFSET\s+\d+\s*)?(?:#[^\n]*)?$", _re.IGNORECASE)    # comentário depois do LIMIT não o esconde
+_TRAILING_COMMENT_LINES = _re.compile(r"(?:\s*\n[ \t]*#[^\n]*)+\s*$")
 
 
 def cap_rows(query: str, max_rows: int) -> str:
@@ -202,7 +221,7 @@ def cap_rows(query: str, max_rows: int) -> str:
     não muda o valor de nenhuma linha. Assim o servidor não materializa milhões de linhas e
     ainda dá para saber se houve truncamento (veio a linha N+1).
     """
-    q = query.rstrip().rstrip(";")
+    q = _TRAILING_COMMENT_LINES.sub("", query.rstrip()).rstrip().rstrip(";")
     m = _LIMIT_RE.search(q)
     if m and int(m.group(1)) <= max_rows + 1:
         return q
@@ -211,12 +230,67 @@ def cap_rows(query: str, max_rows: int) -> str:
     return q + f"\nLIMIT {max_rows + 1}"
 
 
+@dataclass
+class Reformulation:
+    """O que o próprio motor diz de uma consulta ANTES de executá-la (Ontop em modo --dev, rota /ontop/reformulate).
+
+    status: "ok"          o motor traduziu a consulta para SQL (em `sql`);
+            "empty"       o motor provou que ela nunca devolve linhas (nenhuma combinação de tipos/relações do mapeamento a satisfaz);
+            "rejected"    o motor não conseguiu traduzi-la (dialeto, sintaxe) ou demorou demais;
+            "unavailable" a rota não existe (modo --dev desligado) ou o motor não respondeu: não dá para checar, não há veredito.
+    """
+    status: str
+    sql: str | None = None
+    plan: str | None = None
+    detail: str | None = None
+    elapsed_ms: float = 0.0
+
+
+def parse_reformulation(body: str) -> tuple[str, str | None]:
+    """(status, sql) do texto que /ontop/reformulate devolve: `ans1(vars)`, depois `EMPTY [...]` ou `CONSTRUCT …`, `NATIVE […]` e o SQL."""
+    lines = body.strip().splitlines()
+    if any(l.strip().startswith("EMPTY") for l in lines[:3]):
+        return "empty", None
+    for i, l in enumerate(lines):
+        if l.strip().startswith("NATIVE"):
+            return "ok", "\n".join(lines[i + 1:]).strip() or None
+    return "ok", None
+
+
 class OntopBackend:
     """Consulta o endpoint SPARQL do Ontop. O teto rígido de tempo fica no PostgreSQL (statement_timeout)."""
 
     def __init__(self, endpoint: str = "http://127.0.0.1:8080/sparql", source_id: str = "kg:ontop-met-real-v1"):
         self.endpoint = endpoint
         self.source_id = source_id
+
+    def reformulate(self, query: str, timeout_s: float = 15.0) -> Reformulation:
+        """Pede ao motor a reformulação (SQL) sem executar. Pega, numa só checagem, o que o `rdflib` aceita e o Ontop não
+        (BIND com nome em uso, GROUP BY sem alias…) e as consultas vazias por construção (relação ao contrário, tipo errado).
+        Custa ~5 ms. POST (a GET estoura o limite de URL em consulta longa)."""
+        t0 = time.perf_counter()
+        ms = lambda: (time.perf_counter() - t0) * 1000
+        try:
+            check_policy(query)
+        except (PolicyError, SyntaxError) as e:
+            return Reformulation("rejected", detail=str(e)[:200], elapsed_ms=ms())
+        url = self.endpoint.rsplit("/", 1)[0] + "/ontop/reformulate"
+        req = _ureq.Request(url, data=_uparse.urlencode({"query": query}).encode(), method="POST")
+        try:
+            with _ureq.urlopen(req, timeout=timeout_s) as resp:
+                body = resp.read().decode("utf-8", "replace")
+        except _uerr.HTTPError as e:
+            if e.code == 404:
+                return Reformulation("unavailable", detail="rota /ontop/reformulate ausente (Ontop sem --dev)", elapsed_ms=ms())
+            return Reformulation("rejected", detail=f"o motor recusou a consulta (HTTP {e.code})", elapsed_ms=ms())
+        except TimeoutError:
+            return Reformulation("rejected", detail=f"o motor levou mais de {timeout_s:.0f} s só para traduzir a consulta", elapsed_ms=ms())
+        except (_uerr.URLError, ConnectionError, OSError) as e:
+            if isinstance(getattr(e, "reason", None), TimeoutError):
+                return Reformulation("rejected", detail=f"o motor levou mais de {timeout_s:.0f} s só para traduzir a consulta", elapsed_ms=ms())
+            return Reformulation("unavailable", detail="motor inacessível", elapsed_ms=ms())
+        status, sql = parse_reformulation(body)
+        return Reformulation(status, sql=sql, plan=body[:4000], elapsed_ms=ms())
 
     def select(self, query: str, timeout_s: float = 30.0, max_rows: int = 1000) -> ExecResult:
         t0 = time.perf_counter()

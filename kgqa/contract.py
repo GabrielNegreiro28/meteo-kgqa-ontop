@@ -10,7 +10,7 @@ from dataclasses import asdict, dataclass, field
 from enum import Enum
 from typing import Any
 
-CONTRACT_VERSION = "0.1.0"
+CONTRACT_VERSION = "0.2.1"      # 0.2.0: Provenance ganhou generated_sql, engine, versions e prov_turtle; 0.2.1: executed_sparql e complete (opcionais)
 
 
 class Status(str, Enum):
@@ -60,6 +60,13 @@ class Provenance:
     synthetic: bool | None = None
     ontology_version: str | None = None
     record_iris: list[str] = field(default_factory=list)  # observações que sustentam a resposta, quando houver
+    # Procedência da resposta (documento da arquitetura, §10/§12 e §7.4): o SQL que o motor gerou, quem o gerou e com que versões.
+    generated_sql: str | None = None     # SQL que o Ontop gerou a partir do SPARQL (via /ontop/reformulate), quando disponível
+    engine: str | None = None            # ex.: "ontop-reformulate"; None = o backend não informa o SQL
+    versions: dict[str, Any] = field(default_factory=dict)   # prompts, ontologia (impressão), camada semântica, modelo
+    prov_turtle: str | None = None       # a mesma procedência como PROV-O (Turtle)
+    executed_sparql: str | None = None   # a consulta ENVIADA ao motor (com o LIMIT do executor); `generated_sql` é a reformulação DELA
+    complete: bool = True                # False quando algum passo da procedência falhou (o que faltar não deve ser presumido)
 
 
 @dataclass
