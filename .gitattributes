@@ -1,0 +1,13 @@
+# Scripts e configuração lidos no WSL/Linux ou pelo Java precisam de LF. Sem isto, um checkout no Windows os devolve com CRLF e quebra
+# (`bash\r: command not found`, `$'\r': command not found`): aconteceu dezenas de vezes (docs/ANALISE_CRITICA.md, A-30).
+*.sh        text eol=lf
+*.obda      text eol=lf
+*.properties text eol=lf
+*.ttl       text eol=lf
+*.nt        text eol=lf
+*.py        text eol=lf
+*.yaml      text eol=lf
+*.md        text eol=lf
+# dados compactados e relatórios binários: nunca converter
+*.npz       binary
+*.duckdb    binary

@@ -23,10 +23,11 @@ def test_duckdb_decimal_topn_documented():
     O oráculo real usa DOUBLE + pandas por isso. Se este teste falhar, o defeito sumiu: reavaliar D-18."""
     import os
     import pytest
-    if not os.path.exists("/home/claude/metdata/met.duckdb"):
+    duck = os.environ.get("MET_HOME", "/home/claude/metdata") + "/met.duckdb"
+    if not os.path.exists(duck):
         pytest.skip("base local ausente")
     import duckdb
-    c = duckdb.connect("/home/claude/metdata/met.duckdb", read_only=True)
+    c = duckdb.connect(duck, read_only=True)
     mx = c.execute("SELECT MAX(value) FROM clean.obs_air_temp").fetchone()[0]
     top = c.execute("SELECT value FROM clean.obs_air_temp ORDER BY value DESC LIMIT 1").fetchone()[0]
     top_double = c.execute("SELECT CAST(value AS DOUBLE) v FROM clean.obs_air_temp ORDER BY v DESC LIMIT 1").fetchone()[0]

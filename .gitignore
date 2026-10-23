@@ -5,6 +5,8 @@
 *.duckdb
 *.duckdb.wal
 METEOROLOGIA/
+*.env
+.env
 _transferencia/
 
 # Saídas de execução
@@ -22,3 +24,16 @@ venv/
 # Ferramentas baixadas
 tools/
 *.jar
+
+# Ambiente virtual local
+.venv/
+
+# Trajetórias do EvoOntology: contêm a pergunta do usuário e o SPARQL; não versionar
+.evoontology/trajectories/
+.evoontology/evolution/
+
+# Página HTML gerada pelo EvoOntology (700 KB, reproduzível)
+.evoontology/visualizations/
+
+# Documento do professor: fica fora do repositório até ele autorizar a versão
+docs/Ontology_Agentic_Architecture_revised.docx
