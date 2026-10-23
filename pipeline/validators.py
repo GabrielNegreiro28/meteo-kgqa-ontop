@@ -126,6 +126,14 @@ RELATIVE_TIME = re.compile(r"\b(hoje|ontem|anteontem|amanha|agora|atualmente|rec
                            r"(?:semana|mes|ano)\s+(?:passad[oa]|que\s+vem|proxim[oa]))\b")
 _DATE = re.compile(r"\b(\d{1,2})/(\d{1,2})/(\d{4})\b")
 _YEAR = re.compile(r"\b(?:em|de|do|no|ano)\s+((?:19|20)\d{2})\b(?!\s*(?:m\b|mm\b|hpa|km|kt|°|%|graus|metros))")
+# intervalo de anos: "de 2016 a 2025", "entre 2016 e 2025", "2016-2025" -> as duas pontas (o _YEAR acima só pega a que vem depois de preposição)
+_YEAR_RANGE = re.compile(r"(?<!\d)((?:19|20)\d{2})\s*(?:a|ate|ao|e|-)\s*((?:19|20)\d{2})(?!\d)")
+
+
+def question_years(t: str) -> set[int]:
+    return {int(y) for y in _YEAR.findall(t)} | {int(y) for pair in _YEAR_RANGE.findall(t) for y in pair}
+
+
 _AT_TIME = re.compile(r"\b(?:as|ao|a)\s+(?:\d{1,2}\s*h|meio-dia|meia-noite)|\d{1,2}\s*h\b|\bmeio-dia\b|\bmeia-noite\b")
 _MONTHS = ("janeiro", "fevereiro", "marco", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro",
            "novembro", "dezembro")
@@ -284,7 +292,7 @@ def _ground_in_question(interp: PipelineInterpretation, question: str, index: On
                             "(o sistema converte para a unidade dos dados)", filter=f))
     # tempo
     dates = first(question_dates)
-    years = first(lambda t: {int(y) for y in _YEAR.findall(t)})
+    years = first(question_years)
     instant = bool(_AT_TIME.search(q))                            # 'às 12h', 'ao meio-dia': consulta de um instante, não de um período
     hour = first(question_hour)
     if interp.instant is not None:
@@ -301,7 +309,10 @@ def _ground_in_question(interp: PipelineInterpretation, question: str, index: On
     elif omissions and instant and dates:
         out.append(_err(L4, "INSTANT_OMITTED", "A pergunta traz data e horário; preencha 'instant' (ISO 8601 com fuso, ex.: 2026-03-05T12:00:00-03:00)"))
     if interp.period is None:
-        if omissions and (dates or years) and not instant:
+        # sem período = todo o histórico: equivale à pergunta quando o intervalo de anos dela cobre toda a cobertura dos dados (RG14: "entre 2016 e 2025")
+        spans_all = bool(years) and not dates and len(years) > 1 and bool(index.coverage) and \
+            min(years) <= index.coverage[0].year and max(years) >= index.coverage[1].year
+        if omissions and (dates or years) and not instant and not spans_all:
             out.append(_err(L4, "PERIOD_OMITTED", f"A pergunta traz {'datas' if dates else 'o ano'} e a interpretação não tem período: a consulta cobriria todo o tempo"))
     else:
         if not _TIME_CUE.search(q) and not RELATIVE_TIME.search(q):

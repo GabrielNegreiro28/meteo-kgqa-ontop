@@ -92,3 +92,23 @@ def test_negative_threshold_is_recognised_by_the_query_rules():
     i = interp(properties=["met:AirTemperature"], entities=E("SBGR"), aggregation="count", filters=[{"op": "<", "value": -2, "unit": "unit:DEG_C"}])
     q = compile_structured(i, IDX, force=True)
     assert "FILTER(?v < -2)" in q and not validate_query(q, i, IDX, True)[1]
+
+
+def test_multi_year_range_is_not_a_false_positive_E22_E26():
+    from pipeline.validators import question_years
+    assert question_years("como variou o qnh medio anual de sbme de 2016 a 2025?") == {2016, 2025}
+    assert question_years("liste a umidade relativa media de sbmo para cada ano de 2020 a 2025.") == {2020, 2025}
+    assert question_years("entre 2018 e 2020 em sbgr") == {2018, 2020}
+    assert question_years("em 2019 choveu 2000 mm") == {2019}
+    i = interp(properties=["met:PressureQNH"], entities=E("SBGR"), period=P("2016-01-01", "2025-12-31"), aggregation="avg", group_by=["year"])
+    assert not codes(i, "Como variou o QNH médio anual de SBGR de 2016 a 2025?")
+    i2 = interp(properties=["met:PressureQNH"], entities=E("SBGR"), period=P("2016-01-01", "2025-12-31"), aggregation="avg")
+    assert not codes(i2, "Qual a média do QNH de SBGR de 2016 a 2025?")
+    bad = interp(properties=["met:PressureQNH"], entities=E("SBGR"), period=P("2016-01-01", "2024-12-31"), aggregation="avg")
+    assert "PERIOD_PARTIAL_YEAR" in codes(bad, "Qual a média do QNH de SBGR de 2016 a 2025?")
+
+
+def test_no_period_is_accepted_only_when_the_year_range_spans_the_whole_coverage():
+    whole = interp(properties=["met:PressureQNH"], entities=E("SBGR"), aggregation="avg", group_by=["year"])
+    assert "PERIOD_OMITTED" not in codes(whole, "Como variou o QNH anual de SBGR entre 2016 e 2025?")
+    assert "PERIOD_OMITTED" in codes(whole, "Como variou o QNH anual de SBGR entre 2018 e 2020?")
