@@ -460,6 +460,8 @@ def _ground_structure(interp: PipelineInterpretation, q: str, omissions: bool) -
     declared = {d for d in interp.group_by if d in GROUP_DIMS}
     for dim in interp.group_by:
         cue = GROUP_CUES.get(dim) or ATTRIBUTE_CUES.get(local(expand(dim)))
+        if dim == "station" and len(interp.entities) >= 2:
+            continue                                  # duas ou mais estações NOMEADAS ("SBRB ou SBPV"): um valor por estação é o que a pergunta pede
         if cue is None or not cue.search(q):
             out.append(_err(L4, "GROUP_BY_NOT_IN_QUESTION", f"A interpretação agrupa por '{dim}' e a pergunta não pede resultado por isso", dim=dim))
     for a in interp.attributes:

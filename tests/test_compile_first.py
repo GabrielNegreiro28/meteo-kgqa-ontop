@@ -112,3 +112,53 @@ def test_no_period_is_accepted_only_when_the_year_range_spans_the_whole_coverage
     whole = interp(properties=["met:PressureQNH"], entities=E("SBGR"), aggregation="avg", group_by=["year"])
     assert "PERIOD_OMITTED" not in codes(whole, "Como variou o QNH anual de SBGR entre 2016 e 2025?")
     assert "PERIOD_OMITTED" in codes(whole, "Como variou o QNH anual de SBGR entre 2018 e 2020?")
+
+
+# ---- E18 e E31 da avaliação independente, de ponta a ponta no grafo real, com a interpretação roteirizada (sem LLM, sem custo) ----
+import json  # noqa: E402
+
+import pytest  # noqa: E402
+
+from kgqa.contract import Status  # noqa: E402
+from kgqa.store import OntopBackend  # noqa: E402
+from pipeline.llm import ScriptedLLM  # noqa: E402
+from pipeline.orchestrator import run_pipeline  # noqa: E402
+from tests.test_real_pipeline import needs_duck, needs_ontop  # noqa: E402
+
+
+def _run_v7(question, i):
+    backend = OntopBackend()
+    d = {k: v for k, v in i.__dict__.items() if k in ("properties", "entities", "filters", "period", "aggregation", "record_kind",
+                                                      "group_by", "attributes", "order", "daily")}
+    llm = ScriptedLLM({"interpret": [json.dumps({"status": "ok", **d})], "generate": ["{}"], "answer": ["x"]})
+    res = run_pipeline(question, llm, backend, OntologyIndex.from_ontop(backend), timeout_s=60, prompts_version="v7")
+    assert not [c for c in llm.calls if c["stage"] in ("generate", "answer")]      # nada escrito pelo LLM além da interpretação
+    return res
+
+
+@needs_ontop
+@needs_duck
+def test_E18_threshold_count_is_compiled_and_correct_on_the_real_graph():
+    from eval import oracle_real
+    q = "Em SBLO, quantas horas de 2020 acumularam pelo menos 10 mm de chuva?"
+    i = interp(properties=["met:Precipitation"], entities=E("SBLO"), period=P("2020-01-01", "2020-12-31"), aggregation="count",
+               filters=[{"op": ">=", "value": 10, "unit": "unit:MilliM"}])
+    res = _run_v7(q, i)
+    assert res.response.status == Status.ANSWERED
+    d = oracle_real.between(oracle_real.load("obs_precip", "SBLO"), date(2020, 1, 1), date(2020, 12, 31))
+    assert int(res.response.results["results"]["bindings"][0]["n"]["value"]) == int((d.value >= 10).sum())
+
+
+@needs_ontop
+@needs_duck
+def test_E31_two_station_comparison_returns_both_totals_on_the_real_graph():
+    from eval import oracle_real
+    q = "Quem acumulou mais chuva em outubro de 2024, SBRB ou SBPV, e qual foi a diferença?"
+    i = interp(properties=["met:Precipitation"], entities=[{"text": s, "iri": f"st:{s}"} for s in ("SBRB", "SBPV")],
+               period=P("2024-10-01", "2024-10-31"), aggregation="sum", group_by=["station"])
+    res = _run_v7(q, i)
+    assert res.response.status == Status.ANSWERED, [d.code for d in res.response.diagnostics]
+    got = {b["station"]["value"].rsplit("/", 1)[-1]: float(b["value"]["value"]) for b in res.response.results["results"]["bindings"]}
+    for s in ("SBRB", "SBPV"):
+        d = oracle_real.between(oracle_real.load("obs_precip", s), date(2024, 10, 1), date(2024, 10, 31))
+        assert got[s] == pytest.approx(float(d.value.sum()), rel=1e-6)

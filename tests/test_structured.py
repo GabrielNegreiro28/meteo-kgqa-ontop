@@ -179,7 +179,7 @@ def test_the_user_is_told_the_shape_that_was_understood():
 
 def scripted(i: PipelineInterpretation) -> ScriptedLLM:
     d = {k: v for k, v in i.__dict__.items() if k in ("properties", "entities", "filters", "period", "aggregation", "record_kind",
-                                                      "group_by", "attributes", "order")}
+                                                      "group_by", "attributes", "order", "daily")}
     return ScriptedLLM({"interpret": [json.dumps({"status": "ok", **d})], "generate": ["{}"], "answer": ["x"]})
 
 
