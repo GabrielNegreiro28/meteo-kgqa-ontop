@@ -316,3 +316,19 @@ def test_rebuild_creates_the_next_version_only_when_stale(tmp_path):
     assert rebuild(tmp_path) == "ontology_v2"
     assert SemanticStore.active_version(tmp_path) == "ontology_v2"
     assert "ontology_v1" in SemanticStore.list_versions(tmp_path)  # a anterior continua (reversível)
+
+
+def test_evolved_content_is_not_staleness_and_survives_a_rebuild():
+    """Sinônimo aceito pelo ciclo de evolução não faz a camada parecer defasada, e refazer a camada a partir da ontologia não o apaga."""
+    from semantics.build import _carry_evolution, _without_evolution, build_records
+    fresh = build_records()
+    import json
+    evolved = json.loads(json.dumps(build_records()))      # cópia independente: build_records compartilha listas entre Termo e Restrição
+    term = next(t for t in evolved["terms"] if t["id"] == "term.Precipitation")
+    term["aliases"].append("choveu")
+    term.setdefault("evidence", []).append("ev.evolve.x")
+    evolved["evidence"].append({"id": "ev.evolve.x", "source": "t", "query": "", "validation_method": "", "timestamp": "", "result": ""})
+    assert _without_evolution(evolved, fresh) == fresh
+    kept = _carry_evolution(evolved, build_records())
+    assert "choveu" in next(t for t in kept["terms"] if t["id"] == "term.Precipitation")["aliases"]
+    assert any(e["id"] == "ev.evolve.x" for e in kept["evidence"])

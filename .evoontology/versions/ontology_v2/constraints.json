@@ -1,0 +1,662 @@
+[
+  {
+    "id": "con.AirTemperature.aggregation_note",
+    "target": "term.AirTemperature",
+    "constraint_type": "aggregation_note",
+    "trigger_keywords": [
+      "temperatura do ar",
+      "air temperature",
+      "temperatura",
+      "calor"
+    ],
+    "severity": "warn",
+    "scope": "",
+    "confidence": "high",
+    "description": "Instantânea. Média, mínimo e máximo fazem sentido; soma não.",
+    "evidence": [
+      "ev.AirTemperature"
+    ]
+  },
+  {
+    "id": "con.AirTemperature.allowed_aggregations",
+    "target": "term.AirTemperature",
+    "constraint_type": "allowed_aggregations",
+    "trigger_keywords": [
+      "temperatura do ar",
+      "air temperature",
+      "temperatura",
+      "calor"
+    ],
+    "severity": "warn",
+    "scope": "",
+    "confidence": "high",
+    "description": "Agregações permitidas para temperatura do ar: avg, count, max, min.",
+    "evidence": [
+      "ev.AirTemperature"
+    ]
+  },
+  {
+    "id": "con.AirTemperature.unit",
+    "target": "term.AirTemperature",
+    "constraint_type": "unit",
+    "trigger_keywords": [
+      "temperatura do ar",
+      "air temperature",
+      "temperatura",
+      "calor"
+    ],
+    "severity": "info",
+    "scope": "",
+    "confidence": "high",
+    "description": "Unidade canônica de temperatura do ar: °C (unit:DEG_C).",
+    "evidence": [
+      "ev.AirTemperature"
+    ]
+  },
+  {
+    "id": "con.RelativeHumidity.aggregation_note",
+    "target": "term.RelativeHumidity",
+    "constraint_type": "aggregation_note",
+    "trigger_keywords": [
+      "umidade relativa do ar",
+      "relative humidity",
+      "umidade"
+    ],
+    "severity": "warn",
+    "scope": "",
+    "confidence": "high",
+    "description": "Instantânea, 0–100 %. Média, mínimo e máximo; soma não.",
+    "evidence": [
+      "ev.RelativeHumidity"
+    ]
+  },
+  {
+    "id": "con.RelativeHumidity.allowed_aggregations",
+    "target": "term.RelativeHumidity",
+    "constraint_type": "allowed_aggregations",
+    "trigger_keywords": [
+      "umidade relativa do ar",
+      "relative humidity",
+      "umidade"
+    ],
+    "severity": "warn",
+    "scope": "",
+    "confidence": "high",
+    "description": "Agregações permitidas para umidade relativa do ar: avg, count, max, min.",
+    "evidence": [
+      "ev.RelativeHumidity"
+    ]
+  },
+  {
+    "id": "con.RelativeHumidity.unit",
+    "target": "term.RelativeHumidity",
+    "constraint_type": "unit",
+    "trigger_keywords": [
+      "umidade relativa do ar",
+      "relative humidity",
+      "umidade"
+    ],
+    "severity": "info",
+    "scope": "",
+    "confidence": "high",
+    "description": "Unidade canônica de umidade relativa do ar: % (unit:PERCENT).",
+    "evidence": [
+      "ev.RelativeHumidity"
+    ]
+  },
+  {
+    "id": "con.Precipitation.aggregation_note",
+    "target": "term.Precipitation",
+    "constraint_type": "aggregation_note",
+    "trigger_keywords": [
+      "precipitação",
+      "precipitation",
+      "chuva",
+      "precipitacao"
+    ],
+    "severity": "warn",
+    "scope": "",
+    "confidence": "high",
+    "description": "Acumulada em intervalo. Soma de intervalos disjuntos = total do período; média de acumulados só com o intervalo explicitado.",
+    "evidence": [
+      "ev.Precipitation"
+    ]
+  },
+  {
+    "id": "con.Precipitation.allowed_aggregations",
+    "target": "term.Precipitation",
+    "constraint_type": "allowed_aggregations",
+    "trigger_keywords": [
+      "precipitação",
+      "precipitation",
+      "chuva",
+      "precipitacao"
+    ],
+    "severity": "warn",
+    "scope": "",
+    "confidence": "high",
+    "description": "Agregações permitidas para precipitação: count, max, min, sum.",
+    "evidence": [
+      "ev.Precipitation"
+    ]
+  },
+  {
+    "id": "con.Precipitation.unit",
+    "target": "term.Precipitation",
+    "constraint_type": "unit",
+    "trigger_keywords": [
+      "precipitação",
+      "precipitation",
+      "chuva",
+      "precipitacao"
+    ],
+    "severity": "info",
+    "scope": "",
+    "confidence": "high",
+    "description": "Unidade canônica de precipitação: mm (unit:MilliM).",
+    "evidence": [
+      "ev.Precipitation"
+    ]
+  },
+  {
+    "id": "con.Precipitation.period_containment",
+    "target": "term.Precipitation",
+    "constraint_type": "period_containment",
+    "trigger_keywords": [
+      "precipitação",
+      "precipitation",
+      "chuva",
+      "precipitacao"
+    ],
+    "severity": "warn",
+    "scope": "",
+    "confidence": "high",
+    "description": "precipitação: só entram intervalos INTEIROS dentro do período pedido (início >= começo do período e fim <= fim exclusivo).",
+    "evidence": [
+      "ev.Precipitation"
+    ]
+  },
+  {
+    "id": "con.WetBulbTemperature.aggregation_note",
+    "target": "term.WetBulbTemperature",
+    "constraint_type": "aggregation_note",
+    "trigger_keywords": [
+      "temperatura de bulbo úmido",
+      "bulbo úmido",
+      "bulbo umido",
+      "temperatura de bulbo umido"
+    ],
+    "severity": "warn",
+    "scope": "",
+    "confidence": "high",
+    "description": "Instantânea.",
+    "evidence": [
+      "ev.WetBulbTemperature"
+    ]
+  },
+  {
+    "id": "con.WetBulbTemperature.allowed_aggregations",
+    "target": "term.WetBulbTemperature",
+    "constraint_type": "allowed_aggregations",
+    "trigger_keywords": [
+      "temperatura de bulbo úmido",
+      "bulbo úmido",
+      "bulbo umido",
+      "temperatura de bulbo umido"
+    ],
+    "severity": "warn",
+    "scope": "",
+    "confidence": "high",
+    "description": "Agregações permitidas para temperatura de bulbo úmido: avg, count, max, min.",
+    "evidence": [
+      "ev.WetBulbTemperature"
+    ]
+  },
+  {
+    "id": "con.WetBulbTemperature.unit",
+    "target": "term.WetBulbTemperature",
+    "constraint_type": "unit",
+    "trigger_keywords": [
+      "temperatura de bulbo úmido",
+      "bulbo úmido",
+      "bulbo umido",
+      "temperatura de bulbo umido"
+    ],
+    "severity": "info",
+    "scope": "",
+    "confidence": "high",
+    "description": "Unidade canônica de temperatura de bulbo úmido: °C (unit:DEG_C).",
+    "evidence": [
+      "ev.WetBulbTemperature"
+    ]
+  },
+  {
+    "id": "con.DewPointTemperature.aggregation_note",
+    "target": "term.DewPointTemperature",
+    "constraint_type": "aggregation_note",
+    "trigger_keywords": [
+      "temperatura do ponto de orvalho",
+      "ponto de orvalho"
+    ],
+    "severity": "warn",
+    "scope": "",
+    "confidence": "high",
+    "description": "Instantânea.",
+    "evidence": [
+      "ev.DewPointTemperature"
+    ]
+  },
+  {
+    "id": "con.DewPointTemperature.allowed_aggregations",
+    "target": "term.DewPointTemperature",
+    "constraint_type": "allowed_aggregations",
+    "trigger_keywords": [
+      "temperatura do ponto de orvalho",
+      "ponto de orvalho"
+    ],
+    "severity": "warn",
+    "scope": "",
+    "confidence": "high",
+    "description": "Agregações permitidas para temperatura do ponto de orvalho: avg, count, max, min.",
+    "evidence": [
+      "ev.DewPointTemperature"
+    ]
+  },
+  {
+    "id": "con.DewPointTemperature.unit",
+    "target": "term.DewPointTemperature",
+    "constraint_type": "unit",
+    "trigger_keywords": [
+      "temperatura do ponto de orvalho",
+      "ponto de orvalho"
+    ],
+    "severity": "info",
+    "scope": "",
+    "confidence": "high",
+    "description": "Unidade canônica de temperatura do ponto de orvalho: °C (unit:DEG_C).",
+    "evidence": [
+      "ev.DewPointTemperature"
+    ]
+  },
+  {
+    "id": "con.RunwayTemperature.aggregation_note",
+    "target": "term.RunwayTemperature",
+    "constraint_type": "aggregation_note",
+    "trigger_keywords": [
+      "temperatura da pista"
+    ],
+    "severity": "warn",
+    "scope": "",
+    "confidence": "high",
+    "description": "Instantânea. A fonte não identifica a pista; disponível só em parte dos aeródromos.",
+    "evidence": [
+      "ev.RunwayTemperature"
+    ]
+  },
+  {
+    "id": "con.RunwayTemperature.allowed_aggregations",
+    "target": "term.RunwayTemperature",
+    "constraint_type": "allowed_aggregations",
+    "trigger_keywords": [
+      "temperatura da pista"
+    ],
+    "severity": "warn",
+    "scope": "",
+    "confidence": "high",
+    "description": "Agregações permitidas para temperatura da pista: avg, count, max, min.",
+    "evidence": [
+      "ev.RunwayTemperature"
+    ]
+  },
+  {
+    "id": "con.RunwayTemperature.unit",
+    "target": "term.RunwayTemperature",
+    "constraint_type": "unit",
+    "trigger_keywords": [
+      "temperatura da pista"
+    ],
+    "severity": "info",
+    "scope": "",
+    "confidence": "high",
+    "description": "Unidade canônica de temperatura da pista: °C (unit:DEG_C).",
+    "evidence": [
+      "ev.RunwayTemperature"
+    ]
+  },
+  {
+    "id": "con.PressureQNH.aggregation_note",
+    "target": "term.PressureQNH",
+    "constraint_type": "aggregation_note",
+    "trigger_keywords": [
+      "pressão QNH",
+      "pressão",
+      "pressao",
+      "pressão atmosférica",
+      "pressao atmosferica",
+      "QNH",
+      "pressao qnh"
+    ],
+    "severity": "warn",
+    "scope": "",
+    "confidence": "high",
+    "description": "Instantânea. Pressão reduzida ao nível médio do mar (padrão ICAO), não a pressão na estação.",
+    "evidence": [
+      "ev.PressureQNH"
+    ]
+  },
+  {
+    "id": "con.PressureQNH.allowed_aggregations",
+    "target": "term.PressureQNH",
+    "constraint_type": "allowed_aggregations",
+    "trigger_keywords": [
+      "pressão QNH",
+      "pressão",
+      "pressao",
+      "pressão atmosférica",
+      "pressao atmosferica",
+      "QNH",
+      "pressao qnh"
+    ],
+    "severity": "warn",
+    "scope": "",
+    "confidence": "high",
+    "description": "Agregações permitidas para pressão QNH: avg, count, max, min.",
+    "evidence": [
+      "ev.PressureQNH"
+    ]
+  },
+  {
+    "id": "con.PressureQNH.unit",
+    "target": "term.PressureQNH",
+    "constraint_type": "unit",
+    "trigger_keywords": [
+      "pressão QNH",
+      "pressão",
+      "pressao",
+      "pressão atmosférica",
+      "pressao atmosferica",
+      "QNH",
+      "pressao qnh"
+    ],
+    "severity": "info",
+    "scope": "",
+    "confidence": "high",
+    "description": "Unidade canônica de pressão QNH: hPa (unit:HectoPA).",
+    "evidence": [
+      "ev.PressureQNH"
+    ]
+  },
+  {
+    "id": "con.PrevailingVisibility.aggregation_note",
+    "target": "term.PrevailingVisibility",
+    "constraint_type": "aggregation_note",
+    "trigger_keywords": [
+      "visibilidade predominante",
+      "visibilidade"
+    ],
+    "severity": "warn",
+    "scope": "",
+    "confidence": "high",
+    "description": "Instantânea. 20000 m é o teto de registro ('20 km ou mais'): máximo e média ficam truncados.",
+    "evidence": [
+      "ev.PrevailingVisibility"
+    ]
+  },
+  {
+    "id": "con.PrevailingVisibility.allowed_aggregations",
+    "target": "term.PrevailingVisibility",
+    "constraint_type": "allowed_aggregations",
+    "trigger_keywords": [
+      "visibilidade predominante",
+      "visibilidade"
+    ],
+    "severity": "warn",
+    "scope": "",
+    "confidence": "high",
+    "description": "Agregações permitidas para visibilidade predominante: avg, count, max, min.",
+    "evidence": [
+      "ev.PrevailingVisibility"
+    ]
+  },
+  {
+    "id": "con.PrevailingVisibility.unit",
+    "target": "term.PrevailingVisibility",
+    "constraint_type": "unit",
+    "trigger_keywords": [
+      "visibilidade predominante",
+      "visibilidade"
+    ],
+    "severity": "info",
+    "scope": "",
+    "confidence": "high",
+    "description": "Unidade canônica de visibilidade predominante: m (unit:M).",
+    "evidence": [
+      "ev.PrevailingVisibility"
+    ]
+  },
+  {
+    "id": "con.PrecipitationDuration.aggregation_note",
+    "target": "term.PrecipitationDuration",
+    "constraint_type": "aggregation_note",
+    "trigger_keywords": [
+      "duração da precipitação",
+      "duracao da precipitacao"
+    ],
+    "severity": "warn",
+    "scope": "",
+    "confidence": "high",
+    "description": "Acumulada na hora anterior ao boletim (0–60 min).",
+    "evidence": [
+      "ev.PrecipitationDuration"
+    ]
+  },
+  {
+    "id": "con.PrecipitationDuration.allowed_aggregations",
+    "target": "term.PrecipitationDuration",
+    "constraint_type": "allowed_aggregations",
+    "trigger_keywords": [
+      "duração da precipitação",
+      "duracao da precipitacao"
+    ],
+    "severity": "warn",
+    "scope": "",
+    "confidence": "high",
+    "description": "Agregações permitidas para duração da precipitação: count, max, sum.",
+    "evidence": [
+      "ev.PrecipitationDuration"
+    ]
+  },
+  {
+    "id": "con.PrecipitationDuration.unit",
+    "target": "term.PrecipitationDuration",
+    "constraint_type": "unit",
+    "trigger_keywords": [
+      "duração da precipitação",
+      "duracao da precipitacao"
+    ],
+    "severity": "info",
+    "scope": "",
+    "confidence": "high",
+    "description": "Unidade canônica de duração da precipitação: min (unit:MIN).",
+    "evidence": [
+      "ev.PrecipitationDuration"
+    ]
+  },
+  {
+    "id": "con.PrecipitationDuration.period_containment",
+    "target": "term.PrecipitationDuration",
+    "constraint_type": "period_containment",
+    "trigger_keywords": [
+      "duração da precipitação",
+      "duracao da precipitacao"
+    ],
+    "severity": "warn",
+    "scope": "",
+    "confidence": "high",
+    "description": "duração da precipitação: só entram intervalos INTEIROS dentro do período pedido (início >= começo do período e fim <= fim exclusivo).",
+    "evidence": [
+      "ev.PrecipitationDuration"
+    ]
+  },
+  {
+    "id": "con.WindSpeed.aggregation_note",
+    "target": "term.WindSpeed",
+    "constraint_type": "aggregation_note",
+    "trigger_keywords": [
+      "velocidade do vento",
+      "vento"
+    ],
+    "severity": "warn",
+    "scope": "",
+    "confidence": "high",
+    "description": "Instantânea (média de 2 a 10 min do METAR). Uma leitura por cabeceira de pista.",
+    "evidence": [
+      "ev.WindSpeed"
+    ]
+  },
+  {
+    "id": "con.WindSpeed.allowed_aggregations",
+    "target": "term.WindSpeed",
+    "constraint_type": "allowed_aggregations",
+    "trigger_keywords": [
+      "velocidade do vento",
+      "vento"
+    ],
+    "severity": "warn",
+    "scope": "",
+    "confidence": "high",
+    "description": "Agregações permitidas para velocidade do vento: avg, count, max, min.",
+    "evidence": [
+      "ev.WindSpeed"
+    ]
+  },
+  {
+    "id": "con.WindSpeed.unit",
+    "target": "term.WindSpeed",
+    "constraint_type": "unit",
+    "trigger_keywords": [
+      "velocidade do vento",
+      "vento"
+    ],
+    "severity": "info",
+    "scope": "",
+    "confidence": "high",
+    "description": "Unidade canônica de velocidade do vento: kt (unit:KN).",
+    "evidence": [
+      "ev.WindSpeed"
+    ]
+  },
+  {
+    "id": "con.WindDirection.aggregation_note",
+    "target": "term.WindDirection",
+    "constraint_type": "aggregation_note",
+    "trigger_keywords": [
+      "direção do vento",
+      "direcao do vento"
+    ],
+    "severity": "warn",
+    "scope": "",
+    "confidence": "high",
+    "description": "Direção DE ONDE o vento sopra, em graus. Grandeza circular: média aritmética não faz sentido. Ausente em calmaria e vento variável.",
+    "evidence": [
+      "ev.WindDirection"
+    ]
+  },
+  {
+    "id": "con.WindDirection.allowed_aggregations",
+    "target": "term.WindDirection",
+    "constraint_type": "allowed_aggregations",
+    "trigger_keywords": [
+      "direção do vento",
+      "direcao do vento"
+    ],
+    "severity": "warn",
+    "scope": "",
+    "confidence": "high",
+    "description": "Agregações permitidas para direção do vento: count.",
+    "evidence": [
+      "ev.WindDirection"
+    ]
+  },
+  {
+    "id": "con.WindDirection.unit",
+    "target": "term.WindDirection",
+    "constraint_type": "unit",
+    "trigger_keywords": [
+      "direção do vento",
+      "direcao do vento"
+    ],
+    "severity": "info",
+    "scope": "",
+    "confidence": "high",
+    "description": "Unidade canônica de direção do vento: ° (unit:DEG).",
+    "evidence": [
+      "ev.WindDirection"
+    ]
+  },
+  {
+    "id": "con.WindGust.aggregation_note",
+    "target": "term.WindGust",
+    "constraint_type": "aggregation_note",
+    "trigger_keywords": [
+      "rajada de vento",
+      "rajada"
+    ],
+    "severity": "warn",
+    "scope": "",
+    "confidence": "high",
+    "description": "Só reportada quando há rajada; ausência não significa vento calmo.",
+    "evidence": [
+      "ev.WindGust"
+    ]
+  },
+  {
+    "id": "con.WindGust.allowed_aggregations",
+    "target": "term.WindGust",
+    "constraint_type": "allowed_aggregations",
+    "trigger_keywords": [
+      "rajada de vento",
+      "rajada"
+    ],
+    "severity": "warn",
+    "scope": "",
+    "confidence": "high",
+    "description": "Agregações permitidas para rajada de vento: avg, count, max, min.",
+    "evidence": [
+      "ev.WindGust"
+    ]
+  },
+  {
+    "id": "con.WindGust.unit",
+    "target": "term.WindGust",
+    "constraint_type": "unit",
+    "trigger_keywords": [
+      "rajada de vento",
+      "rajada"
+    ],
+    "severity": "info",
+    "scope": "",
+    "confidence": "high",
+    "description": "Unidade canônica de rajada de vento: kt (unit:KN).",
+    "evidence": [
+      "ev.WindGust"
+    ]
+  },
+  {
+    "id": "con.CloudCover.allowed_aggregations",
+    "target": "term.CloudCover",
+    "constraint_type": "allowed_aggregations",
+    "trigger_keywords": [
+      "nebulosidade",
+      "nuvens",
+      "camada de nuvens"
+    ],
+    "severity": "warn",
+    "scope": "",
+    "confidence": "high",
+    "description": "Agregações permitidas para nebulosidade: count.",
+    "evidence": [
+      "ev.CloudCover"
+    ]
+  }
+]

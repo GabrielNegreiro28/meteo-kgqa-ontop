@@ -206,12 +206,40 @@ def build_v0(workspace: Path, version: str = "ontology_v0") -> dict[str, Any]:
     return {name: len(items) for name, items in records.items()}
 
 
+def _without_evolution(records: dict, fresh: dict) -> dict:
+    """A camada ativa sem o que o ciclo de evolução acrescentou (sinônimos que a ontologia não gera e Evidências `ev.evolve.*`): o que sobra é o que
+    deriva da ontologia e por isso pode ficar defasado. Conteúdo evoluído não é defasagem."""
+    import copy
+    out = copy.deepcopy(records)
+    base = {t["id"]: t.get("aliases", []) for t in fresh["terms"]}
+    for t in out["terms"]:
+        t["aliases"] = [a for a in t.get("aliases", []) if a in base.get(t["id"], [])]
+        t["evidence"] = [e for e in t.get("evidence", []) if not e.startswith("ev.evolve.")]
+    out["evidence"] = [e for e in out["evidence"] if not e["id"].startswith("ev.evolve.")]
+    return out
+
+
 def is_stale(workspace: Path) -> bool:
     """A camada ATIVA difere do que a ontologia atual produziria? (Termos, relações, restrições; a Evidência traz a impressão dos arquivos e
-    por isso também muda quando a ontologia muda.) Uma camada defasada afirma categorias e IRIs que a ontologia já não tem."""
+    por isso também muda quando a ontologia muda.) Uma camada defasada afirma categorias e IRIs que a ontologia já não tem.
+    Sinônimos e Evidências acrescentados pelo ciclo de evolução (`semantics/evolve.py`) não contam como defasagem."""
     from evoontology.ontology.store import SemanticStore
     _, active = SemanticStore.load_records(workspace)
-    return active != build_records()
+    fresh = build_records()
+    return _without_evolution(active, fresh) != fresh
+
+
+def _carry_evolution(active: dict, fresh: dict) -> dict:
+    """Refazer a camada a partir da ontologia NÃO apaga o que a evolução ensinou: sinônimos e Evidências evoluídos de Termos que ainda existem."""
+    base = {t["id"]: t for t in fresh["terms"]}
+    for t in active["terms"]:
+        n = base.get(t["id"])
+        if n is None:
+            continue
+        n["aliases"] += [a for a in t.get("aliases", []) if a not in n["aliases"]]
+        n.setdefault("evidence", []).extend(e for e in t.get("evidence", []) if e.startswith("ev.evolve."))
+    fresh["evidence"] += [e for e in active["evidence"] if e["id"].startswith("ev.evolve.")]
+    return fresh
 
 
 def rebuild(workspace: Path) -> str | None:
@@ -220,9 +248,10 @@ def rebuild(workspace: Path) -> str | None:
     from evoontology.ontology.store import SemanticStore
     if not is_stale(workspace):
         return None
+    _, active = SemanticStore.load_records(workspace)
     numbers = [int(v.rsplit("_v", 1)[1]) for v in SemanticStore.list_versions(workspace) if v.startswith("ontology_v") and v.rsplit("_v", 1)[1].isdigit()]
     version = f"ontology_v{max(numbers, default=-1) + 1}"
-    SemanticStore.save_version(workspace, version, build_records())
+    SemanticStore.save_version(workspace, version, _carry_evolution(active, build_records()))
     SemanticStore.set_active(workspace, version)
     return version
 
