@@ -151,6 +151,8 @@ def main() -> int:
     ap.add_argument("--ids")
     ap.add_argument("--tag", default="")
     ap.add_argument("--set", dest="set_name", help="conjunto congelado por eval.freeze_set (eval/frozen/<nome>); sem isto usa o independente de 49")
+    ap.add_argument("--semantic-workspace", default=str(ROOT / ".evoontology"), help="workspace da camada semântica (só v5)")
+    ap.add_argument("--semantic-version", help="versão da camada (padrão: a ativa)")
     ap.add_argument("--summarize", help="recalcula o resumo de um independent_run_*.json sem chamar o LLM")
     args = ap.parse_args()
     if args.set_name:
@@ -177,6 +179,7 @@ def main() -> int:
     from pipeline.llm import ResilientLLM
     from pipeline.openai_client import OpenAIChatClient, load_env
     from pipeline.orchestrator import run_pipeline
+    from pipeline.prompts import VERSIONS
     from pipeline.vocab import OntologyIndex
     backend = OntopBackend()
     index = OntologyIndex.from_ontop(backend)
@@ -191,13 +194,19 @@ def main() -> int:
     print(f"gasto acumulado: US$ {ledger.total():.2f} · teto acumulado: US$ {cap + ledger.authorized_extra():.2f}", file=sys.stderr)
     shared = ResilientLLM(LedgerLLM(client, ledger, base_cap_usd=cap, run=f"independent_{args.prompts}{args.tag}",
                                     model=getattr(client, "model", "")), budget_usd=args.budget)
+    grounder = None
+    if VERSIONS[args.prompts].semantic:
+        from semantics.facade import GroundedLayer
+        from semantics.ground import SemanticGrounder
+        grounder = SemanticGrounder(GroundedLayer.open(args.semantic_workspace, args.semantic_version))
+        print(f"camada semântica: {grounder.version}", file=sys.stderr)
     wanted = set(args.ids.split(",")) if args.ids else None
     rows = []
     for q in questions:
         if wanted and q["id"] not in wanted:
             continue
         t0 = time.perf_counter()
-        res = run_pipeline(q["question"], shared, backend, index, timeout_s=60, prompts_version=args.prompts)
+        res = run_pipeline(q["question"], shared, backend, index, timeout_s=60, prompts_version=args.prompts, semantics=grounder)
         r = res.response
         prows = sparql_rows(r.results)
         e = judge_row(q, r.status.value, prows, oracle)
@@ -210,7 +219,7 @@ def main() -> int:
             print("orçamento da execução atingido; interrompendo", file=sys.stderr)
             break
     model = getattr(client, "model", "?")
-    out_json.write_text(json.dumps({"model": model, "prompts": args.prompts, "spent_usd": shared.spent_usd, "frozen_sha256": sha, "rows": rows},
+    out_json.write_text(json.dumps({"model": model, "prompts": args.prompts, "spent_usd": shared.spent_usd, "frozen_sha256": sha, "semantic_layer": grounder.version if grounder else None, "rows": rows},
                                    ensure_ascii=False, indent=1, default=str), encoding="utf-8")
     md = out_json.with_suffix(".md")
     md.write_text(summarize(rows, model, args.prompts, shared.spent_usd, sha), encoding="utf-8")
