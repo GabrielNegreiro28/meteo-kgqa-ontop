@@ -150,17 +150,25 @@ def main() -> int:
     ap.add_argument("--reason")
     ap.add_argument("--ids")
     ap.add_argument("--tag", default="")
+    ap.add_argument("--set", dest="set_name", help="conjunto congelado por eval.freeze_set (eval/frozen/<nome>); sem isto usa o independente de 49")
     ap.add_argument("--summarize", help="recalcula o resumo de um independent_run_*.json sem chamar o LLM")
     args = ap.parse_args()
-    sha = verify_frozen()
-    questions = load_frozen()
-    oracle = load_oracle()
+    if args.set_name:
+        from eval.freeze_set import verify
+        sha = verify(args.set_name)
+        d = ROOT / "eval" / "frozen" / args.set_name
+        questions = load_frozen(d / "questions.yaml")
+        oracle = {r["id"]: r["result"] for r in json.loads((d / "oracle_results.json").read_text(encoding="utf-8"))["results"] if r["status"] == "ok"}
+    else:
+        sha = verify_frozen()
+        questions = load_frozen()
+        oracle = load_oracle()
     (ROOT / "eval" / "reports").mkdir(exist_ok=True)
     if args.summarize:
         d = json.loads(Path(args.summarize).read_text(encoding="utf-8"))
         print(summarize(d["rows"], d["model"], d["prompts"], d["spent_usd"], sha))
         return 0
-    out_json = ROOT / "eval" / "reports" / f"independent_run_{args.prompts}{args.tag}.json"
+    out_json = ROOT / "eval" / "reports" / f"independent_run_{args.set_name + '_' if args.set_name else ''}{args.prompts}{args.tag}.json"
     if out_json.exists():
         print(f"{out_json.name} já existe: uma execução por tag. Use outra --tag só se for uma condição diferente.", file=sys.stderr)
         return 2
