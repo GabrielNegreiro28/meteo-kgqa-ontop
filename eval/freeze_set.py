@@ -20,7 +20,7 @@ import yaml
 
 ROOT = Path(__file__).resolve().parent
 REQUIRED = ("id", "question", "expected_behavior")
-BEHAVIORS = {"answerable", "impossible", "ambiguous", "abstain"}
+BEHAVIORS = {"answerable", "unsupported", "needs_clarification"}
 
 
 def _norm(text: str) -> str:
