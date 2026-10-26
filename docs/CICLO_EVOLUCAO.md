@@ -24,7 +24,7 @@ reconhecimento e não mudar a resposta. A aceitação exige melhora ESTRITA na v
 
 `python -m semantics.run_evolution --parent ontology_v1 --seed-gold --require-reasoner --sample-graph`: 35 trajetórias de semente, 1 hipótese ("choveu" → precipitação), porta limpa
 (raciocinador sobre os axiomas + amostra de 33 indivíduos do grafo real), validação 0,864 → 0,932, sem regressão: **aceito** como `ontology_v2` **na cópia**. Não foi publicado no workspace
-do repositório (publicar é decisão do responsável: `--in-place`). As trajetórias de semente vêm do gabarito, não de uso real: servem para exercitar e medir o ciclo.
+do repositório. Em 2026-10-26 a execução foi repetida com `--in-place` (WSL, HermiT, amostra do grafo real): **`ontology_v2` publicado e ativo**, mesmo resultado. As trajetórias de semente vêm do gabarito, não de uso real: servem para exercitar e medir o ciclo.
 
 ## Limites conhecidos
 
