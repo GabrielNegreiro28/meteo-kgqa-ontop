@@ -1,0 +1,25 @@
+{
+  "id": "E31",
+  "status": "ok",
+  "result": [
+    [
+      "SBCY",
+      65.42
+    ],
+    [
+      "SBEG",
+      83.15
+    ]
+  ],
+  "reads": [
+    {
+      "file": "temperatura.csv",
+      "usecols": [
+        "sigla",
+        "hora_observacao",
+        "ur"
+      ],
+      "chunksize": 1000000
+    }
+  ]
+}

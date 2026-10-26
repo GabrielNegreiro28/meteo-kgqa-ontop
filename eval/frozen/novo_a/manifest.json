@@ -1,0 +1,10 @@
+{
+  "name": "novo_a",
+  "source": "outra IA (modelo não informado), prompt docs/PROMPT_GPT_PERGUNTAS_NOVO.md",
+  "frozen_utc": "2026-10-26T14:20:37.396403+00:00",
+  "count": 50,
+  "pipeline_executed": false,
+  "files": {
+    "questions.yaml": "a484ecde10cd27048f80aba5243a6e834d855c1c48195a856b65e0dfbbad4ec6"
+  }
+}

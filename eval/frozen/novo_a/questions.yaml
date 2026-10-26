@@ -1,0 +1,587 @@
+questions:
+- id: E01
+  category: simples
+  question: Qual foi a temperatura média do ponto de orvalho em SBBE em julho de 2018?
+  expected_behavior: answerable
+  rationale: Média de uma grandeza existente, uma estação, um mês.
+  assumptions: Hora local fixa UTC-3 como nos arquivos. Descartei temppo fora de [-20,
+    40] °C; vazios ignorados; todos os boletins do mês entram na média.
+  oracle_pandas: "import pandas as pd\ndef rd(f, cols, st):\n    d = pd.concat(c[c.sigla.isin(st)]\
+    \ for c in pd.read_csv(f, usecols=['sigla', 'hora_observacao'] + cols, chunksize=10**6))\n\
+    \    d['t'] = pd.to_datetime(d.hora_observacao)\n    return d\nd = rd('temperatura.csv',\
+    \ ['temppo'], ['SBBE'])\nd = d[(d.t.dt.year == 2018) & (d.t.dt.month == 7) & d.temppo.between(-20,\
+    \ 40)]\nresult = [(round(d.temppo.mean(), 2),)]\n"
+- id: E02
+  category: simples
+  question: Qual foi a maior rajada de vento registrada em SBCT durante 2019?
+  expected_behavior: answerable
+  rationale: Máximo da coluna rajada para uma estação e um ano.
+  assumptions: Hora local fixa UTC-3 como nos arquivos. Rajada em nós; descartei rajada
+    fora de [0, 120]; vazios ignorados; o máximo não depende de contar linhas ou boletins.
+  oracle_pandas: "import pandas as pd\ndef rd(f, cols, st):\n    d = pd.concat(c[c.sigla.isin(st)]\
+    \ for c in pd.read_csv(f, usecols=['sigla', 'hora_observacao'] + cols, chunksize=10**6))\n\
+    \    d['t'] = pd.to_datetime(d.hora_observacao)\n    return d\nd = rd('vento.csv',\
+    \ ['rajada'], ['SBCT'])\nd = d[(d.t.dt.year == 2019) & d.rajada.between(0, 120)]\n\
+    result = [(d.rajada.max(),)]\n"
+- id: E03
+  category: simples
+  question: Qual a pressão QNH mínima observada em SBPA em setembro de 2021?
+  expected_behavior: answerable
+  rationale: Mínimo de uma grandeza para um mês.
+  assumptions: Hora local fixa UTC-3 como nos arquivos. Descartei qnh fora de [850,
+    1100] hPa.
+  oracle_pandas: "import pandas as pd\ndef rd(f, cols, st):\n    d = pd.concat(c[c.sigla.isin(st)]\
+    \ for c in pd.read_csv(f, usecols=['sigla', 'hora_observacao'] + cols, chunksize=10**6))\n\
+    \    d['t'] = pd.to_datetime(d.hora_observacao)\n    return d\nd = rd('pressao.csv',\
+    \ ['qnh'], ['SBPA'])\nd = d[(d.t.dt.year == 2021) & (d.t.dt.month == 9) & d.qnh.between(850,\
+    \ 1100)]\nresult = [(d.qnh.min(),)]\n"
+- id: E04
+  category: simples
+  question: Quantos milímetros de chuva caíram em SBMQ no total em janeiro de 2023?
+  expected_behavior: answerable
+  rationale: Soma de precipitação horária em um mês.
+  assumptions: Hora local fixa UTC-3 como nos arquivos. Para grandezas acumuladas/contadas
+    por hora usa só boletins na hora cheia (minuto 0). precip é chuva da última hora,
+    então somei só minuto 0 para não duplicar; descartei precip fora de [0, 200] mm;
+    vazios ignorados.
+  oracle_pandas: "import pandas as pd\ndef rd(f, cols, st):\n    d = pd.concat(c[c.sigla.isin(st)]\
+    \ for c in pd.read_csv(f, usecols=['sigla', 'hora_observacao'] + cols, chunksize=10**6))\n\
+    \    d['t'] = pd.to_datetime(d.hora_observacao)\n    return d\nd = rd('precipitacao.csv',\
+    \ ['precip'], ['SBMQ'])\nd = d[(d.t.dt.year == 2023) & (d.t.dt.month == 1) & (d.t.dt.minute\
+    \ == 0) & d.precip.between(0, 200)]\nresult = [(round(d.precip.sum(), 1),)]\n"
+- id: E05
+  category: simples
+  question: Quantos minutos de chuva, somando todas as horas, foram registrados em
+    SBFZ em 2020?
+  expected_behavior: answerable
+  rationale: Soma da duração da chuva (durpreci) em um ano.
+  assumptions: Hora local fixa UTC-3 como nos arquivos. Para grandezas acumuladas/contadas
+    por hora usa só boletins na hora cheia (minuto 0). Descartei durpreci fora de
+    [0, 60] min; vazios ignorados (vazio não é zero).
+  oracle_pandas: "import pandas as pd\ndef rd(f, cols, st):\n    d = pd.concat(c[c.sigla.isin(st)]\
+    \ for c in pd.read_csv(f, usecols=['sigla', 'hora_observacao'] + cols, chunksize=10**6))\n\
+    \    d['t'] = pd.to_datetime(d.hora_observacao)\n    return d\nd = rd('precipitacao.csv',\
+    \ ['durpreci'], ['SBFZ'])\nd = d[(d.t.dt.year == 2020) & (d.t.dt.minute == 0)\
+    \ & d.durpreci.between(0, 60)]\nresult = [(d.durpreci.sum(),)]\n"
+- id: E06
+  category: simples
+  question: Qual a menor temperatura de bulbo úmido que SBCF registrou em 2022?
+  expected_behavior: answerable
+  rationale: Mínimo de bumido em um ano.
+  assumptions: Hora local fixa UTC-3 como nos arquivos. Descartei bumido fora de [-10,
+    40] °C.
+  oracle_pandas: "import pandas as pd\ndef rd(f, cols, st):\n    d = pd.concat(c[c.sigla.isin(st)]\
+    \ for c in pd.read_csv(f, usecols=['sigla', 'hora_observacao'] + cols, chunksize=10**6))\n\
+    \    d['t'] = pd.to_datetime(d.hora_observacao)\n    return d\nd = rd('temperatura.csv',\
+    \ ['bumido'], ['SBCF'])\nd = d[(d.t.dt.year == 2022) & d.bumido.between(-10, 40)]\n\
+    result = [(d.bumido.min(),)]\n"
+- id: E07
+  category: simples
+  question: Qual foi a visibilidade mínima, em metros, em SBGL no dia 15 de fevereiro
+    de 2024?
+  expected_behavior: answerable
+  rationale: Mínimo de visibilidade em um dia.
+  assumptions: Hora local fixa UTC-3 como nos arquivos. visibpre está em dezenas de
+    metros, multipliquei por 10; descartei valores fora de [0, 2000]; todos os boletins
+    do dia entram.
+  oracle_pandas: "import pandas as pd\ndef rd(f, cols, st):\n    d = pd.concat(c[c.sigla.isin(st)]\
+    \ for c in pd.read_csv(f, usecols=['sigla', 'hora_observacao'] + cols, chunksize=10**6))\n\
+    \    d['t'] = pd.to_datetime(d.hora_observacao)\n    return d\nd = rd('visibilidade.csv',\
+    \ ['visibpre'], ['SBGL'])\nd = d[(d.t.dt.strftime('%Y-%m-%d') == '2024-02-15')\
+    \ & d.visibpre.between(0, 2000)]\nresult = [(d.visibpre.min() * 10,)]\n"
+- id: E08
+  category: simples
+  question: Qual foi a umidade relativa média em SBEG em outubro de 2016?
+  expected_behavior: answerable
+  rationale: Média de ur em um mês.
+  assumptions: Hora local fixa UTC-3 como nos arquivos. Descartei ur fora de [0, 100]
+    %.
+  oracle_pandas: "import pandas as pd\ndef rd(f, cols, st):\n    d = pd.concat(c[c.sigla.isin(st)]\
+    \ for c in pd.read_csv(f, usecols=['sigla', 'hora_observacao'] + cols, chunksize=10**6))\n\
+    \    d['t'] = pd.to_datetime(d.hora_observacao)\n    return d\nd = rd('temperatura.csv',\
+    \ ['ur'], ['SBEG'])\nd = d[(d.t.dt.year == 2016) & (d.t.dt.month == 10) & d.ur.between(0,\
+    \ 100)]\nresult = [(round(d.ur.mean(), 2),)]\n"
+- id: E09
+  category: simples
+  question: Qual a maior velocidade de vento, em nós, medida em SBKP em 2024?
+  expected_behavior: answerable
+  rationale: Máximo de velvento em um ano.
+  assumptions: Hora local fixa UTC-3 como nos arquivos. Descartei velvento fora de
+    [0, 100] nós; máximo sobre todas as cabeceiras (não depende de contar linhas ou
+    boletins).
+  oracle_pandas: "import pandas as pd\ndef rd(f, cols, st):\n    d = pd.concat(c[c.sigla.isin(st)]\
+    \ for c in pd.read_csv(f, usecols=['sigla', 'hora_observacao'] + cols, chunksize=10**6))\n\
+    \    d['t'] = pd.to_datetime(d.hora_observacao)\n    return d\nd = rd('vento.csv',\
+    \ ['velvento'], ['SBKP'])\nd = d[(d.t.dt.year == 2024) & d.velvento.between(0,\
+    \ 100)]\nresult = [(d.velvento.max(),)]\n"
+- id: E10
+  category: simples
+  question: Qual a menor altura de base de nuvem, em metros, vista em SBBR em janeiro
+    de 2020?
+  expected_behavior: answerable
+  rationale: Mínimo de altnuvem em um mês.
+  assumptions: Hora local fixa UTC-3 como nos arquivos. altnuvem em dezenas de metros,
+    multipliquei por 10; considerei só altnuvem entre 1 e 2000 (descarta zero e valores
+    impossíveis); uma linha por camada, o mínimo não depende disso.
+  oracle_pandas: "import pandas as pd\ndef rd(f, cols, st):\n    d = pd.concat(c[c.sigla.isin(st)]\
+    \ for c in pd.read_csv(f, usecols=['sigla', 'hora_observacao'] + cols, chunksize=10**6))\n\
+    \    d['t'] = pd.to_datetime(d.hora_observacao)\n    return d\nd = rd('nuvem.csv',\
+    \ ['altnuvem'], ['SBBR'])\nd = d[(d.t.dt.year == 2020) & (d.t.dt.month == 1) &\
+    \ d.altnuvem.between(1, 2000)]\nresult = [(d.altnuvem.min() * 10,)]\n"
+- id: E11
+  category: simples
+  question: Qual foi a temperatura máxima do ar em SBGO em 14 de outubro de 2019?
+  expected_behavior: answerable
+  rationale: Máximo de bseco em um dia.
+  assumptions: Hora local fixa UTC-3 como nos arquivos. Descartei bseco fora de [-10,
+    50] °C; todos os boletins do dia.
+  oracle_pandas: "import pandas as pd\ndef rd(f, cols, st):\n    d = pd.concat(c[c.sigla.isin(st)]\
+    \ for c in pd.read_csv(f, usecols=['sigla', 'hora_observacao'] + cols, chunksize=10**6))\n\
+    \    d['t'] = pd.to_datetime(d.hora_observacao)\n    return d\nd = rd('temperatura.csv',\
+    \ ['bseco'], ['SBGO'])\nd = d[(d.t.dt.strftime('%Y-%m-%d') == '2019-10-14') &\
+    \ d.bseco.between(-10, 50)]\nresult = [(d.bseco.max(),)]\n"
+- id: E12
+  category: simples
+  question: Quantos boletins com temperatura do ar existem para SBJP em 2021?
+  expected_behavior: answerable
+  rationale: Contagem de registros de temperatura de uma estação em um ano.
+  assumptions: Hora local fixa UTC-3 como nos arquivos. Contei linhas com bseco não
+    vazio (cada linha de temperatura.csv é um boletim); sem filtro de outlier, pois
+    conta presença.
+  oracle_pandas: "import pandas as pd\ndef rd(f, cols, st):\n    d = pd.concat(c[c.sigla.isin(st)]\
+    \ for c in pd.read_csv(f, usecols=['sigla', 'hora_observacao'] + cols, chunksize=10**6))\n\
+    \    d['t'] = pd.to_datetime(d.hora_observacao)\n    return d\nd = rd('temperatura.csv',\
+    \ ['bseco'], ['SBJP'])\nd = d[(d.t.dt.year == 2021) & d.bseco.notna()]\nresult\
+    \ = [(len(d),)]\n"
+- id: E13
+  category: condicao
+  question: Em quantas horas a visibilidade em SBSP ficou abaixo de 1000 metros em
+    2018?
+  expected_behavior: answerable
+  rationale: Contagem de horas com condição numérica.
+  assumptions: 'Hora local fixa UTC-3 como nos arquivos. Para grandezas acumuladas/contadas
+    por hora usa só boletins na hora cheia (minuto 0). visibpre em dezenas de metros:
+    < 1000 m equivale a visibpre < 100; descartei valores fora de [0, 2000].'
+  oracle_pandas: "import pandas as pd\ndef rd(f, cols, st):\n    d = pd.concat(c[c.sigla.isin(st)]\
+    \ for c in pd.read_csv(f, usecols=['sigla', 'hora_observacao'] + cols, chunksize=10**6))\n\
+    \    d['t'] = pd.to_datetime(d.hora_observacao)\n    return d\nd = rd('visibilidade.csv',\
+    \ ['visibpre'], ['SBSP'])\nd = d[(d.t.dt.year == 2018) & (d.t.dt.minute == 0)\
+    \ & d.visibpre.between(0, 2000)]\nresult = [(int((d.visibpre < 100).sum()),)]\n"
+- id: E14
+  category: condicao
+  question: Em quantos dias de 2020 a temperatura máxima em SBBR chegou a 33 °C ou
+    mais?
+  expected_behavior: answerable
+  rationale: Contagem de dias com máxima diária acima de um limiar.
+  assumptions: Hora local fixa UTC-3 como nos arquivos. Máxima diária = maior bseco
+    do dia civil local entre todos os boletins; descartei bseco fora de [-10, 50]
+    °C.
+  oracle_pandas: "import pandas as pd\ndef rd(f, cols, st):\n    d = pd.concat(c[c.sigla.isin(st)]\
+    \ for c in pd.read_csv(f, usecols=['sigla', 'hora_observacao'] + cols, chunksize=10**6))\n\
+    \    d['t'] = pd.to_datetime(d.hora_observacao)\n    return d\nd = rd('temperatura.csv',\
+    \ ['bseco'], ['SBBR'])\nd = d[(d.t.dt.year == 2020) & d.bseco.between(-10, 50)]\n\
+    m = d.groupby(d.t.dt.date).bseco.max()\nresult = [(int((m >= 33).sum()),)]\n"
+- id: E15
+  category: condicao
+  question: Quantas horas com chuva houve em SBCY em 2022?
+  expected_behavior: answerable
+  rationale: Contagem de horas com precipitação positiva.
+  assumptions: Hora local fixa UTC-3 como nos arquivos. Para grandezas acumuladas/contadas
+    por hora usa só boletins na hora cheia (minuto 0). Hora com chuva = precip > 0;
+    descartei precip fora de [0, 200] mm.
+  oracle_pandas: "import pandas as pd\ndef rd(f, cols, st):\n    d = pd.concat(c[c.sigla.isin(st)]\
+    \ for c in pd.read_csv(f, usecols=['sigla', 'hora_observacao'] + cols, chunksize=10**6))\n\
+    \    d['t'] = pd.to_datetime(d.hora_observacao)\n    return d\nd = rd('precipitacao.csv',\
+    \ ['precip'], ['SBCY'])\nd = d[(d.t.dt.year == 2022) & (d.t.dt.minute == 0) &\
+    \ d.precip.between(0, 200)]\nresult = [(int((d.precip > 0).sum()),)]\n"
+- id: E16
+  category: condicao
+  question: Quantas vezes o vento passou de 15 nós em SBNF em 2017?
+  expected_behavior: answerable
+  rationale: Contagem de ocorrências acima de um limiar de vento.
+  assumptions: 'Hora local fixa UTC-3 como nos arquivos. Contei boletins (instantes
+    distintos), não linhas por cabeceira: um instante conta se alguma cabeceira passou
+    de 15 nós; descartei velvento fora de [0, 100].'
+  oracle_pandas: "import pandas as pd\ndef rd(f, cols, st):\n    d = pd.concat(c[c.sigla.isin(st)]\
+    \ for c in pd.read_csv(f, usecols=['sigla', 'hora_observacao'] + cols, chunksize=10**6))\n\
+    \    d['t'] = pd.to_datetime(d.hora_observacao)\n    return d\nd = rd('vento.csv',\
+    \ ['velvento'], ['SBNF'])\nd = d[(d.t.dt.year == 2017) & d.velvento.between(0,\
+    \ 100)]\nm = d.groupby('t').velvento.max()\nresult = [(int((m > 15).sum()),)]\n"
+- id: E17
+  category: condicao
+  question: Quantas horas o QNH em SBVT ficou abaixo de 1010 hPa em 2019?
+  expected_behavior: answerable
+  rationale: Contagem de horas com pressão abaixo de um valor.
+  assumptions: Hora local fixa UTC-3 como nos arquivos. Para grandezas acumuladas/contadas
+    por hora usa só boletins na hora cheia (minuto 0). Descartei qnh fora de [850,
+    1100] hPa.
+  oracle_pandas: "import pandas as pd\ndef rd(f, cols, st):\n    d = pd.concat(c[c.sigla.isin(st)]\
+    \ for c in pd.read_csv(f, usecols=['sigla', 'hora_observacao'] + cols, chunksize=10**6))\n\
+    \    d['t'] = pd.to_datetime(d.hora_observacao)\n    return d\nd = rd('pressao.csv',\
+    \ ['qnh'], ['SBVT'])\nd = d[(d.t.dt.year == 2019) & (d.t.dt.minute == 0) & d.qnh.between(850,\
+    \ 1100)]\nresult = [(int((d.qnh < 1010).sum()),)]\n"
+- id: E18
+  category: condicao
+  question: Em quantos dias de 2021 a temperatura mínima em SBCT ficou abaixo de 8
+    °C?
+  expected_behavior: answerable
+  rationale: Contagem de dias com mínima diária abaixo de um limiar.
+  assumptions: Hora local fixa UTC-3 como nos arquivos. Mínima diária = menor bseco
+    do dia civil local; descartei bseco fora de [-10, 50] °C.
+  oracle_pandas: "import pandas as pd\ndef rd(f, cols, st):\n    d = pd.concat(c[c.sigla.isin(st)]\
+    \ for c in pd.read_csv(f, usecols=['sigla', 'hora_observacao'] + cols, chunksize=10**6))\n\
+    \    d['t'] = pd.to_datetime(d.hora_observacao)\n    return d\nd = rd('temperatura.csv',\
+    \ ['bseco'], ['SBCT'])\nd = d[(d.t.dt.year == 2021) & d.bseco.between(-10, 50)]\n\
+    m = d.groupby(d.t.dt.date).bseco.min()\nresult = [(int((m < 8).sum()),)]\n"
+- id: E19
+  category: condicao
+  question: Quantas horas de agosto de 2024 em SBBR tiveram umidade relativa abaixo
+    de 20%?
+  expected_behavior: answerable
+  rationale: Contagem de horas de baixa umidade.
+  assumptions: Hora local fixa UTC-3 como nos arquivos. Para grandezas acumuladas/contadas
+    por hora usa só boletins na hora cheia (minuto 0). Descartei ur fora de [0, 100]
+    %.
+  oracle_pandas: "import pandas as pd\ndef rd(f, cols, st):\n    d = pd.concat(c[c.sigla.isin(st)]\
+    \ for c in pd.read_csv(f, usecols=['sigla', 'hora_observacao'] + cols, chunksize=10**6))\n\
+    \    d['t'] = pd.to_datetime(d.hora_observacao)\n    return d\nd = rd('temperatura.csv',\
+    \ ['ur'], ['SBBR'])\nd = d[(d.t.dt.year == 2024) & (d.t.dt.month == 8) & (d.t.dt.minute\
+    \ == 0) & d.ur.between(0, 100)]\nresult = [(int((d.ur < 20).sum()),)]\n"
+- id: E20
+  category: condicao
+  question: Em quantas horas de 2016 SBPA teve nuvens cobrindo 5 oitavos ou mais com
+    base abaixo de 300 metros?
+  expected_behavior: answerable
+  rationale: Contagem de horas com condição combinada sobre cobertura e altura de
+    nuvem.
+  assumptions: 'Hora local fixa UTC-3 como nos arquivos. Para grandezas acumuladas/contadas
+    por hora usa só boletins na hora cheia (minuto 0). altnuvem em dezenas de metros:
+    < 300 m equivale a altnuvem < 30 (com altnuvem >= 1); qtdnuvem convertida para
+    número, vazio/não numérico descartado; contei horas distintas (não camadas).'
+  oracle_pandas: "import pandas as pd\ndef rd(f, cols, st):\n    d = pd.concat(c[c.sigla.isin(st)]\
+    \ for c in pd.read_csv(f, usecols=['sigla', 'hora_observacao'] + cols, chunksize=10**6))\n\
+    \    d['t'] = pd.to_datetime(d.hora_observacao)\n    return d\nd = rd('nuvem.csv',\
+    \ ['qtdnuvem', 'altnuvem'], ['SBPA'])\nd['q'] = pd.to_numeric(d.qtdnuvem, errors='coerce')\n\
+    d = d[(d.t.dt.year == 2016) & (d.t.dt.minute == 0) & (d.q >= 5) & d.altnuvem.between(1,\
+    \ 29)]\nresult = [(d.t.nunique(),)]\n"
+- id: E21
+  category: serie_ranking
+  question: Qual foi a temperatura média de cada mês de 2019 em SBFL?
+  expected_behavior: answerable
+  rationale: Série mensal de uma média.
+  assumptions: Hora local fixa UTC-3 como nos arquivos. Descartei bseco fora de [-10,
+    50] °C; média de todos os boletins de cada mês.
+  oracle_pandas: "import pandas as pd\ndef rd(f, cols, st):\n    d = pd.concat(c[c.sigla.isin(st)]\
+    \ for c in pd.read_csv(f, usecols=['sigla', 'hora_observacao'] + cols, chunksize=10**6))\n\
+    \    d['t'] = pd.to_datetime(d.hora_observacao)\n    return d\nd = rd('temperatura.csv',\
+    \ ['bseco'], ['SBFL'])\nd = d[(d.t.dt.year == 2019) & d.bseco.between(-10, 50)]\n\
+    result = [(int(k), round(v, 2)) for k, v in d.groupby(d.t.dt.month).bseco.mean().items()]\n"
+- id: E22
+  category: serie_ranking
+  question: Quanto choveu por ano em SBRJ de 2016 a 2025?
+  expected_behavior: answerable
+  rationale: Série anual de totais de chuva.
+  assumptions: Hora local fixa UTC-3 como nos arquivos. Para grandezas acumuladas/contadas
+    por hora usa só boletins na hora cheia (minuto 0). Descartei precip fora de [0,
+    200] mm; vazios ignorados.
+  oracle_pandas: "import pandas as pd\ndef rd(f, cols, st):\n    d = pd.concat(c[c.sigla.isin(st)]\
+    \ for c in pd.read_csv(f, usecols=['sigla', 'hora_observacao'] + cols, chunksize=10**6))\n\
+    \    d['t'] = pd.to_datetime(d.hora_observacao)\n    return d\nd = rd('precipitacao.csv',\
+    \ ['precip'], ['SBRJ'])\nd = d[(d.t.dt.minute == 0) & d.precip.between(0, 200)]\n\
+    result = [(int(k), round(v, 1)) for k, v in d.groupby(d.t.dt.year).precip.sum().items()]\n"
+- id: E23
+  category: serie_ranking
+  question: Quais foram as 5 estações com a maior temperatura máxima do ar em 2024?
+  expected_behavior: answerable
+  rationale: Ranking entre estações de um máximo anual.
+  assumptions: Hora local fixa UTC-3 como nos arquivos. Descartei bseco fora de [-10,
+    50] °C; considerei todas as siglas presentes nos arquivos.
+  oracle_pandas: "import pandas as pd\ndef rd(f, cols, st):\n    d = pd.concat(c[c.sigla.isin(st)]\
+    \ for c in pd.read_csv(f, usecols=['sigla', 'hora_observacao'] + cols, chunksize=10**6))\n\
+    \    d['t'] = pd.to_datetime(d.hora_observacao)\n    return d\nparts = []\nfor\
+    \ c in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao', 'bseco'],\
+    \ chunksize=10**6):\n    c = c[(c.hora_observacao.str[:4] == '2024') & c.bseco.between(-10,\
+    \ 50)]\n    parts.append(c.groupby('sigla').bseco.max())\nr = pd.concat(parts).groupby(level=0).max().nlargest(5)\n\
+    result = [(k, v) for k, v in r.items()]\n"
+- id: E24
+  category: serie_ranking
+  question: Em que mês de 2021 mais choveu em SBGR, e quanto?
+  expected_behavior: answerable
+  rationale: Mês de maior total de chuva em um ano.
+  assumptions: Hora local fixa UTC-3 como nos arquivos. Para grandezas acumuladas/contadas
+    por hora usa só boletins na hora cheia (minuto 0). Descartei precip fora de [0,
+    200] mm.
+  oracle_pandas: "import pandas as pd\ndef rd(f, cols, st):\n    d = pd.concat(c[c.sigla.isin(st)]\
+    \ for c in pd.read_csv(f, usecols=['sigla', 'hora_observacao'] + cols, chunksize=10**6))\n\
+    \    d['t'] = pd.to_datetime(d.hora_observacao)\n    return d\nd = rd('precipitacao.csv',\
+    \ ['precip'], ['SBGR'])\nd = d[(d.t.dt.year == 2021) & (d.t.dt.minute == 0) &\
+    \ d.precip.between(0, 200)]\ns = d.groupby(d.t.dt.month).precip.sum()\nresult\
+    \ = [(int(s.idxmax()), round(s.max(), 1))]\n"
+- id: E25
+  category: serie_ranking
+  question: Qual estação registrou a maior rajada de vento em 2022?
+  expected_behavior: answerable
+  rationale: Ranking (primeiro lugar) entre estações.
+  assumptions: Hora local fixa UTC-3 como nos arquivos. Rajada em nós; descartei rajada
+    fora de [0, 120]; vazios ignorados; empate improvável, retorno a primeira.
+  oracle_pandas: "import pandas as pd\ndef rd(f, cols, st):\n    d = pd.concat(c[c.sigla.isin(st)]\
+    \ for c in pd.read_csv(f, usecols=['sigla', 'hora_observacao'] + cols, chunksize=10**6))\n\
+    \    d['t'] = pd.to_datetime(d.hora_observacao)\n    return d\nparts = []\nfor\
+    \ c in pd.read_csv('vento.csv', usecols=['sigla', 'hora_observacao', 'rajada'],\
+    \ chunksize=10**6):\n    c = c[(c.hora_observacao.str[:4] == '2022') & c.rajada.between(0,\
+    \ 120)]\n    parts.append(c.groupby('sigla').rajada.max())\nr = pd.concat(parts).groupby(level=0).max().nlargest(1)\n\
+    result = [(k, v) for k, v in r.items()]\n"
+- id: E26
+  category: serie_ranking
+  question: Quais as 3 estações com o menor QNH médio em 2023?
+  expected_behavior: answerable
+  rationale: Ranking entre estações de uma média anual.
+  assumptions: Hora local fixa UTC-3 como nos arquivos. Descartei qnh fora de [850,
+    1100] hPa; só estações com ao menos 5000 boletins válidos no ano, para evitar
+    estações quase sem dados.
+  oracle_pandas: "import pandas as pd\ndef rd(f, cols, st):\n    d = pd.concat(c[c.sigla.isin(st)]\
+    \ for c in pd.read_csv(f, usecols=['sigla', 'hora_observacao'] + cols, chunksize=10**6))\n\
+    \    d['t'] = pd.to_datetime(d.hora_observacao)\n    return d\nparts = []\nfor\
+    \ c in pd.read_csv('pressao.csv', usecols=['sigla', 'hora_observacao', 'qnh'],\
+    \ chunksize=10**6):\n    c = c[(c.hora_observacao.str[:4] == '2023') & c.qnh.between(850,\
+    \ 1100)]\n    parts.append(c.groupby('sigla').qnh.agg(['sum', 'count']))\na =\
+    \ pd.concat(parts).groupby(level=0).sum()\na = a[a['count'] >= 5000]\nr = (a['sum']\
+    \ / a['count']).nsmallest(3)\nresult = [(k, round(v, 2)) for k, v in r.items()]\n"
+- id: E27
+  category: serie_ranking
+  question: Qual foi o ponto de orvalho médio de cada ano, de 2016 a 2025, em SBCO?
+  expected_behavior: answerable
+  rationale: Série anual de uma média.
+  assumptions: Hora local fixa UTC-3 como nos arquivos. Descartei temppo fora de [-20,
+    40] °C.
+  oracle_pandas: "import pandas as pd\ndef rd(f, cols, st):\n    d = pd.concat(c[c.sigla.isin(st)]\
+    \ for c in pd.read_csv(f, usecols=['sigla', 'hora_observacao'] + cols, chunksize=10**6))\n\
+    \    d['t'] = pd.to_datetime(d.hora_observacao)\n    return d\nd = rd('temperatura.csv',\
+    \ ['temppo'], ['SBCO'])\nd = d[d.temppo.between(-20, 40)]\nresult = [(int(k),\
+    \ round(v, 2)) for k, v in d.groupby(d.t.dt.year).temppo.mean().items()]\n"
+- id: E28
+  category: serie_ranking
+  question: Considerando 2016 a 2025, em qual mês do ano SBJV tem em média a pior
+    visibilidade?
+  expected_behavior: answerable
+  rationale: Mês climatológico com o menor valor médio.
+  assumptions: Hora local fixa UTC-3 como nos arquivos. Média por mês do ano sobre
+    todos os anos; visibpre em dezenas de metros, multipliquei por 10; descartei valores
+    fora de [0, 2000].
+  oracle_pandas: "import pandas as pd\ndef rd(f, cols, st):\n    d = pd.concat(c[c.sigla.isin(st)]\
+    \ for c in pd.read_csv(f, usecols=['sigla', 'hora_observacao'] + cols, chunksize=10**6))\n\
+    \    d['t'] = pd.to_datetime(d.hora_observacao)\n    return d\nd = rd('visibilidade.csv',\
+    \ ['visibpre'], ['SBJV'])\nd = d[d.visibpre.between(0, 2000)]\ns = d.groupby(d.t.dt.month).visibpre.mean()\
+    \ * 10\nresult = [(int(s.idxmin()), round(s.min(), 1))]\n"
+- id: E29
+  category: comparacao
+  question: Qual choveu mais em 2018, SBGL ou SBRJ?
+  expected_behavior: answerable
+  rationale: Comparação de totais de chuva entre duas estações.
+  assumptions: Hora local fixa UTC-3 como nos arquivos. Para grandezas acumuladas/contadas
+    por hora usa só boletins na hora cheia (minuto 0). Descartei precip fora de [0,
+    200] mm.
+  oracle_pandas: "import pandas as pd\ndef rd(f, cols, st):\n    d = pd.concat(c[c.sigla.isin(st)]\
+    \ for c in pd.read_csv(f, usecols=['sigla', 'hora_observacao'] + cols, chunksize=10**6))\n\
+    \    d['t'] = pd.to_datetime(d.hora_observacao)\n    return d\nd = rd('precipitacao.csv',\
+    \ ['precip'], ['SBGL', 'SBRJ'])\nd = d[(d.t.dt.year == 2018) & (d.t.dt.minute\
+    \ == 0) & d.precip.between(0, 200)]\nresult = [(k, round(v, 1)) for k, v in d.groupby('sigla').precip.sum().items()]\n"
+- id: E30
+  category: comparacao
+  question: SBPA esteve mais quente em janeiro de 2016 ou em janeiro de 2025?
+  expected_behavior: answerable
+  rationale: Comparação entre dois períodos da mesma estação.
+  assumptions: Hora local fixa UTC-3 como nos arquivos. Comparei a temperatura média
+    do ar; descartei bseco fora de [-10, 50] °C.
+  oracle_pandas: "import pandas as pd\ndef rd(f, cols, st):\n    d = pd.concat(c[c.sigla.isin(st)]\
+    \ for c in pd.read_csv(f, usecols=['sigla', 'hora_observacao'] + cols, chunksize=10**6))\n\
+    \    d['t'] = pd.to_datetime(d.hora_observacao)\n    return d\nd = rd('temperatura.csv',\
+    \ ['bseco'], ['SBPA'])\nd = d[(d.t.dt.month == 1) & d.t.dt.year.isin([2016, 2025])\
+    \ & d.bseco.between(-10, 50)]\nresult = [(int(k), round(v, 2)) for k, v in d.groupby(d.t.dt.year).bseco.mean().items()]\n"
+- id: E31
+  category: comparacao
+  question: 'Em 2019, qual é mais úmido em média: o ar de SBEG ou o de SBCY?'
+  expected_behavior: answerable
+  rationale: Comparação de umidade relativa média entre duas estações.
+  assumptions: Hora local fixa UTC-3 como nos arquivos. Descartei ur fora de [0, 100]
+    %.
+  oracle_pandas: "import pandas as pd\ndef rd(f, cols, st):\n    d = pd.concat(c[c.sigla.isin(st)]\
+    \ for c in pd.read_csv(f, usecols=['sigla', 'hora_observacao'] + cols, chunksize=10**6))\n\
+    \    d['t'] = pd.to_datetime(d.hora_observacao)\n    return d\nd = rd('temperatura.csv',\
+    \ ['ur'], ['SBEG', 'SBCY'])\nd = d[(d.t.dt.year == 2019) & d.ur.between(0, 100)]\n\
+    result = [(k, round(v, 2)) for k, v in d.groupby('sigla').ur.mean().items()]\n"
+- id: E32
+  category: comparacao
+  question: A pressão QNH média em SBBR em 2025 foi maior ou menor que em 2016?
+  expected_behavior: answerable
+  rationale: Comparação de médias entre dois anos.
+  assumptions: Hora local fixa UTC-3 como nos arquivos. Descartei qnh fora de [850,
+    1100] hPa.
+  oracle_pandas: "import pandas as pd\ndef rd(f, cols, st):\n    d = pd.concat(c[c.sigla.isin(st)]\
+    \ for c in pd.read_csv(f, usecols=['sigla', 'hora_observacao'] + cols, chunksize=10**6))\n\
+    \    d['t'] = pd.to_datetime(d.hora_observacao)\n    return d\nd = rd('pressao.csv',\
+    \ ['qnh'], ['SBBR'])\nd = d[d.t.dt.year.isin([2016, 2025]) & d.qnh.between(850,\
+    \ 1100)]\nresult = [(int(k), round(v, 2)) for k, v in d.groupby(d.t.dt.year).qnh.mean().items()]\n"
+- id: E33
+  category: impossivel
+  question: Em que cidade fica a estação SBGR?
+  expected_behavior: unsupported
+  rationale: Os dados só têm a sigla; não há cadastro de cidade.
+  assumptions: nenhuma
+- id: E34
+  category: impossivel
+  question: Qual é a latitude de SBCF?
+  expected_behavior: unsupported
+  rationale: Não há coordenadas das estações nos dados.
+  assumptions: nenhuma
+- id: E35
+  category: impossivel
+  question: Vai chover em SBSP amanhã?
+  expected_behavior: unsupported
+  rationale: Os dados são observações passadas até 2025; não há previsão.
+  assumptions: nenhuma
+- id: E36
+  category: impossivel
+  question: Qual foi a radiação solar média em SBBR em 2020?
+  expected_behavior: unsupported
+  rationale: Radiação solar não é uma grandeza dos arquivos.
+  assumptions: nenhuma
+- id: E37
+  category: impossivel
+  question: Qual foi a temperatura média em SBGL em março de 2012?
+  expected_behavior: unsupported
+  rationale: O período coberto é 2016–2025; 2012 está fora.
+  assumptions: nenhuma
+- id: E38
+  category: impossivel
+  question: Quantos milímetros choveram em SBXG em 2019?
+  expected_behavior: unsupported
+  rationale: A sigla SBXG não existe na lista de estações.
+  assumptions: nenhuma
+- id: E39
+  category: ambigua
+  question: Qual foi o pior dia de tempo do ano passado?
+  expected_behavior: needs_clarification
+  rationale: Sem estação, sem critério de 'pior' e período ambíguo.
+  assumptions: nenhuma
+- id: E40
+  category: ambigua
+  question: Está quente em SBGO?
+  expected_behavior: needs_clarification
+  rationale: Sem período e sem limiar do que é 'quente'.
+  assumptions: nenhuma
+- id: E41
+  category: ambigua
+  question: Qual foi a média de vento?
+  expected_behavior: needs_clarification
+  rationale: Faltam estação, período e se é velocidade, direção ou rajada.
+  assumptions: nenhuma
+- id: E42
+  category: ambigua
+  question: Qual foi a temperatura em SBSV em 2020?
+  expected_behavior: needs_clarification
+  rationale: Temperatura pode ser do ar, bulbo úmido, orvalho ou pista, e falta dizer
+    média, máxima ou mínima.
+  assumptions: nenhuma
+- id: E43
+  category: informal
+  question: qual a temperatua maxima em sbpv no dia 13 de março de 2021?
+  expected_behavior: answerable
+  rationale: Pergunta informal com erro de digitação e sigla em minúsculas; máximo
+    de bseco no dia.
+  assumptions: Hora local fixa UTC-3 como nos arquivos. Descartei bseco fora de [-10,
+    50] °C; todos os boletins do dia.
+  oracle_pandas: "import pandas as pd\ndef rd(f, cols, st):\n    d = pd.concat(c[c.sigla.isin(st)]\
+    \ for c in pd.read_csv(f, usecols=['sigla', 'hora_observacao'] + cols, chunksize=10**6))\n\
+    \    d['t'] = pd.to_datetime(d.hora_observacao)\n    return d\nd = rd('temperatura.csv',\
+    \ ['bseco'], ['SBPV'])\nd = d[(d.t.dt.strftime('%Y-%m-%d') == '2021-03-13') &\
+    \ d.bseco.between(-10, 50)]\nresult = [(d.bseco.max(),)]\n"
+- id: E44
+  category: informal
+  question: sbcg, quantos mm choveu em janeiro de 2024?
+  expected_behavior: answerable
+  rationale: Pergunta informal e curta; total de chuva do mês.
+  assumptions: Hora local fixa UTC-3 como nos arquivos. Para grandezas acumuladas/contadas
+    por hora usa só boletins na hora cheia (minuto 0). Descartei precip fora de [0,
+    200] mm.
+  oracle_pandas: "import pandas as pd\ndef rd(f, cols, st):\n    d = pd.concat(c[c.sigla.isin(st)]\
+    \ for c in pd.read_csv(f, usecols=['sigla', 'hora_observacao'] + cols, chunksize=10**6))\n\
+    \    d['t'] = pd.to_datetime(d.hora_observacao)\n    return d\nd = rd('precipitacao.csv',\
+    \ ['precip'], ['SBCG'])\nd = d[(d.t.dt.year == 2024) & (d.t.dt.month == 1) & (d.t.dt.minute\
+    \ == 0) & d.precip.between(0, 200)]\nresult = [(round(d.precip.sum(), 1),)]\n"
+- id: E45
+  category: informal
+  question: 'bora ver: qnh maximo de sbsm em 2017, rapidão'
+  expected_behavior: answerable
+  rationale: Gíria leve, acentos faltando, sigla em minúsculas; máximo de qnh no ano.
+  assumptions: Hora local fixa UTC-3 como nos arquivos. Descartei qnh fora de [850,
+    1100] hPa.
+  oracle_pandas: "import pandas as pd\ndef rd(f, cols, st):\n    d = pd.concat(c[c.sigla.isin(st)]\
+    \ for c in pd.read_csv(f, usecols=['sigla', 'hora_observacao'] + cols, chunksize=10**6))\n\
+    \    d['t'] = pd.to_datetime(d.hora_observacao)\n    return d\nd = rd('pressao.csv',\
+    \ ['qnh'], ['SBSM'])\nd = d[(d.t.dt.year == 2017) & d.qnh.between(850, 1100)]\n\
+    result = [(d.qnh.max(),)]\n"
+- id: E46
+  category: informal
+  question: No SBLO o bulbo úmido mais alto de 2018 foi quanto?
+  expected_behavior: answerable
+  rationale: Ordem das palavras diferente; máximo de bumido no ano.
+  assumptions: Hora local fixa UTC-3 como nos arquivos. Descartei bumido fora de [-10,
+    40] °C.
+  oracle_pandas: "import pandas as pd\ndef rd(f, cols, st):\n    d = pd.concat(c[c.sigla.isin(st)]\
+    \ for c in pd.read_csv(f, usecols=['sigla', 'hora_observacao'] + cols, chunksize=10**6))\n\
+    \    d['t'] = pd.to_datetime(d.hora_observacao)\n    return d\nd = rd('temperatura.csv',\
+    \ ['bumido'], ['SBLO'])\nd = d[(d.t.dt.year == 2018) & d.bumido.between(-10, 40)]\n\
+    result = [(d.bumido.max(),)]\n"
+- id: E47
+  category: tempo
+  question: Qual foi a temperatura média em SBSP no verão de 2022?
+  expected_behavior: answerable
+  rationale: 'Condição de tempo: estação do ano.'
+  assumptions: Hora local fixa UTC-3 como nos arquivos. Verão = dezembro de 2021 a
+    fevereiro de 2022 (verão meteorológico austral que termina em 2022); descartei
+    bseco fora de [-10, 50] °C.
+  oracle_pandas: "import pandas as pd\ndef rd(f, cols, st):\n    d = pd.concat(c[c.sigla.isin(st)]\
+    \ for c in pd.read_csv(f, usecols=['sigla', 'hora_observacao'] + cols, chunksize=10**6))\n\
+    \    d['t'] = pd.to_datetime(d.hora_observacao)\n    return d\nd = rd('temperatura.csv',\
+    \ ['bseco'], ['SBSP'])\nd = d[(d.t >= '2021-12-01') & (d.t < '2022-03-01') & d.bseco.between(-10,\
+    \ 50)]\nresult = [(round(d.bseco.mean(), 2),)]\n"
+- id: E48
+  category: tempo
+  question: Quanto choveu em SBBE de madrugada em 2019?
+  expected_behavior: answerable
+  rationale: 'Condição de tempo: faixa horária.'
+  assumptions: Hora local fixa UTC-3 como nos arquivos. Para grandezas acumuladas/contadas
+    por hora usa só boletins na hora cheia (minuto 0). Madrugada = horas 0 a 5 (00:00
+    a 05:59 local); descartei precip fora de [0, 200] mm.
+  oracle_pandas: "import pandas as pd\ndef rd(f, cols, st):\n    d = pd.concat(c[c.sigla.isin(st)]\
+    \ for c in pd.read_csv(f, usecols=['sigla', 'hora_observacao'] + cols, chunksize=10**6))\n\
+    \    d['t'] = pd.to_datetime(d.hora_observacao)\n    return d\nd = rd('precipitacao.csv',\
+    \ ['precip'], ['SBBE'])\nd = d[(d.t.dt.year == 2019) & (d.t.dt.minute == 0) &\
+    \ (d.t.dt.hour <= 5) & d.precip.between(0, 200)]\nresult = [(round(d.precip.sum(),\
+    \ 1),)]\n"
+- id: E49
+  category: tempo
+  question: Qual foi a temperatura média de SBCF no primeiro trimestre de 2023?
+  expected_behavior: answerable
+  rationale: 'Condição de tempo: trimestre.'
+  assumptions: Hora local fixa UTC-3 como nos arquivos. Primeiro trimestre = janeiro
+    a março; descartei bseco fora de [-10, 50] °C.
+  oracle_pandas: "import pandas as pd\ndef rd(f, cols, st):\n    d = pd.concat(c[c.sigla.isin(st)]\
+    \ for c in pd.read_csv(f, usecols=['sigla', 'hora_observacao'] + cols, chunksize=10**6))\n\
+    \    d['t'] = pd.to_datetime(d.hora_observacao)\n    return d\nd = rd('temperatura.csv',\
+    \ ['bseco'], ['SBCF'])\nd = d[(d.t.dt.year == 2023) & (d.t.dt.month <= 3) & d.bseco.between(-10,\
+    \ 50)]\nresult = [(round(d.bseco.mean(), 2),)]\n"
+- id: E50
+  category: tempo
+  question: Qual a velocidade média do vento em SBNT nos fins de semana de 2024?
+  expected_behavior: answerable
+  rationale: 'Condição de tempo: dias da semana.'
+  assumptions: Hora local fixa UTC-3 como nos arquivos. Fim de semana = sábado e domingo;
+    média sobre todas as linhas de vento (uma por cabeceira), não por boletim; descartei
+    velvento fora de [0, 100] nós.
+  oracle_pandas: "import pandas as pd\ndef rd(f, cols, st):\n    d = pd.concat(c[c.sigla.isin(st)]\
+    \ for c in pd.read_csv(f, usecols=['sigla', 'hora_observacao'] + cols, chunksize=10**6))\n\
+    \    d['t'] = pd.to_datetime(d.hora_observacao)\n    return d\nd = rd('vento.csv',\
+    \ ['velvento'], ['SBNT'])\nd = d[(d.t.dt.year == 2024) & (d.t.dt.dayofweek >=\
+    \ 5) & d.velvento.between(0, 100)]\nresult = [(round(d.velvento.mean(), 2),)]\n"

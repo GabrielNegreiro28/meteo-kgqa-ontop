@@ -1,0 +1,20 @@
+{
+  "id": "E03",
+  "status": "ok",
+  "result": [
+    [
+      1003.8
+    ]
+  ],
+  "reads": [
+    {
+      "file": "pressao.csv",
+      "usecols": [
+        "sigla",
+        "hora_observacao",
+        "qnh"
+      ],
+      "chunksize": 1000000
+    }
+  ]
+}

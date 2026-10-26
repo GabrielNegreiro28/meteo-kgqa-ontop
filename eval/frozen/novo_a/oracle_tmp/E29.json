@@ -1,0 +1,25 @@
+{
+  "id": "E29",
+  "status": "ok",
+  "result": [
+    [
+      "SBGL",
+      805.7
+    ],
+    [
+      "SBRJ",
+      945.4
+    ]
+  ],
+  "reads": [
+    {
+      "file": "precipitacao.csv",
+      "usecols": [
+        "sigla",
+        "hora_observacao",
+        "precip"
+      ],
+      "chunksize": 1000000
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "id": "E26",
+  "status": "ok",
+  "result": [
+    [
+      "SBUY",
+      1010.28
+    ],
+    [
+      "SBIH",
+      1010.89
+    ],
+    [
+      "SBPV",
+      1010.98
+    ]
+  ],
+  "reads": [
+    {
+      "file": "pressao.csv",
+      "usecols": [
+        "sigla",
+        "hora_observacao",
+        "qnh"
+      ],
+      "chunksize": 1000000
+    }
+  ]
+}

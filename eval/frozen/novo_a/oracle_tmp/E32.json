@@ -1,0 +1,25 @@
+{
+  "id": "E32",
+  "status": "ok",
+  "result": [
+    [
+      2016,
+      1019.72
+    ],
+    [
+      2025,
+      1019.56
+    ]
+  ],
+  "reads": [
+    {
+      "file": "pressao.csv",
+      "usecols": [
+        "sigla",
+        "hora_observacao",
+        "qnh"
+      ],
+      "chunksize": 1000000
+    }
+  ]
+}

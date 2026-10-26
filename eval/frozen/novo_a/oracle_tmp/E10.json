@@ -1,0 +1,20 @@
+{
+  "id": "E10",
+  "status": "ok",
+  "result": [
+    [
+      30.0
+    ]
+  ],
+  "reads": [
+    {
+      "file": "nuvem.csv",
+      "usecols": [
+        "sigla",
+        "hora_observacao",
+        "altnuvem"
+      ],
+      "chunksize": 1000000
+    }
+  ]
+}

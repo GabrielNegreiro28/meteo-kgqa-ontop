@@ -1,0 +1,37 @@
+{
+  "id": "E23",
+  "status": "ok",
+  "result": [
+    [
+      "SBBW",
+      42.0
+    ],
+    [
+      "SBCY",
+      42.0
+    ],
+    [
+      "SBTG",
+      42.0
+    ],
+    [
+      "SBCR",
+      41.5
+    ],
+    [
+      "SBJR",
+      41.4
+    ]
+  ],
+  "reads": [
+    {
+      "file": "temperatura.csv",
+      "usecols": [
+        "sigla",
+        "hora_observacao",
+        "bseco"
+      ],
+      "chunksize": 1000000
+    }
+  ]
+}
