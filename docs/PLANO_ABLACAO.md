@@ -20,7 +20,7 @@ Ordem sugerida: **A1 primeiro** (é o que o MVP precisa), A3 depois (é a contri
 ## Como rodar quando houver autorização
 
 1. Gerar o conjunto novo: `docs/PROMPT_GPT_PERGUNTAS.md` com **outro gerador**, ou, melhor, 10 a 20 perguntas reais de usuários da área (pedir ao professor).
-   Congelar com hash antes de qualquer execução (como em `eval/independent_evaluation/`).
+   Congelar com hash antes de qualquer execução: `python -m eval.freeze_set perguntas.yaml --name novo_a --source "quem gerou"` (recusa pergunta já vista em conjunto anterior, grava `eval/frozen/<name>/` com sha256; sem custo).
 2. Autorizar a verba no ledger (`--authorize-usd`, `--authorized-by`, `--reason`), **um valor por medição**.
 3. `python -m eval.run_independent --prompts v7 --tag _a` (e `--prompts v4`, `v5`…); uma execução por condição, sem ajustar regra nem prompt depois.
 4. Julgamento humano de cada divergência (erro do sistema, erro da referência, diferença de limpeza) antes de qualquer taxa de acerto.
