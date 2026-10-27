@@ -85,7 +85,7 @@ def test_horas_com_chuva_viram_condicao_e_contam_horas_distintas_E15():
     assert not rec.findings
     assert rec.interp.filters == [{"op": ">", "value": 0.0}] and rec.interp.count_of == "hours"
     sparql = compiles(rec)
-    assert "FILTER(?v > 0)" in sparql and "SELECT DISTINCT ?d ?h" in sparql and "HOURS(?t)" in sparql
+    assert "FILTER(?v > 0)" in sparql and "COUNT(DISTINCT ?hour)" in sparql and "HOURS(?t)" in sparql
     assert any("horas distintas" in n for n in rec.notes)
 
 

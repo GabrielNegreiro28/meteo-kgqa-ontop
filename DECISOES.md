@@ -380,3 +380,20 @@ Mantém-se a pergunta ao professor sobre **perguntas reais de usuários da área
   Convenções declaradas: estações do ano **austrais e meteorológicas** (verão de 2022 = dez/2021 a fev/2022; outono mar–mai; inverno jun–ago;
   primavera set–nov); partes do dia madrugada [0,6), manhã [6,12), tarde [12,18), noite [18,24), "durante o dia" [6,18); "fim de semana" = sábado
   e domingo; mês sem ano é lido mas não vira janela (quem concilia pede o ano). Efeito se estiverem erradas: a janela muda, e a resposta diz qual usou.
+- **D-94 Interpretação ancorada em trechos (prompt `v8`, `pipeline/reconcile.py`)**: o LLM decide só o sentido (grandeza, estação, cálculo, forma
+  do resultado) e cita o trecho literal que justifica cada decisão; não escreve datas, números nem unidades. Tempo vem só da leitura (D-93); o valor
+  e a unidade de um limiar vêm do trecho citado; SPARQL só pelo compilador (o que ele não monta é `unsupported`). A conciliação confere por
+  MECANISMO, não por frase: trecho existe e corresponde; número da pergunta sem dono; unidade citada x dimensão da grandeza ("minutos de chuva"
+  não é precipitação em mm); medida x contagem ("quantos mm" não é contar leituras). As regras de `_ground_in_question` continuam valendo para v4–v7.
+- **D-95 O que a contagem conta é explícito** (`count_of`): "quantas horas" = horas locais DISTINTAS (uma hora com duas leituras conta uma vez);
+  "quantos dias" = dias (exige a estatística do dia); "quantos boletins" = boletins distintos; "vezes/leituras/registros" = leituras. Sempre dito
+  na resposta. Antes o sistema contava leituras quando a pergunta dizia horas (E13, E17 do novo_a).
+- **D-96 "Horas/dias com chuva" = precipitação > 0** (no dia: soma do dia > 0); "sem chuva" = 0. Por regra, dito na resposta (E15 do novo_a: o v4–v7
+  perdia a condição e contava todas as leituras do ano).
+- **D-97 Esclarecer em vez de chutar** (v8): sem cálculo pedido (e sem forma de resultado) -> pergunta qual cálculo; sem estação, sem período e sem
+  forma de resultado nem "toda a rede" -> pergunta o alcance; mês sem ano e período vago ("toda a semana") -> pergunta as datas; dois períodos
+  disjuntos (comparação) -> `unsupported` dito. (E41, E42 do novo_a.)
+- **D-98 Hora local no compilador**: o instante do grafo está em UTC; a hora local h é a UTC (h+3) mod 24 (D-85) e o dia da semana sai da lista de
+  datas locais da janela. Horas distintas = `COUNT(DISTINCT CONCAT(STR(?d), "T", STR(HOURS(?t))))`: o Ontop 5.5 recusa `SELECT DISTINCT`/`GROUP BY`
+  sobre `HOURS()` num subselect (erro interno "non-grouping bindings"), conferido no grafo real. `tests/test_v8_real.py`: 11 casos do novo_a no
+  grafo real, sem LLM, iguais ao oráculo pandas ou à diferença de limpeza já julgada (linhas idênticas repetidas no CSV).

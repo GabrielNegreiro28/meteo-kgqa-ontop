@@ -211,9 +211,11 @@ def compile_structured(interp: PipelineInterpretation, index: OntologyIndex, for
                 return "SELECT (COUNT(DISTINCT ?rep) AS ?n) WHERE {\n  " + "\n  ".join([*where, "?obs met:inReport ?rep ."]) + "\n}"
             if not any(w.startswith("?obs sosa:resultTime") for w in where):
                 where.append("?obs sosa:resultTime ?t .")
-            # (dia local, hora UTC) identifica a hora local: com fuso fixo, hora local -> hora UTC é injetiva dentro do mesmo dia local
-            return ("SELECT (COUNT(*) AS ?n) WHERE {\n  { SELECT DISTINCT ?d ?h WHERE {\n    " + "\n    ".join([*where, "BIND(HOURS(?t) AS ?h)"])
-                    + "\n  } }\n}")
+            # (dia local, hora UTC) identifica a hora local: com fuso fixo, hora local -> hora UTC é injetiva dentro do mesmo dia local.
+            # Uma chave textual contada com DISTINCT: o Ontop 5.5 recusa SELECT DISTINCT/GROUP BY sobre HOURS() num subselect
+            # ("Was expecting all the non-grouping bindings to be lifted"; conferido no grafo real).
+            return ("SELECT (COUNT(DISTINCT ?hour) AS ?n) WHERE {\n  " + "\n  ".join([*where, 'BIND(CONCAT(STR(?d), "T", STR(HOURS(?t))) AS ?hour)'])
+                    + "\n}")
 
         # ---- superlativo com atributo: a(s) leitura(s) que atingem o máximo/mínimo, com o atributo e o instante ----
         if interp.attributes:
