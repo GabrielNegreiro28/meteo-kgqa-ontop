@@ -397,3 +397,19 @@ Mantém-se a pergunta ao professor sobre **perguntas reais de usuários da área
   datas locais da janela. Horas distintas = `COUNT(DISTINCT CONCAT(STR(?d), "T", STR(HOURS(?t))))`: o Ontop 5.5 recusa `SELECT DISTINCT`/`GROUP BY`
   sobre `HOURS()` num subselect (erro interno "non-grouping bindings"), conferido no grafo real. `tests/test_v8_real.py`: 11 casos do novo_a no
   grafo real, sem LLM, iguais ao oráculo pandas ou à diferença de limpeza já julgada (linhas idênticas repetidas no CSV).
+
+## MVP `metqa/` (arquitetura aprovada em 2026-10-27, `docs/ARQUITETURA_MVP.md`)
+
+- **D-99 Uma pipeline linear em vez de versões por flag**: o MVP (`metqa/`) tem UM caminho (leitor → intérprete → conciliação e verificação →
+  planejador → compilador → executor → verificação → texto → trilha), portas para LLM, fonte SPARQL e léxico, e configuração única
+  (`metqa/app/settings.py`). Os módulos provados de `pipeline/`, `kgqa/` e `semantics/` são reaproveitados por importação (migração
+  estranguladora); `pipeline/orchestrator.py` (v1–v8) fica para as comparações históricas. Por quê: oito versões como flags numa função de
+  ~350 linhas e duas formas paralelas de conferir o LLM eram complexidade acidental; os erros medidos eram de estrutura, não de modelo.
+- **D-100 A EvoOntology no caminho de toda pergunta, como léxico**: o intérprete recebe um cardápio do Catálogo com o destaque do léxico
+  (camada publicada); palavra sem cobertura vai para a trilha. Antes ela só entrava pelo prompt v5. `--lexicon ontology` desliga a camada
+  (ablação RQ1/RQ3 do documento).
+- **D-101 Texto da resposta determinístico**: montado das linhas verificadas (números em português, unidade, estação, período, "como
+  entendi", ressalvas). Não há etapa de LLM para redigir: não há número inventado nem trocado de estação, e custa zero.
+- **D-102 Comparação de dois períodos** ("mais quente em janeiro de 2016 ou em janeiro de 2025?") = duas subconsultas de mesma forma,
+  combinadas em código; mais de dois períodos, ou comparação de agrupamentos, é `unsupported` dito. Várias estações citadas sem pedir
+  agrupamento = um valor por estação, dito. Valor num instante ("às 14h") = a leitura daquele instante (UTC no grafo).

@@ -83,6 +83,8 @@ def auto_compare(pipeline_rows: list[list], oracle_rows: list[list]) -> tuple[st
 def sparql_rows(results: dict | None) -> list[list]:
     if not results:
         return []
+    if "parts" in results:                              # comparação do MVP: uma subconsulta por período, cada linha com o rótulo da parte
+        return [[p["label"], *row] for p in results["parts"] for row in sparql_rows(p["results"])]
     cols = results["head"]["vars"]
     out = []
     for b in results["results"]["bindings"]:
@@ -142,7 +144,8 @@ def summarize(rows: list[dict], model: str, prompts: str, spent: float, sha: str
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--env", default=str(ROOT.parent / "METEOROLOGIA" / "kgqa.env"))
-    ap.add_argument("--prompts", choices=["v1", "v2", "v3", "v4", "v5", "v6", "v7"], default="v4")
+    ap.add_argument("--prompts", choices=["v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8", "metqa", "metqa-formal"], default="v4",
+                    help="versão do prompt legado, ou o MVP: metqa (léxico EvoOntology) | metqa-formal (só a ontologia; ablação)")
     ap.add_argument("--budget", type=float, default=2.0, help="teto desta execução em US$ (estimado)")
     ap.add_argument("--ledger", default=str(ROOT / "eval" / "reports" / "spend_ledger.jsonl"))
     ap.add_argument("--authorize-usd", type=float)
@@ -195,7 +198,15 @@ def main() -> int:
     shared = ResilientLLM(LedgerLLM(client, ledger, base_cap_usd=cap, run=f"independent_{args.prompts}{args.tag}",
                                     model=getattr(client, "model", "")), budget_usd=args.budget)
     grounder = None
-    if VERSIONS[args.prompts].semantic:
+    if args.prompts.startswith("metqa"):                # o MVP (metqa/): mesma fonte, mesmo LLM com teto, mesma avaliação
+        from metqa.app import MetQA, Settings
+        from metqa.knowledge import DomainCatalog, EvoLexicon, OntologyLexicon
+        catalog = DomainCatalog(index)
+        lexicon = (OntologyLexicon(catalog) if args.prompts == "metqa-formal"
+                   else EvoLexicon(catalog, args.semantic_workspace, args.semantic_version))
+        mvp = MetQA(catalog, lexicon, shared, backend, Settings(timeout_s=60))
+        print(f"MVP metqa, léxico: {lexicon.version}", file=sys.stderr)
+    elif VERSIONS[args.prompts].semantic:
         from semantics.facade import GroundedLayer
         from semantics.ground import SemanticGrounder
         grounder = SemanticGrounder(GroundedLayer.open(args.semantic_workspace, args.semantic_version))
@@ -206,7 +217,8 @@ def main() -> int:
         if wanted and q["id"] not in wanted:
             continue
         t0 = time.perf_counter()
-        res = run_pipeline(q["question"], shared, backend, index, timeout_s=60, prompts_version=args.prompts, semantics=grounder)
+        res = (mvp.ask(q["question"]) if args.prompts.startswith("metqa") else
+               run_pipeline(q["question"], shared, backend, index, timeout_s=60, prompts_version=args.prompts, semantics=grounder))
         r = res.response
         prows = sparql_rows(r.results)
         e = judge_row(q, r.status.value, prows, oracle)

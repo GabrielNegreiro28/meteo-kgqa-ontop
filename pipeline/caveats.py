@@ -95,7 +95,7 @@ def answer_caveats(interp, results: dict[str, Any] | None, index: OntologyIndex)
     if getattr(interp, "daily", None):
         out.append("A contagem é de DIAS (dia civil em UTC−3): um dia entra se a estatística do dia cumpre a condição. Só contam os dias com ao menos "
                    "uma leitura; `n` é o número de dias com dados, e dia sem leitura não é dia que não cumpriu.")
-    elif interp.aggregation == "count":
+    elif interp.aggregation == "count" and getattr(interp, "count_of", None) in (None, "readings"):   # horas/boletins distintos já não são leituras
         out.append("As contagens são de leituras, não de boletins: um boletim pode ter mais de uma leitura "
                    "(por exemplo, uma por cabeceira de pista).")
     return out

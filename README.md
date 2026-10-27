@@ -7,6 +7,24 @@ MongoDB, PDFs e controle de acesso.
 
 > **Leia primeiro `docs/ANALISE_CRITICA.md`**: o que está sólido, o que está fraco e o que foi corrigido. Decisões e pendências: `DECISOES.md`.
 
+## MVP (`metqa/`): a arquitetura proposta (`docs/ARQUITETURA_MVP.md`)
+
+Pipeline **linear** com contratos tipados, portas e adaptadores, e o LLM cercado por código. O LLM só escolhe sentidos de um cardápio
+fechado e cita o trecho da pergunta que justifica cada escolha. Tempo, números, unidades, SPARQL e o texto da resposta são produzidos por código.
+
+```
+pergunta ─► leitor determinístico ─► intérprete (LLM, cardápio do catálogo + léxico EvoOntology) ─► conciliação + verificação
+         ─► planejador (1 parte ou comparação) ─► compilador (único caminho para SPARQL) ─► Ontop ─► verificação ─► texto determinístico
+         ─► trilha (alimenta o ciclo de evolução do EvoOntology, em lote)
+```
+```bash
+python -m metqa "Quanto choveu em SBGL no dia 15 de fevereiro de 2024?"     # Ontop no ar + arquivo de ambiente (metqa/app/settings.py)
+python -m metqa --show-query "Quantas horas com chuva houve em SBCY em 2022?"
+python -m metqa --lexicon ontology "..."                                       # sem a camada EvoOntology (ablação)
+python -m eval.run_independent --set <conjunto> --prompts metqa --budget 2 --tag _a   # medir (gasta LLM; ledger)
+```
+O legado abaixo (`python -m kgqa`, prompts v1–v8) continua disponível só para as comparações históricas.
+
 ## Como funciona
 
 ```
