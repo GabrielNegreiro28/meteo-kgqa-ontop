@@ -1,94 +1,22 @@
-# verdict: pipeline_error | oracle_error | cleaning_difference | ok  (um por pergunta)
-E05:
-  note: ''
-  verdict: ''
-E07:
-  note: ''
-  verdict: ''
-E10:
-  note: ''
-  verdict: ''
-E11:
-  note: ''
-  verdict: ''
-E13:
-  note: ''
-  verdict: ''
-E14:
-  note: ''
-  verdict: ''
-E15:
-  note: ''
-  verdict: ''
-E16:
-  note: ''
-  verdict: ''
-E17:
-  note: ''
-  verdict: ''
-E18:
-  note: ''
-  verdict: ''
-E19:
-  note: ''
-  verdict: ''
-E20:
-  note: ''
-  verdict: ''
-E21:
-  note: ''
-  verdict: ''
-E22:
-  note: ''
-  verdict: ''
-E24:
-  note: ''
-  verdict: ''
-E25:
-  note: ''
-  verdict: ''
-E27:
-  note: ''
-  verdict: ''
-E28:
-  note: ''
-  verdict: ''
-E30:
-  note: ''
-  verdict: ''
-E32:
-  note: ''
-  verdict: ''
-E37:
-  note: ''
-  verdict: ''
-E41:
-  note: ''
-  verdict: ''
-E42:
-  note: ''
-  verdict: ''
-E43:
-  note: ''
-  verdict: ''
-E44:
-  note: ''
-  verdict: ''
-E45:
-  note: ''
-  verdict: ''
-E46:
-  note: ''
-  verdict: ''
-E47:
-  note: ''
-  verdict: ''
-E48:
-  note: ''
-  verdict: ''
-E49:
-  note: ''
-  verdict: ''
-E50:
-  note: ''
-  verdict: ''
+# Vereditos do conjunto novo_a. JULGAMENTO DO CLAUDE (2026-10-27), feito reproduzindo cada caso nos CSV originais e no SPARQL do sistema.
+# NÃO foi revisado por humano: é uma leitura crítica reproduzível, não um gabarito independente. Qualquer veredito pode ser trocado aqui e o
+# placar recalculado com `python -m eval.adjudicate novo_a ...`.
+# verdict: pipeline_error | cleaning_difference | oracle_error | ok
+E05: {verdict: pipeline_error, note: "pediu minutos de chuva (durpreci, 13959 no CSV); o sistema somou precip em mm (1566,2)"}
+E07: {verdict: pipeline_error, note: "dia 15 de fevereiro virou fevereiro inteiro (filtro 2024-02-01..29): mínimo do mês, não do dia"}
+E11: {verdict: pipeline_error, note: "14 de outubro virou outubro inteiro: 36,5 é do dia 15; o do dia 14 é 35,4 (conferido no CSV)"}
+E13: {verdict: cleaning_difference, note: "o sistema conta leituras (14); o oráculo só as da hora cheia (7); horas distintas seriam 12. Os três são defensáveis; D-87 mantém todas as leituras"}
+E15: {verdict: pipeline_error, note: "perdeu o filtro precip>0 e contou todas as leituras do ano (8691); o certo é 360 (v4, v5)"}
+E16: {verdict: cleaning_difference, note: "209 = leituras por cabeceira; 147 = instantes distintos (o oráculo declara contar boletins). A pergunta não define a unidade"}
+E17: {verdict: cleaning_difference, note: "302 leituras (D-87) contra 294 só na hora cheia; horas distintas seriam 295"}
+E19: {verdict: cleaning_difference, note: "o CSV repete linhas idênticas: 131 linhas = 74 pares (hora, valor) distintos = 51 horas. O oráculo pesa as duplicatas; o sistema (ingest) as descarta"}
+E24: {verdict: pipeline_error, note: "só v4: devolveu a soma do ano (1159,8 mm) em vez do mês mais chuvoso"}
+E25: {verdict: cleaning_difference, note: "SBUL 68 kt tem velvento 11 (rajada menos média = 57, acima de 50): a regra Q4 do ingest a põe em quarentena como inconsistente. O oráculo não aplica essa regra"}
+E27: {verdict: cleaning_difference, note: "SBCO tem linhas idênticas repetidas em 2021-2025; o oráculo pesa as duplicatas e o sistema não (diferenças de 0,01 a 0,5 °C)"}
+E37: {verdict: ok, note: "2012 está fora do período dos dados: no_results diz que não há dados, que é verdade; não inventou valor (leniente: o esperado era unsupported)"}
+E41: {verdict: pipeline_error, note: "pergunta sem estação nem período: respondeu uma média global de 12,5 milhões de leituras em vez de pedir esclarecimento"}
+E42: {verdict: pipeline_error, note: "sem agregação (média? máxima? série?): devolveu 50 linhas em vez de pedir esclarecimento (rótulo do conjunto: needs_clarification; discutível)"}
+E43: {verdict: pipeline_error, note: "mesmo defeito de E07 e E11: dia 13 de março virou março inteiro (33,0 em vez de 31,9)"}
+E44: {verdict: pipeline_error, note: "pediu mm e o sistema contou leituras (731) em vez de somar a chuva (64,1)"}
+E49: {verdict: cleaning_difference, note: "23,373 contra 23,336 (0,16%): o CSV tem 4636 linhas para 2527 pares distintos; o oráculo pesa as duplicatas"}
+E50: {verdict: pipeline_error, note: "só v5 v2: média sobre cerca de 17.579 leituras (o ano todo) em vez de só fins de semana (4.240 distintas): fins de semana foi ignorado"}
