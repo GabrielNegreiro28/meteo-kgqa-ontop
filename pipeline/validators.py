@@ -40,6 +40,10 @@ class PipelineInterpretation(Interpretation):
     order: dict | None = None                        # {"by": "aggregate", "direction": "asc"|"desc", "limit": 1..100}
     # "em quantos DIAS a máxima passou de 30": agrega cada dia (agg) e conta os dias que cumprem a condição; aggregation = "count"
     daily: dict | None = None                        # {"agg": "max"|"min"|"avg"|"sum", "op": ">"|..., "value": número, "unit": opcional}
+    # v8 (pipeline/reconcile.py): vêm da leitura determinística da pergunta, nunca do LLM
+    hours: tuple | None = None                       # parte do dia: [h0, h1) em hora local ("de madrugada" = (0, 6))
+    weekdays: list | None = None                     # dias da semana (0 = segunda ... 6 = domingo); "fins de semana" = [5, 6]
+    count_of: str | None = None                      # o que a contagem conta: "readings" | "hours" | "days" | "reports"
 
     @property
     def structured(self) -> bool:

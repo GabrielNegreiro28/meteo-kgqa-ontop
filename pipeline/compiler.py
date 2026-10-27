@@ -149,9 +149,31 @@ def compile_structured(interp: PipelineInterpretation, index: OntologyIndex, for
         last = end if inclusive else end - timedelta(days=1)
         return [f'FILTER({d} >= "{start.isoformat()}"^^xsd:date && {d} <= "{last.isoformat()}"^^xsd:date)']
 
+    def day_filters(obs: str, d: str, t: str) -> list[str]:
+        """v8: parte do dia e dias da semana. O instante do grafo (sosa:resultTime) está em UTC e o dia local em met:localDate (UTC−3, D-85):
+        a hora local h é a hora UTC (h + 3) mod 24, e o dia da semana sai da lista de datas locais da janela (SPARQL não tem dia da semana)."""
+        out = []
+        if interp.hours:
+            h0, h1 = interp.hours
+            utc = sorted({(h + 3) % 24 for h in range(h0, h1)})
+            out += [f"{obs} sosa:resultTime {t} .", f"FILTER(HOURS({t}) IN ({', '.join(map(str, utc))}))"]
+        if interp.weekdays:
+            if interp.period is not None:
+                start, end, _, inclusive = parse_period(interp.period)
+                last = end if inclusive else end - timedelta(days=1)
+            elif index.coverage:
+                start, last = index.coverage
+            else:
+                raise ValueError("dias da semana sem janela")
+            days = [start + timedelta(days=i) for i in range((last - start).days + 1)]
+            wanted = [x for x in days if x.weekday() in set(interp.weekdays)]
+            out.append(f"FILTER({d} IN ({', '.join(f'{chr(34)}{x.isoformat()}{chr(34)}^^xsd:date' for x in wanted)}))")
+        return out
+
     def base(sfx: str = "", need_day: bool = False) -> list[str]:
         """Estação -> sensor -> observação da grandeza (+ dia local quando há período ou dimensão de tempo)."""
         v, sensor, obs, d = f"?v{sfx}", f"?sensor{sfx}", f"?obs{sfx}", f"?d{sfx}"
+        need_day = need_day or bool(interp.weekdays)
         if len(ents) == 1 and not by_station:
             where = [f"<{ents[0]}> sosa:hosts {sensor} ."]
         else:
@@ -164,7 +186,7 @@ def compile_structured(interp: PipelineInterpretation, index: OntologyIndex, for
             where.append(f"{obs} met:localDate {d} .")
         for op, val in filters:
             where.append(f"FILTER({v} {op} {format(val.normalize(), 'f')})")
-        return where + period_filter(d)
+        return where + period_filter(d) + day_filters(obs, d, f"?t{sfx}")
 
     try:
         # ---- dias que cumprem uma condição: agrega cada dia (daily.agg) e conta os dias; value = dias que cumprem, n = dias com dados ----
@@ -179,6 +201,19 @@ def compile_structured(interp: PipelineInterpretation, index: OntologyIndex, for
             return (f"SELECT ?value ?n WHERE {{\n"
                     f"  {{ SELECT (COUNT(?d1) AS ?value) WHERE {{ SELECT ?d1 WHERE {{\n      {hit}\n    }} GROUP BY ?d1 HAVING ({cond}) }} }}\n"
                     f"  {{ SELECT (COUNT(?d0) AS ?n) WHERE {{ SELECT ?d0 WHERE {{\n      {seen}\n    }} GROUP BY ?d0 }} }}\n}}")
+
+        # ---- v8: contar HORAS distintas ou BOLETINS distintos (não leituras) ----
+        if agg == "count" and interp.count_of in ("hours", "reports"):
+            if dims or interp.attributes or interp.order or len(ents) > 1:
+                return None
+            where = base(need_day=True)
+            if interp.count_of == "reports":
+                return "SELECT (COUNT(DISTINCT ?rep) AS ?n) WHERE {\n  " + "\n  ".join([*where, "?obs met:inReport ?rep ."]) + "\n}"
+            if not any(w.startswith("?obs sosa:resultTime") for w in where):
+                where.append("?obs sosa:resultTime ?t .")
+            # (dia local, hora UTC) identifica a hora local: com fuso fixo, hora local -> hora UTC é injetiva dentro do mesmo dia local
+            return ("SELECT (COUNT(*) AS ?n) WHERE {\n  { SELECT DISTINCT ?d ?h WHERE {\n    " + "\n    ".join([*where, "BIND(HOURS(?t) AS ?h)"])
+                    + "\n  } }\n}")
 
         # ---- superlativo com atributo: a(s) leitura(s) que atingem o máximo/mínimo, com o atributo e o instante ----
         if interp.attributes:

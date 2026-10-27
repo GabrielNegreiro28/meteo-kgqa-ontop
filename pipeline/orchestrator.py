@@ -29,6 +29,8 @@ from .dialogue import classify_reply, clarification_prompt, confirmation_prompt,
 from .grounding import check_answer, render_fallback
 from .llm import InvalidOutput, LLMClient, LLMError, parse_json_object
 from .provenance import artifact_versions, llm_model_of, prov_turtle
+from .reconcile import reconcile
+from .spans import Reading, read
 from .textsafe import MAX_QUESTION_CHARS, clean
 from .validators import (RELATIVE_TIME, Finding, PipelineInterpretation, parse_period, question_dates,
                          validate_interpretation, validate_query)
@@ -38,6 +40,21 @@ MAX_TOKENS = {"interpret": 600, "generate": 900, "answer": 600}
 STRUCTURE_KEYS = {"group_by", "attributes", "order", "daily"}
 INTERP_KEYS = {"status", "properties", "entities", "filters", "period", "instant", "aggregation", "record_kind",
                "alternatives", "reason"} | STRUCTURE_KEYS
+# v8: sem período nem instante (o tempo vem da leitura determinística da pergunta, pipeline/spans.py)
+V8_KEYS = {"status", "properties", "entities", "aggregation", "filters", "daily", "group_by", "attributes", "order", "record_kind",
+           "alternatives", "reason"}
+
+
+def _reading(question: str, corrections: list[str]) -> Reading:
+    """Leitura determinística da pergunta. Uma correção do usuário que fala de tempo ("na verdade, em 2021") SUBSTITUI o tempo da pergunta;
+    as demais (estação, grandeza) não mexem nele."""
+    r = read(question)
+    for c in corrections:
+        rc = read(c)
+        if rc.time:
+            r.time = rc.time
+        r.quantities += rc.quantities
+    return r
 VALUE_VARS = {"value", "avg", "min", "max", "total", "sum"}
 COUNT_VARS = {"n", "count", "cnt"}
 NUMERIC_DT = {"http://www.w3.org/2001/XMLSchema#" + t for t in ("integer", "decimal", "double", "float", "int", "long")}
@@ -302,7 +319,8 @@ def _run_pipeline(question: str, llm: LLMClient, backend: SparqlBackend, index: 
             user = f"{ctx_interpret}\n\n{hints}{semantic}<pergunta>{safe_q}</pergunta>\n{dialog}{feedback}"
             try:
                 # os campos de forma do resultado só existem no JSON de quem tem as regras L4 que os conferem (prompt v6)
-                obj = ask("interpret", p_interpret, user, INTERP_KEYS if ps.structured else INTERP_KEYS - STRUCTURE_KEYS)
+                obj = ask("interpret", p_interpret, user, V8_KEYS if ps.span_grounded else
+                          INTERP_KEYS if ps.structured else INTERP_KEYS - STRUCTURE_KEYS)
                 status = obj.get("status", "ok")
                 if status == "needs_clarification":
                     resp.interpretation = _to_interpretation(obj)
@@ -310,7 +328,22 @@ def _run_pipeline(question: str, llm: LLMClient, backend: SparqlBackend, index: 
                                       [Diagnostic("AMBIGUOUS_QUESTION", "info", str(obj.get("reason", "")), {"alternatives": obj.get("alternatives", [])})])
                 if status == "unsupported":
                     return None, stop(Status.UNSUPPORTED, [Diagnostic("UNSUPPORTED_BY_MODEL", "info", str(obj.get("reason", "")))])
-                cand = _to_interpretation(obj)
+                if ps.span_grounded:
+                    # v8: tempo, limiares e unidades vêm da leitura determinística; o LLM só decidiu o sentido, citando os trechos
+                    rec = reconcile(obj, question, index, _reading(question, corrections))
+                    log("reconcile", findings=[f.diag.code for f in rec.findings], notes=rec.notes, clarify=rec.clarify,
+                        unsupported=rec.unsupported, interpretation=_interp_dict(rec.interp) if rec.interp else None)
+                    cand = rec.interp
+                    if not rec.findings:
+                        if rec.unsupported:
+                            resp.interpretation = cand
+                            return None, stop(Status.UNSUPPORTED, [Diagnostic("UNSUPPORTED_SHAPE", "info", rec.unsupported)])
+                        if rec.clarify:
+                            resp.interpretation = cand
+                            return None, stop(Status.NEEDS_CLARIFICATION, [Diagnostic("AMBIGUOUS_QUESTION", "info", rec.clarify)])
+                        state["notes"] = rec.notes
+                else:
+                    cand = _to_interpretation(obj)
             except LLMError as e:
                 log("llm_error", stage="interpret", kind=e.kind, attempt=attempt, detail=str(e), raw=getattr(e, "raw", ""))
                 if e.kind != "invalid_output" or attempt == max_repairs:
@@ -326,7 +359,10 @@ def _run_pipeline(question: str, llm: LLMClient, backend: SparqlBackend, index: 
                     resp.interpretation = cand
                     return None, stop(Status.UNSUPPORTED, [Diagnostic("PROPERTY_WITHOUT_DATA", "info",
                                 f"A ontologia prevê {', '.join(empty)}, mas esta fonte não tem nenhuma observação dela.")])
-            findings = validate_interpretation(cand, index, question if ps.grounded else None, tuple(corrections), ps.structured)
+            if ps.span_grounded:                         # a conciliação substitui as regras de fundamentação por regex; esquema e forma continuam
+                findings = rec.findings or validate_interpretation(cand, index, None, tuple(corrections), True)
+            else:
+                findings = validate_interpretation(cand, index, question if ps.grounded else None, tuple(corrections), ps.structured)
             log("validate_interpretation", findings=[f.diag.code for f in findings], interpretation=_interp_dict(cand))
             if not findings:
                 if ps.semantic:                          # sinal para a evolução: a interpretação aceita concorda com a camada?
@@ -334,7 +370,8 @@ def _run_pipeline(question: str, llm: LLMClient, backend: SparqlBackend, index: 
                 return cand, None
             if attempt == max_repairs:
                 codes = {f.diag.code for f in findings}
-                unsupported = codes <= {"UNKNOWN_PROPERTY", "UNKNOWN_ENTITY", "ENTITY_TEXT_MISMATCH", "UNRESOLVED_PLACE"}
+                unsupported = codes <= {"UNKNOWN_PROPERTY", "UNKNOWN_ENTITY", "ENTITY_TEXT_MISMATCH", "UNRESOLVED_PLACE", "ENTITY_SPAN_MISMATCH",
+                                        "UNIT_PROPERTY_MISMATCH"}
                 return None, stop(Status.UNSUPPORTED if unsupported else Status.REJECTED, _diags(findings))
             feedback = "\n" + _feedback(findings)
         return None, stop(Status.EXECUTION_ERROR, [Diagnostic("NO_INTERPRETATION", "error", "sem interpretação")])
@@ -407,7 +444,8 @@ def _run_pipeline(question: str, llm: LLMClient, backend: SparqlBackend, index: 
     # ---------------- etapa 2: gerar e validar o SPARQL ----------------
     sparql, facts, feedback = "", None, ""
     # v7: a consulta é montada por código sempre que há montagem determinística (inclui agregação simples e limiar); o LLM só escreve SPARQL no resto
-    structured = interp.structured or (ps.compile_first and compile_structured(interp, index, force=True) is not None)
+    # v8: SPARQL só pelo compilador; o que ele não monta é `unsupported`, nunca SPARQL escrito pelo LLM
+    structured = ps.span_grounded or interp.structured or (ps.compile_first and compile_structured(interp, index, force=True) is not None)
     if structured:
         # Forma do resultado pedida (group_by/attributes/order): a consulta é MONTADA por código, não escrita pelo LLM. É fiel à
         # interpretação por construção e passa pelas mesmas regras; sem montagem determinística a pergunta é `unsupported`.
@@ -533,6 +571,8 @@ def _run_pipeline(question: str, llm: LLMClient, backend: SparqlBackend, index: 
     resp.answer_text = text or render_fallback(status, _limit_rows(display, MAX_FALLBACK_ROWS)[0], resp.units, partial)
     if ps.grounded:
         resp.answer_text += "\n" + echo                  # o usuário vê COMO a pergunta foi entendida e pode discordar
+        if state.get("notes"):                           # v8: o que foi decidido por regra (o que a contagem conta, "com chuva" = > 0)
+            resp.answer_text += "\n" + "; ".join(state["notes"]).capitalize() + "."
         if status == Status.ANSWERED:                    # ressalvas determinísticas (visibilidade censurada, amostra pequena, n = leituras)
             caveats = format_caveats(answer_caveats(interp, ex.results, index))
             if caveats:
