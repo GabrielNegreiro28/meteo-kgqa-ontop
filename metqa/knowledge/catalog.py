@@ -13,12 +13,15 @@ from datetime import date
 from decimal import Decimal
 from pathlib import Path
 
-from pipeline import spans
 from pipeline.validators import GROUP_DIMS, own_attributes
 from pipeline.vocab import OntologyIndex, PropertyInfo, convert_filter_value, expand
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 UNIT_NS = "http://qudt.org/vocab/unit/"
+# dimensão física de cada unidade QUDT usada pelos dados e pelas perguntas: é o que confere uma condição contra a grandeza (análise
+# dimensional sobre valores já normalizados, sem olhar a forma de escrever). Fonte única do MVP.
+UNIT_DIMENSION = {"DEG_C": "temperature", "PERCENT": "ratio", "MilliM": "precipitation_depth", "HectoPA": "pressure", "KN": "speed",
+                  "M": "length", "KiloM": "length", "DEG": "angle", "MIN": "time", "OKTA": "cover"}
 GROUP_NAMES = {"station": "estação", "year": "ano", "month": "mês", "day": "dia", "value": "valor medido"}
 
 
@@ -59,7 +62,7 @@ class DomainCatalog:
     def _measure(self, info: PropertyInfo) -> Measure:
         short_unit = info.unit.rsplit("/", 1)[-1] if info.unit else None
         return Measure(iri=info.iri, label=(info.labels or [info.iri.rsplit("#", 1)[-1]])[0], labels=tuple(info.labels), unit=info.unit,
-                       symbol=self.index.unit_symbols.get(info.unit or "", ""), dimension=spans.UNIT_DIMENSION.get(short_unit or ""),
+                       symbol=self.index.unit_symbols.get(info.unit or "", ""), dimension=UNIT_DIMENSION.get(short_unit or ""),
                        aggregations=frozenset(info.aggregations), accumulated=info.accumulated, caveat=info.caveat,
                        attributes=tuple(sorted(own_attributes(self.index, info.iri))),
                        has_data=not self.index.properties_with_data or info.iri in self.index.properties_with_data)
@@ -86,6 +89,12 @@ class DomainCatalog:
 
     def symbol(self, unit_iri: str | None) -> str:
         return self.index.unit_symbols.get(unit_iri or "", "")
+
+    def unit_names(self) -> list[str]:
+        return sorted(UNIT_DIMENSION)
+
+    def dimension_of(self, unit: str | None) -> str | None:
+        return UNIT_DIMENSION.get((unit or "").rsplit(":", 1)[-1].rsplit("/", 1)[-1])
 
     def to_canonical(self, value, unit: str | None, measure_iri: str) -> Decimal | None:
         """Valor de uma condição na unidade canônica da grandeza; None se a escala não é conhecida (o chamador recusa, não chuta)."""

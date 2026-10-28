@@ -30,6 +30,10 @@ class Settings:
     timeout_s: float = 60.0
     max_rows: int = 1000
     max_repairs: int = 1
+    confirm: str = "risk"                          # quando perguntar ao usuário: "risk" (sinal forte) | "always" | "never" (sem usuário)
+    readings: int = 2                              # leituras independentes do LLM (1 desliga a concordância: ablação)
+    exemplars: bool = True                         # usar e gravar a memória de exemplos verificados
+    max_rounds: int = 3                            # voltas de correção com o usuário
     budget_usd: float = 0.10                       # teto desta sessão; o teto acumulado é o do ledger
     max_question_chars: int = field(default=500)
 

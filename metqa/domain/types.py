@@ -15,12 +15,30 @@ INTENTS = ("value", "count", "series", "ranking", "extreme_with_attribute", "ins
 COUNT_OF = ("readings", "hours", "days", "reports")
 
 
+def hour_ranges(hours) -> str:
+    """{18..23, 0..5} -> "das 18h às 6h"; {0..5} -> "das 0h às 6h"; horas soltas -> "3h, 9h". Fim exclusivo, dito assim ao usuário."""
+    hs = sorted(set(hours))
+    if not hs:
+        return ""
+    runs, cur = [], [hs[0]]
+    for h in hs[1:]:
+        if h == cur[-1] + 1:
+            cur.append(h)
+        else:
+            runs.append(cur)
+            cur = [h]
+    runs.append(cur)
+    if len(runs) > 1 and runs[0][0] == 0 and runs[-1][-1] == 23:          # atravessa a meia-noite: junta o fim com o começo
+        runs = [runs[-1] + runs[0]] + runs[1:-1]
+    return ", ".join(f"das {r[0]}h às {(r[-1] + 1) % 24}h (antes das {(r[-1] + 1) % 24}h)" if len(r) > 1 else f"{r[0]}h" for r in runs)
+
+
 @dataclass(frozen=True)
 class TimeScope:
-    """Recorte de tempo, sempre em hora local UTC−3 (D-85). Vem SÓ da leitura determinística da pergunta (pipeline/spans.py)."""
+    """Recorte de tempo, sempre em hora local UTC−3 (D-85). Valores JÁ NORMALIZADOS (pelo LLM, conferidos por código e pelo usuário)."""
     start: date | None = None                 # janela [start, end], fim inclusivo; None = todo o histórico
     end: date | None = None
-    hours: tuple[int, int] | None = None      # parte do dia: [h0, h1)
+    hours: tuple[int, ...] | None = None      # CONJUNTO de horas locais (0–23): "das 18h às 6h" = 18..23 e 0..5, sem caso especial
     weekdays: tuple[int, ...] | None = None   # 0 = segunda ... 6 = domingo
     instant: datetime | None = None           # "às 12h" (com fuso)
 
@@ -30,7 +48,7 @@ class TimeScope:
         parts = ["todo o histórico disponível" if self.start is None else
                  f"em {self.start:%d/%m/%Y}" if self.start == self.end else f"de {self.start:%d/%m/%Y} a {self.end:%d/%m/%Y}"]
         if self.hours:
-            parts.append(f"só entre {self.hours[0]:02d}h e {self.hours[1]:02d}h")
+            parts.append("só nas horas " + hour_ranges(self.hours))
         if self.weekdays:
             names = ("segunda", "terça", "quarta", "quinta", "sexta", "sábado", "domingo")
             parts.append("só " + ("fins de semana" if set(self.weekdays) == {5, 6} else ", ".join(names[d] for d in self.weekdays)))

@@ -144,8 +144,8 @@ def summarize(rows: list[dict], model: str, prompts: str, spent: float, sha: str
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--env", default=str(ROOT.parent / "METEOROLOGIA" / "kgqa.env"))
-    ap.add_argument("--prompts", choices=["v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8", "metqa", "metqa-formal"], default="v4",
-                    help="versão do prompt legado, ou o MVP: metqa (léxico EvoOntology) | metqa-formal (só a ontologia; ablação)")
+    ap.add_argument("--prompts", choices=["v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8", "metqa", "metqa-1r", "metqa-formal"], default="v4",
+                    help="versão do prompt legado, ou o MVP sem usuário: metqa (2 leituras) | metqa-1r (1 leitura) | metqa-formal (sem EvoOntology)")
     ap.add_argument("--budget", type=float, default=2.0, help="teto desta execução em US$ (estimado)")
     ap.add_argument("--ledger", default=str(ROOT / "eval" / "reports" / "spend_ledger.jsonl"))
     ap.add_argument("--authorize-usd", type=float)
@@ -204,7 +204,8 @@ def main() -> int:
         catalog = DomainCatalog(index)
         lexicon = (OntologyLexicon(catalog) if args.prompts == "metqa-formal"
                    else EvoLexicon(catalog, args.semantic_workspace, args.semantic_version))
-        mvp = MetQA(catalog, lexicon, shared, backend, Settings(timeout_s=60))
+        # sem usuário: o que exigiria confirmação vira needs_clarification (CONFIRMATION_REQUIRED); memória vazia (sem contaminação)
+        mvp = MetQA(catalog, lexicon, shared, backend, Settings(timeout_s=60, readings=1 if args.prompts == "metqa-1r" else 2))
         print(f"MVP metqa, léxico: {lexicon.version}", file=sys.stderr)
     elif VERSIONS[args.prompts].semantic:
         from semantics.facade import GroundedLayer

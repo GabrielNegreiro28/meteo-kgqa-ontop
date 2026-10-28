@@ -24,7 +24,8 @@ def to_interp(cq: CanonicalQuery) -> PipelineInterpretation:
                                   filters=list(cq.conditions), period=period, aggregation=cq.aggregation, record_kind="observation",
                                   instant=s.instant.isoformat() if s.instant else None, group_by=list(cq.group_by),
                                   attributes=list(cq.attributes), order=cq.order, daily=cq.daily,
-                                  hours=s.hours, weekdays=list(s.weekdays) if s.weekdays else None, count_of=cq.count_of)
+                                  local_hours=sorted(s.hours) if s.hours else None,
+                                  weekdays=list(s.weekdays) if s.weekdays else None, count_of=cq.count_of)
 
 
 def _instant(cq: CanonicalQuery, catalog: DomainCatalog) -> str | None:

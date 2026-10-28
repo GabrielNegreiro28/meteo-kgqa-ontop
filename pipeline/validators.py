@@ -44,6 +44,7 @@ class PipelineInterpretation(Interpretation):
     hours: tuple | None = None                       # parte do dia: [h0, h1) em hora local ("de madrugada" = (0, 6))
     weekdays: list | None = None                     # dias da semana (0 = segunda ... 6 = domingo); "fins de semana" = [5, 6]
     count_of: str | None = None                      # o que a contagem conta: "readings" | "hours" | "days" | "reports"
+    local_hours: list | None = None                  # metqa: CONJUNTO de horas locais (atravessa a meia-noite); tem precedência sobre `hours`
 
     @property
     def structured(self) -> bool:

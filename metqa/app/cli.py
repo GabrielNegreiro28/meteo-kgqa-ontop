@@ -24,7 +24,7 @@ def build(settings: Settings, run: str = "metqa-cli"):
     from pipeline.llm import ResilientLLM
     from pipeline.openai_client import OpenAIChatClient, load_env
 
-    from ..knowledge import DomainCatalog, EvoLexicon, OntologyLexicon
+    from ..knowledge import DomainCatalog, EvoLexicon, ExemplarStore, OntologyLexicon
     from .pipeline import MetQA
 
     source = OntopBackend(settings.endpoint)
@@ -34,7 +34,8 @@ def build(settings: Settings, run: str = "metqa-cli"):
     cap = float(load_env(str(settings.env_file)).get("KGQA_BUDGET_USD", "5.0"))
     llm = ResilientLLM(LedgerLLM(client, Ledger(str(settings.ledger)), base_cap_usd=cap, run=run, model=getattr(client, "model", "")),
                        budget_usd=settings.budget_usd)
-    return MetQA(catalog, lexicon, llm, source, settings)
+    exemplars = ExemplarStore.in_workspace(settings.workspace) if settings.exemplars else ExemplarStore(None)
+    return MetQA(catalog, lexicon, llm, source, settings, exemplars)
 
 
 def show(result, show_query: bool) -> str:
@@ -54,18 +55,23 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--show-query", action="store_true", help="mostra o SPARQL e o SQL gerado pelo Ontop")
     ap.add_argument("--lexicon", choices=["evo", "ontology"], help="léxico: camada EvoOntology (padrão) ou só a ontologia formal")
     ap.add_argument("--budget", type=float, help="teto de gasto desta sessão em US$")
+    ap.add_argument("--confirm", choices=["risk", "always", "never"], help="quando perguntar: com risco (padrão), sempre, ou nunca")
+    ap.add_argument("--readings", type=int, choices=[1, 2], help="leituras independentes do LLM (padrão 2)")
     ap.add_argument("--endpoint")
     ap.add_argument("--env", help="arquivo com OPENAI_API_KEY e KGQA_*")
     a = ap.parse_args(argv)
     from pathlib import Path
-    settings = Settings.from_env(lexicon=a.lexicon, budget_usd=a.budget, endpoint=a.endpoint, env_file=Path(a.env) if a.env else None)
+    settings = Settings.from_env(lexicon=a.lexicon, budget_usd=a.budget, endpoint=a.endpoint, env_file=Path(a.env) if a.env else None,
+                                 confirm=a.confirm, readings=a.readings)
     questions = [" ".join(a.question)] if a.question else [l.strip() for l in sys.stdin if l.strip()]
     if not questions:
         ap.print_help()
         return 2
+    from ..dialogue import terminal_if_interactive
     app = build(settings)
+    user = None if settings.confirm == "never" else terminal_if_interactive()
     for q in questions:
-        res = app.ask(q)
+        res = app.ask(q, user=user)
         print(json.dumps(res.response.to_dict(), ensure_ascii=False, indent=1, default=str) if a.json else show(res, a.show_query))
         if len(questions) > 1:
             print()

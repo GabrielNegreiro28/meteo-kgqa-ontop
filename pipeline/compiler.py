@@ -153,9 +153,9 @@ def compile_structured(interp: PipelineInterpretation, index: OntologyIndex, for
         """v8: parte do dia e dias da semana. O instante do grafo (sosa:resultTime) está em UTC e o dia local em met:localDate (UTC−3, D-85):
         a hora local h é a hora UTC (h + 3) mod 24, e o dia da semana sai da lista de datas locais da janela (SPARQL não tem dia da semana)."""
         out = []
-        if interp.hours:
-            h0, h1 = interp.hours
-            utc = sorted({(h + 3) % 24 for h in range(h0, h1)})
+        local = interp.local_hours or (list(range(*interp.hours)) if interp.hours else None)
+        if local:
+            utc = sorted({(h + 3) % 24 for h in local})
             out += [f"{obs} sosa:resultTime {t} .", f"FILTER(HOURS({t}) IN ({', '.join(map(str, utc))}))"]
         if interp.weekdays:
             if interp.period is not None:

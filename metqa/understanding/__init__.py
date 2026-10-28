@@ -1,5 +1,5 @@
-from .canonical import Understood, understand
+from .crosscheck import describe_diff, diff
 from .interpreter import Interpreter, Proposal
-from .reader import read_question, split_windows
+from .schema import Parsed, canonical_form, parse
 
-__all__ = ["Understood", "understand", "Interpreter", "Proposal", "read_question", "split_windows"]
+__all__ = ["describe_diff", "diff", "Interpreter", "Proposal", "Parsed", "canonical_form", "parse"]

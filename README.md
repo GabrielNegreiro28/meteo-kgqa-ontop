@@ -9,16 +9,19 @@ MongoDB, PDFs e controle de acesso.
 
 ## MVP (`metqa/`): a arquitetura proposta (`docs/ARQUITETURA_MVP.md`)
 
-Pipeline **linear** com contratos tipados, portas e adaptadores, e o LLM cercado por código. O LLM só escolhe sentidos de um cardápio
-fechado e cita o trecho da pergunta que justifica cada escolha. Tempo, números, unidades, SPARQL e o texto da resposta são produzidos por código.
+Pipeline com contratos tipados, portas e adaptadores. **O entendimento não depende de gramática de regex**: o LLM entende e NORMALIZA a
+pergunta (datas, horas, unidades, cálculo). A dúvida é detectada por mecanismos genéricos: duas leituras independentes que divergem,
+evidência fora da pergunta, número ignorado e checagens do mundo fechado da ontologia. Ela é resolvida **com o usuário**: o sistema mostra
+exatamente o que vai consultar e pergunta quando há risco. Sem usuário, devolve as opções em vez de adivinhar. Cada confirmação vira um
+exemplo verificado que guia as próximas perguntas (`docs/ENTENDIMENTO_VERIFICADO.md`).
 
 ```
-pergunta ─► leitor determinístico ─► intérprete (LLM, cardápio do catálogo + léxico EvoOntology) ─► conciliação + verificação
-         ─► planejador (1 parte ou comparação) ─► compilador (único caminho para SPARQL) ─► Ontop ─► verificação ─► texto determinístico
-         ─► trilha (alimenta o ciclo de evolução do EvoOntology, em lote)
+pergunta ─► memória de exemplos ─► 2 leituras do LLM ─► mundo fechado (Catálogo) ─► concordância + risco ─► [usuário confirma/escolhe/corrige]
+         ─► planejador ─► compilador (único caminho para SPARQL) ─► Ontop ─► verificação ─► texto determinístico + "Entendi assim"
+         ─► trilha + exemplo verificado (alimentam a evolução)
 ```
 ```bash
-python -m metqa "Quanto choveu em SBGL no dia 15 de fevereiro de 2024?"     # Ontop no ar + arquivo de ambiente (metqa/app/settings.py)
+python -m metqa "Quanto choveu em SBGL no dia 15 de fevereiro de 2024?"     # no terminal, pergunta quando há dúvida (--confirm risk|always|never)
 python -m metqa --show-query "Quantas horas com chuva houve em SBCY em 2022?"
 python -m metqa --lexicon ontology "..."                                       # sem a camada EvoOntology (ablação)
 python -m eval.run_independent --set <conjunto> --prompts metqa --budget 2 --tag _a   # medir (gasta LLM; ledger)

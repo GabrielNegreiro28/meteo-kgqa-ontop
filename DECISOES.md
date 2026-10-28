@@ -413,3 +413,18 @@ Mantém-se a pergunta ao professor sobre **perguntas reais de usuários da área
 - **D-102 Comparação de dois períodos** ("mais quente em janeiro de 2016 ou em janeiro de 2025?") = duas subconsultas de mesma forma,
   combinadas em código; mais de dois períodos, ou comparação de agrupamentos, é `unsupported` dito. Várias estações citadas sem pedir
   agrupamento = um valor por estação, dito. Valor num instante ("às 14h") = a leitura daquele instante (UTC no grafo).
+- **D-103 O entendimento não depende de gramática de regex** (`docs/ENTENDIMENTO_VERIFICADO.md`): no `metqa`, o LLM entende e NORMALIZA a
+  pergunta (datas AAAA-MM-DD, horas locais como conjunto, unidades QUDT). O código só confere valores contra o mundo fechado da ontologia:
+  esquema, IRIs, agregação, dimensões, análise dimensional das unidades, datas válidas, horas 0–23, cobertura. Por quê: na medição de
+  2026-10-28 o leitor por regex (`pipeline/spans.py`) caiu em "no ano de 2018." e "das 18h às 6h"; cada forma nova pediria uma regra nova, e as
+  formas de escrever são infinitas. `pipeline/spans.py` e `pipeline/reconcile.py` ficam só para o legado.
+- **D-104 Dúvida detectada por concordância e resolvida pelo usuário**: duas leituras independentes (enquadramentos diferentes) comparadas
+  na forma canônica. Sinais fortes: as leituras divergem, evidência fora da pergunta, número da pergunta ignorado (tokenizador `\d+`, não
+  gramática). Com sinal forte o sistema PERGUNTA, mostrando a paráfrase determinística do que vai consultar e, se divergem, as opções pelo que
+  difere. Sem usuário (API, lote), devolve `needs_clarification`/`CONFIRMATION_REQUIRED` com as opções; o cliente reenvia a escolhida e ela é
+  executada sem LLM. Sinais fracos (estação ou período assumidos) só são ditos na resposta. Toda resposta termina com "Entendi assim: …".
+- **D-105 Casos de borda viram dados, não código**: interpretação confirmada ou corrigida pelo usuário (ou conferida contra oráculo) entra
+  na memória de exemplos verificados (`metqa/knowledge/exemplars.py`, no workspace do EvoOntology). Nas perguntas parecidas (TF-IDF de
+  trigramas), ela vai como exemplo para as duas leituras. Saída não verificada do LLM nunca entra.
+- **D-106 Horas do dia como conjunto**: "das 18h às 6h" = {18..23, 0..5}, fim exclusivo, dito ao usuário. O compilador converte cada hora
+  local para UTC (D-85); não há caso especial para atravessar a meia-noite.
