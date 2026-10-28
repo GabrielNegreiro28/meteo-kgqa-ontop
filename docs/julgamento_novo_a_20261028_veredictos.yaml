@@ -1,0 +1,17 @@
+# Vereditos do conjunto novo_a_20261028. JULGAMENTO DO CLAUDE (2026-10-28), reproduzindo cada caso nos CSV originais. Não revisado por humano.
+# verdict: pipeline_error | cleaning_difference | oracle_error | ok. Só divergências e respostas a perguntas não respondíveis.
+E13: {verdict: oracle_error, note: "7 das 8 leituras abaixo de 40% são UR = 0,0 com temperatura 29 °C e orvalho 25 °C (erro de sensor); a ingestão descarta UR fora de [1, 100]. Resposta certa: 1 (v7 e metqa)"}
+E15: {verdict: oracle_error, note: "a única leitura de orvalho < 10 °C é um pico isolado (22,0 -> 6,7 -> 22,2 em horas seguidas), descartado pela regra Q3 da ingestão. Resposta certa: 0 (v7 e metqa, no_results)"}
+E23: {verdict: cleaning_difference, note: "11 meses iguais; agosto 13,386 x 13,408: o oráculo faz a média das leituras duplicadas de cada instante, o sistema mantém leituras distintas (D-87)"}
+E46: {verdict: cleaning_difference, note: "15,144 x 15,108: mesma diferença de duplicatas (D-87)"}
+E37: {verdict: ok, note: "dezembro de 2015 está fora da cobertura: 'não há registros, os dados cobrem 2016-2025' é verdade (leniente: o esperado era unsupported)"}
+E35: {verdict: pipeline_error, note: "só v7: previsão de 2027 respondida como 'sem registros' em vez de 'não há previsões' (metqa: unsupported, certo)"}
+E40: {verdict: pipeline_error, note: "só v7: 'Quanto choveu?' sem estação nem período foi respondido (metqa pediu esclarecimento)"}
+E41: {verdict: pipeline_error, note: "só v7: 'Como estava a temperatura' sem cálculo devolveu uma lista (metqa pediu esclarecimento)"}
+E45: {verdict: pipeline_error, note: "só v7: 'No dia 13 de março de 2021' virou março inteiro (1017,1 hPa sobre 753 leituras; o do dia é 1014,8). metqa respondeu o dia"}
+# abstenções do metqa (não são respostas erradas; registradas para corrigir DEPOIS da medição):
+#   E03, E16, E22, E24, E27, E49: ano seguido de ponto ou vírgula ("de 2018.", "Em 2019,") não é lido pelo leitor (spans._ANO exclui [.,]
+#     depois do ano para não ler 2018.5); a conciliação barrou o número sem dono (NUMBER_UNUSED) em vez de responder sobre todo o histórico.
+#   E47, E48: intervalo de horas explícito ("entre 0h e antes das 6h", "das 18h às 6h") não é lido; barrado por NUMBER_UNUSED.
+#   E25: ONE_MEASURE (a interpretação não trouxe exatamente uma grandeza).
+#   E07, E18: altura da base de nuvem não é grandeza da ontologia (é atributo da camada): lacuna de capacidade, dita por todos.

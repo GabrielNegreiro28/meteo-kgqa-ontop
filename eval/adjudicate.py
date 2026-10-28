@@ -4,7 +4,7 @@
 
 O comparador automático de `run_independent` só vê números e trata período escrito como texto (`2019-09`, `07`) como divergência. Aqui:
 - `correto`: a resposta contém todas as linhas da referência (rótulos de período em qualquer formato), OU divergiu por diferença de limpeza declarada
-  em `docs/julgamento_<set>_veredictos.yaml` (`cleaning_difference`) e outra condição deu o mesmo valor (a diferença vem do conjunto de regras, não do acaso);
+  em `docs/julgamento_<set>_veredictos.yaml` (`cleaning_difference` ou `oracle_error`) e outra condição deu o mesmo valor (a diferença vem do conjunto de regras, não do acaso);
 - `errado`: respondeu e não bate (`pipeline_error`, ou divergência sem veredito); respondeu onde devia recusar ou esclarecer;
 - `absteve`: não respondeu pergunta respondível (não é erro de valor, mas não ajuda quem perguntou).
 Pergunta que alguma condição não executou (`BUDGET_EXCEEDED`: nem chegou ao LLM) sai do placar de TODAS: só se compara o que todas rodaram.
@@ -79,16 +79,19 @@ def classify(conds: dict[str, dict[str, dict]], verdicts: dict[str, dict]) -> di
     ids = [i for i in ids if not any(not_run(d[i]) for d in conds.values())]
     out: dict[str, dict[str, str]] = {c: {} for c in conds}
     for i in ids:
-        sigs = {c: signature(d[i]["pipeline_rows"]) for c, d in conds.items() if d[i]["status"] == "answered"}
         for c, d in conds.items():
             r = d[i]
             v = (verdicts.get(i) or {}).get("verdict")
             if r["expected_behavior"] == "answerable":
-                if r["status"] != "answered":
+                # o oráculo errou ou limpou diferente, e outra condição deu a MESMA resposta: é o conjunto de regras, não acaso
+                agreed = v in ("cleaning_difference", "oracle_error") and any(
+                    d[i]["status"] == r["status"] and signature(d[i]["pipeline_rows"]) == signature(r["pipeline_rows"])
+                    for k, d in conds.items() if k != c)
+                if r["status"] == "no_results" and agreed and v == "oracle_error":
+                    out[c][i] = "correto"                 # "não há registros" certo: o oráculo contou um valor que a limpeza descarta
+                elif r["status"] != "answered":
                     out[c][i] = "absteve"
-                elif robust_match(r["pipeline_rows"], r.get("oracle_rows") or []):
-                    out[c][i] = "correto"
-                elif v == "cleaning_difference" and any(s == sigs[c] for k, s in sigs.items() if k != c):
+                elif robust_match(r["pipeline_rows"], r.get("oracle_rows") or []) or agreed:
                     out[c][i] = "correto"
                 else:
                     out[c][i] = "errado"
