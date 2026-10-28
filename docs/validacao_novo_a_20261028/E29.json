@@ -1,0 +1,25 @@
+{
+  "id": "E29",
+  "status": "ok",
+  "result": [
+    [
+      "SBMQ",
+      26.223230974632845
+    ],
+    [
+      "SBRB",
+      23.673809523809524
+    ]
+  ],
+  "reads": [
+    {
+      "file": "temperatura.csv",
+      "usecols": [
+        "sigla",
+        "hora_observacao",
+        "bumido"
+      ],
+      "chunksize": 100000
+    }
+  ]
+}

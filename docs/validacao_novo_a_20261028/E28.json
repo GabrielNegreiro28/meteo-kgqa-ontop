@@ -1,0 +1,21 @@
+{
+  "id": "E28",
+  "status": "ok",
+  "result": [
+    [
+      "SBNM",
+      34.9
+    ]
+  ],
+  "reads": [
+    {
+      "file": "temperatura.csv",
+      "usecols": [
+        "sigla",
+        "hora_observacao",
+        "temppo"
+      ],
+      "chunksize": 100000
+    }
+  ]
+}

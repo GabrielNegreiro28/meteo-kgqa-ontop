@@ -1,0 +1,25 @@
+{
+  "id": "E32",
+  "status": "ok",
+  "result": [
+    [
+      1,
+      82.71097046413502
+    ],
+    [
+      2,
+      69.31561140647656
+    ]
+  ],
+  "reads": [
+    {
+      "file": "temperatura.csv",
+      "usecols": [
+        "sigla",
+        "hora_observacao",
+        "ur"
+      ],
+      "chunksize": 100000
+    }
+  ]
+}

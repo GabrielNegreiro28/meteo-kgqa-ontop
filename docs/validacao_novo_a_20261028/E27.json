@@ -1,0 +1,37 @@
+{
+  "id": "E27",
+  "status": "ok",
+  "result": [
+    [
+      "SBUF",
+      48.16816143497758
+    ],
+    [
+      "SBCN",
+      52.36078782452999
+    ],
+    [
+      "SBMK",
+      54.71838933059759
+    ],
+    [
+      "SBNV",
+      56.696396396396395
+    ],
+    [
+      "SBAU",
+      57.00611246943765
+    ]
+  ],
+  "reads": [
+    {
+      "file": "temperatura.csv",
+      "usecols": [
+        "sigla",
+        "hora_observacao",
+        "ur"
+      ],
+      "chunksize": 100000
+    }
+  ]
+}

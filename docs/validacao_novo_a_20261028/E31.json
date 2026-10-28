@@ -1,0 +1,25 @@
+{
+  "id": "E31",
+  "status": "ok",
+  "result": [
+    [
+      "SBFS",
+      9.52605459057072
+    ],
+    [
+      "SBMS",
+      6.123152709359606
+    ]
+  ],
+  "reads": [
+    {
+      "file": "vento.csv",
+      "usecols": [
+        "sigla",
+        "hora_observacao",
+        "velvento"
+      ],
+      "chunksize": 100000
+    }
+  ]
+}
