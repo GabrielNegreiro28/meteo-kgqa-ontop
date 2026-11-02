@@ -31,7 +31,7 @@ from ..knowledge import DomainCatalog, ExemplarStore, Lexicon
 from ..planning import compile_query, plan, to_interp
 from ..presentation import render, units_of
 from ..understanding import Interpreter, Parsed, canonical_form, describe_diff, diff, parse
-from ..understanding.evidence import needs_reread, time_key
+from ..understanding.evidence import needs_reread, reread_key, time_key
 from ..verification import verify_post, verify_pre
 from .settings import Settings
 
@@ -259,8 +259,7 @@ class MetQA:
         except LLMError as e:
             log("reread_time", ok=False, kind=e.kind)
             return []
-        other = parse({**p.raw, "status": "ok", "time": raw})
-        same = not other.errors and time_key([x for _, x in other.parts]) == time_key([x for _, x in p.parts])
+        same = reread_key(raw) == time_key([x for _, x in p.parts])
         log("reread_time", ok=True, span=span, same=same, time=raw)
         return [] if same else [f"o trecho de tempo ('{span}'), relido sozinho, dá outro período"]
 

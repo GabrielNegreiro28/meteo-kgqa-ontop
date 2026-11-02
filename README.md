@@ -90,7 +90,13 @@ python -m semantics.run_evolution --adapter metqa --set <conjunto> --budget 2   
 
 Conjunto independente novo_b_100_20261028_validado (100 perguntas, rodada única, 2026-10-31, antes do plano final): 86/100 corretas
 [IC95% 78–91%], 1 resposta errada entregue, 13 abstenções, US$ 0,032 e 9,5 s por pergunta (`docs/RESULTADOS_MVP_novo_b_100_20261028.md`).
-As abstenções e os defeitos achados ali são os que o plano final corrigiu; a medição da versão final está em `docs/RESULTADOS_FINAL_novo_c.md`.
+As abstenções e os defeitos achados ali são os que o plano final corrigiu.
+
+Versão final, conjunto novo_c_20261102 (100 perguntas de um gerador separado, rodada única, 2026-11-02): 87/100 corretas [IC95% 79–92%],
+2 respostas erradas entregues (um empate escondido e uma pergunta genérica respondida em vez de esclarecida), 11 abstenções, US$ 0,034 e
+6,6 s (mediana) por pergunta. Nenhum número errado por defeito de consulta; as 10 divergências numéricas são de limpeza. O critério de aceite
+do plano não foi atingido em erros, abstenções, custo e latência; os defeitos achados foram corrigidos depois, sem efeito medido
+(`docs/RESULTADOS_FINAL_novo_c.md`).
 
 Os vereditos são julgamento do Claude conferido na base limpa, sem revisão humana: o placar é reproduzível, não um gabarito independente.
 

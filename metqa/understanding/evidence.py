@@ -93,9 +93,24 @@ def conservation(evidence: dict[str, str], parts: list[CanonicalQuery]) -> list[
     return out
 
 
-def time_key(parts: list[CanonicalQuery]) -> list[tuple]:
-    """O tempo normalizado, para comparar com a releitura isolada do trecho."""
-    return sorted((s.start, s.end, s.hours, s.weekdays, s.instant) for s in (cq.scope for cq in parts))
+def time_key(parts: list[CanonicalQuery]) -> tuple:
+    """O que a releitura isolada pode conferir: o ENVELOPE das datas (do primeiro início ao último fim) ou o instante. Horas e dias da semana
+    ficam fora: o trecho citado para o tempo muitas vezes não os carrega ("aos domingos" ... "de 2017"), e "em cada mês de 2023" relido
+    sozinho vira doze janelas com o mesmo envelope (E192, E193, E243, E250 do novo_c)."""
+    scopes = [cq.scope for cq in parts]
+    starts, ends = [s.start for s in scopes if s.start], [s.end for s in scopes if s.end]
+    return (min(starts) if starts else None, max(ends) if ends else None, tuple(sorted(str(s.instant) for s in scopes if s.instant)))
+
+
+def reread_key(raw: dict) -> tuple | None:
+    """O envelope da releitura (mesma forma de `time_key`), direto do JSON: ela pode trazer mais janelas do que uma consulta aceita."""
+    from datetime import date, datetime
+    try:
+        rs = [(date.fromisoformat(str(r["start"])), date.fromisoformat(str(r["end"]))) for r in raw.get("ranges") or []]
+        inst = str(datetime.fromisoformat(str(raw["instant"]))) if raw.get("instant") else None
+    except (KeyError, TypeError, ValueError):
+        return None
+    return (min(a for a, _ in rs) if rs else None, max(b for _, b in rs) if rs else None, (inst,) if inst else ())
 
 
 def needs_reread(evidence: dict[str, str], parts: list[CanonicalQuery]) -> bool:

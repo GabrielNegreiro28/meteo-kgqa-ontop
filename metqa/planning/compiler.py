@@ -57,7 +57,9 @@ def _shape(cq: CanonicalQuery) -> ResultShape:
 def compile_query(cq: CanonicalQuery, catalog: DomainCatalog) -> CompiledQuery | None:
     if cq.intent == "instant" or cq.scope.instant is not None:
         return _instant(cq, catalog)
-    sparql = compile_structured(to_interp(cq), catalog.index, force=True)
+    # ranking: uma linha a mais, para o texto dizer o empate em vez de escolher um dos empatados (E208 do novo_c)
+    wide = replace(cq, order={**cq.order, "limit": cq.order["limit"] + 1}) if cq.order else cq
+    sparql = compile_structured(to_interp(wide), catalog.index, force=True)
     if not sparql:
         return None
     if cq.aggregation == "count" and cq.conditions and not (cq.daily or cq.group_by or cq.order or cq.attributes):

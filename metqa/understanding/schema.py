@@ -70,8 +70,8 @@ def _constant(dim: str, cq: CanonicalQuery) -> bool:
     estação só): normalizado fora, para que duas leituras que diferem só nisso concordem (E112 do novo_b)."""
     s = cq.scope
     if dim == "station":
-        return len(cq.stations) == 1 and not cq.order
-    if s.start is None or cq.order:
+        return len(cq.stations) == 1
+    if s.start is None:
         return False
     return {"year": s.start.year == s.end.year, "month": (s.start.year, s.start.month) == (s.end.year, s.end.month),
             "day": s.start == s.end}.get(dim, False)
@@ -179,6 +179,8 @@ def parse(raw: dict[str, Any]) -> Parsed:
                             conditions=list(conditions), daily=dict(daily) if daily else None, group_by=list(group_by),
                             attributes=list(attributes), order=order, spans=dict(p.evidence), assumptions=list(p.assumptions))
         cq.group_by = [g for g in cq.group_by if not _constant(g, cq)]
+        if cq.order and not cq.group_by:
+            cq.order = None                                        # "só o maior" de um valor só (E212 do novo_c)
         if agg == "count" and cq.count_of is None:
             cq.count_of = "days" if daily else "readings"
             cq.assumptions.append("contei leituras" if not daily else "contei dias")

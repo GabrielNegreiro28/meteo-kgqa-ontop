@@ -52,6 +52,8 @@ def assess(question: str, a: Parsed, b: Parsed | None, differ: list[str], has_ex
             r.weak.append("sem estação na pergunta: todas as estações")
         if cq.scope.start is None and cq.scope.instant is None:
             r.weak.append("sem período na pergunta: todo o histórico")
+        if not cq.stations and "station" not in cq.group_by and cq.scope.start is None and cq.scope.instant is None:
+            r.strong.append("a pergunta não diz estação nem período: responderia sobre tudo")
     if not has_exemplar:
         r.weak.append("nenhuma pergunta parecida já verificada")
     return r

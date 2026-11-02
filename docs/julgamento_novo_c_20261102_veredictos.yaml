@@ -1,0 +1,24 @@
+# Vereditos do conjunto novo_c_20261102 (rodada metqa_1, commit 467b071, versão final do plano). JULGAMENTO DO CLAUDE (2026-11-02),
+# conferindo cada divergência na DuckDB limpa (~/metdata/met.duckdb, schema clean). Não revisado por humano.
+# verdict: pipeline_error | cleaning_difference | oracle_error | ok. Só divergências e respostas a perguntas não respondíveis.
+E156: {verdict: ok, note: "valor certo (18.166,8 m = 18,17 km), mas dito em metros: a resposta não converte para a unidade pedida (defeito de apresentação, registrado)"}
+E161: {verdict: cleaning_difference, note: "142 leituras x 100 instantes: SBMN tem rajada por cabeceira; o oráculo conta instantes (máximo entre cabeceiras), o sistema conta leituras. Política de leituras múltiplas: decisão do professor"}
+E162: {verdict: cleaning_difference, note: "1.470,65 x 681,08: o oráculo faz a média da MENOR base de cada boletim; o sistema, a média de todas as camadas (uma observação por camada, grandeza provisória). Definição a fechar com a equipe de ontologia (DUVIDAS_ONTOLOGIA, seção 9)"}
+E185: {verdict: oracle_error, note: "o único dia do oráculo vem de UR = 0,0 em 07/07/2019 07h, erro de sensor posto em quarentena (faixa [1, 100]); mínimo limpo do ano: 22%. Resposta certa: 0"}
+E186: {verdict: cleaning_difference, note: "153 x 154: 37,2 °C em 04/02/2020 21h é pico isolado (quarentena pico_isolado)"}
+E200: {verdict: cleaning_difference, note: "2021: 140 kt e 2023: 76 kt são picos isolados (4 leituras em quarentena); os outros 8 anos iguais"}
+E202: {verdict: cleaning_difference, note: "195, 177 e 174 kt do oráculo são rajadas inconsistentes com a média (quarentena rajada_inconsistente_com_media)"}
+E204: {verdict: cleaning_difference, note: "SBIT 23.894,8 mm em 2020 são 237 valores de código de erro repetido (quarentena); no grafo, SBIT tem 0 mm válidos e o maior total é SBJC"}
+E205: {verdict: ok, note: "SBJR não tem rajada em junho de 2022 (o oráculo falhou por isso); a resposta deu só SBJD (23 kt, n = 2) sem dizer que SBJR não tem registros (defeito de apresentação, registrado)"}
+E208: {verdict: pipeline_error, note: "empate: SBSM e SBSJ têm mínima de 100 m; o sistema respondeu só SBSJ (ranking com limite 1 esconde o empate)"}
+E209: {verdict: cleaning_difference, note: "2016 e 2020 iguais; 2024 35,774 x 35,784: média das leituras duplicadas de cada instante (D-87)"}
+E213: {verdict: ok, note: "valores iguais (25,997 e 27,727 °C); o oráculo rotula os semestres como 1 e 2 e o sistema pelas datas, o que o comparador automático não casa"}
+E214: {verdict: cleaning_difference, note: "1.011,41 x 1.011,41 e 1.011,57 x 1.011,58: leituras duplicadas (D-87); a conclusão (maior em 2025) é a mesma"}
+E240: {verdict: cleaning_difference, note: "15,7 °C em 01/01/2021 21h é uma de duas leituras do instante; o oráculo faz a média delas (16,25)"}
+E224: {verdict: ok, note: "dezembro de 2015 está fora da cobertura e o cálculo não foi dito: pedir esclarecimento é aceitável (o esperado era unsupported)"}
+E225: {verdict: ok, note: "janeiro de 2026 está fora da cobertura: 'não há registros, os dados cobrem 2016-2025' é verdade (o esperado era unsupported)"}
+E228: {verdict: pipeline_error, note: "'Qual foi a temperatura média?' sem estação nem período foi respondida sobre tudo; devia pedir esclarecimento (mesmo defeito do E131 do novo_b)"}
+# abstenções (respondíveis que pediram confirmação; não são respostas erradas):
+#   "horas cheias" (precipitação já é só de boletins da hora cheia, R5): E157, E199, E211, E241, E248
+#   releitura isolada do tempo comparou campos que o trecho relido não contém (dias da semana, "cada mês"): E192, E193, E243, E250
+#   leituras divergem: E206 (status, três estações), E212 (agrupamento por ano com 'só o maior' em cada janela)

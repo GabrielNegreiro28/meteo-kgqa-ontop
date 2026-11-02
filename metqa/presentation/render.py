@@ -124,12 +124,23 @@ def _one(e: Executed, catalog: DomainCatalog) -> list[str]:
             base = f" (de {num(r.get(sh.n))} {counted} no recorte)" if sh.n and sh.n != sh.value else ""
             return [f"{num(r.get(sh.value))} {counted} de {head}{base}."]
         return [f"{AGG[q.aggregation].capitalize()} de {head}: {num(r.get(sh.value))} {sym} (sobre {num(r.get(sh.n))} leituras)."]
+    tie = ""
+    if q.order:                                       # a consulta traz uma linha a mais: ela só aparece se empata com a última pedida
+        k = q.order["limit"]
+        if len(rs) > k and rs[k].get(sh.value) == rs[k - 1].get(sh.value):
+            tie = f" — empate: {len([r for r in rs[k:] if r.get(sh.value) == rs[k - 1].get(sh.value)])} a mais com o mesmo valor"
+            rs = [r for r in rs if r.get(sh.value) != rs[k - 1].get(sh.value)][:k - 1] + [r for r in rs if r.get(sh.value) == rs[k - 1].get(sh.value)]
+        else:
+            rs = rs[:k]
     calc = "número de leituras" if sh.is_count else AGG[q.aggregation]
     lines = [f"{calc.capitalize()} de {head}, por {', '.join(DIMS.get(d, d.rsplit('#', 1)[-1].split(':')[-1]) for d in q.group_by)}"
-             + (f" ({top(q.order)})" if q.order else "") + ":"]
+             + (f" ({top(q.order)}{tie})" if q.order else "") + ":"]
     for r in rs:
         value = num(r.get(sh.value)) if sh.is_count else f"{num(r.get(sh.value))} {sym} (n = {num(r.get(sh.n))})"
         lines.append(f"- {_keys(r, q, sh)}: {value}")
+    if "station" in q.group_by and q.stations and not q.order:     # estação citada que não voltou: dito, não omitido (E205 do novo_c)
+        seen = {str(r.get("station")) for r in rs}
+        lines += [f"- {c}: sem registros" for c in (s["iri"].rsplit("/", 1)[-1] for s in q.stations) if c not in seen]
     return lines
 
 

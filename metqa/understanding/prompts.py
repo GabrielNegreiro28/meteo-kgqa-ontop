@@ -36,6 +36,8 @@ RULES = """Regras:
      ("até as 6h" não inclui as 6h). Sem recorte: null.
    - "time.weekdays": 0 = segunda … 6 = domingo, quando a pergunta recorta dias da semana. Sem recorte: null.
    - "time.instant": só quando a pergunta pede o valor de UM horário de um dia (então "ranges": []).
+   - Precipitação e duração da chuva só existem nos boletins da hora cheia: "só horas cheias" / "somando horas cheias" não muda a consulta
+     (não use "local_hours" para isso; diga em "assumptions").
    - Convenções do domínio: estações do ano austrais e meteorológicas (verão de AAAA = dezembro de AAAA-1 a fevereiro de AAAA; outono = mar–mai;
      inverno = jun–ago; primavera = set–nov); trimestre e semestre do ano civil. Diga em "assumptions" toda convenção que usar.
    - Datas relativas ("ontem", "semana passada", "este ano") não podem ser resolvidas: status "needs_clarification".
