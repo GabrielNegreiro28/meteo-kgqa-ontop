@@ -22,7 +22,10 @@ UNIT_NS = "http://qudt.org/vocab/unit/"
 # dimensional sobre valores já normalizados, sem olhar a forma de escrever). Fonte única do MVP.
 UNIT_DIMENSION = {"DEG_C": "temperature", "PERCENT": "ratio", "MilliM": "precipitation_depth", "HectoPA": "pressure", "KN": "speed",
                   "M": "length", "KiloM": "length", "DEG": "angle", "MIN": "time", "OKTA": "cover"}
-GROUP_NAMES = {"station": "estação", "year": "ano", "month": "mês", "day": "dia", "value": "valor medido"}
+# unidades em que o usuário pode DIZER um valor, sem met:symbol na ontologia (nenhuma grandeza as tem como canônica). Sai daqui quando o
+# catálogo virar a fonte única das unidades (plano, D6).
+EXTRA_SYMBOLS = {"KiloM": "km", "OKTA": "oitavos"}
+GROUP_NAMES ={"station": "estação", "year": "ano", "month": "mês", "day": "dia", "value": "valor medido"}
 
 
 @dataclass(frozen=True)
@@ -88,7 +91,8 @@ class DomainCatalog:
         return self.index.link_properties(text)
 
     def symbol(self, unit_iri: str | None) -> str:
-        return self.index.unit_symbols.get(unit_iri or "", "")
+        short = (unit_iri or "").rsplit("/", 1)[-1]
+        return self.index.unit_symbols.get(unit_iri or "") or EXTRA_SYMBOLS.get(short, "")
 
     def unit_names(self) -> list[str]:
         return sorted(UNIT_DIMENSION)

@@ -13,10 +13,9 @@ from typing import Any, Protocol
 
 from kgqa.contract import Diagnostic, Status
 from kgqa.store import PREFIXES, ExecResult
-from kgqa.verify import result_status
 from pipeline.validators import validate_query
 
-from ..domain import Executed, Stop, SubQuery
+from ..domain import CompiledQuery, Executed, ResultShape, Stop, SubQuery
 from ..knowledge import DomainCatalog
 from ..planning import to_interp
 
@@ -27,8 +26,20 @@ class SparqlSource(Protocol):
     def select(self, query: str, timeout_s: float = ..., max_rows: int = ...) -> ExecResult: ...
 
 
-def execute(part: SubQuery, sparql: str, catalog: DomainCatalog, source: SparqlSource, *, timeout_s: float, max_rows: int,
+def result_status(results: dict[str, Any] | None, shape: ResultShape) -> Status:
+    """Vazio de verdade pelo papel declarado das colunas: sem linhas, ou base (`n`) zero em todas as linhas. Uma contagem 0 com base > 0 é
+    uma resposta ("nenhuma leitura cumpre"), não ausência de dados; um SUM sobre conjunto vazio (0 pela SPARQL 1.1) tem base 0."""
+    rs = rows(results)
+    if not rs:
+        return Status.NO_RESULTS
+    if shape.n and all(not r.get(shape.n) for r in rs):
+        return Status.NO_RESULTS
+    return Status.ANSWERED
+
+
+def execute(part: SubQuery, compiled: CompiledQuery, catalog: DomainCatalog, source: SparqlSource, *, timeout_s: float, max_rows: int,
             log=lambda *a, **k: None) -> Executed | Stop:
+    sparql = compiled.sparql
     _, findings = validate_query(sparql, to_interp(part.query), catalog.index, True)
     log("validate_query", findings=[f.diag.code for f in findings], sparql=sparql)
     if findings:                                   # consulta montada por código que não passa nas regras: defeito do sistema, nunca resposta
@@ -48,8 +59,7 @@ def execute(part: SubQuery, sparql: str, catalog: DomainCatalog, source: SparqlS
     if not ex.ok:                                  # detalhe interno (URL, pilha) fica na trilha, não na resposta
         msg = "A fonte não respondeu dentro do limite de tempo." if ex.error_kind == "timeout" else "Falha ao executar a consulta na fonte."
         return Stop(Status.EXECUTION_ERROR, [Diagnostic((ex.error_kind or "runtime").upper(), "error", msg)])
-    status, _ = result_status(ex.results)
-    return Executed(part, sparql, ex.results, ex.truncated, status, engine_sql)
+    return Executed(part, sparql, ex.results, ex.truncated, result_status(ex.results, compiled.shape), engine_sql, compiled.shape)
 
 
 def rows(results: dict[str, Any] | None) -> list[dict[str, Any]]:

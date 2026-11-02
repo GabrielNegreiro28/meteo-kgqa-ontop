@@ -179,7 +179,7 @@ def test_horas_que_atravessam_a_meia_noite_viram_um_conjunto():
     assert hour_ranges(hours) == "das 18h às 6h (antes das 6h)"
     p = parse(nir("met:RelativeHumidity", ["st:SBNF"], "avg", "2020-07-01", "2020-07-31", hours=hours))
     cq = plan(p.parts).parts[0].query
-    sparql = compile_query(cq, REAL)
+    sparql = compile_query(cq, REAL).sparql
     assert "FILTER(HOURS(?t) IN (0, 1, 2, 3, 4, 5, 6, 7, 8, 21, 22, 23))" in sparql          # 18h–6h local = 21h–9h UTC
     assert not validate_query(sparql, to_interp(cq), REAL.index, True)[1]
 
@@ -190,14 +190,14 @@ def test_duas_faixas_sao_uma_comparacao():
     p = plan(parse(ir).parts)
     assert p.combine == "compare" and [x.query.scope.start.year for x in p.parts] == [2016, 2025]
     for part in p.parts:
-        assert not validate_query(compile_query(part.query, REAL), to_interp(part.query), REAL.index, True)[1]
+        assert not validate_query(compile_query(part.query, REAL).sparql, to_interp(part.query), REAL.index, True)[1]
 
 
 def test_instante_compila_em_utc():
     p = parse(nir("met:AirTemperature", ["st:SBGL"], instant="2021-03-10T15:00:00-03:00"))
     cq = p.parts[0][1]
     assert cq.intent == "instant"
-    sparql = compile_query(cq, REAL)
+    sparql = compile_query(cq, REAL).sparql
     assert '"2021-03-10T18:00:00Z"^^xsd:dateTime' in sparql and not validate_query(sparql, to_interp(cq), REAL.index, True)[1]
 
 

@@ -1,3 +1,3 @@
-from .types import CanonicalQuery, Executed, Plan, Stop, SubQuery, TimeScope
+from .types import CanonicalQuery, CompiledQuery, Executed, Plan, ResultShape, Stop, SubQuery, TimeScope
 
-__all__ = ["CanonicalQuery", "Executed", "Plan", "Stop", "SubQuery", "TimeScope"]
+__all__ = ["CanonicalQuery", "CompiledQuery", "Executed", "Plan", "ResultShape", "Stop", "SubQuery", "TimeScope"]

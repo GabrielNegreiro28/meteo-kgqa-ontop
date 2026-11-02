@@ -97,6 +97,17 @@ def test_mvp_compares_two_periods(real):
 
 
 @needs_ontop
+def test_zero_count_with_data_is_an_answer(real):
+    """E84 do novo_b: nenhum boletim de SBMO com QNH < 1005 hPa em 2025 (oráculo: 0). É resposta, com a base, não 'sem registros'."""
+    ir = nir("met:PressureQNH", ["st:SBMO"], "count", "2025-01-01", "2025-12-31", count_of="reports",
+             conditions=[{"op": "<", "value": 1005, "unit": "unit:HectoPA"}],
+             evidence=E(measure="QNH", stations="SBMO", calc="quantos boletins", conditions="abaixo de 1005 hPa", time="Em 2025"))
+    r = ask(real, "Em 2025, quantos boletins de SBMO apresentaram QNH abaixo de 1005 hPa?", ir).response
+    assert r.status == Status.ANSWERED, [d.message for d in r.diagnostics]
+    assert r.answer_text.startswith("0 boletins de pressão QNH em SBMO") and "boletins no recorte)" in r.answer_text
+
+
+@needs_ontop
 def test_mvp_reads_the_value_at_an_instant(real):
     # 14/10/2019 14h local em SBGO: 35,4 °C no CSV original
     ir = nir("met:AirTemperature", ["st:SBGO"], instant="2019-10-14T14:00:00-03:00",

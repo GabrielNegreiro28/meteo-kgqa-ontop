@@ -237,14 +237,15 @@ class MetQA:
         res.response.interpretation = to_interp(p.parts[0].query)
         done: list[Executed] = []
         for part in p.parts:
-            sparql = compile_query(part.query, self.catalog)
-            log("compile_structured", sparql=sparql, part=part.label, intent=part.query.intent)
-            if not sparql:
+            compiled = compile_query(part.query, self.catalog)
+            log("compile_structured", sparql=compiled.sparql if compiled else None, part=part.label, intent=part.query.intent,
+                shape=compiled.shape.__dict__ if compiled else None)
+            if not compiled:
                 return self._end(res, Stop.of(Status.UNSUPPORTED, "UNSUPPORTED_SHAPE",
                                               "Não sei montar com segurança a consulta para esta forma de pergunta."), t0)
-            r = execute(part, sparql, self.catalog, self.source, timeout_s=self.settings.timeout_s, max_rows=self.settings.max_rows, log=log)
+            r = execute(part, compiled, self.catalog, self.source, timeout_s=self.settings.timeout_s, max_rows=self.settings.max_rows, log=log)
             if isinstance(r, Stop):
-                res.response.sparql = sparql
+                res.response.sparql = compiled.sparql
                 return self._end(res, r, t0)
             done.append(r)
 
@@ -253,7 +254,7 @@ class MetQA:
         resp.sparql = "\n# ---\n".join(e.sparql for e in done)
         resp.results = done[0].results if len(done) == 1 else {"parts": [{"label": e.part.label, "results": e.results} for e in done]}
         resp.truncated = any(e.truncated for e in done)
-        resp.units = units_of(done[0].part.query, self.catalog)
+        resp.units = units_of(done[0], self.catalog)
         resp.answer_text = (render(done, p.combine, self.catalog, caveats) + "\nEntendi assim: " + paraphrase_parts(chosen.parts, self.catalog)
                             + (". Se não for isso, diga o que corrigir." if not by_user else " (confirmado por você)."))
         sql = [e.engine_sql for e in done if e.engine_sql]

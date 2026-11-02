@@ -20,6 +20,8 @@ def hour_ranges(hours) -> str:
     hs = sorted(set(hours))
     if not hs:
         return ""
+    if len(hs) == 24:
+        return "o dia todo"
     runs, cur = [], [hs[0]]
     for h in hs[1:]:
         if h == cur[-1] + 1:
@@ -84,6 +86,24 @@ class Plan:
     combine: str = "single"                                # "single" | "compare"
 
 
+@dataclass(frozen=True)
+class ResultShape:
+    """O papel de cada coluna, declarado por quem montou a consulta: verificação e texto não adivinham pelo nome da variável."""
+    value: str                                             # coluna do resultado principal
+    n: str | None = None                                   # coluna da base (quantos itens havia no recorte); None = sem base
+    n_of: str = "readings"                                 # o que `n` conta: readings | days
+    is_count: bool = False                                 # o valor é contagem (sem unidade)
+    keys: tuple[str, ...] = ()                             # colunas de agrupamento, na ordem das dimensões
+    attributes: tuple[tuple[str, str], ...] = ()           # (IRI do atributo, coluna)
+    time: str | None = None                                # coluna do instante da leitura
+
+
+@dataclass
+class CompiledQuery:
+    sparql: str
+    shape: ResultShape
+
+
 @dataclass
 class Executed:
     part: SubQuery
@@ -92,6 +112,7 @@ class Executed:
     truncated: bool = False
     status: Status = Status.ANSWERED
     engine_sql: str | None = None
+    shape: ResultShape | None = None
 
 
 @dataclass
