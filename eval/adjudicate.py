@@ -84,10 +84,13 @@ def classify(conds: dict[str, dict[str, dict]], verdicts: dict[str, dict]) -> di
             v = (verdicts.get(i) or {}).get("verdict")
             if r["expected_behavior"] == "answerable":
                 # o oráculo errou ou limpou diferente, e outra condição deu a MESMA resposta: é o conjunto de regras, não acaso
-                agreed = v in ("cleaning_difference", "oracle_error") and any(
+                # (com uma condição só, vale o veredito conferido na base limpa)
+                agreed = v in ("cleaning_difference", "oracle_error") and (len(conds) == 1 or any(
                     d[i]["status"] == r["status"] and signature(d[i]["pipeline_rows"]) == signature(r["pipeline_rows"])
-                    for k, d in conds.items() if k != c)
-                if r["status"] == "no_results" and agreed and v == "oracle_error":
+                    for k, d in conds.items() if k != c))
+                if v == "ok":
+                    out[c][i] = "correto"
+                elif r["status"] == "no_results" and agreed and v == "oracle_error":
                     out[c][i] = "correto"                 # "não há registros" certo: o oráculo contou um valor que a limpeza descarta
                 elif r["status"] != "answered":
                     out[c][i] = "absteve"

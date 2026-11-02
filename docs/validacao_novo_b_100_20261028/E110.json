@@ -1,0 +1,25 @@
+{
+  "id": "E110",
+  "status": "ok",
+  "result": [
+    [
+      "SBCT",
+      3.7
+    ],
+    [
+      "SBFL",
+      1.5
+    ]
+  ],
+  "reads": [
+    {
+      "file": "temperatura.csv",
+      "usecols": [
+        "sigla",
+        "hora_observacao",
+        "temppo"
+      ],
+      "chunksize": 100000
+    }
+  ]
+}

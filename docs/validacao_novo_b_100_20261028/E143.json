@@ -1,0 +1,20 @@
+{
+  "id": "E143",
+  "status": "ok",
+  "result": [
+    [
+      22.122120518688025
+    ]
+  ],
+  "reads": [
+    {
+      "file": "temperatura.csv",
+      "usecols": [
+        "sigla",
+        "hora_observacao",
+        "bseco"
+      ],
+      "chunksize": 100000
+    }
+  ]
+}

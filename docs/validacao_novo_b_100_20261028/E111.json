@@ -1,0 +1,25 @@
+{
+  "id": "E111",
+  "status": "ok",
+  "result": [
+    [
+      2018,
+      1006.7
+    ],
+    [
+      2023,
+      1010.7
+    ]
+  ],
+  "reads": [
+    {
+      "file": "pressao.csv",
+      "usecols": [
+        "sigla",
+        "hora_observacao",
+        "qnh"
+      ],
+      "chunksize": 100000
+    }
+  ]
+}

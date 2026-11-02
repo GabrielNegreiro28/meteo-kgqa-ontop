@@ -1,0 +1,25 @@
+{
+  "id": "E108",
+  "status": "ok",
+  "result": [
+    [
+      "SBBE",
+      1012.2576826196473
+    ],
+    [
+      "SBSN",
+      1011.9169960474309
+    ]
+  ],
+  "reads": [
+    {
+      "file": "pressao.csv",
+      "usecols": [
+        "sigla",
+        "hora_observacao",
+        "qnh"
+      ],
+      "chunksize": 100000
+    }
+  ]
+}

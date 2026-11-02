@@ -1,0 +1,17 @@
+{
+  "id": "E59",
+  "status": "error",
+  "error": "AssertionError: Sem observações válidas após os filtros",
+  "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\meteo-kgqa-ontop\\eval\\independent_evaluation\\oracle_worker.py\", line 37, in <module>\n    exec(compile(q['oracle_pandas'],qid,'exec'),ns)\n    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"E59\", line 15, in <module>\nAssertionError: Sem observações válidas após os filtros\n",
+  "reads": [
+    {
+      "file": "visibilidade.csv",
+      "usecols": [
+        "sigla",
+        "hora_observacao",
+        "visibpre"
+      ],
+      "chunksize": 100000
+    }
+  ]
+}

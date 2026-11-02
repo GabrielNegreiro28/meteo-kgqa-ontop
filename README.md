@@ -99,6 +99,12 @@ python -m semantics.run_evolution --seed-gold --require-reasoner --sample-graph 
 
 ## O que a medição mostra (e o que não mostra)
 
+MVP (`metqa`) no conjunto independente novo_b_100_20261028_validado (100 perguntas, rodada única, 2026-10-31): 86/100 corretas
+[IC95% 78–91%], 1 resposta errada entregue, 13 abstenções, US$ 0,032 e 9,5 s por pergunta (`docs/RESULTADOS_MVP_novo_b_100_20261028.md`).
+O plano da versão final, que ataca as abstenções e os defeitos achados, está em `docs/PLANO_ARQUITETURA_FINAL.md`.
+
+Medições antigas do legado:
+
 Mesmo modelo, grafo real, uma execução por condição. **Com n tão pequeno, quase nenhuma diferença sai do ruído** (`eval/stats.py`):
 
 | Conjunto | `v4` | `v6` | McNemar exato |

@@ -1,0 +1,22 @@
+questions:
+- id: E59R1
+  category: simples
+  question: Qual foi a menor visibilidade predominante de SBNF em julho de 2024, em
+    metros?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de visibpre fora de [0, 2000] dezenas de metros descartados. Duplicatas
+    no mesmo instante reduzidas à média dos valores válidos. Dezenas de metros convertidas
+    para metros. 2000 representa 20000 m ou mais, mantido como limite inferior de
+    20000 m.
+  oracle_pandas: "import pandas as pd\nstations = ['SBNF']\nparts = []\nfor chunk\
+    \ in pd.read_csv('visibilidade.csv', usecols=['sigla', 'hora_observacao', 'visibpre'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2024-07-01') & (chunk['hora_observacao']\
+    \ < '2024-08-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['visibpre'] = pd.to_numeric(d['visibpre'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['visibpre'].between(0, 2000)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['visibpre'].mean()\nd['visibpre'] *= 10\nassert not d.empty,\
+    \ 'Sem observações válidas após os filtros'\nresult = [(float(d['visibpre'].min()),)]\n"

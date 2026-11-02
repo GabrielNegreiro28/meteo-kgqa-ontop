@@ -1,0 +1,21 @@
+# Vereditos do conjunto novo_b_100_20261028_validado (rodada metqa_1, commit 3b09a69). JULGAMENTO DO CLAUDE (2026-10-31), conferindo cada
+# divergência na DuckDB limpa (~/metdata/met.duckdb, schema clean). Não revisado por humano.
+# verdict: pipeline_error | cleaning_difference | oracle_error | ok. Só divergências e respostas a perguntas não respondíveis.
+E60: {verdict: cleaning_difference, note: "SBES tem várias leituras de vento por instante (cabeceiras); o oráculo usa o máximo de cada instante (8,87 kt), o sistema a média de todas as leituras (8,03 kt). Política de leituras múltiplas: decisão do professor"}
+E74: {verdict: cleaning_difference, note: "1000,5 hPa é pico isolado descartado pela regra Q3/Q5 da ingestão; sem ele o mínimo é 1007,1 (o do sistema)"}
+E95: {verdict: cleaning_difference, note: "fevereiro: 25,46 x 25,5; o oráculo inclui uma leitura de pico descartada pela Q3/Q5. 11 meses iguais"}
+E98: {verdict: cleaning_difference, note: "1 de 12 meses difere (5,28): pico isolado de vento descartado pela Q3/Q5. Os outros 11 iguais"}
+E99: {verdict: cleaning_difference, note: "2017: 37,8 x 35,2; os 37,8 °C são pico isolado descartado pela Q3/Q5"}
+E102: {verdict: cleaning_difference, note: "diferenças de milésimos em 4 anos: o oráculo faz a média das leituras duplicadas de cada instante, o sistema mantém leituras distintas (D-87)"}
+E105: {verdict: cleaning_difference, note: "SBGL 96 kt é pico isolado descartado pela Q3/Q5; sem ele o maior é SBCH com 50 kt (o do sistema)"}
+E78: {verdict: ok, note: "a contagem certa é 0 (oráculo: 0); o sistema disse 'não há registros' com o 0 na linha. Corrigido na Fase 1: contagem 0 com dados é resposta"}
+E84: {verdict: ok, note: "idem E78: 0 boletins com QNH < 1005 hPa; teste no grafo real tests/test_metqa_real.py::test_zero_count_with_data_is_an_answer"}
+E131: {verdict: pipeline_error, note: "'Quanto tempo durou a chuva em SBLP?' sem período nem cálculo foi respondido sobre todo o histórico; devia pedir esclarecimento"}
+E123: {verdict: ok, note: "janeiro de 2014 está fora da cobertura: 'não há registros, os dados cobrem 2016-2025' é verdade (o esperado era unsupported)"}
+E124: {verdict: ok, note: "idem E123, março de 2026"}
+E134: {verdict: ok, note: "base de nuvem não é grandeza da ontologia: 'não suportado' é honesto (o esperado era esclarecimento)"}
+# abstenções do metqa (não são respostas erradas):
+#   alarmes falsos de confirmação: E58, E70, E87, E94, E112, E141 (evidência entre aspas ou parafraseada; divergência de status)
+#   COMPARISON_SHAPE: E111, E113, E114 (o mesmo mês em dois anos)
+#   base de nuvem: E55, E81, E93 (atributo da camada, não grandeza)
+#   limite de 6000 caracteres do filtro de dias da semana: E149

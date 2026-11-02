@@ -1,0 +1,20 @@
+{
+  "id": "E53",
+  "status": "ok",
+  "result": [
+    [
+      1026.2
+    ]
+  ],
+  "reads": [
+    {
+      "file": "pressao.csv",
+      "usecols": [
+        "sigla",
+        "hora_observacao",
+        "qnh"
+      ],
+      "chunksize": 100000
+    }
+  ]
+}

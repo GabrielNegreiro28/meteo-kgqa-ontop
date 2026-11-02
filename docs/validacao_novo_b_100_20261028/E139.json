@@ -1,0 +1,20 @@
+{
+  "id": "E139",
+  "status": "ok",
+  "result": [
+    [
+      23.0
+    ]
+  ],
+  "reads": [
+    {
+      "file": "vento.csv",
+      "usecols": [
+        "sigla",
+        "hora_observacao",
+        "velvento"
+      ],
+      "chunksize": 100000
+    }
+  ]
+}

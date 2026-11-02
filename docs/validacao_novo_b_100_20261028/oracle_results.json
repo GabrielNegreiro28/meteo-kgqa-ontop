@@ -1,0 +1,2366 @@
+{
+  "frozen_name": "novo_b_100_20261028",
+  "sha256": "66d58cc387b11157c39f9436af102dfd445c5cd376176775e728bd1d13e181e6",
+  "raw_sha256": "f0c047f21be626b5a851c56d582c7f152636931aa94f7b3449ff3f6891253b83",
+  "pipeline_executed": false,
+  "timeout_seconds": 180,
+  "workers": 3,
+  "summary": {
+    "ok": 79,
+    "not_applicable": 20,
+    "error": 1
+  },
+  "results": [
+    {
+      "id": "E100",
+      "status": "ok",
+      "result": [
+        [
+          2016,
+          1015.3491856677525
+        ],
+        [
+          2017,
+          1015.1952266666667
+        ],
+        [
+          2018,
+          1014.8201022604951
+        ],
+        [
+          2019,
+          1014.3678214010778
+        ],
+        [
+          2020,
+          1014.4018962848297
+        ],
+        [
+          2021,
+          1014.1982572614107
+        ],
+        [
+          2022,
+          1014.2902209492635
+        ],
+        [
+          2023,
+          1014.3655359076146
+        ],
+        [
+          2024,
+          1014.6643995336184
+        ],
+        [
+          2025,
+          1015.0420619364954
+        ]
+      ],
+      "reads": [
+        {
+          "file": "pressao.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "qnh"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 21.93
+    },
+    {
+      "id": "E101",
+      "status": "ok",
+      "result": [
+        [
+          2016,
+          50.0
+        ],
+        [
+          2017,
+          100.0
+        ],
+        [
+          2018,
+          200.0
+        ],
+        [
+          2019,
+          100.0
+        ],
+        [
+          2020,
+          200.0
+        ],
+        [
+          2021,
+          100.0
+        ],
+        [
+          2022,
+          200.0
+        ],
+        [
+          2023,
+          50.0
+        ],
+        [
+          2024,
+          100.0
+        ],
+        [
+          2025,
+          100.0
+        ]
+      ],
+      "reads": [
+        {
+          "file": "visibilidade.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "visibpre"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 22.18
+    },
+    {
+      "id": "E102",
+      "status": "ok",
+      "result": [
+        [
+          2016,
+          17.366569516407598
+        ],
+        [
+          2017,
+          16.975948612315698
+        ],
+        [
+          2018,
+          17.348980252508902
+        ],
+        [
+          2019,
+          17.480230919340848
+        ],
+        [
+          2020,
+          17.20943949598088
+        ],
+        [
+          2021,
+          16.81238106156139
+        ],
+        [
+          2022,
+          16.81498489099935
+        ],
+        [
+          2023,
+          17.575761060008762
+        ],
+        [
+          2024,
+          17.66802127578158
+        ],
+        [
+          2025,
+          17.66413087707617
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "bumido"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 25.52
+    },
+    {
+      "id": "E103",
+      "status": "ok",
+      "result": [
+        [
+          "SBNM",
+          35.2
+        ],
+        [
+          "SBBU",
+          34.6
+        ],
+        [
+          "SBES",
+          34.6
+        ],
+        [
+          "SBSI",
+          34.0
+        ],
+        [
+          "SBHT",
+          33.3
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "bumido"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 27.93
+    },
+    {
+      "id": "E104",
+      "status": "ok",
+      "result": [
+        [
+          "SBTB",
+          1008.8222222222222
+        ],
+        [
+          "SBUY",
+          1010.7748589113417
+        ],
+        [
+          "SBIH",
+          1011.0967929138668
+        ],
+        [
+          "SBTE",
+          1011.2880722480973
+        ],
+        [
+          "SBTF",
+          1011.3007915017704
+        ]
+      ],
+      "reads": [
+        {
+          "file": "pressao.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "qnh"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 24.08
+    },
+    {
+      "id": "E105",
+      "status": "ok",
+      "result": [
+        [
+          "SBGL",
+          96.0
+        ]
+      ],
+      "reads": [
+        {
+          "file": "vento.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "velvento"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 30.87
+    },
+    {
+      "id": "E106",
+      "status": "ok",
+      "result": [
+        [
+          "SBMQ",
+          25.1107516121859
+        ],
+        [
+          "SBIC",
+          24.67133053755242
+        ],
+        [
+          "SBTF",
+          24.404807293825115
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "temppo"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 30.05
+    },
+    {
+      "id": "E107",
+      "status": "ok",
+      "result": [
+        [
+          "SBAR",
+          21.1
+        ],
+        [
+          "SBJP",
+          20.4
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "bseco"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 27.61
+    },
+    {
+      "id": "E108",
+      "status": "ok",
+      "result": [
+        [
+          "SBBE",
+          1012.2576826196473
+        ],
+        [
+          "SBSN",
+          1011.9169960474309
+        ]
+      ],
+      "reads": [
+        {
+          "file": "pressao.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "qnh"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 22.58
+    },
+    {
+      "id": "E109",
+      "status": "ok",
+      "result": [
+        [
+          "SBCG",
+          15.388211920529802
+        ],
+        [
+          "SBCY",
+          19.21164658634538
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "bumido"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 27.14
+    },
+    {
+      "id": "E110",
+      "status": "ok",
+      "result": [
+        [
+          "SBCT",
+          3.7
+        ],
+        [
+          "SBFL",
+          1.5
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "temppo"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 26.69
+    },
+    {
+      "id": "E111",
+      "status": "ok",
+      "result": [
+        [
+          2018,
+          1006.7
+        ],
+        [
+          2023,
+          1010.7
+        ]
+      ],
+      "reads": [
+        {
+          "file": "pressao.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "qnh"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 21.26
+    },
+    {
+      "id": "E112",
+      "status": "ok",
+      "result": [
+        [
+          2019,
+          68.5631067961165
+        ],
+        [
+          2024,
+          71.41434846266472
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "ur"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 26.59
+    },
+    {
+      "id": "E113",
+      "status": "ok",
+      "result": [
+        [
+          2020,
+          19.0
+        ],
+        [
+          2025,
+          18.0
+        ]
+      ],
+      "reads": [
+        {
+          "file": "vento.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "velvento"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 28.02
+    },
+    {
+      "id": "E114",
+      "status": "ok",
+      "result": [
+        [
+          2021,
+          19.530136054421767
+        ],
+        [
+          2022,
+          19.766924157303368
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "bumido"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 25.42
+    },
+    {
+      "id": "E115",
+      "status": "not_applicable",
+      "expected_behavior": "unsupported"
+    },
+    {
+      "id": "E116",
+      "status": "not_applicable",
+      "expected_behavior": "unsupported"
+    },
+    {
+      "id": "E117",
+      "status": "not_applicable",
+      "expected_behavior": "unsupported"
+    },
+    {
+      "id": "E118",
+      "status": "not_applicable",
+      "expected_behavior": "unsupported"
+    },
+    {
+      "id": "E119",
+      "status": "not_applicable",
+      "expected_behavior": "unsupported"
+    },
+    {
+      "id": "E120",
+      "status": "not_applicable",
+      "expected_behavior": "unsupported"
+    },
+    {
+      "id": "E121",
+      "status": "not_applicable",
+      "expected_behavior": "unsupported"
+    },
+    {
+      "id": "E122",
+      "status": "not_applicable",
+      "expected_behavior": "unsupported"
+    },
+    {
+      "id": "E123",
+      "status": "not_applicable",
+      "expected_behavior": "unsupported"
+    },
+    {
+      "id": "E124",
+      "status": "not_applicable",
+      "expected_behavior": "unsupported"
+    },
+    {
+      "id": "E125",
+      "status": "not_applicable",
+      "expected_behavior": "unsupported"
+    },
+    {
+      "id": "E126",
+      "status": "not_applicable",
+      "expected_behavior": "unsupported"
+    },
+    {
+      "id": "E127",
+      "status": "not_applicable",
+      "expected_behavior": "needs_clarification"
+    },
+    {
+      "id": "E128",
+      "status": "not_applicable",
+      "expected_behavior": "needs_clarification"
+    },
+    {
+      "id": "E129",
+      "status": "not_applicable",
+      "expected_behavior": "needs_clarification"
+    },
+    {
+      "id": "E130",
+      "status": "not_applicable",
+      "expected_behavior": "needs_clarification"
+    },
+    {
+      "id": "E131",
+      "status": "not_applicable",
+      "expected_behavior": "needs_clarification"
+    },
+    {
+      "id": "E132",
+      "status": "not_applicable",
+      "expected_behavior": "needs_clarification"
+    },
+    {
+      "id": "E133",
+      "status": "not_applicable",
+      "expected_behavior": "needs_clarification"
+    },
+    {
+      "id": "E134",
+      "status": "not_applicable",
+      "expected_behavior": "needs_clarification"
+    },
+    {
+      "id": "E135",
+      "status": "ok",
+      "result": [
+        [
+          32.0
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "ur"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 25.93
+    },
+    {
+      "id": "E136",
+      "status": "ok",
+      "result": [
+        [
+          25.772093023255817
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "bseco"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 26.29
+    },
+    {
+      "id": "E137",
+      "status": "ok",
+      "result": [
+        [
+          1024.1
+        ]
+      ],
+      "reads": [
+        {
+          "file": "pressao.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "qnh"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 22.14
+    },
+    {
+      "id": "E138",
+      "status": "ok",
+      "result": [
+        [
+          13.185585585585583
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "temppo"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 26.16
+    },
+    {
+      "id": "E139",
+      "status": "ok",
+      "result": [
+        [
+          23.0
+        ]
+      ],
+      "reads": [
+        {
+          "file": "vento.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "velvento"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 27.84
+    },
+    {
+      "id": "E140",
+      "status": "ok",
+      "result": [
+        [
+          3000.0
+        ]
+      ],
+      "reads": [
+        {
+          "file": "visibilidade.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "visibpre"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 23.29
+    },
+    {
+      "id": "E141",
+      "status": "ok",
+      "result": [
+        [
+          24.813333333333336
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "bumido"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 27.43
+    },
+    {
+      "id": "E142",
+      "status": "ok",
+      "result": [
+        [
+          6.7
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "bseco"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 27.89
+    },
+    {
+      "id": "E143",
+      "status": "ok",
+      "result": [
+        [
+          22.122120518688025
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "bseco"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 28.08
+    },
+    {
+      "id": "E144",
+      "status": "ok",
+      "result": [
+        [
+          1008.5
+        ]
+      ],
+      "reads": [
+        {
+          "file": "pressao.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "qnh"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 22.32
+    },
+    {
+      "id": "E145",
+      "status": "ok",
+      "result": [
+        [
+          43.475935828877006
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "ur"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 26.05
+    },
+    {
+      "id": "E146",
+      "status": "ok",
+      "result": [
+        [
+          3000.0
+        ]
+      ],
+      "reads": [
+        {
+          "file": "visibilidade.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "visibpre"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 22.75
+    },
+    {
+      "id": "E147",
+      "status": "ok",
+      "result": [
+        [
+          16.008584005869405
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "bumido"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 25.6
+    },
+    {
+      "id": "E148",
+      "status": "ok",
+      "result": [
+        [
+          31.6
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "bseco"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 26.91
+    },
+    {
+      "id": "E149",
+      "status": "ok",
+      "result": [
+        [
+          3.863130881094953
+        ]
+      ],
+      "reads": [
+        {
+          "file": "vento.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "velvento"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 27.69
+    },
+    {
+      "id": "E150",
+      "status": "ok",
+      "result": [
+        [
+          9.9
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "temppo"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 25.46
+    },
+    {
+      "id": "E51",
+      "status": "ok",
+      "result": [
+        [
+          3.0
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "bumido"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 24.43
+    },
+    {
+      "id": "E52",
+      "status": "ok",
+      "result": [
+        [
+          5.133562585969739
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "temppo"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 24.49
+    },
+    {
+      "id": "E53",
+      "status": "ok",
+      "result": [
+        [
+          1026.2
+        ]
+      ],
+      "reads": [
+        {
+          "file": "pressao.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "qnh"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 21.98
+    },
+    {
+      "id": "E54",
+      "status": "ok",
+      "result": [
+        [
+          18.0
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "ur"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 23.98
+    },
+    {
+      "id": "E55",
+      "status": "ok",
+      "result": [
+        [
+          180.0
+        ]
+      ],
+      "reads": [
+        {
+          "file": "nuvem.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "altnuvem"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 25.07
+    },
+    {
+      "id": "E56",
+      "status": "ok",
+      "result": [
+        [
+          41.0
+        ]
+      ],
+      "reads": [
+        {
+          "file": "vento.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "rajada"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 24.99
+    },
+    {
+      "id": "E57",
+      "status": "ok",
+      "result": [
+        [
+          60.0
+        ]
+      ],
+      "reads": [
+        {
+          "file": "precipitacao.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "durpreci"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 20.41
+    },
+    {
+      "id": "E58",
+      "status": "ok",
+      "result": [
+        [
+          40.3
+        ]
+      ],
+      "reads": [
+        {
+          "file": "precipitacao.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "precip"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 20.44
+    },
+    {
+      "id": "E59",
+      "status": "error",
+      "error": "AssertionError: Sem observações válidas após os filtros",
+      "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\meteo-kgqa-ontop\\eval\\independent_evaluation\\oracle_worker.py\", line 37, in <module>\n    exec(compile(q['oracle_pandas'],qid,'exec'),ns)\n    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"E59\", line 15, in <module>\nAssertionError: Sem observações válidas após os filtros\n",
+      "reads": [
+        {
+          "file": "visibilidade.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "visibpre"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 20.87
+    },
+    {
+      "id": "E60",
+      "status": "ok",
+      "result": [
+        [
+          8.867886178861788
+        ]
+      ],
+      "reads": [
+        {
+          "file": "vento.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "velvento"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 24.51
+    },
+    {
+      "id": "E61",
+      "status": "ok",
+      "result": [
+        [
+          31.1
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "bseco"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 23.7
+    },
+    {
+      "id": "E62",
+      "status": "ok",
+      "result": [
+        [
+          292
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "bumido"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 23.74
+    },
+    {
+      "id": "E63",
+      "status": "ok",
+      "result": [
+        [
+          56.99145299145299
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "ur"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 23.8
+    },
+    {
+      "id": "E64",
+      "status": "ok",
+      "result": [
+        [
+          1011.0383495145633
+        ]
+      ],
+      "reads": [
+        {
+          "file": "pressao.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "qnh"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 21.26
+    },
+    {
+      "id": "E65",
+      "status": "ok",
+      "result": [
+        [
+          4.3
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "temppo"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 23.19
+    },
+    {
+      "id": "E66",
+      "status": "ok",
+      "result": [
+        [
+          22.274346793349167
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "bseco"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 26.58
+    },
+    {
+      "id": "E67",
+      "status": "ok",
+      "result": [
+        [
+          14.0
+        ]
+      ],
+      "reads": [
+        {
+          "file": "vento.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "velvento"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 27.98
+    },
+    {
+      "id": "E68",
+      "status": "ok",
+      "result": [
+        [
+          27.6
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "bumido"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 26.86
+    },
+    {
+      "id": "E69",
+      "status": "ok",
+      "result": [
+        [
+          100.0
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "ur"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 27.43
+    },
+    {
+      "id": "E70",
+      "status": "ok",
+      "result": [
+        [
+          202
+        ]
+      ],
+      "reads": [
+        {
+          "file": "pressao.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "qnh"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 24.05
+    },
+    {
+      "id": "E71",
+      "status": "ok",
+      "result": [
+        [
+          0.4
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "bseco"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 27.22
+    },
+    {
+      "id": "E72",
+      "status": "ok",
+      "result": [
+        [
+          60.0
+        ]
+      ],
+      "reads": [
+        {
+          "file": "precipitacao.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "durpreci"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 22.21
+    },
+    {
+      "id": "E73",
+      "status": "ok",
+      "result": [
+        [
+          50.0
+        ]
+      ],
+      "reads": [
+        {
+          "file": "visibilidade.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "visibpre"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 22.14
+    },
+    {
+      "id": "E74",
+      "status": "ok",
+      "result": [
+        [
+          1000.5
+        ]
+      ],
+      "reads": [
+        {
+          "file": "pressao.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "qnh"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 21.09
+    },
+    {
+      "id": "E75",
+      "status": "ok",
+      "result": [
+        [
+          331
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "temppo"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 23.42
+    },
+    {
+      "id": "E76",
+      "status": "ok",
+      "result": [
+        [
+          186
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "ur"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 23.77
+    },
+    {
+      "id": "E77",
+      "status": "ok",
+      "result": [
+        [
+          2054
+        ]
+      ],
+      "reads": [
+        {
+          "file": "pressao.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "qnh"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 21.14
+    },
+    {
+      "id": "E78",
+      "status": "ok",
+      "result": [
+        [
+          0
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "bumido"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 23.7
+    },
+    {
+      "id": "E79",
+      "status": "ok",
+      "result": [
+        [
+          9
+        ]
+      ],
+      "reads": [
+        {
+          "file": "vento.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "velvento"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 24.88
+    },
+    {
+      "id": "E80",
+      "status": "ok",
+      "result": [
+        [
+          54
+        ]
+      ],
+      "reads": [
+        {
+          "file": "visibilidade.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "visibpre"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 21.31
+    },
+    {
+      "id": "E81",
+      "status": "ok",
+      "result": [
+        [
+          1420
+        ]
+      ],
+      "reads": [
+        {
+          "file": "nuvem.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "altnuvem"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 25.49
+    },
+    {
+      "id": "E82",
+      "status": "ok",
+      "result": [
+        [
+          89
+        ]
+      ],
+      "reads": [
+        {
+          "file": "precipitacao.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "durpreci"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 21.34
+    },
+    {
+      "id": "E83",
+      "status": "ok",
+      "result": [
+        [
+          34
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "bseco"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 23.97
+    },
+    {
+      "id": "E84",
+      "status": "ok",
+      "result": [
+        [
+          0
+        ]
+      ],
+      "reads": [
+        {
+          "file": "pressao.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "qnh"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 22.32
+    },
+    {
+      "id": "E85",
+      "status": "ok",
+      "result": [
+        [
+          198
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "bumido"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 26.55
+    },
+    {
+      "id": "E86",
+      "status": "ok",
+      "result": [
+        [
+          88
+        ]
+      ],
+      "reads": [
+        {
+          "file": "vento.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "rajada"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 27.49
+    },
+    {
+      "id": "E87",
+      "status": "ok",
+      "result": [
+        [
+          1
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "bseco"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 24.61
+    },
+    {
+      "id": "E88",
+      "status": "ok",
+      "result": [
+        [
+          47
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "ur"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 26.94
+    },
+    {
+      "id": "E89",
+      "status": "ok",
+      "result": [
+        [
+          82
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "bseco"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 26.54
+    },
+    {
+      "id": "E90",
+      "status": "ok",
+      "result": [
+        [
+          49
+        ]
+      ],
+      "reads": [
+        {
+          "file": "visibilidade.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "visibpre"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 23.03
+    },
+    {
+      "id": "E91",
+      "status": "ok",
+      "result": [
+        [
+          1,
+          19.3
+        ],
+        [
+          2,
+          20.4
+        ],
+        [
+          3,
+          20.1
+        ],
+        [
+          4,
+          9.8
+        ],
+        [
+          5,
+          11.4
+        ],
+        [
+          6,
+          8.1
+        ],
+        [
+          7,
+          6.8
+        ],
+        [
+          8,
+          9.7
+        ],
+        [
+          9,
+          12.9
+        ],
+        [
+          10,
+          13.6
+        ],
+        [
+          11,
+          13.6
+        ],
+        [
+          12,
+          18.4
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "bseco"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 25.47
+    },
+    {
+      "id": "E92",
+      "status": "ok",
+      "result": [
+        [
+          1,
+          24.569311064718164
+        ],
+        [
+          2,
+          24.455581395348837
+        ],
+        [
+          3,
+          23.27808510638298
+        ],
+        [
+          4,
+          21.571648351648353
+        ],
+        [
+          5,
+          19.210828025477706
+        ],
+        [
+          6,
+          17.101969365426697
+        ],
+        [
+          7,
+          15.743468950749465
+        ],
+        [
+          8,
+          16.485806451612902
+        ],
+        [
+          9,
+          18.565188470066516
+        ],
+        [
+          10,
+          20.744902386117136
+        ],
+        [
+          11,
+          20.55372807017544
+        ],
+        [
+          12,
+          22.85948827292111
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "bumido"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 25.56
+    },
+    {
+      "id": "E93",
+      "status": "ok",
+      "result": [
+        [
+          1,
+          60.0
+        ],
+        [
+          2,
+          90.0
+        ],
+        [
+          3,
+          90.0
+        ],
+        [
+          4,
+          60.0
+        ],
+        [
+          5,
+          180.0
+        ],
+        [
+          6,
+          30.0
+        ],
+        [
+          7,
+          30.0
+        ],
+        [
+          8,
+          60.0
+        ],
+        [
+          9,
+          20.0
+        ],
+        [
+          10,
+          60.0
+        ],
+        [
+          11,
+          120.0
+        ],
+        [
+          12,
+          90.0
+        ]
+      ],
+      "reads": [
+        {
+          "file": "nuvem.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "altnuvem"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 26.2
+    },
+    {
+      "id": "E94",
+      "status": "ok",
+      "result": [
+        [
+          1,
+          60.0
+        ],
+        [
+          2,
+          60.0
+        ],
+        [
+          3,
+          60.0
+        ],
+        [
+          4,
+          60.0
+        ],
+        [
+          5,
+          60.0
+        ],
+        [
+          6,
+          60.0
+        ],
+        [
+          7,
+          60.0
+        ],
+        [
+          8,
+          60.0
+        ],
+        [
+          9,
+          20.0
+        ],
+        [
+          10,
+          60.0
+        ],
+        [
+          11,
+          59.0
+        ],
+        [
+          12,
+          60.0
+        ]
+      ],
+      "reads": [
+        {
+          "file": "precipitacao.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "durpreci"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 22.26
+    },
+    {
+      "id": "E95",
+      "status": "ok",
+      "result": [
+        [
+          1,
+          25.1609865470852
+        ],
+        [
+          2,
+          25.455399061032864
+        ],
+        [
+          3,
+          25.19157303370787
+        ],
+        [
+          4,
+          26.016666666666666
+        ],
+        [
+          11,
+          23.66039603960396
+        ],
+        [
+          12,
+          23.140650406504065
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "temppo"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 24.99
+    },
+    {
+      "id": "E96",
+      "status": "ok",
+      "result": [
+        [
+          1,
+          59.0
+        ],
+        [
+          2,
+          29.0
+        ],
+        [
+          3,
+          29.0
+        ],
+        [
+          4,
+          38.0
+        ],
+        [
+          5,
+          36.0
+        ],
+        [
+          6,
+          46.0
+        ],
+        [
+          7,
+          15.0
+        ],
+        [
+          8,
+          25.0
+        ],
+        [
+          9,
+          25.0
+        ],
+        [
+          10,
+          30.0
+        ],
+        [
+          11,
+          35.0
+        ],
+        [
+          12,
+          28.0
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "ur"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 25.16
+    },
+    {
+      "id": "E97",
+      "status": "ok",
+      "result": [
+        [
+          1,
+          1016.3
+        ],
+        [
+          2,
+          1015.2
+        ],
+        [
+          3,
+          1014.7
+        ],
+        [
+          4,
+          1015.7
+        ],
+        [
+          5,
+          1017.9
+        ],
+        [
+          6,
+          1017.7
+        ],
+        [
+          7,
+          1016.1
+        ],
+        [
+          8,
+          1017.0
+        ],
+        [
+          9,
+          1017.0
+        ],
+        [
+          10,
+          1016.7
+        ],
+        [
+          11,
+          1019.1
+        ],
+        [
+          12,
+          1016.4
+        ]
+      ],
+      "reads": [
+        {
+          "file": "pressao.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "qnh"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 22.65
+    },
+    {
+      "id": "E98",
+      "status": "ok",
+      "result": [
+        [
+          1,
+          5.0150943396226415
+        ],
+        [
+          2,
+          4.949790794979079
+        ],
+        [
+          3,
+          4.319852941176471
+        ],
+        [
+          4,
+          4.488095238095238
+        ],
+        [
+          5,
+          4.154121863799283
+        ],
+        [
+          6,
+          4.149635036496351
+        ],
+        [
+          7,
+          4.820717131474104
+        ],
+        [
+          8,
+          5.430604982206406
+        ],
+        [
+          9,
+          6.490421455938697
+        ],
+        [
+          10,
+          6.245421245421245
+        ],
+        [
+          11,
+          6.463667820069205
+        ],
+        [
+          12,
+          5.282685512367491
+        ]
+      ],
+      "reads": [
+        {
+          "file": "vento.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "velvento"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 26.16
+    },
+    {
+      "id": "E99",
+      "status": "ok",
+      "result": [
+        [
+          2016,
+          35.2
+        ],
+        [
+          2017,
+          37.8
+        ],
+        [
+          2018,
+          36.1
+        ],
+        [
+          2019,
+          35.0
+        ],
+        [
+          2020,
+          35.4
+        ],
+        [
+          2021,
+          38.6
+        ],
+        [
+          2022,
+          34.9
+        ],
+        [
+          2023,
+          36.3
+        ],
+        [
+          2024,
+          35.7
+        ],
+        [
+          2025,
+          39.0
+        ]
+      ],
+      "reads": [
+        {
+          "file": "temperatura.csv",
+          "usecols": [
+            "sigla",
+            "hora_observacao",
+            "bseco"
+          ],
+          "chunksize": 100000
+        }
+      ],
+      "elapsed_seconds": 24.87
+    }
+  ],
+  "removals": [
+    {
+      "id": "E59",
+      "reason": "AssertionError: Sem observações válidas após os filtros"
+    }
+  ]
+}

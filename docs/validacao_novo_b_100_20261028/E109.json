@@ -1,0 +1,25 @@
+{
+  "id": "E109",
+  "status": "ok",
+  "result": [
+    [
+      "SBCG",
+      15.388211920529802
+    ],
+    [
+      "SBCY",
+      19.21164658634538
+    ]
+  ],
+  "reads": [
+    {
+      "file": "temperatura.csv",
+      "usecols": [
+        "sigla",
+        "hora_observacao",
+        "bumido"
+      ],
+      "chunksize": 100000
+    }
+  ]
+}

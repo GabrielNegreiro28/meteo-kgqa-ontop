@@ -1,0 +1,20 @@
+{
+  "id": "E65",
+  "status": "ok",
+  "result": [
+    [
+      4.3
+    ]
+  ],
+  "reads": [
+    {
+      "file": "temperatura.csv",
+      "usecols": [
+        "sigla",
+        "hora_observacao",
+        "temppo"
+      ],
+      "chunksize": 100000
+    }
+  ]
+}

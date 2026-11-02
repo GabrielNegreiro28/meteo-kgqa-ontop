@@ -1,0 +1,10 @@
+{
+  "name": "novo_b_100_20261028",
+  "source": "OpenAI GPT-6 (Codex); 100 perguntas adicionais em 2026-10-28",
+  "frozen_utc": "2026-10-28T12:34:21.187287+00:00",
+  "count": 100,
+  "pipeline_executed": false,
+  "files": {
+    "questions.yaml": "66d58cc387b11157c39f9436af102dfd445c5cd376176775e728bd1d13e181e6"
+  }
+}

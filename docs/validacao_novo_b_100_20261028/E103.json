@@ -1,0 +1,37 @@
+{
+  "id": "E103",
+  "status": "ok",
+  "result": [
+    [
+      "SBNM",
+      35.2
+    ],
+    [
+      "SBBU",
+      34.6
+    ],
+    [
+      "SBES",
+      34.6
+    ],
+    [
+      "SBSI",
+      34.0
+    ],
+    [
+      "SBHT",
+      33.3
+    ]
+  ],
+  "reads": [
+    {
+      "file": "temperatura.csv",
+      "usecols": [
+        "sigla",
+        "hora_observacao",
+        "bumido"
+      ],
+      "chunksize": 100000
+    }
+  ]
+}

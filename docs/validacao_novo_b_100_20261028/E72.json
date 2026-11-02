@@ -1,0 +1,20 @@
+{
+  "id": "E72",
+  "status": "ok",
+  "result": [
+    [
+      60.0
+    ]
+  ],
+  "reads": [
+    {
+      "file": "precipitacao.csv",
+      "usecols": [
+        "sigla",
+        "hora_observacao",
+        "durpreci"
+      ],
+      "chunksize": 100000
+    }
+  ]
+}

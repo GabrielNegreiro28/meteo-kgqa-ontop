@@ -1,0 +1,29 @@
+{
+  "id": "E106",
+  "status": "ok",
+  "result": [
+    [
+      "SBMQ",
+      25.1107516121859
+    ],
+    [
+      "SBIC",
+      24.67133053755242
+    ],
+    [
+      "SBTF",
+      24.404807293825115
+    ]
+  ],
+  "reads": [
+    {
+      "file": "temperatura.csv",
+      "usecols": [
+        "sigla",
+        "hora_observacao",
+        "temppo"
+      ],
+      "chunksize": 100000
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "id": "E114",
+  "status": "ok",
+  "result": [
+    [
+      2021,
+      19.530136054421767
+    ],
+    [
+      2022,
+      19.766924157303368
+    ]
+  ],
+  "reads": [
+    {
+      "file": "temperatura.csv",
+      "usecols": [
+        "sigla",
+        "hora_observacao",
+        "bumido"
+      ],
+      "chunksize": 100000
+    }
+  ]
+}

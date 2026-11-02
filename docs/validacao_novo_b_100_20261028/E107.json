@@ -1,0 +1,25 @@
+{
+  "id": "E107",
+  "status": "ok",
+  "result": [
+    [
+      "SBAR",
+      21.1
+    ],
+    [
+      "SBJP",
+      20.4
+    ]
+  ],
+  "reads": [
+    {
+      "file": "temperatura.csv",
+      "usecols": [
+        "sigla",
+        "hora_observacao",
+        "bseco"
+      ],
+      "chunksize": 100000
+    }
+  ]
+}
