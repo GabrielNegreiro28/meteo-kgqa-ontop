@@ -18,7 +18,7 @@ from decimal import Decimal
 from functools import lru_cache
 from pathlib import Path
 
-from rdflib import RDF, Graph, Namespace, URIRef
+from rdflib import Graph, Namespace
 
 HERE = Path(__file__).resolve().parent
 MET = Namespace("https://example.org/kgqa-met/ontology#")

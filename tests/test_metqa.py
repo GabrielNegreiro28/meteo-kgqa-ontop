@@ -12,8 +12,8 @@ from datetime import date
 import pytest
 
 from eval import oracle
-from kgqa.contract import Status
-from kgqa.store import LocalRdflibBackend
+from metqa.domain.contract import Status
+from metqa.execution.store import LocalRdflibBackend
 from metqa.app import MetQA, Settings
 from metqa.domain import TimeScope
 from metqa.domain.types import hour_ranges
@@ -21,10 +21,10 @@ from metqa.knowledge import DomainCatalog, EvoLexicon, ExemplarStore, OntologyLe
 from metqa.planning import compile_query, plan, to_interp
 from metqa.presentation.render import num
 from metqa.understanding import parse
-from pipeline.dialogue import ScriptedUser
-from pipeline.llm import ScriptedLLM
-from pipeline.validators import validate_query
-from tests.test_reconcile import IDX as REAL_IDX
+from metqa.dialogue.replies import ScriptedUser
+from metqa.llm.client import ScriptedLLM
+from metqa.verification.rules import validate_query
+from tests.helpers import IDX as REAL_IDX
 
 SYNTH = DomainCatalog.from_ontology()
 REAL = DomainCatalog(REAL_IDX)                 # perfil do grafo real (estações, cobertura), sem precisar do Ontop

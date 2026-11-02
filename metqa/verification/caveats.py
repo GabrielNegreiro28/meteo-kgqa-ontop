@@ -13,7 +13,7 @@ from __future__ import annotations
 from statistics import median
 from typing import Any
 
-from .vocab import OntologyIndex, expand
+from ..knowledge.index import OntologyIndex, expand
 
 COUNT_VARS = {"n", "count", "cnt"}
 LOW_SAMPLE_RATIO = 0.10        # grupo com menos de 10% da mediana de leituras dos grupos exibidos

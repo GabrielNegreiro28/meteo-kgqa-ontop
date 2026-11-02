@@ -8,8 +8,8 @@ from pathlib import Path
 import pytest
 import yaml
 
-from pipeline.validators import PipelineInterpretation, validate_query
-from pipeline.vocab import STATION_NS, OntologyIndex
+from metqa.verification.rules import PipelineInterpretation, validate_query
+from metqa.knowledge.index import STATION_NS, OntologyIndex
 
 ROOT = Path(__file__).resolve().parent.parent
 REAL = {q["id"]: q for q in yaml.safe_load((ROOT / "eval" / "questions_real.yaml").read_text(encoding="utf-8"))["questions"]}

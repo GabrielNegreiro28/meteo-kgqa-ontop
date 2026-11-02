@@ -6,12 +6,12 @@ import json
 
 import pytest
 
-from kgqa.contract import Status
-from kgqa.store import OntopBackend
+from metqa.domain.contract import Status
+from metqa.execution.store import OntopBackend
 from metqa.app import MetQA, Settings
 from metqa.knowledge import DomainCatalog, ExemplarStore, OntologyLexicon
 from metqa.presentation.render import num
-from pipeline.llm import ScriptedLLM
+from metqa.llm.client import ScriptedLLM
 from tests.test_metqa import nir
 from tests.test_real_pipeline import needs_ontop
 

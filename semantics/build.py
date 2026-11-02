@@ -20,7 +20,7 @@ from typing import Any
 from rdflib import OWL, RDF, RDFS, Graph, Literal, URIRef
 from rdflib.namespace import SKOS
 
-from pipeline.vocab import MET, OntologyIndex, _short, fold
+from metqa.knowledge.index import MET, OntologyIndex, _short, fold
 
 ROOT = Path(__file__).resolve().parent.parent
 MET_TTL = ROOT / "ontology" / "met.ttl"

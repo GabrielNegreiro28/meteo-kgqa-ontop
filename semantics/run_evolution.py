@@ -46,18 +46,18 @@ def main(argv: list[str] | None = None) -> int:
         print(f"{seed_from_gold(work, args.parent)} trajetórias de semente gravadas")
     abox = None
     if args.sample_graph:
-        from kgqa.store import OntopBackend
+        from metqa.execution.store import OntopBackend
         from ontology.conformance import sample_abox
         abox, found = sample_abox(OntopBackend(), per_class=3)
         print(f"amostra do grafo real: {len(abox)} triplas ({sum(found.values())} indivíduos)")
     if args.adapter == "metqa":
         if not args.set_name:
             ap.error("--adapter metqa exige --set")
-        from kgqa.store import OntopBackend
+        from metqa.execution.store import OntopBackend
         from metqa.knowledge import DomainCatalog
-        from pipeline.ledger import Ledger, LedgerLLM
-        from pipeline.llm import ResilientLLM
-        from pipeline.openai_client import OpenAIChatClient, load_env
+        from metqa.llm.ledger import Ledger, LedgerLLM
+        from metqa.llm.client import ResilientLLM
+        from metqa.llm.openai_client import OpenAIChatClient, load_env
         from semantics.metqa_eval import MetqaAdapter
         source = OntopBackend()
         client = OpenAIChatClient.from_env(args.env)

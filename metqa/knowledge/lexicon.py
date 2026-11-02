@@ -14,7 +14,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Protocol
 
-from pipeline.vocab import expand
+from metqa.knowledge.index import expand
 
 from .catalog import DomainCatalog
 

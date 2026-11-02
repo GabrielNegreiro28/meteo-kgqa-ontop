@@ -21,7 +21,7 @@ from typing import Any
 
 import yaml
 
-from pipeline.vocab import OntologyIndex, expand
+from metqa.knowledge.index import OntologyIndex, expand
 
 from .facade import GroundedLayer
 from .ground import SemanticGrounder

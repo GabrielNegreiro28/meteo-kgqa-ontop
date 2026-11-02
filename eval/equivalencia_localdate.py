@@ -17,8 +17,8 @@ from datetime import date, timedelta
 from decimal import Decimal
 from pathlib import Path
 
-from kgqa.store import PREFIXES, OntopBackend
-from pipeline.vocab import OntologyIndex
+from metqa.execution.store import PREFIXES, OntopBackend
+from metqa.knowledge.index import OntologyIndex
 
 ROOT = Path(__file__).resolve().parent.parent
 PROPS = {"met:Precipitation": "accumulated", "met:AirTemperature": "instant", "met:PressureQNH": "instant", "met:WindSpeed": "instant"}

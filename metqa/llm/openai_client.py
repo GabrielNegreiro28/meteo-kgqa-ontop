@@ -16,7 +16,7 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
-from .llm import LLMError, LLMResponse, LLMTimeout, RateLimited
+from .client import LLMError, LLMResponse, LLMTimeout, RateLimited
 
 DEFAULT_BASE = "https://api.openai.com/v1"
 

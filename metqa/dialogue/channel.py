@@ -12,7 +12,7 @@ from __future__ import annotations
 import sys
 from typing import Callable, Protocol
 
-from pipeline.dialogue import classify_reply
+from metqa.dialogue.replies import classify_reply
 
 
 class UserChannel(Protocol):

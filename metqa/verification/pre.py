@@ -6,8 +6,8 @@
 """
 from __future__ import annotations
 
-from kgqa.contract import Status
-from pipeline.validators import L3, Finding, _err, validate_interpretation
+from metqa.domain.contract import Status
+from metqa.verification.rules import L3, Finding, _err, validate_interpretation
 
 from ..domain import CanonicalQuery, Stop
 from ..knowledge import DomainCatalog
@@ -31,7 +31,7 @@ def _values(cq: CanonicalQuery, catalog: DomainCatalog) -> list[Finding]:
 
 
 def verify_pre(cq: CanonicalQuery, catalog: DomainCatalog) -> tuple[list[Finding], Stop | None]:
-    findings = validate_interpretation(to_interp(cq), catalog.index, None, (), True) or _values(cq, catalog)
+    findings = validate_interpretation(to_interp(cq), catalog.index) or _values(cq, catalog)
     if findings:
         return findings, None
     m = catalog.measure(cq.measure)

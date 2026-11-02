@@ -3,9 +3,9 @@ inúteis. LLM roteirizado e fonte com linhas fixas; sem Ontop e sem custo. As pe
 com estações do perfil de teste."""
 import json
 
-from kgqa.contract import Status
-from pipeline.dialogue import ScriptedUser
-from pipeline.llm import LLMError, ScriptedLLM
+from metqa.domain.contract import Status
+from metqa.dialogue.replies import ScriptedUser
+from metqa.llm.client import LLMError, ScriptedLLM
 from tests.test_metqa import nir
 from tests.test_metqa_shapes import CAT, Rows, XD, lit, table
 from metqa.app import MetQA, Settings

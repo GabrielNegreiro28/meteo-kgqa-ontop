@@ -1,28 +1,27 @@
 """Regras determinísticas que validam o que o LLM propõe (interpretação e consulta SPARQL).
 
-Camadas (usadas também na ablação do estudo, ver eval/safety_experiment.py):
-  L1 sintaxe e política   — a consulta é SELECT/ASK, sem SERVICE/FROM/escrita (kgqa.store.check_policy)
+Camadas:
+  L1 sintaxe e política   — a consulta é SELECT/ASK, sem SERVICE/FROM/escrita (metqa.execution.store.check_policy)
   L2 vocabulário          — todo IRI e rótulo existe na ontologia/grafo; tipos não violam disjunção (D-13)
   L3 conformidade         — a consulta faz exatamente o que a interpretação registrada diz
 Nenhuma regra prova que a consulta responde à intenção do usuário; elas barram o que é verificável.
 """
 from __future__ import annotations
 
-import re
 from dataclasses import dataclass, field
 from datetime import date, datetime, timedelta
-from decimal import Decimal, InvalidOperation
+from decimal import Decimal
 
-from kgqa.contract import Diagnostic, Interpretation
-from kgqa.store import PREFIXES, PolicyError, check_policy
+from metqa.domain.contract import Diagnostic, Interpretation
+from metqa.execution.store import PREFIXES, PolicyError, check_policy
 
 from rdflib import RDF
 
-from . import vocab
+from ..knowledge import index as vocab
 from .query_facts import QueryFacts, extract
-from .vocab import OntologyIndex, expand
+from ..knowledge.index import OntologyIndex, expand
 
-L1, L2, L3, L4 = "L1", "L2", "L3", "L4"     # L4: a interpretação está fundamentada na pergunta (ver _ground_in_question)
+L1, L2, L3 = "L1", "L2", "L3"
 AGGREGATIONS = {"avg", "min", "max", "sum", "count"}
 COUNT_VARS = ("n", "count", "cnt")
 _XSD = "http://www.w3.org/2001/XMLSchema#"
@@ -124,262 +123,6 @@ def _schema(interp: PipelineInterpretation) -> list[Finding]:
     return [_err(L3, "BAD_SCHEMA", f"Formato inválido da interpretação: {m}") for m in bad]
 
 
-# Expressões de tempo relativo: o sistema não tem relógio e o LLM não sabe a data de hoje. Qualquer data que ele
-# escolhesse para 'ontem' seria um palpite apresentado como fato.
-RELATIVE_TIME = re.compile(r"\b(hoje|ontem|anteontem|amanha|agora|atualmente|recentemente|ultim[oa]s?\s+(?:\d+\s+)?"
-                           r"(?:dias?|semanas?|meses|mes|horas?|anos?)|(?:esta|essa|nesta|nessa)\s+(?:semana|mes|ano)|"
-                           r"(?:semana|mes|ano)\s+(?:passad[oa]|que\s+vem|proxim[oa]))\b")
-_DATE = re.compile(r"\b(\d{1,2})/(\d{1,2})/(\d{4})\b")
-_YEAR = re.compile(r"\b(?:em|de|do|no|ano)\s+((?:19|20)\d{2})\b(?!\s*(?:m\b|mm\b|hpa|km|kt|°|%|graus|metros))")
-# intervalo de anos: "de 2016 a 2025", "entre 2016 e 2025", "2016-2025" -> as duas pontas (o _YEAR acima só pega a que vem depois de preposição)
-_YEAR_RANGE = re.compile(r"(?<!\d)((?:19|20)\d{2})\s*(?:a|ate|ao|e|-)\s*((?:19|20)\d{2})(?!\d)")
-
-
-def question_years(t: str) -> set[int]:
-    return {int(y) for y in _YEAR.findall(t)} | {int(y) for pair in _YEAR_RANGE.findall(t) for y in pair}
-
-
-_AT_TIME = re.compile(r"\b(?:as|ao|a)\s+(?:\d{1,2}\s*h|meio-dia|meia-noite)|\d{1,2}\s*h\b|\bmeio-dia\b|\bmeia-noite\b")
-_MONTHS = ("janeiro", "fevereiro", "marco", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro",
-           "novembro", "dezembro")
-_TIME_CUE = re.compile(r"\b(?:19|20)\d{2}\b|\d{1,2}/\d{1,2}|\b(?:" + "|".join(_MONTHS) + r")\b|\b(?:dia|dias|semana|semanas|mes|meses|ano|anos|"
-                       r"entre|periodo|manha|tarde|noite|madrugada|\d{1,2}\s*h)\b")
-_MONTH_NAME = re.compile(r"\b(" + "|".join(_MONTHS) + r")\b")
-# recortes do período que a pergunta pode dizer em vez de datas; com um deles, "só o ano" não basta para saber o período
-_SUBYEAR_CUE = re.compile(r"\b(?:semestre|trimestre|bimestre|quinzena|semana|verao|inverno|primavera|outono|inicio|fim|final|metade|ate|desde|"
-                          r"entre|a partir|primeir[oa]s?|ultim[oa]s?)\b")
-_THRESHOLD = re.compile(r"\b(?:acima de|abaixo de|maior que|menor que|superior a|inferior a|passou de|passa de|passaram de|ultrapass\w*|excedeu|"
-                        r"excede|superou)\s+(?:\w+\s+){0,2}?\d")
-_DAY_PART = re.compile(r"\b(?:durante o dia|durante a noite|durante a madrugada|de noite|a noite|de madrugada|pela manha|pela tarde|de manha|"
-                       r"a tarde|diurn\w*|noturn\w*)\b")
-AGG_CUES = {"avg": ("media", "medio", "medias", "medios"),
-            "max": ("maxim", "maior", "mais alt", "mais quente", "pico"),
-            "min": ("minim", "menor", "mais baix", "mais frio"),
-            "sum": ("total", "soma", "somat"),
-            "count": ("quantas", "quantos", "numero de", "contagem")}
-_NUMBER_WORDS = ("zero", "um", "uma", "dois", "duas", "tres", "quatro", "cinco", "seis", "sete", "oito", "nove", "dez",
-                 "vinte", "trinta", "quarenta", "cinquenta", "cem", "meio")
-
-
-def question_hour(question: str) -> tuple[int, int] | None:
-    q = vocab.fold(question)
-    if re.search(r"\bmeio-dia\b", q):
-        return 12, 0
-    if re.search(r"\bmeia-noite\b", q):
-        return 0, 0
-    m = re.search(r"\b(\d{1,2})\s*h(?:\s*(\d{2}))?\b", q)
-    return (int(m.group(1)), int(m.group(2) or 0)) if m else None
-
-
-def question_dates(question: str) -> set[date]:
-    out = set()
-    for d, m, y in _DATE.findall(question):
-        try:
-            out.add(date(int(y), int(m), int(d)))
-        except ValueError:
-            pass
-    return out
-
-
-_PROPER_NOUN = re.compile(r"(?<![\wÀ-ÿ])[A-ZÀ-Ý][a-zà-ÿ]{2,}")
-_NOT_PLACES = {"Brasil"}          # 'no Brasil' = todas as estações, não um lugar a resolver
-
-# Topônimos que o sistema não consegue resolver (os dados só têm o código ICAO). Lista EXPLÍCITA, não adivinhada: um vocabulário genérico
-# tomaria "choveu" (um sinônimo) por lugar. Cobre capitais, estados, regiões e cidades com aeroporto relevante. Cidade fora da lista só é
-# pega com inicial maiúscula (a outra metade da regra). Ampliar quando houver cadastro de estações (P-18).
-PLACE_NAMES = (
-    # "pará" NÃO está aqui de propósito: sem acento é a preposição "para" ("do maior para o menor") e dobraria para ela. O estado só é
-    # pego com inicial maiúscula ("Pará"), pela outra metade da regra. Qualquer nome novo precisa passar no teste que varre todas as perguntas.
-    "acre", "alagoas", "amapá", "amazonas", "bahia", "ceará", "espírito santo", "goiás", "maranhão", "mato grosso", "minas gerais",
-    "paraíba", "paraná", "pernambuco", "piauí", "rio de janeiro", "rio grande do norte", "rio grande do sul", "rondônia", "roraima",
-    "santa catarina", "são paulo", "sergipe", "tocantins", "distrito federal",
-    "aracaju", "belém", "belo horizonte", "boa vista", "brasília", "campo grande", "cuiabá", "curitiba", "florianópolis", "fortaleza",
-    "goiânia", "joão pessoa", "macapá", "maceió", "manaus", "natal", "palmas", "porto alegre", "porto velho", "recife", "rio branco",
-    "salvador", "são luís", "teresina", "vitória",
-    "campinas", "guarulhos", "santos", "joinville", "londrina", "maringá", "uberlândia", "ribeirão preto", "petrolina", "juazeiro",
-    "imperatriz", "marabá", "santarém", "foz do iguaçu", "navegantes", "chapecó", "caxias do sul", "pelotas", "uruguaiana", "tabatinga",
-    "cascavel", "dourados", "corumbá", "porto seguro", "ilhéus", "vitória da conquista",
-    "nordeste", "sudeste", "centro-oeste",
-)
-_PLACE_RES = [(n, re.compile(rf"(?<![a-z0-9]){re.escape(vocab.fold(n))}(?![a-z0-9])")) for n in sorted(PLACE_NAMES, key=len, reverse=True)]
-_REGION = re.compile(r"\b(?:no|na|do|da|ao|regiao)\s+(sul|norte)\b")           # aplicado ao texto SEM acento
-
-
-def unresolved_places(question: str, index: OntologyIndex) -> list[str]:
-    """Lugares citados na pergunta que não são estação: nome próprio com inicial maiúscula no MEIO da frase ('Curitiba', 'São Paulo') ou
-    topônimo da lista acima, em qualquer caixa ('manaus'). Parte de rótulo de estação não conta. Códigos (SBGR) não casam: a regex exige
-    minúsculas depois da inicial. A 1ª palavra é ignorada (toda frase começa em maiúscula)."""
-    labels = [vocab.fold(l) for names in index.entities.values() for l in names]
-    out: list[str] = []
-    for m in _PROPER_NOUN.finditer(question):
-        word = m.group()
-        if m.start() == 0 or word in _NOT_PLACES or any(vocab.fold(word) in l for l in labels):
-            continue
-        out.append(word)
-    folded = vocab.fold(question)
-    for name, rx in _PLACE_RES:
-        already = any(vocab.fold(w) in vocab.fold(name) or vocab.fold(name) in vocab.fold(w) for w in out)    # 'São','Paulo' ⊂ 'são paulo'
-        if rx.search(folded) and not already and not any(vocab.fold(name) in l for l in labels):
-            out.append(name)
-    for m in _REGION.finditer(folded):
-        if not any(m.group(1) in l for l in labels) and m.group(1) not in {vocab.fold(w) for w in out}:
-            out.append(m.group(1))
-    return out
-
-
-
-def _ground_in_question(interp: PipelineInterpretation, question: str, index: OntologyIndex,
-                        corrections: tuple[str, ...] = ()) -> list[Finding]:
-    """A interpretação é a ponte entre a pergunta e a consulta. L3 só confere consulta == interpretação; aqui se confere
-    interpretação == pergunta com o que é decidível sem LLM: entidades citadas, números, datas e palavras de agregação.
-    (O que a pergunta quer dizer, no sentido amplo, continua fora do alcance das regras.)"""
-    out: list[Finding] = []
-    # Com correções do usuário (diálogo de confirmação), a ÚLTIMA fala que trata de cada dimensão vale mais que a pergunta:
-    # "na verdade, Vale Verde" troca a estação, não a soma com a original. Checagens de OMISSÃO ficam de fora, porque o usuário
-    # pode ter pedido para tirar algo; checagens de INVENÇÃO (algo que ninguém disse) valem contra todas as falas.
-    texts = [*reversed(corrections), question]
-    q = vocab.fold(" ".join(texts))
-    first = lambda f: next((r for r in (f(t) for t in texts) if r), f(question))
-    omissions = not corrections
-    if not interp.properties:
-        out.append(_err(L4, "NO_PROPERTY", "Nenhuma grandeza na interpretação: informe a propriedade da lista ou peça esclarecimento"))
-    named = first(index.link_properties)
-    if named and interp.properties and not {expand(p) for p in interp.properties} <= set(named):
-        out.append(_err(L4, "PROPERTY_NOT_IN_QUESTION",
-                        f"A pergunta nomeia {sorted(vocab._short(i) + ' (' + l + ')' for i, l in named.items())}; a interpretação usa "
-                        f"{interp.properties}", named=sorted(named)))
-    linked = first(index.link_entities)
-    got = {expand(e["iri"]) for e in interp.entities}
-    for iri, name in linked.items():
-        if omissions and iri not in got:
-            out.append(_err(L4, "ENTITY_OMITTED", f"A pergunta cita '{name}' e a interpretação omitiu a estação: a consulta cobriria todas as estações",
-                            iri=iri))
-    linked_all = {i for t in texts for i in index.link_entities(t)}
-    if not interp.entities and omissions:
-        # Sem estação, a consulta cobre TODAS. Se a pergunta cita um lugar que não é estação ('capital de São Paulo'), o lugar foi
-        # descartado em silêncio e a média nacional sairia como se fosse dele (medido no grafo real, RG19 do v6).
-        places = unresolved_places(question, index)
-        if places:
-            out.append(_err(L4, "UNRESOLVED_PLACE",
-                            f"A pergunta cita {', '.join(repr(p) for p in places)}, que não é uma estação dos dados, e a interpretação usaria TODAS as "
-                            f"estações. Os dados só têm o código ICAO da estação: se o lugar não é uma estação conhecida, responda status \"unsupported\"",
-                            places=places))
-    for e in interp.entities:
-        iri = expand(e["iri"])
-        text = vocab.fold(str(e.get("text", "")))
-        if iri not in linked and iri not in linked_all and text not in q:
-            out.append(_err(L4, "ENTITY_NOT_IN_QUESTION", f"A estação {e['iri']} não é citada na pergunta", entity=e))
-        elif iri not in linked_all:
-            # A estação não foi achada na pergunta pelos rótulos/código dos DADOS; só o 'text' que o modelo escolheu está na pergunta.
-            # Esse texto tem de ter relação com a estação (ex.: 'Serra Azul' dentro do rótulo 'Estação Serra Azul'). Sem isso o modelo
-            # troca um nome por um código usando conhecimento externo ('Manaus' -> st:SBEG, medido no grafo real, RD07): a ontologia
-            # não tem nome de cidade, e entidade que não se resolve com confiança não se adivinha (documento da arquitetura, §8).
-            names = [vocab.fold(x) for x in (*index.entities.get(iri, []), iri.rsplit("/", 1)[-1])]
-            if text and not any(text in n or n in text for n in names):
-                out.append(_err(L4, "ENTITY_TEXT_MISMATCH",
-                                f"A pergunta diz '{e.get('text')}', que não corresponde a nenhum rótulo ou código da estação {e['iri']} nos dados. "
-                                f"Não há nome de cidade nos dados: se a estação não aparece na lista, responda status \"unsupported\"", entity=e))
-    for f in [*interp.filters, *([interp.daily] if isinstance(interp.daily, dict) else [])]:
-        try:
-            val = Decimal(str(f["value"]))
-        except (KeyError, ArithmeticError):
-            continue                                              # BAD_FILTER já reportado
-        if not val.is_finite() or val.adjusted() > 14:
-            continue                                              # fora de faixa: BAD_FILTER já reportado; formatar daria Overflow/memória
-        shown = format(val.normalize(), "f")                      # 30 -> '30', 28.50 -> '28.5' (sem notação científica)
-        in_q = bool(re.search(rf"(?<![\d.]){re.escape(shown)}(?!\d)", q.replace(",", ".")))
-        if not in_q and not any(re.search(rf"\b{w}\b", q) for w in _NUMBER_WORDS):
-            out.append(_err(L4, "FILTER_VALUE_NOT_IN_QUESTION", f"O valor {f['value']} do filtro não aparece na pergunta", filter=f))
-        # a pergunta diz '1 km' e o filtro ficou sem a unidade (ou em metros): o limiar seria 1 m, não 1000 m (E14 da avaliação independente)
-        if re.search(rf"(?<![\d.]){re.escape(shown)}\s*(km|quilometros?)\b", vocab.fold(q).replace(",", ".")) \
-                and str(f.get("unit", "")).rsplit(":", 1)[-1] != "KiloM":
-            out.append(_err(L4, "FILTER_UNIT_MISMATCH", f"A pergunta dá o limiar {shown} em km; informe \"unit\": \"unit:KiloM\" no filtro "
-                            "(o sistema converte para a unidade dos dados)", filter=f))
-    # tempo
-    dates = first(question_dates)
-    years = first(question_years)
-    instant = bool(_AT_TIME.search(q))                            # 'às 12h', 'ao meio-dia': consulta de um instante, não de um período
-    hour = first(question_hour)
-    if interp.instant is not None:
-        when = datetime.fromisoformat(interp.instant)
-        if not instant:
-            out.append(_err(L4, "INSTANT_NOT_IN_QUESTION", "A pergunta não traz horário e a interpretação fixou um instante", instant=interp.instant))
-        else:
-            if dates and when.date() not in dates:
-                out.append(_err(L4, "INSTANT_MISMATCH_QUESTION", f"A data do instante ({when.date()}) não é a da pergunta ({sorted(d.isoformat() for d in dates)})"))
-            if hour and (when.hour, when.minute) != hour:
-                out.append(_err(L4, "INSTANT_MISMATCH_QUESTION", f"A hora do instante ({when:%H:%M}) não é a da pergunta ({hour[0]:02d}:{hour[1]:02d})"))
-        if interp.period is not None:
-            out.append(_err(L4, "INSTANT_AND_PERIOD", "Instante e período juntos: use só o instante (a pergunta é de um horário) ou só o período"))
-    elif omissions and instant and dates:
-        out.append(_err(L4, "INSTANT_OMITTED", "A pergunta traz data e horário; preencha 'instant' (ISO 8601 com fuso, ex.: 2026-03-05T12:00:00-03:00)"))
-    if interp.period is None:
-        # sem período = todo o histórico: equivale à pergunta quando o intervalo de anos dela cobre toda a cobertura dos dados (RG14: "entre 2016 e 2025")
-        spans_all = bool(years) and not dates and len(years) > 1 and bool(index.coverage) and \
-            min(years) <= index.coverage[0].year and max(years) >= index.coverage[1].year
-        if omissions and (dates or years) and not instant and not spans_all:
-            out.append(_err(L4, "PERIOD_OMITTED", f"A pergunta traz {'datas' if dates else 'o ano'} e a interpretação não tem período: a consulta cobriria todo o tempo"))
-    else:
-        if not _TIME_CUE.search(q) and not RELATIVE_TIME.search(q):
-            out.append(_err(L4, "PERIOD_NOT_IN_QUESTION", "A pergunta não traz nenhuma referência de tempo e a interpretação inventou um período"))
-        elif (dates or years) and not instant:
-            try:
-                start, end, _, inclusive = parse_period(interp.period)
-            except (KeyError, ValueError):
-                return out                                        # BAD_PERIOD já reportado
-            last = end if inclusive else end - timedelta(days=1)
-            if dates and (start != min(dates) or last != max(dates)):
-                out.append(_err(L4, "PERIOD_DATES_MISMATCH",
-                                f"As datas da pergunta são {sorted(d.isoformat() for d in dates)}; o período vai de {start} a {last}", period=interp.period))
-            elif not dates and years and not ({start.year, last.year} <= years):
-                out.append(_err(L4, "PERIOD_DATES_MISMATCH", f"O ano da pergunta é {sorted(years)}; o período vai de {start} a {last}", period=interp.period))
-    # Restrições da pergunta que a interpretação pode ter deixado cair (checadas só sem correções do usuário: ele pode ter pedido para tirar).
-    if omissions and not instant and not dates:
-        months = sorted({_MONTHS.index(m) + 1 for m in _MONTH_NAME.findall(q)})
-        if interp.period is None:
-            if months:
-                out.append(_err(L4, "PERIOD_OMITTED", "A pergunta cita um mês e a interpretação não tem período: a consulta cobriria todo o tempo"))
-        else:
-            try:
-                start, end, _, inclusive = parse_period(interp.period)
-            except (KeyError, ValueError):
-                start = None
-            if start is not None:
-                last = end if inclusive else end - timedelta(days=1)
-                if months and "month" not in interp.group_by:
-                    nxt = date(last.year + (last.month == 12), last.month % 12 + 1, 1)
-                    whole = start.day == 1 and nxt - timedelta(days=1) == last
-                    if (len(months) == 1 and not (start.year == last.year and start.month == months[0] == last.month and whole)) or                             (len(months) > 1 and not ({start.month, last.month} <= set(months))):
-                        out.append(_err(L4, "PERIOD_MONTH_MISMATCH",
-                                        f"A pergunta cita o(s) mês(es) {months}; o período vai de {start} a {last}. O período tem de cobrir exatamente o mês "
-                                        f"pedido (um período só não representa o mesmo mês de anos diferentes: nesse caso responda \"unsupported\")",
-                                        period=interp.period))
-                elif years and not months and not _SUBYEAR_CUE.search(q) and not RELATIVE_TIME.search(q) and not interp.group_by:
-                    if start != date(min(years), 1, 1) or last != date(max(years), 12, 31):
-                        out.append(_err(L4, "PERIOD_PARTIAL_YEAR",
-                                        f"A pergunta traz só o(s) ano(s) {sorted(years)}, sem recorte dentro dele; o período vai de {start} a {last}. "
-                                        f"Use o ano inteiro", period=interp.period))
-        if _THRESHOLD.search(q) and not interp.filters and not interp.daily:
-            out.append(_err(L4, "FILTER_OMITTED", "A pergunta traz um limiar (acima/abaixo de um valor) e a interpretação não tem filtro: "
-                            "a consulta ignoraria a condição. Preencha 'filters' com o operador e o valor"))
-        if interp.daily and not re.search(r"\bdias?\b", q):
-            out.append(_err(L4, "DAILY_NOT_IN_QUESTION", "A interpretação conta DIAS (daily) e a pergunta não fala em dias"))
-        if not interp.daily and _THRESHOLD.search(q) and re.search(r"\b(?:quantos|quantas|numero de|total de) dias\b", q):
-            out.append(_err(L4, "DAILY_OMITTED", "A pergunta conta DIAS que cumprem uma condição; use aggregation \"count\" e daily "
-                            '{"agg": "max"|"min"|"avg"|"sum", "op", "value"} (contar leituras daria outro número)'))
-        if _DAY_PART.search(q):
-            out.append(_err(L4, "DAYPART_UNSUPPORTED", "A pergunta restringe a parte do dia (dia, noite, manhã, tarde) e a interpretação não tem "
-                            "como representar isso: a consulta usaria o dia inteiro. Responda status \"unsupported\""))
-    # agregação: palavras da pergunta que a determinam
-    cues = first(lambda t: {agg for agg, words in AGG_CUES.items() if any(re.search(rf"\b{w}", vocab.fold(t)) for w in words)})
-    if interp.aggregation in AGGREGATIONS and cues and interp.aggregation not in cues:
-        out.append(_err(L4, "AGGREGATION_NOT_IN_QUESTION",
-                        f"A pergunta indica {sorted(cues)} e a interpretação usa '{interp.aggregation}'", aggregation=interp.aggregation))
-    if omissions and interp.aggregation is None and cues & {"avg", "sum", "count"}:
-        out.append(_err(L4, "AGGREGATION_OMITTED", f"A pergunta pede {sorted(cues & {'avg', 'sum', 'count'})} e a interpretação não agrega"))
-    return out
-
-
 def _structure_rules(interp: PipelineInterpretation, index: OntologyIndex) -> list[Finding]:
     """Forma do resultado (group_by / attributes / order): só o que o compilador sabe montar e o grafo tem."""
     if not interp.structured:
@@ -430,79 +173,9 @@ def _structure_rules(interp: PipelineInterpretation, index: OntologyIndex) -> li
     return out
 
 
-GROUP_CUES = {
-    # 'por estação', 'cada estação' e o ranking de estações no PLURAL ('os 5 aeródromos mais chuvosos'); o singular daria falso positivo
-    'station': re.compile(r"\bpor (estacao|estacoes|aerodromo|aerodromos)\b|\b(cada|em cada|de cada|a cada) (estacao|aerodromo)\b|"
-                          r"\b(estacoes|aerodromos)\b.{0,25}\b(mais|menos|maior|menor|maiores|menores)\b"),
-    "year": re.compile(r"\b(por|cada|em cada|de cada|a cada) ano\b|\banual|\banuais\b|\bano a ano\b|\b(?:qual|o|a)\s+ano\s+(?:mais|menos)\b"),
-    "month": re.compile(r"\b(por|cada|em cada|de cada|a cada) mes\b|\bmensal|\bmensais\b|\bmes a mes\b|\b(?:qual|o|a)\s+mes\s+(?:mais|menos)\b"),
-    "day": re.compile(r"\b(por|cada|em cada|de cada|a cada) dia\b|\bdiari(?:[ao]s?|amente)\b|\bdia a dia\b|\b(?:qual|o|a)\s+dia\s+(?:mais|menos)\b"),
-    # 'quantas vezes' NÃO entra em "value": "quantas vezes o vento passou de 25 nós" é uma contagem com filtro, não a frequência de cada
-    # valor (medido no grafo real, RG11: a pista forçava group_by "value" e a pergunta virava unsupported).
-    "value": re.compile(r"\b(mais|menos) frequent|\bfrequencia\b|\bmoda\b"),
-}
-# 'o dia mais chuvoso', 'o mês menos frio', 'a direção mais frequente': UM só (limite 1) entre os grupos; a pergunta não traz número
-SINGULAR_RANK = re.compile(r"\b(?:qual|o|a)\s+(?:dia|mes|ano)\s+(?:mais|menos)\b|\b(?:mais|menos) frequente\b|\bmoda\b")
-ATTRIBUTE_CUES = {"runwayDesignator": re.compile(r"\bcabeceira"), "windCondition": re.compile(r"\bcalmaria|\bvariavel\b")}
-_LIMIT_WORDS = {"um": 1, "uma": 1, "dois": 2, "duas": 2, "tres": 3, "quatro": 4, "cinco": 5, "seis": 6, "sete": 7, "oito": 8, "nove": 9, "dez": 10}
-_LIMIT = re.compile(r"\b(\d{1,3}|um|uma|dois|duas|tres|quatro|cinco|seis|sete|oito|nove|dez)\b(?:\s+\w+){0,3}?\s+"
-                    r"(?:mais|menos|maior(?:es)?|menor(?:es)?|primeir\w+|ultim\w+|frequent\w*)|\b(?:top|ranking de)\s*(\d{1,3})\b")
-_ASC, _DESC = re.compile(r"\bmenor|\bmenos\b|\bmais (baix|fri)"), re.compile(r"\bmaior|\bmais (alt|quent|frequent)")
-
-
-def question_limit(q: str) -> int | None:
-    m = _LIMIT.search(q)
-    if not m:
-        return None
-    raw = m.group(1) or m.group(2)
-    return int(raw) if raw.isdigit() else _LIMIT_WORDS[raw]
-
-
-def _ground_structure(interp: PipelineInterpretation, q: str, omissions: bool) -> list[Finding]:
-    """A forma do resultado pedida tem de estar na PERGUNTA (e o que a pergunta pede tem de estar na forma). `q` já está sem acento/caixa."""
-    out: list[Finding] = []
-    local = lambda iri: iri.rsplit("#", 1)[-1]
-    declared = {d for d in interp.group_by if d in GROUP_DIMS}
-    for dim in interp.group_by:
-        cue = GROUP_CUES.get(dim) or ATTRIBUTE_CUES.get(local(expand(dim)))
-        if dim == "station" and len(interp.entities) >= 2:
-            continue                                  # duas ou mais estações NOMEADAS ("SBRB ou SBPV"): um valor por estação é o que a pergunta pede
-        if cue is None or not cue.search(q):
-            out.append(_err(L4, "GROUP_BY_NOT_IN_QUESTION", f"A interpretação agrupa por '{dim}' e a pergunta não pede resultado por isso", dim=dim))
-    for a in interp.attributes:
-        cue = ATTRIBUTE_CUES.get(local(expand(a)))
-        if cue is None or not cue.search(q):
-            out.append(_err(L4, "ATTRIBUTE_NOT_IN_QUESTION", f"A interpretação mostra '{a}' e a pergunta não o pede", attribute=a))
-    if omissions:
-        for dim, cue in GROUP_CUES.items():
-            if cue.search(q) and dim not in declared:
-                out.append(_err(L4, "GROUP_BY_OMITTED", f"A pergunta pede o resultado por '{dim}' e a interpretação não agrupa por isso", dim=dim))
-        have = {local(expand(x)) for x in (*interp.group_by, *interp.attributes)}
-        for name, cue in ATTRIBUTE_CUES.items():
-            if cue.search(q) and name not in have:
-                out.append(_err(L4, "ATTRIBUTE_OMITTED", f"A pergunta cita '{name}' e a interpretação não o usa (nem como dimensão nem como atributo)", attribute=name))
-    asked = question_limit(q)
-    if interp.order:
-        o = interp.order
-        if asked is None and not (o["limit"] == 1 and SINGULAR_RANK.search(q)):
-            out.append(_err(L4, "ORDER_NOT_IN_QUESTION", "A interpretação ordena e limita, e a pergunta não pede 'os N mais/menos…'", order=o))
-        elif asked is not None and asked != o["limit"]:
-            out.append(_err(L4, "ORDER_LIMIT_MISMATCH", f"A pergunta pede {asked} e a interpretação limita a {o['limit']}", order=o))
-        asc, desc = bool(_ASC.search(q)), bool(_DESC.search(q))
-        if (o["direction"] == "desc" and asc and not desc) or (o["direction"] == "asc" and desc and not asc):
-            out.append(_err(L4, "ORDER_DIRECTION_MISMATCH", f"A pergunta indica o sentido oposto a '{o['direction']}'", order=o))
-    elif omissions and asked is not None and interp.group_by:
-        out.append(_err(L4, "ORDER_OMITTED", f"A pergunta pede os {asked} primeiros e a interpretação não ordena nem limita"))
-    elif omissions and interp.group_by and SINGULAR_RANK.search(q):
-        out.append(_err(L4, "ORDER_OMITTED", "A pergunta pede O mais/menos (um só): ordene os grupos pela agregação e limite a 1 "
-                        '(order: {"by": "aggregate", "direction": "desc"|"asc", "limit": 1})'))
-    return out
-
-
-def validate_interpretation(interp: PipelineInterpretation, index: OntologyIndex, question: str | None = None,
-                            corrections: tuple[str, ...] = (), structured: bool = False) -> list[Finding]:
-    """`structured=True` (prompt v6): a forma do resultado (group_by/attributes/order) é conferida contra a pergunta. Sem isso as
-    regras de v1–v5 ficam como estavam: esses campos nem existem no JSON desses prompts."""
+def validate_interpretation(interp: PipelineInterpretation, index: OntologyIndex) -> list[Finding]:
+    """Esquema, estrutura e mundo fechado (grandeza, estação, agregação admitida, período, filtros). Nada aqui olha a frase: a linguagem é do
+    LLM, conferida por concordância, conservação da evidência e pelo usuário (metqa/understanding, metqa/dialogue)."""
     out: list[Finding] = _schema(interp)
     if out:
         return out
@@ -539,10 +212,6 @@ def validate_interpretation(interp: PipelineInterpretation, index: OntologyIndex
             out.append(_err(L3, "BAD_FILTER", f"Filtro inválido: {f}", filter=f))
     if interp.record_kind not in {"observation", "forecast"}:
         out.append(_err(L3, "BAD_RECORD_KIND", f"Tipo de registro inválido: {interp.record_kind}"))
-    if question is not None:
-        out += _ground_in_question(interp, question, index, corrections)
-        if structured:
-            out += _ground_structure(interp, vocab.fold(" ".join([*reversed(corrections), question])), not corrections)
     return out
 
 

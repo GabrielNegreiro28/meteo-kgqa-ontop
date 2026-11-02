@@ -16,7 +16,7 @@ from pathlib import Path
 
 from evoontology.trajectory.trajectory import TrajectoryStore
 
-from pipeline.vocab import _short
+from metqa.knowledge.index import _short
 
 from .facade import GroundedLayer
 from .ground import SemanticGrounder

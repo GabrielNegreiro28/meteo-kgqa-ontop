@@ -8,8 +8,8 @@
 """
 from __future__ import annotations
 
-from kgqa.contract import Status
-from pipeline.caveats import answer_caveats
+from metqa.domain.contract import Status
+from metqa.verification.caveats import answer_caveats
 
 from ..domain import Executed
 from ..knowledge import DomainCatalog

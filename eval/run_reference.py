@@ -18,11 +18,25 @@ import yaml
 
 from eval import oracle, oracle_fresh, oracle_heldout, oracle_real, oracle_real_fresh, oracle_real_gen, oracle_real_probe
 from eval.compare import compare, rows_from_sparql
-from kgqa.contract import Status
-from kgqa.store import PREFIXES, LocalRdflibBackend, OntopBackend
-from kgqa.verify import result_status
+from metqa.domain.contract import Status
+from metqa.execution.store import PREFIXES, LocalRdflibBackend, OntopBackend
 
 ROOT = Path(__file__).resolve().parent.parent
+COUNT_VARS = ("n", "count", "cnt")
+
+
+def result_status(results: dict) -> tuple[Status, list[str]]:
+    """Status de uma consulta de REFERÊNCIA (escrita à mão, com a contagem em ?n): sem linhas, ou contagem 0 em todas, é NO_RESULTS.
+    O sistema não usa isto: lá o papel de cada coluna vem do ResultShape do compilador."""
+    if "boolean" in results:
+        return Status.ANSWERED, ["ASK"]
+    bindings = results.get("results", {}).get("bindings", [])
+    if not bindings:
+        return Status.NO_RESULTS, ["zero linhas"]
+    count_vars = [v for v in results["head"].get("vars", []) if v.lower() in COUNT_VARS]
+    if count_vars and all(all(b.get(v, {}).get("value", "0") == "0" for v in count_vars) for b in bindings):
+        return Status.NO_RESULTS, ["agregação sobre conjunto vazio (contagem = 0)"]
+    return Status.ANSWERED, []
 
 
 SUITES = {

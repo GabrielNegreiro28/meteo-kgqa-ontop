@@ -18,7 +18,7 @@ from rdflib.plugins.sparql import prepareQuery
 from rdflib.plugins.sparql.parser import parseUpdate
 from rdflib.plugins.sparql.parserutils import CompValue
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent.parent
 DEFAULT_FILES = [ROOT / "ontology" / "met.ttl", ROOT / "data" / "synthetic.nt"]
 
 PREFIXES = """PREFIX met:  <https://example.org/kgqa-met/ontology#>

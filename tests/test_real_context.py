@@ -6,8 +6,8 @@ from pathlib import Path
 
 import pytest
 
-from pipeline.validators import PipelineInterpretation, validate_query
-from pipeline.vocab import MET, OBS_COMMON, STATION_NS, OntologyIndex, obda_observation_attributes, obda_profile
+from metqa.verification.rules import PipelineInterpretation, validate_query
+from metqa.knowledge.index import MET, OBS_COMMON, STATION_NS, OntologyIndex, obda_observation_attributes, obda_profile
 
 ROOT = Path(__file__).resolve().parent.parent
 OBDA = ROOT / "mapping" / "met.obda"

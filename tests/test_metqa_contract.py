@@ -1,15 +1,15 @@
 """Contrato 0.3.0, capacidades para o roteador e trilha que a evolução lê (plano, Fase 6). Sem LLM real e sem Ontop."""
 import json
 
-from kgqa.contract import CONTRACT_VERSION, Status
-from pipeline.dialogue import ScriptedUser
+from metqa.domain.contract import CONTRACT_VERSION, Status
+from metqa.dialogue.replies import ScriptedUser
 from semantics.trajectories import to_trajectory
 from tests.test_metqa_shapes import CAT, Rows, XD, lit, table
 from tests.test_metqa import nir
 from tests.test_metqa_understanding import MAX, MEAN, Q_AMB, run
 from metqa.app import MetQA, Settings
 from metqa.knowledge import ExemplarStore, OntologyLexicon
-from pipeline.llm import ScriptedLLM
+from metqa.llm.client import ScriptedLLM
 
 ROW = table({"value": lit(39, XD), "n": lit(8000)})
 

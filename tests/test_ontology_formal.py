@@ -225,7 +225,7 @@ def test_the_reasoner_catches_the_defects_that_matter(full, tmp_path, name, extr
 @needs_robot
 @needs_ontop
 def test_what_the_mapping_produces_in_the_real_graph_is_consistent_with_the_axioms(full, tmp_path):
-    from kgqa.store import OntopBackend
+    from metqa.execution.store import OntopBackend
     from ontology.conformance import sample_abox
     sample, found = sample_abox(OntopBackend(), per_class=3)
     assert all(n > 0 for n in found.values()), found

@@ -9,8 +9,8 @@ from dataclasses import dataclass, field
 from datetime import date, datetime
 from typing import Any
 
-from pipeline.validators import AGGREGATIONS, MAX_LIMIT
-from pipeline.vocab import expand
+from metqa.verification.rules import AGGREGATIONS, MAX_LIMIT
+from metqa.knowledge.index import expand
 
 from ..domain import CanonicalQuery, TimeScope
 from ..domain.types import COUNT_OF

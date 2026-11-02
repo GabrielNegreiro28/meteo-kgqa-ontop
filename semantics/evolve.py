@@ -28,7 +28,7 @@ from evoontology.evolution.session import EvolutionSession
 from evoontology.ontology.store import SemanticStore
 from evoontology.trajectory.trajectory import TrajectoryStore
 
-from pipeline.vocab import expand, fold
+from metqa.knowledge.index import expand, fold
 
 from .gate import validate_candidate
 from .resolution import ResolutionAdapter
@@ -63,15 +63,24 @@ class Proposal:
     rationale: str
 
 
+# vocabulário de CONSULTA (limiar, recorte do período, parte do dia, mês, cálculo), não de grandeza: nunca vira sinônimo
+FUNCTIONAL_PHRASES = (
+    "acima de abaixo de maior que menor que superior a inferior a passou de passa de passaram de ultrapassou excedeu excede superou",
+    "semestre trimestre bimestre quinzena semana verao inverno primavera outono inicio fim final metade ate desde entre a partir primeiro ultimo",
+    "durante o dia durante a noite durante a madrugada de noite a noite de madrugada pela manha pela tarde de manha a tarde diurno noturno",
+    "janeiro fevereiro marco abril maio junho julho agosto setembro outubro novembro dezembro")
+AGG_CUES = {"avg": ("media", "medio", "medias", "medios"), "max": ("maxim", "maior", "mais alt", "mais quente", "pico"),
+            "min": ("minim", "menor", "mais baix", "mais frio"), "sum": ("total", "soma", "somat"),
+            "count": ("quantas", "quantos", "numero de", "contagem")}
+
+
 def _functional_words() -> frozenset[str]:
     """Palavras que a PIPELINE já interpreta por regra (agregação, limiar, recorte de tempo, parte do dia, mês) ou que são vocabulário de consulta.
     Nenhuma é sinônimo de grandeza: "acima" aparece em toda pergunta com limiar e levaria à grandeza que calhou de vir junto."""
     import re
 
-    from pipeline import validators as v
     from .ground import QUERY_WORDS, STOPWORDS
-    sources = [v._THRESHOLD.pattern, v._SUBYEAR_CUE.pattern, v._DAY_PART.pattern, " ".join(v._MONTHS)]
-    sources += [w for words in v.AGG_CUES.values() for w in words]
+    sources = [*FUNCTIONAL_PHRASES, *(w for words in AGG_CUES.values() for w in words)]
     extra = {"observacao", "observacoes", "observado", "observados", "boletim", "boletins", "dados", "hora", "horas", "vezes", "leitura", "leituras"}
     return frozenset(w for s in sources for w in re.findall(r"[a-z]{3,}", fold(s))) | {fold(w) for w in QUERY_WORDS | STOPWORDS} | extra
 

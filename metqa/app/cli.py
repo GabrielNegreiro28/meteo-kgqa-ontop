@@ -19,10 +19,10 @@ from .settings import Settings
 
 def build(settings: Settings, run: str = "metqa-cli"):
     """Monta o MVP com os adaptadores reais (importa só aqui: a ajuda e os testes não precisam de rede)."""
-    from kgqa.store import OntopBackend
-    from pipeline.ledger import Ledger, LedgerLLM
-    from pipeline.llm import ResilientLLM
-    from pipeline.openai_client import OpenAIChatClient, load_env
+    from metqa.execution.store import OntopBackend
+    from metqa.llm.ledger import Ledger, LedgerLLM
+    from metqa.llm.client import ResilientLLM
+    from metqa.llm.openai_client import OpenAIChatClient, load_env
 
     from ..knowledge import DomainCatalog, EvoLexicon, ExemplarStore, OntologyLexicon
     from .pipeline import MetQA

@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from dataclasses import replace
 
-from kgqa.contract import Status
+from metqa.domain.contract import Status
 
 from ..domain import CanonicalQuery, Plan, Stop, SubQuery
 

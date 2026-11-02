@@ -16,7 +16,7 @@ from typing import Any
 
 from evoontology.trajectory.trajectory import TrajectoryStore, truncate_result
 
-from kgqa.contract import Status
+from metqa.domain.contract import Status
 
 COMPLETED = {Status.ANSWERED, Status.NO_RESULTS, Status.UNSUPPORTED, Status.NEEDS_CLARIFICATION, Status.REJECTED}
 ABSTENTIONS = {Status.UNSUPPORTED, Status.NEEDS_CLARIFICATION, Status.REJECTED}

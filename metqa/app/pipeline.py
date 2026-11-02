@@ -19,11 +19,10 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Any, Callable
 
-from kgqa.contract import CONTRACT_VERSION, Diagnostic, Provenance, QueryResponse, Status
-from pipeline.llm import LLMClient, LLMError
-from pipeline.provenance import artifact_versions, llm_model_of, prov_turtle
-from pipeline.textsafe import clean
-from pipeline.validators import Finding
+from metqa.domain.contract import CONTRACT_VERSION, Diagnostic, Provenance, QueryResponse, Status
+from metqa.llm.client import LLMClient, LLMError
+from metqa.presentation.provenance import artifact_versions, llm_model_of, prov_turtle
+from metqa.util.text import clean
 
 from ..dialogue import assess, choice_message, classify, confirm_message, paraphrase_parts
 from ..domain import Executed, Stop

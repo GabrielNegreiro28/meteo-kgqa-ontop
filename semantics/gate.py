@@ -25,7 +25,7 @@ from typing import Any
 from evoontology.ontology.store import SemanticStore
 from rdflib import Graph, URIRef
 
-from pipeline.vocab import OntologyIndex, _short
+from metqa.knowledge.index import OntologyIndex, _short
 
 from .build import BFO_REQUIRED, BFO_TTL, MET_TTL, STRUCTURE_TTL, _bfo_table
 

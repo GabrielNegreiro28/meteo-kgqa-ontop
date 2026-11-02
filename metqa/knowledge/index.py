@@ -15,9 +15,9 @@ from pathlib import Path
 from rdflib import OWL, RDF, RDFS, BNode, Graph, Literal, URIRef
 from rdflib.namespace import SKOS
 
-from .textsafe import ctx as _ctx
+from ..util.text import ctx as _ctx
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent.parent
 
 MET = "https://example.org/kgqa-met/ontology#"
 DATA = "https://example.org/kgqa-met/data/"
@@ -179,7 +179,7 @@ class OntologyIndex:
                    timeout_s: float = 60.0) -> "OntologyIndex":
         """Índice do grafo REAL: a ontologia vem dos arquivos; estações, cobertura e grandezas com dados vêm do Ontop.
 
-        `backend` é qualquer objeto com `select(consulta, timeout_s, max_rows)` (kgqa.store.OntopBackend). Falha de forma EXPLÍCITA se
+        `backend` é qualquer objeto com `select(consulta, timeout_s, max_rows)` (metqa.execution.store.OntopBackend). Falha de forma EXPLÍCITA se
         uma consulta falhar: um índice sem estações faria toda estação virar "desconhecida" e a pipeline recusaria tudo."""
         idx = cls.load(ontology=ontology, structure=structure, with_data=False)
         obda = obda or ROOT / "mapping" / "met.obda"

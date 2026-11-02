@@ -15,7 +15,7 @@ from rdflib.paths import InvPath, Path, SequencePath
 from rdflib.plugins.sparql import prepareQuery
 from rdflib.plugins.sparql.parserutils import CompValue
 
-from .vocab import MET
+from ..knowledge.index import MET
 
 XSD = "http://www.w3.org/2001/XMLSchema#"
 NUMERIC = {XSD + t for t in ("integer", "decimal", "double", "float", "int", "long")}

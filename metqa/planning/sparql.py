@@ -15,9 +15,9 @@ import re
 from datetime import timedelta
 from decimal import Decimal
 
-from . import vocab
-from .validators import PipelineInterpretation, parse_period
-from .vocab import OntologyIndex, expand
+from ..knowledge import index as vocab
+from ..verification.rules import PipelineInterpretation, parse_period
+from ..knowledge.index import OntologyIndex, expand
 
 _SHORT = vocab._short
 PER_STATION = re.compile(r"\bpor (estacao|estacoes|aerodromo|aerodromos)\b|\bde cada (estacao|aerodromo)\b")
@@ -116,7 +116,7 @@ def canonical_filters(interp: PipelineInterpretation, index: OntologyIndex) -> l
 def compile_structured(interp: PipelineInterpretation, index: OntologyIndex, force: bool = False) -> str | None:
     """SPARQL da forma pedida, ou None se esta interpretação não tem montagem determinística (a pipeline então responde `unsupported`).
     `force=True` (prompt v7): também monta a agregação simples e a contagem com limiar, sem group_by/attributes/order."""
-    from .validators import GROUP_DIMS, TIME_DIMS
+    from ..verification.rules import GROUP_DIMS, TIME_DIMS
     if not (interp.structured or force) or interp.record_kind != "observation" or len(interp.properties) != 1 or interp.instant is not None:
         return None
     if interp.filters and (interp.group_by or interp.attributes or interp.order):

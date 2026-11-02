@@ -10,10 +10,10 @@ from decimal import Decimal
 
 import pytest
 
-from kgqa.store import PREFIXES, OntopBackend
-from pipeline.compiler import compile_structured
-from pipeline.validators import PipelineInterpretation, validate_query
-from pipeline.vocab import OntologyIndex
+from metqa.execution.store import PREFIXES, OntopBackend
+from metqa.planning.sparql import compile_structured
+from metqa.verification.rules import PipelineInterpretation, validate_query
+from metqa.knowledge.index import OntologyIndex
 from tests.test_real_pipeline import needs_duck, needs_ontop
 
 PROPS = {"met:AirTemperature": ("obs_air_temp", "DEG_C", (-5, 38)), "met:Precipitation": ("obs_precip", "MilliM", (0, 10)),

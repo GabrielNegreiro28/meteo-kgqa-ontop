@@ -5,8 +5,8 @@ import urllib.error
 
 import pytest
 
-from pipeline import openai_client as oc
-from pipeline.llm import LLMTimeout, RateLimited, ResilientLLM
+from metqa.llm import openai_client as oc
+from metqa.llm.client import LLMTimeout, RateLimited, ResilientLLM
 
 KEY = "chave-secreta-de-teste-1234567890"
 

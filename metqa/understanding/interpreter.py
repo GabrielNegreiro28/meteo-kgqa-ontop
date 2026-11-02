@@ -9,8 +9,8 @@ import json
 from dataclasses import dataclass
 from typing import Any
 
-from pipeline.llm import LLMClient, parse_json_object
-from pipeline.textsafe import clean
+from metqa.llm.client import LLMClient, parse_json_object
+from metqa.util.text import clean
 
 from ..knowledge import DomainCatalog, LexiconHit
 from .prompts import KEYS, KEYS_B, READING_A, READING_B, REREAD_KEYS, REREAD_TIME

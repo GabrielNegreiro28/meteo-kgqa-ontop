@@ -14,8 +14,8 @@ from decimal import Decimal
 from pathlib import Path
 
 from ontology import catalog as quantities
-from pipeline.validators import GROUP_DIMS, own_attributes
-from pipeline.vocab import OntologyIndex, PropertyInfo, convert_filter_value, expand
+from metqa.verification.rules import GROUP_DIMS, own_attributes
+from metqa.knowledge.index import OntologyIndex, PropertyInfo, convert_filter_value, expand
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 UNIT_NS = "http://qudt.org/vocab/unit/"

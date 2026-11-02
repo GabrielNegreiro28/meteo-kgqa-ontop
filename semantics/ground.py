@@ -14,8 +14,8 @@ import re
 from dataclasses import dataclass, field
 from typing import Any
 
-from pipeline.textsafe import ctx
-from pipeline.vocab import _short, expand, fold
+from metqa.util.text import ctx
+from metqa.knowledge.index import _short, expand, fold
 
 from .facade import GroundedLayer
 

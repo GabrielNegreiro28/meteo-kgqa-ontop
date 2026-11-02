@@ -10,9 +10,9 @@ from __future__ import annotations
 from dataclasses import replace
 from datetime import timezone
 
-from pipeline.compiler import _attr_var, compile_structured
-from pipeline.validators import PipelineInterpretation
-from pipeline.vocab import _short, expand
+from .sparql import _attr_var, compile_structured
+from metqa.verification.rules import PipelineInterpretation
+from metqa.knowledge.index import _short, expand
 
 from ..domain import CanonicalQuery, CompiledQuery, ResultShape
 from ..knowledge import DomainCatalog

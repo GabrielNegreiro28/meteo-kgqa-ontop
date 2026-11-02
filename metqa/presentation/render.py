@@ -11,7 +11,7 @@ from datetime import datetime, timedelta, timezone
 from decimal import ROUND_HALF_UP, Decimal
 from typing import Any
 
-from kgqa.contract import Status
+from metqa.domain.contract import Status
 
 from ..domain import CanonicalQuery, Executed, ResultShape
 from ..execution import rows

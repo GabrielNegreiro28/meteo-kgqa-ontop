@@ -11,9 +11,8 @@ from __future__ import annotations
 
 from typing import Any, Protocol
 
-from kgqa.contract import Diagnostic, Status
-from kgqa.store import PREFIXES, ExecResult
-from pipeline.validators import validate_query
+from metqa.domain.contract import Diagnostic, Status
+from metqa.execution.store import PREFIXES, ExecResult
 
 from ..domain import CompiledQuery, Executed, ResultShape, Stop, SubQuery
 from ..knowledge import DomainCatalog
@@ -40,6 +39,7 @@ def result_status(results: dict[str, Any] | None, shape: ResultShape) -> Status:
 def execute(part: SubQuery, compiled: CompiledQuery, catalog: DomainCatalog, source: SparqlSource, *, timeout_s: float, max_rows: int,
             log=lambda *a, **k: None) -> Executed | Stop:
     sparql = compiled.sparql
+    from ..verification.rules import validate_query          # aqui, e não no topo: as regras importam o executor (política, prefixos)
     _, findings = validate_query(sparql, to_interp(part.query), catalog.index, True)
     log("validate_query", findings=[f.diag.code for f in findings], sparql=sparql)
     if findings:                                   # consulta montada por código que não passa nas regras: defeito do sistema, nunca resposta

@@ -15,7 +15,7 @@ import time
 from contextlib import contextmanager
 from pathlib import Path
 
-from .llm import BudgetExceeded, LLMClient, LLMResponse
+from .client import BudgetExceeded, LLMClient, LLMResponse
 
 
 class Ledger:

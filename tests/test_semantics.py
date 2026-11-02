@@ -77,7 +77,7 @@ def test_evidence_is_provenance_of_the_ontology_only():
 
 
 def test_constraints_mirror_the_formal_aggregations():
-    from pipeline.vocab import OntologyIndex
+    from metqa.knowledge.index import OntologyIndex
     cons = {c["id"]: c for c in build_records()["constraints"]}
     formal = sorted(OntologyIndex.load().properties[MET + "AirTemperature"].aggregations)
     assert "sum" not in formal                      # premissa do teste: grandeza instantânea não admite soma
@@ -253,7 +253,7 @@ def _relation(rec, source, rel, target):
 
 def test_gate_shacl_units_include_every_unit_the_ontology_declares():
     from semantics.gate import shape_units
-    from pipeline.vocab import OntologyIndex
+    from metqa.knowledge.index import OntologyIndex
     idx = OntologyIndex.load()
     assert {u.rsplit("/", 1)[-1] for u in idx.units} <= shape_units()
 

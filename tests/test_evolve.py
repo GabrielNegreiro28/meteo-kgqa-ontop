@@ -12,7 +12,7 @@ from evoontology.evolution.session import EvolutionSession
 from evoontology.ontology.store import SemanticStore
 from evoontology.trajectory.trajectory import TrajectoryStore
 
-from pipeline.vocab import expand
+from metqa.knowledge.index import expand
 from semantics import evolve
 from semantics.build import build_v0
 from semantics.resolution import CONSTRUCTION_FILES, VALIDATION_FILES, Case, ResolutionAdapter, load_cases, score

@@ -4,13 +4,13 @@ Perfil do grafo real (estações, cobertura) sem o Ontop: o LLM é roteirizado e
 encontrado na revisão de 2026-10-31 ou na rodada do novo_b (E78, E84, E95, E99...)."""
 import json
 
-from kgqa.contract import Status
-from kgqa.store import ExecResult
+from metqa.domain.contract import Status
+from metqa.execution.store import ExecResult
 from metqa.app import MetQA, Settings
 from metqa.knowledge import DomainCatalog, ExemplarStore, OntologyLexicon
-from pipeline.llm import ScriptedLLM
+from metqa.llm.client import ScriptedLLM
 from tests.test_metqa import nir
-from tests.test_reconcile import IDX
+from tests.helpers import IDX
 
 CAT = DomainCatalog(IDX)
 XI, XD = "http://www.w3.org/2001/XMLSchema#integer", "http://www.w3.org/2001/XMLSchema#decimal"

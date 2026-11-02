@@ -107,7 +107,7 @@ def test_mutation_precip_day_by_utc_end_time_is_wrong():
     """Somar a chuva do dia pelo instante FINAL em UTC desloca 4 horas: resultado deve divergir do oráculo."""
     from eval import oracle_real
     from eval.compare import compare, rows_from_sparql
-    from kgqa.store import PREFIXES, OntopBackend
+    from metqa.execution.store import PREFIXES, OntopBackend
     wrong = """SELECT (SUM(?v) AS ?total) (COUNT(?v) AS ?n) WHERE {
       st:SBGR sosa:hosts ?s .
       ?o sosa:madeBySensor ?s ; sosa:observedProperty met:Precipitation ; sosa:resultTime ?t ;
@@ -130,7 +130,7 @@ def test_ontop_is_read_only_at_database_level():
 
 @needs_ontop
 def test_ontop_backend_policy_and_truncation():
-    from kgqa.store import PREFIXES, OntopBackend
+    from metqa.execution.store import PREFIXES, OntopBackend
     b = OntopBackend()
     assert b.select("INSERT DATA { <urn:a> <urn:b> <urn:c> }").error_kind == "policy"
     r = b.select(PREFIXES + "SELECT ?s WHERE { ?s a met:WeatherStation }", max_rows=10)
@@ -139,7 +139,7 @@ def test_ontop_backend_policy_and_truncation():
 
 @needs_ontop
 def test_ontop_results_are_typed_and_in_utc():
-    from kgqa.store import PREFIXES, OntopBackend
+    from metqa.execution.store import PREFIXES, OntopBackend
     r = OntopBackend().select(PREFIXES + """SELECT ?t ?v WHERE { st:SBBE sosa:hosts ?s .
         ?o sosa:madeBySensor ?s ; sosa:observedProperty met:AirTemperature ; sosa:resultTime ?t ;
            sosa:hasResult/qudt:numericValue ?v . FILTER(?t = "2019-01-06T05:00:00Z"^^xsd:dateTime) }""")

@@ -9,11 +9,10 @@ from pathlib import Path
 import pytest
 
 from eval.run_reference import SUITES, load_questions
-from kgqa.store import PREFIXES, OntopBackend
-from pipeline.compiler import compile_structured
-from pipeline.query_facts import extract
-from pipeline.validators import PipelineInterpretation, validate_query
-from pipeline.vocab import STATION_NS, OntologyIndex
+from metqa.execution.store import PREFIXES, OntopBackend
+from metqa.verification.query_facts import extract
+from metqa.verification.rules import PipelineInterpretation, validate_query
+from metqa.knowledge.index import STATION_NS, OntologyIndex
 from tests.test_real_pipeline import needs_ontop
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -62,10 +61,24 @@ def test_no_reference_or_compiled_query_trips_the_rule():
                 assert flagged(q["sparql"]) == [], (suite, q["id"])
 
 
-def test_every_compiled_structured_shape_avoids_the_problem():
-    from tests.test_structured import FRESH_SHAPES, IDX, SHAPES
-    for name, interp in [*((k, v[1]) for k, v in SHAPES.items()), *FRESH_SHAPES.items()]:
-        assert flagged(compile_structured(interp, IDX)) == [], name
+def test_every_compiled_shape_avoids_the_problem():
+    """Todas as formas que o compilador do metqa monta: série por ano/mês/dia/estação/valor, ranking, atributo, horas, dias, contagens."""
+    from metqa.knowledge import DomainCatalog
+    from metqa.planning import compile_query
+    from metqa.understanding import parse
+    from tests.helpers import IDX
+    from tests.test_metqa import nir
+    cat, Y = DomainCatalog(IDX), ("2020-01-01", "2020-12-31")
+    shapes = [nir("met:AirTemperature", ["st:SBGL"], "avg", *Y, group_by=[g]) for g in ("year", "month", "day", "value")]
+    shapes += [nir("met:AirTemperature", [], "max", *Y, group_by=["station"], order={"direction": "desc", "limit": 3}),
+               nir("met:WindSpeed", ["st:SBGL"], "max", *Y, attributes=["met:runwayDesignator"]),
+               nir("met:WindSpeed", ["st:SBGL"], "avg", *Y, group_by=["met:runwayDesignator"]),
+               nir("met:Precipitation", ["st:SBGL"], "sum", *Y, hours=[0, 1, 2], weekdays=[5, 6]),
+               nir("met:Precipitation", ["st:SBGL"], "count", *Y, count_of="hours", conditions=[{"op": ">", "value": 0}]),
+               nir("met:AirTemperature", ["st:SBGL"], "count", *Y, count_of="days", daily={"agg": "max", "op": ">", "value": 35})]
+    for ir in shapes:
+        sparql = compile_query(parse(ir).parts[0][1], cat).sparql
+        assert flagged(sparql) == [], ir
 
 
 @needs_ontop

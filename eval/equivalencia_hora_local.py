@@ -11,7 +11,7 @@ import time
 from datetime import date, timedelta
 from pathlib import Path
 
-from kgqa.store import PREFIXES, OntopBackend
+from metqa.execution.store import PREFIXES, OntopBackend
 from metqa.knowledge import DomainCatalog
 from metqa.planning.compiler import compile_query
 from metqa.understanding import parse

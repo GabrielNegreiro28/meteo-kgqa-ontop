@@ -12,7 +12,7 @@ from __future__ import annotations
 from rdflib import Graph, Literal, URIRef
 from rdflib.namespace import RDF
 
-from kgqa.store import PREFIXES
+from metqa.execution.store import PREFIXES
 
 MET = "https://example.org/kgqa-met/ontology#"
 SOSA = "http://www.w3.org/ns/sosa/"

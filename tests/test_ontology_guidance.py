@@ -7,9 +7,8 @@ import pytest
 import yaml
 
 from eval.run_reference import load_questions
-from eval.safety_experiment import CASES
-from pipeline.validators import PipelineInterpretation, validate_interpretation, validate_query
-from pipeline.vocab import MET, SOSA, TIME, OntologyIndex
+from metqa.verification.rules import PipelineInterpretation, validate_interpretation, validate_query
+from metqa.knowledge.index import MET, SOSA, TIME, OntologyIndex
 
 ROOT = Path(__file__).resolve().parent.parent
 INDEX = OntologyIndex.load()
@@ -127,22 +126,6 @@ def test_containment_and_symbols_are_read_from_the_ontology():
     assert "°C (unit:DEG_C, um recurso, não um texto)" in ctx
 
 
-def test_interval_end_must_not_be_strictly_before_the_period_end():
-    """O modelo escreveu `?fim < fim_do_período` e perdeu o último intervalo de 6 h (D05/T06 na execução real)."""
-    for case in ("D05", "T06"):
-        interp = CASES[case][0]
-        ok = QS[case]["sparql"]
-        assert [f.diag.code for f in validate_query(ok, interp, INDEX)[1]] == []
-        strict = ok.replace("?e <= ", "?e < ")
-        assert strict != ok
-        assert "PERIOD_MISMATCH" in [f.diag.code for f in validate_query(strict, interp, INDEX)[1]]
-
-
-def test_instant_properties_still_accept_the_exclusive_end():
-    interp = CASES["D04"][0]
-    assert [f.diag.code for f in validate_query(QS["D04"]["sparql"], interp, INDEX)[1]] == []
-
-
 def test_unit_compared_to_text_is_flagged():
     q = QS["D03"]["sparql"].replace("qudt:unit unit:DEG_C", "qudt:unit ?u").replace(
         "FILTER(?value > 30)", 'FILTER(?value > 30) FILTER(?u = "unit:DEG_C")')
@@ -153,17 +136,6 @@ def test_unit_compared_to_text_is_flagged():
 def test_text_comparison_of_a_literal_valued_variable_is_fine():
     q = "SELECT ?l WHERE { ?s a met:WeatherStation ; rdfs:label ?l . FILTER(?l = \"Estação Serra Azul\"@pt) }"
     assert "RESOURCE_COMPARED_TO_STRING" not in codes(q)
-
-
-@pytest.mark.parametrize("version,qid,code", [("v3_r1", "T02", "RESOURCE_COMPARED_TO_STRING"),
-                                               ("v3_r1", "D05", "PERIOD_MISMATCH"), ("v3_r1", "T06", "PERIOD_MISMATCH")])
-def test_replay_real_failures_of_the_ontology_context_run(version, qid, code):
-    f = ROOT / "eval" / "reports" / f"llm_run_{version}.json"
-    if not f.exists():
-        pytest.skip("eval/reports não é versionado: rode eval.run_llm_pipeline --prompts v3 --tag _r1")
-    sparql = next(r["sparql"] for r in json.loads(f.read_text(encoding="utf-8")) if r["id"] == qid)
-    interp = CASES[qid][0] if qid in CASES else None
-    assert code in [x.diag.code for x in validate_query(sparql, interp, INDEX)[1]]
 
 
 # ------------------------------ cobertura: o que a ontologia descreve, o contexto entrega ------------------------------

@@ -17,7 +17,7 @@ from typing import Any
 from rdflib import RDF, RDFS, Graph, Literal, Namespace, URIRef
 from rdflib.namespace import PROV, XSD
 
-from kgqa.contract import QueryResponse
+from metqa.domain.contract import QueryResponse
 
 RUN = Namespace("https://example.org/kgqa-met/run/")
 VER = Namespace("https://example.org/kgqa-met/run/version#")
@@ -27,7 +27,7 @@ VER = Namespace("https://example.org/kgqa-met/run/version#")
 def artifact_versions() -> dict[str, str]:
     """Impressão (SHA-256, 12 hex) dos artefatos que determinam o que uma resposta significa: mapeamento do Ontop, regras de limpeza, camada
     estrutural, alinhamento BFO e o código do pipeline/executor. Uma resposta sem isso não diz sobre QUAL grafo e QUAL código ela saiu."""
-    root = Path(__file__).resolve().parent.parent
+    root = Path(__file__).resolve().parent.parent.parent
 
     def digest(*paths: Path) -> str | None:
         h, found = hashlib.sha256(), False
@@ -39,7 +39,7 @@ def artifact_versions() -> dict[str, str]:
 
     out = {"mapping": digest(root / "mapping" / "met.obda"), "cleaning": digest(root / "ingest" / "transform.py"),
            "structure": digest(root / "ontology" / "met-structure.ttl"), "bfo_alignment": digest(root / "ontology" / "met-bfo.ttl"),
-           "code": digest(*(root / "pipeline").glob("*.py"), *(root / "kgqa").glob("*.py"))}
+           "code": digest(*(root / "metqa").rglob("*.py"))}
     return {k: v for k, v in out.items() if v}
 
 

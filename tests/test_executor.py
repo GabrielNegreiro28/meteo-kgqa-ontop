@@ -1,7 +1,7 @@
 """Executor somente leitura: política, erros, truncamento e timeout."""
 import pytest
 
-from kgqa.store import PREFIXES, LocalRdflibBackend
+from metqa.execution.store import PREFIXES, LocalRdflibBackend
 
 B = LocalRdflibBackend()
 

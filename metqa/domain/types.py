@@ -9,7 +9,7 @@ from dataclasses import dataclass, field
 from datetime import date, datetime
 from typing import Any
 
-from kgqa.contract import Diagnostic, Status
+from metqa.domain.contract import Diagnostic, Status
 
 INTENTS = ("value", "count", "series", "ranking", "extreme_with_attribute", "instant", "comparison")
 COUNT_OF = ("readings", "hours", "days", "reports")
