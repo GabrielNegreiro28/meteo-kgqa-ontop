@@ -23,6 +23,9 @@ def _values(cq: CanonicalQuery, catalog: DomainCatalog) -> list[Finding]:
             out.append(_err(L3, "UNIT_DIMENSION_MISMATCH",
                             f"A condição {c['op']} {c['value']} {c.get('unit', '')} não se converte para a unidade de {m.label} "
                             f"({m.symbol or 'sem unidade'}): a unidade não é dessa grandeza, ou a grandeza escolhida não é a da pergunta"))
+    if m and cq.unit and cq.aggregation != "count" and catalog.from_canonical(1, cq.unit, cq.measure) is None:
+        out.append(_err(L3, "UNIT_DIMENSION_MISMATCH", f"O resultado não pode ser dado em {cq.unit}: não é unidade de {m.label} "
+                                                       f"({m.symbol or 'sem unidade'})"))
     if cq.count_of and cq.aggregation != "count":
         out.append(_err(L3, "COUNT_OF_WITHOUT_COUNT", "calc.count_of só vale com aggregation \"count\""))
     if cq.count_of == "days" and not cq.daily:

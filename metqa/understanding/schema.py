@@ -167,6 +167,10 @@ def parse(raw: dict[str, Any]) -> Parsed:
             order = None
         else:
             order = {"by": "aggregate", "direction": order["direction"], "limit": order["limit"]}
+    unit = shape.get("unit")
+    if unit is not None and not isinstance(unit, str):
+        e.append("shape.unit deve ser null ou \"unit:X\"")
+    unit = (unit if unit.startswith("unit:") else f"unit:{unit}") if isinstance(unit, str) and unit.strip() else None
     if e:
         return p
 
@@ -177,7 +181,7 @@ def parse(raw: dict[str, Any]) -> Parsed:
                             stations=[{"iri": expand(x), "text": x.split(":")[-1]} for x in stations],
                             scope=TimeScope(s, t, hours, weekdays, instant), aggregation=agg, count_of=count_of,
                             conditions=list(conditions), daily=dict(daily) if daily else None, group_by=list(group_by),
-                            attributes=list(attributes), order=order, spans=dict(p.evidence), assumptions=list(p.assumptions))
+                            attributes=list(attributes), order=order, unit=unit, spans=dict(p.evidence), assumptions=list(p.assumptions))
         cq.group_by = [g for g in cq.group_by if not _constant(g, cq)]
         if cq.order and not cq.group_by:
             cq.order = None                                        # "só o maior" de um valor só (E212 do novo_c)

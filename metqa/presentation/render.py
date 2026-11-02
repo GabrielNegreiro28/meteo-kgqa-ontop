@@ -53,6 +53,14 @@ def unit_of(c: dict, q: CanonicalQuery, catalog: DomainCatalog) -> str:
     return m.symbol if m else ""
 
 
+def shown(q: CanonicalQuery, catalog: DomainCatalog):
+    """(conversor, símbolo) do valor da medida na unidade pedida pela pergunta ("em km"); sem pedido, a canônica (E156 do novo_c)."""
+    m = catalog.measure(q.measure)
+    if not q.unit or not m:
+        return (lambda v: v), (m.symbol if m else "")
+    return (lambda v: catalog.from_canonical(v, q.unit, q.measure)), catalog.symbol(UNIT_NS + q.unit.split(":")[-1])
+
+
 def _where(q: CanonicalQuery) -> str:
     return "em " + ", ".join(s["iri"].rsplit("/", 1)[-1] for s in q.stations) if q.stations else "em todas as estações"
 
@@ -102,16 +110,16 @@ def _amount(v: Any, sh: ResultShape, sym: str) -> str:
 
 def _one(e: Executed, catalog: DomainCatalog) -> list[str]:
     q, m, sh = e.part.query, catalog.measure(e.part.query.measure), e.shape
-    rs, sym = rows(e.results), m.symbol
+    rs, (cv, sym) = rows(e.results), shown(q, catalog)
     head = f"{m.label} {_where(q)}, {q.scope.describe()}{_cond(q, catalog)}"
     if e.status == Status.NO_RESULTS or not rs:
         return [f"Não há registros de {head}."]
     if q.intent == "instant":
         return [f"{m.label.capitalize()} {_where(q)} {q.scope.describe()}:"] + \
-               [f"- {num(r.get(sh.value))} {sym} (leitura de {_local(str(r.get(sh.time, '')))})" for r in rs]
+               [f"- {num(cv(r.get(sh.value)))} {sym} (leitura de {_local(str(r.get(sh.time, '')))})" for r in rs]
     if sh.attributes:
         return [f"{AGG[q.aggregation].capitalize()} de {head}:"] + \
-               [f"- {num(r.get(sh.value))} {sym} em {_local(str(r.get(sh.time, '')))} ("
+               [f"- {num(cv(r.get(sh.value)))} {sym} em {_local(str(r.get(sh.time, '')))} ("
                 + ", ".join(f"{iri.rsplit('#', 1)[-1].split(':')[-1]}: {r.get(col, '?')}" for iri, col in sh.attributes) + ")" for r in rs]
     if q.daily:
         r, d = rs[0], q.daily
@@ -123,7 +131,7 @@ def _one(e: Executed, catalog: DomainCatalog) -> list[str]:
             counted = COUNTED.get(q.count_of or "readings")
             base = f" (de {num(r.get(sh.n))} {counted} no recorte)" if sh.n and sh.n != sh.value else ""
             return [f"{num(r.get(sh.value))} {counted} de {head}{base}."]
-        return [f"{AGG[q.aggregation].capitalize()} de {head}: {num(r.get(sh.value))} {sym} (sobre {num(r.get(sh.n))} leituras)."]
+        return [f"{AGG[q.aggregation].capitalize()} de {head}: {num(cv(r.get(sh.value)))} {sym} (sobre {num(r.get(sh.n))} leituras)."]
     tie = ""
     if q.order:                                       # a consulta traz uma linha a mais: ela só aparece se empata com a última pedida
         k = q.order["limit"]
@@ -136,7 +144,7 @@ def _one(e: Executed, catalog: DomainCatalog) -> list[str]:
     lines = [f"{calc.capitalize()} de {head}, por {', '.join(DIMS.get(d, d.rsplit('#', 1)[-1].split(':')[-1]) for d in q.group_by)}"
              + (f" ({top(q.order)}{tie})" if q.order else "") + ":"]
     for r in rs:
-        value = num(r.get(sh.value)) if sh.is_count else f"{num(r.get(sh.value))} {sym} (n = {num(r.get(sh.n))})"
+        value = num(r.get(sh.value)) if sh.is_count else f"{num(cv(r.get(sh.value)))} {sym} (n = {num(r.get(sh.n))})"
         lines.append(f"- {_keys(r, q, sh)}: {value}")
     if "station" in q.group_by and q.stations and not q.order:     # estação citada que não voltou: dito, não omitido (E205 do novo_c)
         seen = {str(r.get("station")) for r in rs}
@@ -148,9 +156,10 @@ def _compare(done: list[Executed], catalog: DomainCatalog) -> list[str]:
     lines, vals = [], []
     for e in done:
         rs = rows(e.results)
-        vals.append((e.part.label, rs[0].get(e.shape.value) if rs and e.status == Status.ANSWERED else None))
+        cv = (lambda v: v) if e.shape.is_count else shown(e.part.query, catalog)[0]
+        vals.append((e.part.label, cv(rs[0].get(e.shape.value)) if rs and e.status == Status.ANSWERED else None))
         lines.append(f"- {e.part.label}: " + _one(e, catalog)[0])
-    unit = "" if done[0].shape.is_count else f" {catalog.measure(done[0].part.query.measure).symbol}"
+    unit = "" if done[0].shape.is_count else f" {shown(done[0].part.query, catalog)[1]}"
     what = "estações" if len({e.part.query.stations[0]["iri"] for e in done if e.part.query.stations}) > 1 else "períodos"
     if any(v is None for _, v in vals):
         lines.append(f"Não dá para comparar: há {what} sem registros.")
@@ -181,4 +190,5 @@ def units_of(e: Executed, catalog: DomainCatalog) -> dict[str, str]:
     m = catalog.measure(e.part.query.measure)
     if not m or not m.unit or e.shape.is_count:
         return {}
-    return {e.shape.value: m.unit, **({"measured": m.unit} if "value" in e.part.query.group_by else {})}
+    shown_unit = UNIT_NS + e.part.query.unit.split(":")[-1] if e.part.query.unit else m.unit   # o JSON diz a unidade do texto
+    return {e.shape.value: shown_unit, **({"measured": m.unit} if "value" in e.part.query.group_by else {})}

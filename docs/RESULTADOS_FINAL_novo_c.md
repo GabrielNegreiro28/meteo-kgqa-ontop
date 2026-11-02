@@ -68,7 +68,9 @@ Cada defeito acima virou teste (`tests/test_metqa_novo_c.py`) e foi corrigido:
 - agrupamento constante sai também com "só o maior";
 - pergunta sem estação e sem período vira sinal forte;
 - ranking busca uma linha a mais e diz o empate;
-- série por estação diz a estação citada que não teve registros.
+- série por estação diz a estação citada que não teve registros;
+- a unidade pedida para o resultado (E156: "em quilômetros") vem da leitura em `shape.unit`, é conferida por análise dimensional e o
+  valor sai convertido (18,17 km); o JSON diz a unidade do texto.
 
-A unidade pedida na resposta (E156: 18.166,8 m quando se pediu km) continua sem conversão. O efeito dessas correções só se mede numa nova
+O efeito dessas correções só se mede numa nova
 rodada com LLM, que pede nova autorização de gasto e um conjunto ainda não visto (o novo_c já foi usado para corrigir).

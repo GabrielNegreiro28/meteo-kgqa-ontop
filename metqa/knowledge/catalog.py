@@ -100,6 +100,11 @@ class DomainCatalog:
         m = self.measure(measure_iri)
         return convert_filter_value(value, unit, m.unit if m else None)
 
+    def from_canonical(self, value, unit: str | None, measure_iri: str) -> Decimal | None:
+        """Valor da unidade canônica da grandeza para a unidade pedida na resposta ("em km"); None se a escala não é conhecida."""
+        m = self.measure(measure_iri)
+        return None if value is None or not m or not m.unit else convert_filter_value(value, m.unit, unit or m.unit)
+
     @property
     def group_dims(self) -> tuple[str, ...]:
         return GROUP_DIMS

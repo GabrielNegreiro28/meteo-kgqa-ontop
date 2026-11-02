@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from ..domain import CanonicalQuery
 from ..knowledge import DomainCatalog
-from ..presentation.render import AGG, AGG_ART, COUNTED, DIMS, OPS, _cond, _where, num, top, unit_of
+from ..presentation.render import AGG, AGG_ART, COUNTED, DIMS, OPS, _cond, _where, num, shown, top, unit_of
 
 
 def paraphrase(cq: CanonicalQuery, catalog: DomainCatalog) -> str:
@@ -29,6 +29,8 @@ def paraphrase(cq: CanonicalQuery, catalog: DomainCatalog) -> str:
         text += f" ({top(cq.order)})"
     if cq.attributes:
         text += ", mostrando " + ", ".join(a.rsplit("#", 1)[-1].split(":")[-1] for a in cq.attributes)
+    if cq.unit and cq.aggregation != "count":
+        text += f", em {shown(cq, catalog)[1]}"
     return text
 
 

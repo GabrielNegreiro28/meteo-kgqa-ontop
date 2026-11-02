@@ -70,6 +70,7 @@ class CanonicalQuery:
     group_by: list[str] = field(default_factory=list)
     attributes: list[str] = field(default_factory=list)
     order: dict[str, Any] | None = None
+    unit: str | None = None                                # unidade pedida para o resultado ("unit:KiloM"); None = a canônica
     spans: dict[str, str] = field(default_factory=dict)    # campo -> trecho literal da pergunta que o justifica
     assumptions: list[str] = field(default_factory=list)   # o que foi decidido por regra e deve ser dito ao usuário
 

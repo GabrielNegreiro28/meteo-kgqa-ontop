@@ -53,6 +53,24 @@ def test_empate_no_ranking_e_dito_E208():
     assert "empate" in r.answer_text and "- SBSP: 100 m" in r.answer_text and "- SBGL: 100 m" in r.answer_text
 
 
+def _vis_km(unit):
+    ir = nir("met:PrevailingVisibility", ["st:SBGL"], "avg", "2021-10-01", "2021-10-31",
+             evidence={"measure": "visibilidade predominante", "stations": "SBGL", "calc": "média", "time": "em outubro de 2021"})
+    ir["shape"]["unit"] = unit
+    return run(both(ir), "Qual foi a visibilidade predominante média de SBGL em outubro de 2021, em quilômetros?",
+               table({"value": lit(18166.8, XD), "n": lit(700)}), reread=False)[0]
+
+
+def test_resultado_na_unidade_pedida_E156():
+    r = _vis_km("unit:KiloM")
+    assert r.status == Status.ANSWERED and "18,17 km" in r.answer_text, r.answer_text
+    assert r.units.get("value", "").endswith("/KiloM")
+
+
+def test_unidade_pedida_de_outra_dimensao_nao_responde():
+    assert _vis_km("unit:DEG_C").status != Status.ANSWERED
+
+
 def test_estacao_citada_sem_registros_e_dita_E205():
     ir = nir("met:WindGust", ["st:SBGL", "st:SBSP"], "max", "2022-06-01", "2022-06-30",
              evidence={"measure": "rajada", "stations": "SBGL e SBSP", "calc": "máxima", "time": "em junho de 2022"})
