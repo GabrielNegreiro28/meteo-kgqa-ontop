@@ -139,15 +139,17 @@ def _compare(done: list[Executed], catalog: DomainCatalog) -> list[str]:
         rs = rows(e.results)
         vals.append((e.part.label, rs[0].get(e.shape.value) if rs and e.status == Status.ANSWERED else None))
         lines.append(f"- {e.part.label}: " + _one(e, catalog)[0])
-    (la, a), (lb, b) = vals[0], vals[1]
     unit = "" if done[0].shape.is_count else f" {catalog.measure(done[0].part.query.measure).symbol}"
-    if a is None or b is None:
-        lines.append("Não dá para comparar: um dos períodos não tem registros.")
-    elif a == b:
-        lines.append("Os dois períodos têm o mesmo valor.")
+    what = "estações" if len({e.part.query.stations[0]["iri"] for e in done if e.part.query.stations}) > 1 else "períodos"
+    if any(v is None for _, v in vals):
+        lines.append(f"Não dá para comparar: há {what} sem registros.")
+    elif len({v for _, v in vals}) == 1:
+        lines.append(f"{'Os' if what == 'períodos' else 'As'} {len(vals)} {what} têm o mesmo valor.")
     else:
-        big, small = ((la, a), (lb, b)) if a > b else ((lb, b), (la, a))
-        lines.append(f"Maior em {big[0]}: {num(big[1])} contra {num(small[1])} (diferença de {num(abs(a - b))}{unit}).")
+        ranked = sorted(vals, key=lambda x: -x[1])
+        (lb, b), (ls, s) = ranked[0], ranked[-1]
+        rest = f" contra {num(s)}" if len(vals) == 2 else f"; menor em {ls}: {num(s)}"
+        lines.append(f"Maior em {lb}: {num(b)}{rest} (diferença de {num(b - s)}{unit}).")
     return lines
 
 

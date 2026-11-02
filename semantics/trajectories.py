@@ -38,6 +38,11 @@ def to_trajectory(result, *, task_id: str | None = None, split: str = "", ontolo
     agreement = None
     corrections = 0
     engine_status = None
+    choices: list[str] = []
+    crosscheck: dict[str, Any] = {}
+    reread = None
+    verified_by_user = False
+    shapes: list[Any] = []
 
     for t in trace:
         ev = t["event"]
@@ -57,7 +62,15 @@ def to_trajectory(result, *, task_id: str | None = None, split: str = "", ontolo
             findings += t["findings"]
             native.append(_call("validate_query", {"sparql": t.get("sparql")}, {"findings": t["findings"]}))
         elif ev == "compile_structured":
-            native.append(_call("compile_structured", {}, {"sparql": t.get("sparql")}))
+            shapes.append(t.get("shape"))
+            native.append(_call("compile_structured", {}, {"sparql": t.get("sparql"), "shape": t.get("shape")}))
+        elif ev == "crosscheck":                              # metqa: concordância entre as leituras e sinais de risco
+            crosscheck = {"differ": t.get("differ", []), "strong": t.get("strong", []), "weak": t.get("weak", [])}
+            agreement = not t.get("differ")
+        elif ev == "reread_time":
+            reread = t.get("same") if t.get("ok") else None
+        elif ev == "exemplar_recorded":
+            verified_by_user = bool(t.get("added")) or verified_by_user
         elif ev == "engine_check":
             findings += t.get("findings", [])
             engine_status = t.get("status")
@@ -73,6 +86,7 @@ def to_trajectory(result, *, task_id: str | None = None, split: str = "", ontolo
             native.append(_call("check_answer", {}, {"findings": t["findings"]}))
         elif ev == "dialogue":
             corrections += t.get("kind") == "correct"
+            choices.append(t.get("kind"))
             native.append(_call("confirm_with_user", {"round": t.get("round")}, {"kind": t.get("kind")}))
 
     codes = [d.code for d in resp.diagnostics]
@@ -85,6 +99,11 @@ def to_trajectory(result, *, task_id: str | None = None, split: str = "", ontolo
         "engine": engine_status,
         "semantics": {"agreement": agreement, "uncovered": sem_info.get("uncovered", []), "unbound": sem_info.get("unbound", [])},
         "user_corrections": corrections,
+        "user_dialogue": choices,                             # confirm | choose | correct | cancel, em ordem
+        "verified_by_user": verified_by_user,                 # a interpretação final virou exemplo verificado
+        "crosscheck": crosscheck or None,
+        "reread_time_same": reread,
+        "result_shapes": shapes,
         "cost_usd": round(sum(t.get("cost", 0) or 0 for t in trace if t["event"] == "llm"), 5),
         "prompts": end.get("prompts"),
     }

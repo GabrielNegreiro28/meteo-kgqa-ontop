@@ -2,7 +2,7 @@
 import hashlib
 
 from pyshacl import validate
-from rdflib import XSD, Graph, Literal, Namespace, URIRef
+from rdflib import RDF, XSD, Graph, Literal, Namespace, URIRef
 
 import generate
 from conftest import ROOT
@@ -81,7 +81,12 @@ def test_shapes_accept_every_unit_and_datatype_the_real_mapping_emits():
 def test_shacl_still_catches_real_world_impossible_values():
     from rdflib import Namespace
     g = _data()
+    met, sosa = Namespace("https://example.org/kgqa-met/ontology#"), Namespace("http://www.w3.org/ns/sosa/")
     r = URIRef("https://example.org/kgqa-met/data/result/EST-A-P-X")
+    o = URIRef("https://example.org/kgqa-met/data/obs/EST-A-P-X")
+    g.add((o, RDF.type, met.InstantaneousObservation))                         # a faixa é da GRANDEZA (do catálogo), não da unidade
+    g.add((o, sosa.observedProperty, met.PressureQNH))
+    g.add((o, sosa.hasResult, r))
     g.add((r, QUDT.numericValue, Literal("2000.0", datatype=XSD.decimal)))
     g.add((r, QUDT.unit, URIRef("http://qudt.org/vocab/unit/HectoPA")))        # 2000 hPa não existe
     conforms, _, report = validate(g, shacl_graph=_shapes(), inference="none")

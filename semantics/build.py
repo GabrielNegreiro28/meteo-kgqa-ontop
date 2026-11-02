@@ -236,8 +236,9 @@ def _carry_evolution(active: dict, fresh: dict) -> dict:
         n = base.get(t["id"])
         if n is None:
             continue
-        n["aliases"] += [a for a in t.get("aliases", []) if a not in n["aliases"]]
-        n.setdefault("evidence", []).extend(e for e in t.get("evidence", []) if e.startswith("ev.evolve."))
+        # listas NOVAS: a lista de evidências do Termo é compartilhada com as Restrições dele; estendê-la no lugar vazava a evidência evoluída
+        n["aliases"] = n["aliases"] + [a for a in t.get("aliases", []) if a not in n["aliases"]]
+        n["evidence"] = n.get("evidence", []) + [e for e in t.get("evidence", []) if e.startswith("ev.evolve.")]
     fresh["evidence"] += [e for e in active["evidence"] if e["id"].startswith("ev.evolve.")]
     return fresh
 

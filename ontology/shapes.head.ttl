@@ -1,0 +1,63 @@
+@prefix sh:   <http://www.w3.org/ns/shacl#> .
+@prefix met:  <https://example.org/kgqa-met/ontology#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix unit: <http://qudt.org/vocab/unit/> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+# GERADO por `python -m ontology.catalog` a partir de ontology/shapes.head.ttl e do catálogo de grandezas (ontology/catalog.py).
+# Não edite: edite o modelo ou a ontologia (met-structure.ttl) e regere. Um teste confere que está em dia.
+#
+# Restrições de DADOS (mundo fechado), separadas da ontologia OWL (mundo aberto).
+# domain/range OWL geram inferências; não rejeitam dados. Quem rejeita é isto aqui.
+
+met:ResultShape a sh:NodeShape ;
+    sh:property [ sh:path qudt:numericValue ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:or ( [ sh:datatype xsd:decimal ] [ sh:datatype xsd:integer ] ) ] ;      # o mapeamento real emite inteiros (altura de nuvem, direção)
+    # as unidades canônicas das grandezas do catálogo (as que o mapeamento emite; testado em tests/test_data.py contra mapping/met.obda)
+    sh:property [ sh:path qudt:unit ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:in ( {UNITS} ) ] .
+
+met:ObservationShape a sh:NodeShape ;
+    sh:targetClass met:InstantaneousObservation , met:AccumulatedObservation ;
+    sh:property [ sh:path sosa:madeBySensor ; sh:minCount 1 ; sh:maxCount 1 ; sh:class sosa:Sensor ] ;
+    sh:property [ sh:path sosa:observedProperty ; sh:minCount 1 ; sh:maxCount 1 ; sh:class sosa:ObservableProperty ] ;
+    sh:property [ sh:path sosa:hasFeatureOfInterest ; sh:minCount 1 ; sh:maxCount 1 ] ;
+    sh:property [ sh:path sosa:phenomenonTime ; sh:minCount 1 ; sh:maxCount 1 ] ;
+    sh:property [ sh:path sosa:resultTime ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:dateTime ] ;
+    sh:property [ sh:path sosa:hasResult ; sh:minCount 1 ; sh:maxCount 1 ; sh:node met:ResultShape ] .
+
+met:InstantShape a sh:NodeShape ;
+    sh:targetClass met:InstantaneousObservation ;
+    sh:property [ sh:path ( sosa:phenomenonTime time:inXSDDateTime ) ;
+                  sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:dateTime ] .
+
+met:IntervalShape a sh:NodeShape ;
+    sh:targetClass met:AccumulatedObservation ;
+    sh:property [ sh:path ( sosa:phenomenonTime time:hasBeginning time:inXSDDateTime ) ;
+                  sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:dateTime ] ;
+    sh:property [ sh:path ( sosa:phenomenonTime time:hasEnd time:inXSDDateTime ) ;
+                  sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:dateTime ] .
+
+# Faixa física de cada grandeza, na unidade canônica: a MESMA que a ingestão usa para a quarentena (ingest/transform.py lê do catálogo).
+met:PhysicalRangeShape a sh:NodeShape ;
+    sh:targetClass met:InstantaneousObservation , met:AccumulatedObservation ;
+    sh:sparql [
+        sh:message "Valor fora da faixa física da grandeza" ;
+        sh:select """
+          PREFIX qudt: <http://qudt.org/schema/qudt/>
+          PREFIX sosa: <http://www.w3.org/ns/sosa/>
+          SELECT $this ?v WHERE {
+            $this sosa:observedProperty ?p ; sosa:hasResult/qudt:numericValue ?v .
+            FILTER(
+{RANGES}
+            )
+          }""" ] .
+
+met:ForecastShape a sh:NodeShape ;
+    sh:targetClass met:Forecast ;
+    sh:property [ sh:path met:forStation ; sh:minCount 1 ; sh:maxCount 1 ; sh:class met:WeatherStation ] ;
+    sh:property [ sh:path met:forecastedProperty ; sh:minCount 1 ; sh:maxCount 1 ] ;
+    sh:property [ sh:path met:issuedAt ; sh:minCount 1 ; sh:datatype xsd:dateTime ] ;
+    sh:property [ sh:path sosa:hasResult ; sh:minCount 1 ; sh:maxCount 1 ; sh:node met:ResultShape ] .

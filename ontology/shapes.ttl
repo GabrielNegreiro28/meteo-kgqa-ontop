@@ -6,15 +6,18 @@
 @prefix unit: <http://qudt.org/vocab/unit/> .
 @prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
 
+# GERADO por `python -m ontology.catalog` a partir de ontology/shapes.head.ttl e do catálogo de grandezas (ontology/catalog.py).
+# Não edite: edite o modelo ou a ontologia (met-structure.ttl) e regere. Um teste confere que está em dia.
+#
 # Restrições de DADOS (mundo fechado), separadas da ontologia OWL (mundo aberto).
 # domain/range OWL geram inferências; não rejeitam dados. Quem rejeita é isto aqui.
 
 met:ResultShape a sh:NodeShape ;
     sh:property [ sh:path qudt:numericValue ; sh:minCount 1 ; sh:maxCount 1 ;
                   sh:or ( [ sh:datatype xsd:decimal ] [ sh:datatype xsd:integer ] ) ] ;      # o mapeamento real emite inteiros (altura de nuvem, direção)
-    # TODAS as unidades que o mapeamento emite (testado em tests/test_data.py contra mapping/met.obda); antes só 3 do grafo sintético
+    # as unidades canônicas das grandezas do catálogo (as que o mapeamento emite; testado em tests/test_data.py contra mapping/met.obda)
     sh:property [ sh:path qudt:unit ; sh:minCount 1 ; sh:maxCount 1 ;
-                  sh:in ( unit:DEG_C unit:PERCENT unit:MilliM unit:HectoPA unit:KN unit:M unit:DEG unit:MIN ) ] .
+                  sh:in ( unit:DEG unit:DEG_C unit:HectoPA unit:KN unit:M unit:MIN unit:MilliM unit:OKTA unit:PERCENT ) ] .
 
 met:ObservationShape a sh:NodeShape ;
     sh:targetClass met:InstantaneousObservation , met:AccumulatedObservation ;
@@ -37,23 +40,32 @@ met:IntervalShape a sh:NodeShape ;
     sh:property [ sh:path ( sosa:phenomenonTime time:hasEnd time:inXSDDateTime ) ;
                   sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:dateTime ] .
 
-# Faixas físicas plausíveis (detectam erro de geração/ingestão, não "verdade").
+# Faixa física de cada grandeza, na unidade canônica: a MESMA que a ingestão usa para a quarentena (ingest/transform.py lê do catálogo).
 met:PhysicalRangeShape a sh:NodeShape ;
-    sh:targetSubjectsOf qudt:unit ;
+    sh:targetClass met:InstantaneousObservation , met:AccumulatedObservation ;
     sh:sparql [
-        sh:message "Valor fora da faixa física da unidade" ;
+        sh:message "Valor fora da faixa física da grandeza" ;
         sh:select """
           PREFIX qudt: <http://qudt.org/schema/qudt/>
-          PREFIX unit: <http://qudt.org/vocab/unit/>
+          PREFIX sosa: <http://www.w3.org/ns/sosa/>
           SELECT $this ?v WHERE {
-            $this qudt:numericValue ?v ; qudt:unit ?u .
-            FILTER( (?u = unit:PERCENT && (?v < 0 || ?v > 100)) ||
-                    (?u = unit:MilliM  && ?v < 0) ||
-                    (?u = unit:DEG_C   && (?v < -90 || ?v > 60)) ||
-                    (?u = unit:HectoPA && (?v < 500 || ?v > 1100)) ||
-                    (?u = unit:KN      && (?v < 0 || ?v > 250)) ||
-                    (?u = unit:M       && ?v < 0) ||
-                    (?u = unit:DEG     && (?v < 0 || ?v > 360)) )
+            $this sosa:observedProperty ?p ; sosa:hasResult/qudt:numericValue ?v .
+            FILTER(
+              (?p = <https://example.org/kgqa-met/ontology#AirTemperature> && (?v < -30 || ?v > 50)) ||
+              (?p = <https://example.org/kgqa-met/ontology#CloudBaseHeight> && (?v < 0 || ?v > 9990)) ||
+              (?p = <https://example.org/kgqa-met/ontology#CloudOktas> && (?v < 1 || ?v > 8)) ||
+              (?p = <https://example.org/kgqa-met/ontology#DewPointTemperature> && (?v < -40 || ?v > 40)) ||
+              (?p = <https://example.org/kgqa-met/ontology#Precipitation> && (?v < 0 || ?v > 150)) ||
+              (?p = <https://example.org/kgqa-met/ontology#PrecipitationDuration> && (?v < 0 || ?v > 60)) ||
+              (?p = <https://example.org/kgqa-met/ontology#PressureQNH> && (?v < 900 || ?v > 1100)) ||
+              (?p = <https://example.org/kgqa-met/ontology#PrevailingVisibility> && (?v < 0 || ?v > 20000)) ||
+              (?p = <https://example.org/kgqa-met/ontology#RelativeHumidity> && (?v < 1 || ?v > 100)) ||
+              (?p = <https://example.org/kgqa-met/ontology#RunwayTemperature> && (?v < -30 || ?v > 75)) ||
+              (?p = <https://example.org/kgqa-met/ontology#WetBulbTemperature> && (?v < -30 || ?v > 45)) ||
+              (?p = <https://example.org/kgqa-met/ontology#WindDirection> && (?v < 10 || ?v > 360)) ||
+              (?p = <https://example.org/kgqa-met/ontology#WindGust> && (?v < 0 || ?v > 200)) ||
+              (?p = <https://example.org/kgqa-met/ontology#WindSpeed> && (?v < 0 || ?v > 150))
+            )
           }""" ] .
 
 met:ForecastShape a sh:NodeShape ;

@@ -13,7 +13,7 @@ from pipeline.llm import LLMClient, parse_json_object
 from pipeline.textsafe import clean
 
 from ..knowledge import DomainCatalog, LexiconHit
-from .prompts import KEYS, KEYS_B, READING_A, READING_B
+from .prompts import KEYS, KEYS_B, READING_A, READING_B, REREAD_KEYS, REREAD_TIME
 
 MAX_TOKENS = 1600
 FRAMINGS = {"A": (READING_A, KEYS), "B": (READING_B, KEYS_B)}
@@ -52,3 +52,8 @@ class Interpreter:
         user = f"{menu}\n{units}\n{ex}<pergunta>{_as_data(question)}</pergunta>\n{prev}{fixes}{feedback}"
         r = self.llm.complete(f"interpret_{framing}", system, user, MAX_TOKENS)
         return Proposal(parse_json_object(r.text, keys), framing, r.cost_usd, r.finish_reason)
+
+    def reread_time(self, span: str) -> dict[str, Any]:
+        """Só o trecho de tempo, normalizado de novo numa chamada curta, sem a pergunta nem os exemplos."""
+        r = self.llm.complete("reread_time", REREAD_TIME, f"<tempo>{_as_data(span)}</tempo>", 300)
+        return parse_json_object(r.text, REREAD_KEYS)

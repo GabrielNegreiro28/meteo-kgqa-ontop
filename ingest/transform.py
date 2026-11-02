@@ -12,25 +12,41 @@ Regras (documentadas em data/REGRAS_LIMPEZA.md):
      O dia local do acumulado é o dia do INÍCIO do intervalo (chuva das 23–24 h é do dia anterior).
   R6 Unidades canônicas: visibilidade e base de nuvem dam→m (×10); direção do vento dezenas de graus→graus.
   R7 Vazio nunca vira zero.
+As faixas físicas (R3) vêm do catálogo de grandezas (ontology/catalog.py), na unidade canônica; aqui elas só são levadas à unidade
+BRUTA de cada coluna (dam -> m e dezenas de graus -> graus dividem por 10). O SHACL usa as mesmas faixas.
 Uso: python ingest/transform.py /home/claude/metdata/met.duckdb
 """
 import os, sys, time
+from pathlib import Path
+
 import duckdb
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from ontology.catalog import quantity_by_sensor  # noqa: E402
+
+
+def R(sensor, scale=1):
+    """Faixa física do catálogo na unidade bruta da coluna (valor canônico = bruto * scale)."""
+    q = quantity_by_sensor(sensor)
+    as_num = lambda d: int(d) if d == d.to_integral_value() else float(d)
+    return as_num(q.low / scale), as_num(q.high / scale)
 
 DB = sys.argv[1] if len(sys.argv) > 1 else os.environ.get("MET_HOME", "/home/claude/metdata") + "/met.duckdb"
 DST = ("(CAST(hora_observacao AS DATE) IN (DATE '2016-10-16', DATE '2017-10-15', DATE '2018-11-04') "
        "AND hour(hora_observacao) = 1)")
 
-# nome, tabela bruta, coluna, (lo, hi) na unidade bruta, expressão do valor canônico, tipo SQL
+# nome, tabela bruta, coluna, (lo, hi) na unidade bruta (do catálogo), expressão do valor canônico, tipo SQL
 SCALARS = [
-    ("air_temp",      "temperatura",  "bseco",     (-30, 50),   "raw",          "DECIMAL(5,1)"),
-    ("wet_bulb",      "temperatura",  "bumido",    (-30, 45),   "raw",          "DECIMAL(5,1)"),
-    ("dew_point",     "temperatura",  "temppo",    (-40, 40),   "raw",          "DECIMAL(5,1)"),
-    ("rel_humidity",  "temperatura",  "ur",        (1, 100),    "raw",          "DECIMAL(5,1)"),
-    ("runway_temp",   "temperatura",  "temppista", (-30, 75),   "raw",          "DECIMAL(5,1)"),
-    ("qnh",           "pressao",      "qnh",       (900, 1100), "raw",          "DECIMAL(6,1)"),
-    ("visibility",    "visibilidade", "visibpre",  (0, 2000),   "raw * 10",     "INTEGER"),
+    ("air_temp",      "temperatura",  "bseco",     R("air_temp"),          "raw",      "DECIMAL(5,1)"),
+    ("wet_bulb",      "temperatura",  "bumido",    R("wet_bulb"),          "raw",      "DECIMAL(5,1)"),
+    ("dew_point",     "temperatura",  "temppo",    R("dew_point"),         "raw",      "DECIMAL(5,1)"),
+    ("rel_humidity",  "temperatura",  "ur",        R("rel_humidity"),      "raw",      "DECIMAL(5,1)"),
+    ("runway_temp",   "temperatura",  "temppista", R("runway_temp"),       "raw",      "DECIMAL(5,1)"),
+    ("qnh",           "pressao",      "qnh",       R("qnh"),               "raw",      "DECIMAL(6,1)"),
+    ("visibility",    "visibilidade", "visibpre",  R("visibility", 10),    "raw * 10", "INTEGER"),
 ]
+WS, WD, WG = R("wind_speed"), R("wind_dir", 10), R("wind_gust")        # vento: nós, dezenas de graus, nós
+PR, PD, CB = R("precip"), R("precip_duration"), R("cloud_base", 10)    # mm, minutos, base da nuvem em dam
 
 
 def sql_scalar(name, src, col, rng, expr, typ):
@@ -83,18 +99,18 @@ CREATE OR REPLACE TABLE clean._wind AS
 SELECT row_id, sigla, hora_observacao AS t_local,
        NULLIF(NULLIF(cabeceira, ''), 'nan') AS runway, velvento, dirvento, rajada
 FROM raw_vento WHERE NOT {DST};
-INSERT INTO clean.quarantine SELECT 'vento', row_id, sigla, t_local, 'velvento', CAST(velvento AS VARCHAR), 'fora_da_faixa[0,150]'
-  FROM clean._wind WHERE velvento IS NOT NULL AND NOT velvento BETWEEN 0 AND 150;
+INSERT INTO clean.quarantine SELECT 'vento', row_id, sigla, t_local, 'velvento', CAST(velvento AS VARCHAR), 'fora_da_faixa[{WS[0]},{WS[1]}]'
+  FROM clean._wind WHERE velvento IS NOT NULL AND NOT velvento BETWEEN {WS[0]} AND {WS[1]};
 INSERT INTO clean.quarantine SELECT 'vento', row_id, sigla, t_local, 'dirvento', CAST(dirvento AS VARCHAR), 'codigo_invalido'
-  FROM clean._wind WHERE dirvento IS NOT NULL AND NOT (dirvento BETWEEN 0 AND 36 OR dirvento = 99);
-INSERT INTO clean.quarantine SELECT 'vento', row_id, sigla, t_local, 'rajada', CAST(rajada AS VARCHAR), 'fora_da_faixa[0,200]'
-  FROM clean._wind WHERE rajada IS NOT NULL AND NOT rajada BETWEEN 0 AND 200;
+  FROM clean._wind WHERE dirvento IS NOT NULL AND NOT (dirvento BETWEEN 0 AND {WD[1]} OR dirvento = 99);
+INSERT INTO clean.quarantine SELECT 'vento', row_id, sigla, t_local, 'rajada', CAST(rajada AS VARCHAR), 'fora_da_faixa[{WG[0]},{WG[1]}]'
+  FROM clean._wind WHERE rajada IS NOT NULL AND NOT rajada BETWEEN {WG[0]} AND {WG[1]};
 """)
     for name, col, cond, expr, typ, extra in [
-        ("wind_speed", "velvento", "velvento BETWEEN 0 AND 150", "velvento", "DECIMAL(5,1)",
+        ("wind_speed", "velvento", f"velvento BETWEEN {WS[0]} AND {WS[1]}", "velvento", "DECIMAL(5,1)",
          ", CASE WHEN dirvento = 0 AND velvento = 0 THEN 'calm' WHEN dirvento = 99 THEN 'variable' END AS condition"),
-        ("wind_dir", "dirvento", "dirvento BETWEEN 1 AND 36", "dirvento * 10", "INTEGER", ""),
-        ("wind_gust", "rajada", "rajada BETWEEN 0 AND 200", "rajada", "DECIMAL(5,1)", ""),
+        ("wind_dir", "dirvento", f"dirvento BETWEEN {WD[0]} AND {WD[1]}", "dirvento * 10", "INTEGER", ""),
+        ("wind_gust", "rajada", f"rajada BETWEEN {WG[0]} AND {WG[1]}", "rajada", "DECIMAL(5,1)", ""),
     ]:
         extra_cols = ", condition" if extra else ""
         con.execute(f"""
@@ -118,12 +134,12 @@ FROM dedup""")
     con.execute(f"""
 INSERT INTO clean.quarantine SELECT 'precipitacao', row_id, sigla, hora_observacao, 'precip', CAST(precip AS VARCHAR), 'excluido_boletim_nao_horario'
   FROM raw_precipitacao WHERE minute(hora_observacao) <> 0 AND precip IS NOT NULL AND NOT {DST};
-INSERT INTO clean.quarantine SELECT 'precipitacao', row_id, sigla, hora_observacao, 'precip', CAST(precip AS VARCHAR), 'fora_da_faixa[0,150]'
-  FROM raw_precipitacao WHERE minute(hora_observacao) = 0 AND precip IS NOT NULL AND NOT precip BETWEEN 0 AND 150 AND NOT {DST};
-INSERT INTO clean.quarantine SELECT 'precipitacao', row_id, sigla, hora_observacao, 'durpreci', CAST(durpreci AS VARCHAR), 'fora_da_faixa[0,60]'
-  FROM raw_precipitacao WHERE minute(hora_observacao) = 0 AND durpreci IS NOT NULL AND NOT durpreci BETWEEN 0 AND 60 AND NOT {DST};
+INSERT INTO clean.quarantine SELECT 'precipitacao', row_id, sigla, hora_observacao, 'precip', CAST(precip AS VARCHAR), 'fora_da_faixa[{PR[0]},{PR[1]}]'
+  FROM raw_precipitacao WHERE minute(hora_observacao) = 0 AND precip IS NOT NULL AND NOT precip BETWEEN {PR[0]} AND {PR[1]} AND NOT {DST};
+INSERT INTO clean.quarantine SELECT 'precipitacao', row_id, sigla, hora_observacao, 'durpreci', CAST(durpreci AS VARCHAR), 'fora_da_faixa[{PD[0]},{PD[1]}]'
+  FROM raw_precipitacao WHERE minute(hora_observacao) = 0 AND durpreci IS NOT NULL AND NOT durpreci BETWEEN {PD[0]} AND {PD[1]} AND NOT {DST};
 """)
-    for name, col, hi, typ in [("precip", "precip", 150, "DECIMAL(5,1)"), ("precip_duration", "durpreci", 60, "SMALLINT")]:
+    for name, col, hi, typ in [("precip", "precip", PR[1], "DECIMAL(5,1)"), ("precip_duration", "durpreci", PD[1], "SMALLINT")]:
         con.execute(f"""
 CREATE OR REPLACE TABLE clean.obs_{name} AS
 WITH valid AS (
@@ -148,7 +164,7 @@ WITH valid AS (
   SELECT row_id, sigla, hora_observacao AS t_local,
          CASE WHEN qtdnuvem = '9' THEN NULL ELSE CAST(qtdnuvem AS SMALLINT) END AS okta,
          qtdnuvem = '9' AS sky_obscured,
-         CASE WHEN altnuvem BETWEEN 0 AND 999 THEN CAST(altnuvem * 10 AS INTEGER) END AS base_m,
+         CASE WHEN altnuvem BETWEEN {CB[0]} AND {CB[1]} THEN CAST(altnuvem * 10 AS INTEGER) END AS base_m,
          CASE WHEN tipo_nuvem IN ('/','X','') THEN NULL ELSE tipo_nuvem END AS genus,
          CASE WHEN direcao_nuvem IN ('N','NE','E','SE','S','SW','W','NW') THEN direcao_nuvem END AS movement
   FROM raw_nuvem WHERE NOT {DST} AND qtdnuvem IN ('1','2','3','4','5','6','7','8','9')

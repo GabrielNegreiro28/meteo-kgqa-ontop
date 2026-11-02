@@ -144,8 +144,9 @@ def summarize(rows: list[dict], model: str, prompts: str, spent: float, sha: str
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--env", default=str(ROOT.parent / "METEOROLOGIA" / "kgqa.env"))
-    ap.add_argument("--prompts", choices=["v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8", "metqa", "metqa-1r", "metqa-formal"], default="v4",
-                    help="versão do prompt legado, ou o MVP sem usuário: metqa (2 leituras) | metqa-1r (1 leitura) | metqa-formal (sem EvoOntology)")
+    ap.add_argument("--prompts", choices=["v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8", "metqa", "metqa-1r", "metqa-formal", "metqa-noconserv"],
+                    default="v4", help="versão do prompt legado, ou o MVP sem usuário: metqa (2 leituras) | metqa-1r (1 leitura) | "
+                                       "metqa-formal (sem EvoOntology) | metqa-noconserv (sem conservação da evidência nem releitura)")
     ap.add_argument("--budget", type=float, default=2.0, help="teto desta execução em US$ (estimado)")
     ap.add_argument("--ledger", default=str(ROOT / "eval" / "reports" / "spend_ledger.jsonl"))
     ap.add_argument("--authorize-usd", type=float)
@@ -205,7 +206,9 @@ def main() -> int:
         lexicon = (OntologyLexicon(catalog) if args.prompts == "metqa-formal"
                    else EvoLexicon(catalog, args.semantic_workspace, args.semantic_version))
         # sem usuário: o que exigiria confirmação vira needs_clarification (CONFIRMATION_REQUIRED); memória vazia (sem contaminação)
-        mvp = MetQA(catalog, lexicon, shared, backend, Settings(timeout_s=60, readings=1 if args.prompts == "metqa-1r" else 2))
+        mvp = MetQA(catalog, lexicon, shared, backend, Settings(timeout_s=60, readings=1 if args.prompts == "metqa-1r" else 2,
+                                                                 conservation=args.prompts != "metqa-noconserv"))
+        trace_file = out_json.with_name(out_json.stem + "_trace.jsonl").open("w", encoding="utf-8")
         print(f"MVP metqa, léxico: {lexicon.version}", file=sys.stderr)
     elif VERSIONS[args.prompts].semantic:
         from semantics.facade import GroundedLayer
@@ -226,6 +229,17 @@ def main() -> int:
         e.update({"question": q["question"], "answer_text": r.answer_text, "sparql": r.sparql, "pipeline_rows": prows[:50],
                   "oracle_rows": oracle.get(q["id"]), "assumptions": q.get("assumptions"),
                   "diagnostics": [d.code for d in r.diagnostics], "elapsed_s": round(time.perf_counter() - t0, 1)})
+        if args.prompts.startswith("metqa"):
+            # a trilha inteira de cada pergunta (D9): o que as leituras disseram, a concordância, a releitura, o SPARQL e o papel das colunas
+            e["result_shape"] = r.result_shape
+            trace_file.write(json.dumps({"id": q["id"], "trace": res.trace}, ensure_ascii=False, default=str) + "\n")
+            trace_file.flush()
+            try:                                        # trajetória de MEDIÇÃO (split "eval"): a evolução nunca a minera
+                from semantics.trajectories import record_trajectory
+                record_trajectory(args.semantic_workspace, res, task_id=f"{out_json.stem}:{q['id']}", split="eval",
+                                  extra={"status_ok": e.get("status_ok"), "result_match": e.get("auto") == "match" if e.get("auto") else None})
+            except Exception as err:                    # noqa: BLE001 — a medição não para por causa do registro
+                print(f"trajetória não gravada ({type(err).__name__})", file=sys.stderr)
         rows.append(e)
         print(f"{e['id']:4} esperado={e['expected_behavior']:19} obtido={e['status']:19} auto={e['auto']} ({e['elapsed_s']}s)", file=sys.stderr)
         if shared.spent_usd >= args.budget:

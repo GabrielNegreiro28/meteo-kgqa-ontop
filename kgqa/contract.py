@@ -10,7 +10,8 @@ from dataclasses import asdict, dataclass, field
 from enum import Enum
 from typing import Any
 
-CONTRACT_VERSION = "0.2.1"      # 0.2.0: Provenance ganhou generated_sql, engine, versions e prov_turtle; 0.2.1: executed_sparql e complete (opcionais)
+CONTRACT_VERSION = "0.3.0"      # 0.2.0: Provenance ganhou generated_sql, engine, versions e prov_turtle; 0.2.1: executed_sparql e complete (opcionais)
+# 0.3.0: result_shape (o papel de cada coluna, por parte) e, em CONFIRMATION_REQUIRED, confirmation_token em cada opção (exigido na volta)
 
 
 class Status(str, Enum):
@@ -83,6 +84,7 @@ class QueryResponse:
     provenance: Provenance | None = None
     answer_text: str | None = None          # opcional, só para demonstração
     timings_ms: dict[str, float] = field(default_factory=dict)
+    result_shape: list[dict[str, Any]] | None = None   # 0.3.0: por parte, {value, n, n_of, is_count, keys, attributes, time, label}
     contract_version: str = CONTRACT_VERSION
 
     def to_dict(self) -> dict[str, Any]:

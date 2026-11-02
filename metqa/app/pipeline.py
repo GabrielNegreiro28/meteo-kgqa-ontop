@@ -9,8 +9,12 @@ Toda dependência externa entra pelo construtor (portas): LLM, fonte SPARQL, lé
 """
 from __future__ import annotations
 
+import hashlib
+import hmac
+import json
 import time
 import uuid
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Any, Callable
@@ -28,6 +32,7 @@ from ..knowledge import DomainCatalog, ExemplarStore, Lexicon
 from ..planning import compile_query, plan, to_interp
 from ..presentation import render, units_of
 from ..understanding import Interpreter, Parsed, canonical_form, describe_diff, diff, parse
+from ..understanding.evidence import needs_reread, time_key
 from ..verification import verify_post, verify_pre
 from .settings import Settings
 
@@ -38,7 +43,7 @@ User = Callable[[str], str]
 
 @dataclass
 class Result:
-    """Resposta (contrato 0.2.1) + trilha. Mesma forma do `PipelineResult` legado: avaliação e evolução leem os dois."""
+    """Resposta (contrato 0.3.0) + trilha. Mesma forma do `PipelineResult` legado: avaliação e evolução leem os dois."""
     response: QueryResponse
     trace: list[dict[str, Any]] = field(default_factory=list)
 
@@ -62,14 +67,42 @@ class MetQA:
         self.interpreter = Interpreter(llm, catalog)
         self.exemplars = exemplars if exemplars is not None else ExemplarStore(None)
 
-    def ask(self, question: str, user: User | None = None, confirmed: dict | None = None) -> Result:
+    def capabilities(self) -> dict[str, Any]:
+        """O que este módulo responde, para o roteador do sistema decidir se manda a pergunta para cá (plano, D10). Sem LLM e sem consulta."""
+        from ..planning.planner import MAX_PARTS
+        cov = self.catalog.coverage
+        return {
+            "module": SYSTEM, "contract": CONTRACT_VERSION, "language": "pt-BR", "source": self.source.source_id,
+            "ontology": self.catalog.index.fingerprint, "lexicon": self.lexicon.version,
+            "coverage": {"start": cov[0].isoformat(), "end": cov[1].isoformat()} if cov else None,
+            "timezone": "UTC-03:00 (horário de Brasília, fixo)",
+            "stations": len(self.catalog.index.entities),
+            "measures": [{"iri": m.iri, "label": m.label, "unit": m.unit, "symbol": m.symbol, "aggregations": sorted(m.aggregations),
+                          "attributes": list(m.attributes), "accumulated": m.accumulated}
+                         for m in self.catalog.measures.values() if m.has_data],
+            "question_forms": ["value", "count", "series", "ranking", "extreme_with_attribute", "instant", "comparison"],
+            "time_filters": ["date_ranges", "local_hours", "weekdays", "instant"],
+            "limits": {"comparison_parts": MAX_PARTS, "max_rows": self.settings.max_rows, "timeout_s": self.settings.timeout_s,
+                       "question_chars": self.settings.max_question_chars},
+            "not_supported": ["previsões", "dados fora da cobertura", "cidade, estado ou coordenadas", "grandezas fora do catálogo"],
+        }
+
+    def confirmation_token(self, question: str, interpretation: dict) -> str:
+        """Assina uma opção devolvida ao cliente (pergunta + interpretação + versão do catálogo): só ela pode voltar como `confirmed`."""
+        body = json.dumps({"q": question.strip(), "ir": interpretation, "catalog": self.catalog.index.fingerprint}, sort_keys=True,
+                          ensure_ascii=False)
+        return hmac.new(self.settings.secret, body.encode(), hashlib.sha256).hexdigest()
+
+    def ask(self, question: str, user: User | None = None, confirmed: dict | None = None, confirmation: str | None = None) -> Result:
         """`user`: canal com o usuário (prompt -> resposta); None = sem usuário (API, lote).
-        `confirmed`: interpretação que o usuário já escolheu (devolvida antes num CONFIRMATION_REQUIRED): executa sem chamar o LLM."""
+        `confirmed` + `confirmation`: a interpretação que o usuário escolheu entre as opções de um CONFIRMATION_REQUIRED, com o token
+        assinado que veio junto dela; executa sem chamar o LLM. Sem o token certo é recusada (senão qualquer cliente gravaria qualquer
+        interpretação como verificada)."""
         res = Result(QueryResponse(request_id=f"req-{uuid.uuid4().hex[:12]}", status=Status.EXECUTION_ERROR, question=question,
                                    provenance=Provenance(source_id=self.source.source_id)))
         t0, started = time.perf_counter(), datetime.now(timezone.utc)
         try:
-            self._run(question, user, confirmed, res, t0)
+            self._run(question, user, confirmed, confirmation, res, t0)
         except Exception as e:                                        # noqa: BLE001 — falha fechada
             res.trace.append({"event": "internal_error", "kind": type(e).__name__})
             self._end(res, Stop.of(Status.EXECUTION_ERROR, "INTERNAL_ERROR", "Erro interno; a pergunta não foi respondida.", "error"), t0)
@@ -127,7 +160,9 @@ class MetQA:
         for rnd in range(self.settings.max_rounds + 1):
             exemplars = self.exemplars.search(" ".join([q, *corrections])) if self.settings.exemplars else []
             log("exemplars", found=[e["question"] for e in exemplars])
-            readings = [self._reading(q, hit, f, exemplars, corrections, previous, log) for f in ("A", "B")[:max(1, self.settings.readings)]]
+            framings = ("A", "B")[:max(1, self.settings.readings)]
+            with ThreadPoolExecutor(len(framings)) as pool:                 # leituras independentes, em paralelo
+                readings = list(pool.map(lambda f: self._reading(q, hit, f, exemplars, corrections, previous, log), framings))
             a = readings[0]
             if a.parsed is None:
                 self._end(res, a.stop, t0)
@@ -150,11 +185,16 @@ class MetQA:
             if b is not None and len(ok) == 2:
                 differ = diff(canonical_form(a.parsed.parts, self.catalog.to_canonical),
                               canonical_form(b.parsed.parts, self.catalog.to_canonical))
-            elif b is not None and len(ok) == 1:
-                differ = ["status"]
+            elif b is not None and len(ok) == 1 and all(r.parsed is not None for r in readings):
+                differ = ["status"]                                       # uma leitura respondeu, a outra disse que não dá: divergem
             options = ok if differ else ok[:1]
             base = options[0].parsed if options else a.parsed
-            risk = assess(q if not corrections else " ".join([q, *corrections]), base, b.parsed if b else None, differ, bool(exemplars))
+            risk = assess(q if not corrections else " ".join([q, *corrections]), base, b.parsed if b else None, differ, bool(exemplars),
+                          frozenset(hit.measures), conservation=self.settings.conservation)
+            if b is not None and len(ok) == 1 and not differ:
+                risk.weak.append("só uma das duas leituras foi válida (a outra falhou no LLM)")
+            if options and not differ and self.settings.reread and self.settings.conservation and needs_reread(base.evidence, [x for _, x in base.parts]):
+                risk.strong += self._reread(base, log)
             if "needs_clarification" in statuses and not ok:
                 risk.strong.append(a.parsed.reason or "a pergunta admite mais de uma leitura")
             log("crosscheck", differ=differ, strong=risk.strong, weak=risk.weak)
@@ -173,18 +213,14 @@ class MetQA:
                 msg = "Preciso de um esclarecimento: " + (a.parsed.reason or "a pergunta admite mais de uma leitura") + \
                       ("\n" + "\n".join(f"  {i}. {x}" for i, x in enumerate(alts, 1)) if alts else "") + "\nDiga o que você quer."
             if user is None:
-                details = {"options": [{"paraphrase": p, "interpretation": o.parsed.raw} for p, o in zip(paras, options)],
+                details = {"options": [{"paraphrase": p, "interpretation": o.parsed.raw,
+                                        "confirmation_token": self.confirmation_token(q, o.parsed.raw)} for p, o in zip(paras, options)],
                            "reasons": risk.strong, "alternatives": a.parsed.alternatives}
                 res.response.answer_text = msg
                 self._end(res, Stop(Status.NEEDS_CLARIFICATION, [Diagnostic("CONFIRMATION_REQUIRED", "info", msg, details)]), t0)
                 return None, False
-            reply = user(msg)
-            kind, value = classify(reply, len(paras))
-            if kind == "deny":
-                reply = user("O que devo corrigir? (ex.: o período, a estação, a grandeza ou o cálculo)")
-                kind, value = classify(reply, len(paras))
-                kind = "cancel" if kind == "deny" else kind
-            log("dialogue", round=rnd, kind=kind, reply=str(reply)[:200])
+            kind, value = self._reply(user, msg, len(paras), corrections)
+            log("dialogue", round=rnd, kind=kind, reply=str(value)[:200])
             if kind == "cancel":
                 self._end(res, Stop.of(Status.NEEDS_CLARIFICATION, "USER_CANCELLED", "Pergunta cancelada pelo usuário."), t0)
                 return None, False
@@ -200,13 +236,43 @@ class MetQA:
         return None, False
 
     @staticmethod
+    def _reply(user: User, msg: str, n_options: int, corrections: list[str]) -> tuple[str, str]:
+        """A resposta do usuário já classificada. Repergunta SEM chamar o LLM quando ela não decide nada: "sim" diante de opções,
+        "não" sem dizer o quê, ou a mesma correção já aplicada."""
+        reply = user(msg)
+        for _ in range(3):
+            kind, value = classify(reply, n_options)
+            if kind == "confirm" and n_options > 1:
+                reply = user(f"Qual delas? Responda com o número (1 a {n_options}), \"cancelar\", ou diga o que você quer.")
+            elif kind == "deny":
+                reply = user("O que devo corrigir? (ex.: o período, a estação, a grandeza ou o cálculo)")
+            elif kind == "correct" and value in corrections:
+                reply = user("Essa correção já foi aplicada. Diga o que ainda está diferente do que você quer, \"sim\" ou \"cancelar\".")
+            else:
+                return kind, value
+        return "cancel", ""
+
+    def _reread(self, p: Parsed, log) -> list[str]:
+        """Releitura ISOLADA do trecho de tempo (sem a pergunta, sem exemplos): contexto diferente, erro menos correlacionado (plano, D1b)."""
+        span = " ".join(x for x in (p.evidence.get("time"), p.evidence.get("period")) if x)
+        try:
+            raw = self.interpreter.reread_time(span)
+        except LLMError as e:
+            log("reread_time", ok=False, kind=e.kind)
+            return []
+        other = parse({**p.raw, "status": "ok", "time": raw})
+        same = not other.errors and time_key([x for _, x in other.parts]) == time_key([x for _, x in p.parts])
+        log("reread_time", ok=True, span=span, same=same, time=raw)
+        return [] if same else [f"o trecho de tempo ('{span}'), relido sozinho, dá outro período"]
+
+    @staticmethod
     def _weak_notes(p: Parsed, risk) -> None:
         notes = [w for w in risk.weak if not w.startswith("nenhuma pergunta parecida")]
         for _, cq in p.parts:
             cq.assumptions += [n for n in notes if n not in cq.assumptions]
 
     # ------------------------------------------------------------------------------------------------
-    def _run(self, question: str, user: User | None, confirmed: dict | None, res: Result, t0: float) -> None:
+    def _run(self, question: str, user: User | None, confirmed: dict | None, confirmation: str | None, res: Result, t0: float) -> None:
         log = self._log(res, t0)
         q = clean(question, self.settings.max_question_chars + 1).strip()
         res.response.question = q
@@ -216,6 +282,9 @@ class MetQA:
             return self._end(res, Stop.of(Status.REJECTED, "QUESTION_TOO_LONG",
                                           f"Pergunta longa demais (limite {self.settings.max_question_chars} caracteres).", "error"), t0)
         if confirmed is not None:                                    # o usuário escolheu entre as opções devolvidas antes: sem LLM
+            if not confirmation or not hmac.compare_digest(confirmation, self.confirmation_token(q, confirmed)):
+                return self._end(res, Stop.of(Status.REJECTED, "CONFIRMATION_TOKEN_INVALID",
+                                              "A interpretação confirmada não veio com o token da opção devolvida para esta pergunta.", "error"), t0)
             chosen, by_user = parse(confirmed), True
             problems = list(chosen.errors)
             for _, cq in chosen.parts:
@@ -255,6 +324,8 @@ class MetQA:
         resp.results = done[0].results if len(done) == 1 else {"parts": [{"label": e.part.label, "results": e.results} for e in done]}
         resp.truncated = any(e.truncated for e in done)
         resp.units = units_of(done[0], self.catalog)
+        resp.result_shape = [{**e.shape.__dict__, "keys": list(e.shape.keys), "attributes": [list(a) for a in e.shape.attributes],
+                              "label": e.part.label} for e in done]
         resp.answer_text = (render(done, p.combine, self.catalog, caveats) + "\nEntendi assim: " + paraphrase_parts(chosen.parts, self.catalog)
                             + (". Se não for isso, diga o que corrigir." if not by_user else " (confirmado por você)."))
         sql = [e.engine_sql for e in done if e.engine_sql]

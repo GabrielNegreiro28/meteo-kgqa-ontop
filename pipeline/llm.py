@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import json
 import re
+import threading
 import time
 from dataclasses import dataclass, field
 from typing import Any, Callable, Protocol
@@ -67,13 +68,15 @@ class ScriptedLLM:
     def __init__(self, script: dict[str, list[Any]]):
         self.script = {k: list(v) for k, v in script.items()}
         self.calls: list[dict[str, Any]] = []
+        self._lock = threading.Lock()
 
     def complete(self, stage: str, system: str, user: str, max_tokens: int, json_mode: bool = True) -> LLMResponse:
-        self.calls.append({"stage": stage, "user": user, "max_tokens": max_tokens, "json_mode": json_mode})
-        queue = self.script.get(stage)
-        if not queue:
-            raise LLMError(f"roteiro esgotado para o estágio {stage!r}")
-        item = queue.pop(0) if len(queue) > 1 else queue[0]       # a última resposta se repete
+        with self._lock:
+            self.calls.append({"stage": stage, "user": user, "max_tokens": max_tokens, "json_mode": json_mode})
+            queue = self.script.get(stage)
+            if not queue:
+                raise LLMError(f"roteiro esgotado para o estágio {stage!r}")
+            item = queue.pop(0) if len(queue) > 1 else queue[0]   # a última resposta se repete
         if isinstance(item, Exception):
             raise item
         return item if isinstance(item, LLMResponse) else LLMResponse(text=item)
@@ -91,14 +94,16 @@ class ResilientLLM:
         self.spent_usd = 0.0
         self._failures = 0
         self._opened_at: float | None = None
+        self._lock = threading.Lock()                               # as duas leituras rodam em paralelo (gasto e disjuntor compartilhados)
 
     def complete(self, stage: str, system: str, user: str, max_tokens: int, json_mode: bool = True) -> LLMResponse:
-        if self.spent_usd >= self.budget_usd:
-            raise BudgetExceeded(f"orçamento de US$ {self.budget_usd:.2f} esgotado")
-        if self._opened_at is not None:
-            if self._clock() - self._opened_at < self.cooldown_s:
-                raise CircuitOpen("provedor suspenso após falhas consecutivas")
-            self._opened_at = None                                  # meia-abertura: tenta de novo
+        with self._lock:
+            if self.spent_usd >= self.budget_usd:
+                raise BudgetExceeded(f"orçamento de US$ {self.budget_usd:.2f} esgotado")
+            if self._opened_at is not None:
+                if self._clock() - self._opened_at < self.cooldown_s:
+                    raise CircuitOpen("provedor suspenso após falhas consecutivas")
+                self._opened_at = None                              # meia-abertura: tenta de novo
         last: LLMError | None = None
         for attempt in range(self.max_attempts):
             try:
@@ -108,13 +113,15 @@ class ResilientLLM:
                 if not e.retryable:
                     raise
                 last = e
-                self._register_failure()
+                with self._lock:
+                    self._register_failure()
                 if self._opened_at is not None or attempt == self.max_attempts - 1:
                     break
                 self._sleep(max(getattr(e, "retry_after", 0.0), self.base_delay * 2 ** attempt))
                 continue
-            self._failures = 0
-            self.spent_usd += resp.cost_usd
+            with self._lock:
+                self._failures = 0
+                self.spent_usd += resp.cost_usd
             if resp.finish_reason == "length":
                 raise OutputTruncated(f"saída do estágio {stage!r} cortada por limite de tokens ({max_tokens})")
             return resp

@@ -96,13 +96,25 @@ def test_leituras_divergem_sem_usuario_devolve_as_opcoes_e_nao_chuta():
 
 
 def test_cliente_reenvia_a_opcao_escolhida_e_executa_sem_chamar_o_llm():
-    first = app(llm((MEAN, MAX))).ask(Q_AMB).response
-    chosen = next(x for x in first.diagnostics if x.code == "CONFIRMATION_REQUIRED").details["options"][1]["interpretation"]
+    first = app(llm((MEAN, MAX)), secret=b"k").ask(Q_AMB).response
+    option = next(x for x in first.diagnostics if x.code == "CONFIRMATION_REQUIRED").details["options"][1]
+    chosen, token = option["interpretation"], option["confirmation_token"]
     script = ScriptedLLM({})
-    r = app(script).ask(Q_AMB, confirmed=chosen).response
+    r = app(script, secret=b"k").ask(Q_AMB, confirmed=chosen, confirmation=token).response
     assert r.status == Status.ANSWERED and script.calls == []
     expected = max(o["value"] for o in oracle.sel(oracle.load_obs(), "AirTemperature", "EST-B"))
     assert num(expected) in r.answer_text and "(confirmado por você)" in r.answer_text
+
+
+def test_confirmacao_sem_o_token_da_opcao_e_recusada():
+    """Sem o token, um cliente gravaria qualquer interpretação como verificada (plano, D7)."""
+    forged = {**MAX, "calc": {"aggregation": "min", "count_of": None, "daily": None}}
+    store = ExemplarStore(None)
+    a = app(ScriptedLLM({}), store=store, secret=b"k")
+    for token in (None, "0" * 64, a.confirmation_token(Q_AMB, MAX)):
+        r = a.ask(Q_AMB, confirmed=forged, confirmation=token).response
+        assert r.status == Status.REJECTED and "CONFIRMATION_TOKEN_INVALID" in {d.code for d in r.diagnostics}
+    assert store.items == []
 
 
 def test_usuario_escolhe_a_opcao_e_vira_exemplo_verificado():
@@ -141,9 +153,9 @@ def test_numero_da_pergunta_ignorado_pede_confirmacao():
 
 
 def test_evidencia_que_nao_esta_na_pergunta_pede_confirmacao():
-    bad = {**AVG, "evidence": {"measure": "calor", "calc": "média"}}
+    bad = {**AVG, "evidence": {"measure": "temperatura", "calc": "média móvel"}}
     r = app(llm((bad, bad))).ask("Qual foi a temperatura média por estação?").response
-    assert any("'calor'" in x for x in next(d for d in r.diagnostics if d.code == "CONFIRMATION_REQUIRED").details["reasons"])
+    assert any("'média móvel'" in x for x in next(d for d in r.diagnostics if d.code == "CONFIRMATION_REQUIRED").details["reasons"])
 
 
 def test_o_proprio_llm_diz_que_nao_da():
@@ -180,7 +192,7 @@ def test_horas_que_atravessam_a_meia_noite_viram_um_conjunto():
     p = parse(nir("met:RelativeHumidity", ["st:SBNF"], "avg", "2020-07-01", "2020-07-31", hours=hours))
     cq = plan(p.parts).parts[0].query
     sparql = compile_query(cq, REAL).sparql
-    assert "FILTER(HOURS(?t) IN (0, 1, 2, 3, 4, 5, 6, 7, 8, 21, 22, 23))" in sparql          # 18h–6h local = 21h–9h UTC
+    assert "FILTER(?h IN (0, 1, 2, 3, 4, 5, 18, 19, 20, 21, 22, 23))" in sparql          # 18h–6h local
     assert not validate_query(sparql, to_interp(cq), REAL.index, True)[1]
 
 

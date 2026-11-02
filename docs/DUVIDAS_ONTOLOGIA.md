@@ -53,3 +53,19 @@ classes de SOSA/QUDT/SKOS é escolha de aplicação; a equipe pode preferir não
 ## 8. Fora de escopo desta rodada
 Ciclo de evolução do EvoOntology com colocação BFO obrigatória e checagem de consistência de classes novas (§7.3, §7.4), CCO, e a ontologia oficial da equipe (substituiria
 `met.ttl`). A porta de validação do EvoOntology (`semantics/gate.py`) ainda confere a categoria contra `met:bfoCategory`; ligá-la ao raciocinador é o passo seguinte.
+
+## 9. Proposta: base e cobertura de cada camada de nuvem como grandezas (2026-11-02, provisória)
+No grafo, a altura da base (`met:cloudBaseHeight`) e os oitavos (`met:oktas`) são atributos do resultado de uma camada de nuvem
+(`met:CloudLayerResult`). Assim, "a base de nuvem mais baixa" não tinha resposta: três perguntas do conjunto novo_b (E55, E81, E93) foram
+recusadas. Para responder, entraram duas grandezas PROVISÓRIAS (`met:provisional true`):
+- `met:CloudBaseHeight` (m), observada como `met:InstantaneousObservation`, uma por camada, com o gênero da camada (`met:cloudGenus`) como
+  atributo próprio; o domínio de `met:cloudGenus` virou a união `met:CloudLayerResult ⊔ sosa:Observation`;
+- `met:CloudOktas` (oitavos, `unit:OKTA`), escala ordinal (mínimo, máximo e contagem; média não).
+
+Cada uma denota uma qualidade (`met:CloudBaseHeightQuality`, `met:CloudLayerCoverQuality`, subclasses de BFO_0000019), no mesmo
+alinhamento provisório das demais. Perguntas para a equipe:
+- O portador dessas qualidades é a camada de nuvem (que então seria uma entidade independente) ou a atmosfera sobre o aeródromo?
+- Uma observação por camada é o modelo certo, ou a "base mais baixa" do boletim deveria ser uma grandeza própria (o que o METAR chama de teto
+  é outra coisa: a camada mais baixa com 5 ou mais oitavos)?
+- Os atributos atuais do resultado da camada continuam, ou a grandeza os substitui?
+Para reverter: retirar as duas grandezas de `met.ttl`, `met-structure.ttl` e `met-bfo.ttl` e regerar (o mapeamento e o SHACL saem do catálogo).

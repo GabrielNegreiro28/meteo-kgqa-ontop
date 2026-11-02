@@ -139,6 +139,16 @@ met:localDate a owl:DatatypeProperty ;
     rdfs:label "data local"@pt ;
     rdfs:comment "Dia civil local (UTC−3) a que a observação pertence. Para acumulados, o dia do INÍCIO do intervalo."@pt .
 
+met:localHour a owl:DatatypeProperty ;
+    rdfs:range xsd:integer ;
+    rdfs:label "hora local"@pt ;
+    rdfs:comment "Hora civil local (UTC−3, 0 a 23) do instante da leitura; para acumulados, a hora do FIM do intervalo."@pt .
+
+met:localWeekday a owl:DatatypeProperty ;
+    rdfs:range xsd:integer ;
+    rdfs:label "dia da semana local"@pt ;
+    rdfs:comment "Dia da semana de met:localDate: 0 = segunda-feira ... 6 = domingo."@pt .
+
 met:runwayDesignator a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
     rdfs:label "cabeceira da pista"@pt ;
@@ -187,7 +197,7 @@ met:cloudBaseHeight a owl:DatatypeProperty ;
     met:canonicalUnit unit:M .
 
 met:cloudGenus a owl:ObjectProperty ;
-    rdfs:domain met:CloudLayerResult ; rdfs:range skos:Concept ;
+    rdfs:domain [ a owl:Class ; owl:unionOf ( met:CloudLayerResult sosa:Observation ) ] ; rdfs:range skos:Concept ;
     rdfs:label "gênero da nuvem"@pt ; skos:altLabel "tipo de nuvem"@pt .
 
 met:cloudMovement a owl:DatatypeProperty ;
@@ -252,3 +262,16 @@ met:WindGust a sosa:ObservableProperty , owl:NamedIndividual ;
 
 met:CloudCover a sosa:ObservableProperty , owl:NamedIndividual ;
     rdfs:label "nebulosidade"@pt ; skos:altLabel "nuvens"@pt , "camada de nuvens"@pt .
+
+# PROVISÓRIAS (plano, D6): a altura da base e a cobertura de cada camada de nuvem como grandezas, para que "a base de nuvem mais baixa"
+# tenha resposta. Estão no grafo como atributos do resultado da camada (met:cloudBaseHeight, met:oktas); a decisão de promovê-las a
+# grandezas na ontologia formal é da equipe de ontologia (proposta em .evoontology/proposals/pending.json).
+met:CloudBaseHeight a sosa:ObservableProperty , owl:NamedIndividual ;
+    rdfs:label "altura da base da nuvem"@pt , "cloud base height"@en ; skos:altLabel "base de nuvem"@pt , "base da nuvem"@pt ;
+    met:canonicalUnit unit:M ;
+    met:aggregationNote "Uma leitura por camada de nuvem: um boletim pode ter várias camadas, cada uma com a sua base. Provisória."@pt .
+
+met:CloudOktas a sosa:ObservableProperty , owl:NamedIndividual ;
+    rdfs:label "cobertura da camada de nuvem"@pt , "cloud layer cover"@en ; skos:altLabel "oitavos de céu"@pt ;
+    met:canonicalUnit unit:OKTA ;
+    met:aggregationNote "Oitavos de céu cobertos por uma camada (1 a 8; céu obscurecido fica de fora). Escala ordinal. Provisória."@pt .

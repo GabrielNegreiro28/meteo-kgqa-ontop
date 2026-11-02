@@ -85,7 +85,7 @@ def test_horas_com_chuva_viram_condicao_e_contam_horas_distintas_E15():
     assert not rec.findings
     assert rec.interp.filters == [{"op": ">", "value": 0.0}] and rec.interp.count_of == "hours"
     sparql = compiles(rec)
-    assert "FILTER(?v > 0)" in sparql and "COUNT(DISTINCT ?hour)" in sparql and "HOURS(?t)" in sparql
+    assert "FILTER(?v > 0)" in sparql and "COUNT(DISTINCT ?hour)" in sparql and "?obs met:localHour ?h ." in sparql
     assert any("horas distintas" in n for n in rec.notes)
 
 
@@ -94,14 +94,14 @@ def test_fins_de_semana_entram_na_consulta_E50():
     rec = reconcile(ir("met:WindSpeed", "velocidade média do vento", "SBNT", "avg", "média"), q, IDX)
     assert not rec.findings and rec.interp.weekdays == [5, 6]
     sparql = compiles(rec)
-    assert '"2024-01-06"^^xsd:date' in sparql and '"2024-01-08"^^xsd:date' not in sparql     # 6/1/2024 é sábado; 8/1 é segunda
+    assert "?obs met:localWeekday ?wd ." in sparql and "FILTER(?wd IN (5, 6))" in sparql     # sábado e domingo, dia da semana local
 
 
-def test_madrugada_vira_horas_utc():
+def test_madrugada_vira_horas_locais():
     q = "Quanto choveu em SBBE de madrugada em 2019?"
     rec = reconcile(ir("met:Precipitation", "choveu", "SBBE", "sum", "Quanto choveu"), q, IDX)
     assert not rec.findings and rec.interp.hours == (0, 6)
-    assert "FILTER(HOURS(?t) IN (3, 4, 5, 6, 7, 8))" in compiles(rec)                   # 0h–5h local = 3h–8h UTC
+    assert "FILTER(?h IN (0, 1, 2, 3, 4, 5))" in compiles(rec)                          # hora local, sem conversão na consulta
 
 
 def test_limiar_sem_dono_e_pego():

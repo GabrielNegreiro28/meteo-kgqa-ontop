@@ -488,7 +488,7 @@ def obda_profile(obda: Path) -> tuple[set[str], set[str]]:
 
 # Predicados que TODA observação tem; o que sobra, por grandeza, são os atributos próprios dela (ex.: cabeceira só no vento).
 OBS_COMMON = ({SOSA + t for t in ("observedProperty", "madeBySensor", "hasFeatureOfInterest", "phenomenonTime", "resultTime", "hasResult")}
-              | {MET + t for t in ("localDate", "inReport", "multipleReadings", "sourceFile", "sourceRow")})
+              | {MET + t for t in ("localDate", "localHour", "localWeekday", "inReport", "multipleReadings", "sourceFile", "sourceRow")})
 
 
 def obda_observation_attributes(obda: Path) -> dict[str, set[str]]:
@@ -507,21 +507,15 @@ def obda_observation_attributes(obda: Path) -> dict[str, set[str]]:
 
 
 
-# Unidades que o LLM pode escrever num filtro e que o código sabe converter para a unidade canônica da grandeza (fator multiplicativo).
-# Fora da tabela, o filtro não é montado por código: nada de "chutar" a escala (RD14/E14: "abaixo de 1 km" virou `< 1` em metros).
-UNIT_FACTORS = {("KiloM", "M"): 1000, ("M", "M"): 1}
-
-
 def convert_filter_value(value, unit: str | None, canonical: str | None):
-    """Valor do filtro na unidade canônica da grandeza, ou None se a conversão não é conhecida. Sem unidade = já canônica."""
+    """Valor do filtro na unidade canônica da grandeza, ou None se a conversão não é conhecida (nada de "chutar" a escala: RD14/E14,
+    "abaixo de 1 km" virou `< 1` em metros). Sem unidade = já canônica. Fatores: o catálogo de grandezas (ontology/catalog.py)."""
     from decimal import Decimal
+
+    from ontology.catalog import convert
     if not unit or not canonical:
         return Decimal(str(value))
-    u, c = expand(unit).rsplit("/", 1)[-1], expand(canonical).rsplit("/", 1)[-1]
-    if u == c:
-        return Decimal(str(value))
-    f = UNIT_FACTORS.get((u, c))
-    return None if f is None else Decimal(str(value)) * f
+    return convert(value, expand(unit), expand(canonical))
 
 
 def _short(iri: str) -> str:

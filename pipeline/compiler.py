@@ -149,31 +149,21 @@ def compile_structured(interp: PipelineInterpretation, index: OntologyIndex, for
         last = end if inclusive else end - timedelta(days=1)
         return [f'FILTER({d} >= "{start.isoformat()}"^^xsd:date && {d} <= "{last.isoformat()}"^^xsd:date)']
 
-    def day_filters(obs: str, d: str, t: str) -> list[str]:
-        """v8: parte do dia e dias da semana. O instante do grafo (sosa:resultTime) está em UTC e o dia local em met:localDate (UTC−3, D-85):
-        a hora local h é a hora UTC (h + 3) mod 24, e o dia da semana sai da lista de datas locais da janela (SPARQL não tem dia da semana)."""
+    def day_filters(obs: str, sfx: str) -> list[str]:
+        """Parte do dia e dias da semana, pela hora e pelo dia da semana locais que o grafo declara (met:localHour, met:localWeekday,
+        UTC−3, D-85): sem conversão de fuso nem lista de datas na consulta."""
         out = []
         local = interp.local_hours or (list(range(*interp.hours)) if interp.hours else None)
-        if local:
-            utc = sorted({(h + 3) % 24 for h in local})
-            out += [f"{obs} sosa:resultTime {t} .", f"FILTER(HOURS({t}) IN ({', '.join(map(str, utc))}))"]
-        if interp.weekdays:
-            if interp.period is not None:
-                start, end, _, inclusive = parse_period(interp.period)
-                last = end if inclusive else end - timedelta(days=1)
-            elif index.coverage:
-                start, last = index.coverage
-            else:
-                raise ValueError("dias da semana sem janela")
-            days = [start + timedelta(days=i) for i in range((last - start).days + 1)]
-            wanted = [x for x in days if x.weekday() in set(interp.weekdays)]
-            out.append(f"FILTER({d} IN ({', '.join(f'{chr(34)}{x.isoformat()}{chr(34)}^^xsd:date' for x in wanted)}))")
+        for vals, pred, var in ((local, "localHour", f"?h{sfx}"), (interp.weekdays, "localWeekday", f"?wd{sfx}")):
+            if vals:
+                if vocab.MET + pred not in index.data_predicates:
+                    raise ValueError(pred)
+                out += [f"{obs} met:{pred} {var} .", f"FILTER({var} IN ({', '.join(map(str, sorted(set(vals))))}))"]
         return out
 
     def base(sfx: str = "", need_day: bool = False) -> list[str]:
         """Estação -> sensor -> observação da grandeza (+ dia local quando há período ou dimensão de tempo)."""
         v, sensor, obs, d = f"?v{sfx}", f"?sensor{sfx}", f"?obs{sfx}", f"?d{sfx}"
-        need_day = need_day or bool(interp.weekdays)
         if len(ents) == 1 and not by_station:
             where = [f"<{ents[0]}> sosa:hosts {sensor} ."]
         else:
@@ -186,7 +176,7 @@ def compile_structured(interp: PipelineInterpretation, index: OntologyIndex, for
             where.append(f"{obs} met:localDate {d} .")
         for op, val in filters:
             where.append(f"FILTER({v} {op} {format(val.normalize(), 'f')})")
-        return where + period_filter(d) + day_filters(obs, d, f"?t{sfx}")
+        return where + period_filter(d) + day_filters(obs, sfx)
 
     try:
         # ---- dias que cumprem uma condição: agrega cada dia (daily.agg) e conta os dias; value = dias que cumprem, n = dias com dados ----
@@ -209,12 +199,11 @@ def compile_structured(interp: PipelineInterpretation, index: OntologyIndex, for
             where = base(need_day=True)
             if interp.count_of == "reports":
                 return "SELECT (COUNT(DISTINCT ?rep) AS ?n) WHERE {\n  " + "\n  ".join([*where, "?obs met:inReport ?rep ."]) + "\n}"
-            if not any(w.startswith("?obs sosa:resultTime") for w in where):
-                where.append("?obs sosa:resultTime ?t .")
-            # (dia local, hora UTC) identifica a hora local: com fuso fixo, hora local -> hora UTC é injetiva dentro do mesmo dia local.
-            # Uma chave textual contada com DISTINCT: o Ontop 5.5 recusa SELECT DISTINCT/GROUP BY sobre HOURS() num subselect
-            # ("Was expecting all the non-grouping bindings to be lifted"; conferido no grafo real).
-            return ("SELECT (COUNT(DISTINCT ?hour) AS ?n) WHERE {\n  " + "\n  ".join([*where, 'BIND(CONCAT(STR(?d), "T", STR(HOURS(?t))) AS ?hour)'])
+            if "?obs met:localHour ?h ." not in where:
+                where.append("?obs met:localHour ?h .")
+            # (dia local, hora local) numa chave textual contada com DISTINCT: o Ontop 5.5 recusa SELECT DISTINCT/GROUP BY sobre expressão
+            # num subselect ("Was expecting all the non-grouping bindings to be lifted"; conferido no grafo real).
+            return ("SELECT (COUNT(DISTINCT ?hour) AS ?n) WHERE {\n  " + "\n  ".join([*where, 'BIND(CONCAT(STR(?d), "T", STR(?h)) AS ?hour)'])
                     + "\n}")
 
         # ---- superlativo com atributo: a(s) leitura(s) que atingem o máximo/mínimo, com o atributo e o instante ----

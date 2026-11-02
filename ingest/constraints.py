@@ -6,11 +6,15 @@ Dois papéis:
     redundantes criados pelo raciocínio OWL 2 QL (ex.: estações "derivadas" de met:reportOf).
 """
 import sys, time
+from pathlib import Path
+
 import psycopg
 
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from ontology.catalog import tables  # noqa: E402
+
 PG = sys.argv[1] if len(sys.argv) > 1 else "host=127.0.0.1 port=5433 user=postgres dbname=met"
-OBS = ["air_temp", "wet_bulb", "dew_point", "rel_humidity", "runway_temp", "qnh", "visibility",
-       "wind_speed", "wind_dir", "wind_gust", "precip", "precip_duration", "cloud_layer"]
+OBS = [t.removeprefix("obs_") for t in tables()]      # do catálogo de grandezas
 
 STMTS = [
     "ALTER TABLE report ADD PRIMARY KEY (sigla, tmin)",

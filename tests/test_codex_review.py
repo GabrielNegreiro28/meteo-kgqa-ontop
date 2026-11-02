@@ -319,7 +319,7 @@ def test_every_evidence_resolves_to_a_prov_entity_with_activity_and_source():
     from semantics.build import build_records, evidence_iri, evidence_prov
     records = build_records()
     g = evidence_prov(records)
-    assert len(records["evidence"]) == 42
+    assert len(records["evidence"]) == 46
     for ev in records["evidence"]:
         e = URIRef(ev["query"])
         assert ev["query"] == evidence_iri(ev["id"])

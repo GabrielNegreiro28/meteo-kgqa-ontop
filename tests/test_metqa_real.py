@@ -37,6 +37,20 @@ CASES = {   # pergunta, interpretação normalizada, valor esperado (oráculo pa
     "madrugada": ("Quanto choveu em SBBE de madrugada em 2019?",
                   nir("met:Precipitation", ["st:SBBE"], "sum", "2019-01-01", "2019-12-31", hours=list(range(0, 6)),
                       evidence=E(measure="choveu", stations="SBBE", calc="Quanto", time="de madrugada em 2019")), 180.8),
+    # E149 do novo_b: o filtro por lista de datas passava de 6000 caracteres; com met:localWeekday é um IN de 5 números. O oráculo (3,86)
+    # usa o máximo de cada instante (várias cabeceiras); o sistema faz a média de todas as leituras (política de leituras múltiplas)
+    "dias_uteis": ("Em dias de segunda a sexta de 2024, qual a velocidade média do vento de SBRB, em nós?",
+                   nir("met:WindSpeed", ["st:SBRB"], "avg", "2024-01-01", "2024-12-31", weekdays=[0, 1, 2, 3, 4],
+                       evidence=E(measure="velocidade média do vento", stations="SBRB", calc="média", time="Em dias de segunda a sexta de 2024")), 3.42),
+    # base de nuvem (grandeza PROVISÓRIA met:CloudBaseHeight, plano D6): E55 e E81 do novo_b, que eram "não suportado"
+    "base_de_nuvem": ("A que altura, em metros, estava a base de nuvem mais baixa de SBCB em abril de 2020?",
+                      nir("met:CloudBaseHeight", ["st:SBCB"], "min", "2020-04-01", "2020-04-30",
+                          evidence=E(measure="base de nuvem", stations="SBCB", calc="mais baixa", time="em abril de 2020")), 180),
+    "boletins_base_baixa": ("Em quantos boletins de SBGW de 2022 havia base de nuvem inferior a 500 metros?",
+                            nir("met:CloudBaseHeight", ["st:SBGW"], "count", "2022-01-01", "2022-12-31", count_of="reports",
+                                conditions=[{"op": "<", "value": 500, "unit": "unit:M"}],
+                                evidence=E(measure="base de nuvem", stations="SBGW", calc="quantos boletins", conditions="inferior a 500 metros",
+                                           time="de 2022")), 1420),
     # casos de borda da medição de 2026-10-28 (novo_a_20261028, E03 e E48), sem regra nenhuma para eles
     "ano_antes_do_ponto": ("Quero a menor pressão QNH registrada em SBCR no ano de 2018.",
                            nir("met:PressureQNH", ["st:SBCR"], "min", "2018-01-01", "2018-12-31",
@@ -115,3 +129,13 @@ def test_mvp_reads_the_value_at_an_instant(real):
     r = ask(real, "Qual era a temperatura do ar em SBGO em 14/10/2019 às 14h?", ir).response
     assert r.status == Status.ANSWERED, [d.message for d in r.diagnostics]
     assert "35,4 °C" in r.answer_text and "14/10/2019 14:00" in r.answer_text
+
+
+@needs_ontop
+def test_menor_base_de_nuvem_por_mes_E93(real):
+    ir = nir("met:CloudBaseHeight", ["st:SBTA"], "min", "2018-01-01", "2018-12-31", group_by=["month"],
+             evidence=E(measure="base de nuvem", stations="SBTA", calc="menor", shape="em cada mês", time="de 2018"))
+    r = ask(real, "Liste, em metros, a menor base de nuvem registrada em SBTA em cada mês de 2018.", ir).response
+    assert r.status == Status.ANSWERED, [d.message for d in r.diagnostics]
+    for line in ("- 01/2018: 60 m", "- 05/2018: 180 m", "- 09/2018: 20 m", "- 12/2018: 90 m"):        # oráculo do novo_b
+        assert line in r.answer_text, r.answer_text

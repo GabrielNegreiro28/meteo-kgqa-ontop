@@ -33,7 +33,7 @@ from pipeline.vocab import expand, fold
 from .gate import validate_candidate
 from .resolution import ResolutionAdapter
 
-HELD_OUT = {"validation", "heldout", "test"}
+HELD_OUT = {"validation", "heldout", "test", "eval"}          # "eval": trilhas de medição (eval/run_independent), nunca mineradas
 CONTENT, TOOL, FORMAL = "content", "tool", "formal"
 # achados do verificador que NÃO se corrigem com conteúdo da camada semântica: defeito da ferramenta (prompt/regras) ou da ontologia formal
 TOOL_FINDINGS = {"BAD_SCHEMA", "INVALID_OUTPUT", "PERIOD_MISMATCH", "FILTER_MISSING", "AGGREGATION_MISMATCH", "MISSING_COUNT", "SYNTAX_ERROR"}
@@ -79,7 +79,9 @@ def _functional_words() -> frozenset[str]:
 def trusted(t: dict[str, Any]) -> bool:
     """Trajetória em que se pode confiar para ensinar um sinônimo: respondeu, sem correção do usuário, e a avaliação (se houve) conferiu."""
     ev = t.get("evaluation") or {}
-    return (t.get("pipeline_status") == "answered" and not (t.get("signals") or {}).get("user_corrections")
+    sig = t.get("signals") or {}
+    # corrigida e depois CONFIRMADA pelo usuário (virou exemplo verificado) é a interpretação mais confiável que há
+    return (t.get("pipeline_status") == "answered" and (sig.get("verified_by_user") or not sig.get("user_corrections"))
             and ev.get("result_match") is not False and ev.get("status_ok") is not False)
 
 
@@ -121,10 +123,15 @@ def mine(workspace: str | Path, version: str, *, min_support: int = 2, is_truste
     by_word: dict[str, dict[str, list[str]]] = defaultdict(lambda: defaultdict(list))
     surface: dict[str, str] = {}                                # a forma COMO FOI ESCRITA ("calorão"): o casamento do núcleo é sensível a acento
     findings: dict[str, list[str]] = defaultdict(list)
+    unclear: dict[str, list[str]] = defaultdict(list)          # palavra sem cobertura -> perguntas que terminaram em esclarecimento
     for t in trajectories:
         sig = t.get("signals") or {}
         for code in sig.get("verifier_findings", []):
             findings[code].append(t["task_id"])
+        if sig.get("clarification"):
+            for w in (sig.get("semantics") or {}).get("uncovered", []):
+                if fold(w) not in known:
+                    unclear[fold(w)].append(t["task_id"])
         if not is_trusted(t):
             continue
         iris = [expand(p) for p in _interpreted_properties(t)]
@@ -160,6 +167,13 @@ def mine(workspace: str | Path, version: str, *, min_support: int = 2, is_truste
                                   rationale=("A ontologia formal pode estar incompleta ou errada" if layer == FORMAL else
                                              "O prompt, as regras ou a descrição da ferramenta podem estar causando o achado")
                                   + f" ({code} em {support} trajetórias). Não é conteúdo da camada semântica: exige revisão humana."))
+    for word, tasks in sorted(unclear.items()):
+        support = len(set(tasks))
+        if support >= min_support:                              # sem grandeza confirmada, não dá para atribuir: revisão humana
+            proposals.append(Proposal(id=f"proposal.{CONTENT}.UNCOVERED_IN_CLARIFICATION.{word}", layer=CONTENT,
+                                      finding="UNCOVERED_IN_CLARIFICATION", support=support, task_ids=sorted(set(tasks)),
+                                      rationale=f"'{word}' não tem Termo e aparece em {support} perguntas que pediram esclarecimento: "
+                                                "candidata a sinônimo ou a Termo novo, sem grandeza confirmada (exige revisão humana)."))
     return hypotheses, proposals
 
 

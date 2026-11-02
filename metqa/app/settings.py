@@ -8,6 +8,7 @@ Variáveis (todas opcionais):
   METQA_LEXICON_VERSION versão da camada (padrão: a ativa)
   METQA_LEDGER         registro de gasto (padrão: eval/reports/spend_ledger.jsonl)
   METQA_TRAJECTORIES   "1" grava a trajetória de cada pergunta no workspace (sinal para a evolução)
+  METQA_SECRET         chave que assina os tokens de confirmação (padrão: aleatória por processo)
 """
 from __future__ import annotations
 
@@ -36,6 +37,9 @@ class Settings:
     max_rounds: int = 3                            # voltas de correção com o usuário
     budget_usd: float = 0.10                       # teto desta sessão; o teto acumulado é o do ledger
     max_question_chars: int = field(default=500)
+    conservation: bool = True                      # conservação da evidência (números do trecho no valor); False só na ablação
+    reread: bool = True                            # releitura isolada do trecho de tempo quando a janela passa de um dia (plano, D1b)
+    secret: bytes = field(default_factory=lambda: os.urandom(32), repr=False)   # assina as opções devolvidas (token de confirmação)
 
     @classmethod
     def from_env(cls, **override) -> "Settings":
@@ -48,5 +52,6 @@ class Settings:
             lexicon_version=env.get("METQA_LEXICON_VERSION") or None,
             ledger=Path(env["METQA_LEDGER"]) if env.get("METQA_LEDGER") else cls.ledger,
             record_trajectories=env.get("METQA_TRAJECTORIES") == "1",
+            secret=env["METQA_SECRET"].encode() if env.get("METQA_SECRET") else None,
         )
         return cls(**{**base, **{k: v for k, v in override.items() if v is not None}})

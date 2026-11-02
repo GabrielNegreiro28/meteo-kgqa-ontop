@@ -26,6 +26,11 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--require-reasoner", action="store_true", help="exige o HermiT na porta de validação")
     ap.add_argument("--sample-graph", action="store_true", help="amostra o grafo real (Ontop) para a conformância do raciocinador")
     ap.add_argument("--in-place", action="store_true", help="publica no workspace de verdade (padrão: numa cópia descartável)")
+    ap.add_argument("--adapter", choices=["resolution", "metqa"], default="resolution",
+                    help="resolution: reconhecimento da grandeza, sem LLM | metqa: o metqa inteiro num conjunto congelado (gasta LLM; ledger)")
+    ap.add_argument("--set", dest="set_name", help="conjunto congelado (eval/frozen/<nome>) para --adapter metqa")
+    ap.add_argument("--budget", type=float, default=1.0, help="teto desta execução em US$ (--adapter metqa)")
+    ap.add_argument("--env", default=str(ROOT.parent / "METEOROLOGIA" / "kgqa.env"))
     args = ap.parse_args(argv)
 
     from semantics.evolve import run_evolution
@@ -45,9 +50,24 @@ def main(argv: list[str] | None = None) -> int:
         from ontology.conformance import sample_abox
         abox, found = sample_abox(OntopBackend(), per_class=3)
         print(f"amostra do grafo real: {len(abox)} triplas ({sum(found.values())} indivíduos)")
-    validation = load_cases(VALIDATION_FILES)
-    regression = load_cases(CONSTRUCTION_FILES)
-    summary = run_evolution(work, args.parent, ResolutionAdapter(work, validation), ResolutionAdapter(work, regression),
+    if args.adapter == "metqa":
+        if not args.set_name:
+            ap.error("--adapter metqa exige --set")
+        from kgqa.store import OntopBackend
+        from metqa.knowledge import DomainCatalog
+        from pipeline.ledger import Ledger, LedgerLLM
+        from pipeline.llm import ResilientLLM
+        from pipeline.openai_client import OpenAIChatClient, load_env
+        from semantics.metqa_eval import MetqaAdapter
+        source = OntopBackend()
+        client = OpenAIChatClient.from_env(args.env)
+        llm = ResilientLLM(LedgerLLM(client, Ledger(str(ROOT / "eval" / "reports" / "spend_ledger.jsonl")),
+                                     base_cap_usd=float(load_env(args.env).get("KGQA_BUDGET_USD", "5.0")), run="evolution_metqa",
+                                     model=getattr(client, "model", "")), budget_usd=args.budget)
+        validator, regressor = MetqaAdapter(work, args.set_name, llm, source, DomainCatalog.from_ontop(source)), None
+    else:
+        validator, regressor = ResolutionAdapter(work, load_cases(VALIDATION_FILES)), ResolutionAdapter(work, load_cases(CONSTRUCTION_FILES))
+    summary = run_evolution(work, args.parent, validator, regressor,
                             max_rounds=args.max_rounds, min_support=args.min_support, abox=abox, require_reasoner=args.require_reasoner)
     print(json.dumps(summary, ensure_ascii=False, indent=1, default=str))
     return 0

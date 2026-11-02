@@ -26,10 +26,11 @@ def line_of(ctx: str, prop: str) -> str:
 
 # ---------- atributos próprios, lidos do mapeamento ----------
 
-def test_own_attributes_come_from_the_mapping_and_only_wind_has_them():
+def test_own_attributes_come_from_the_mapping_wind_and_cloud_base():
     attrs = obda_observation_attributes(OBDA)
     own = {p.rsplit("#", 1)[1]: sorted(a.rsplit("#", 1)[1] for a in v - OBS_COMMON - {"a"}) for p, v in attrs.items() if v - OBS_COMMON - {"a"}}
-    assert own == {"WindSpeed": ["runwayDesignator", "windCondition"], "WindDirection": ["runwayDesignator"], "WindGust": ["runwayDesignator"]}
+    assert own == {"WindSpeed": ["runwayDesignator", "windCondition"], "WindDirection": ["runwayDesignator"], "WindGust": ["runwayDesignator"],
+                   "CloudBaseHeight": ["cloudGenus"]}
 
 
 def test_obda_profile_is_unchanged_by_the_refactor():

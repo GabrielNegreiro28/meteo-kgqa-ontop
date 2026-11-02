@@ -34,7 +34,8 @@ def build(settings: Settings, run: str = "metqa-cli"):
     cap = float(load_env(str(settings.env_file)).get("KGQA_BUDGET_USD", "5.0"))
     llm = ResilientLLM(LedgerLLM(client, Ledger(str(settings.ledger)), base_cap_usd=cap, run=run, model=getattr(client, "model", "")),
                        budget_usd=settings.budget_usd)
-    exemplars = ExemplarStore.in_workspace(settings.workspace) if settings.exemplars else ExemplarStore(None)
+    exemplars = (ExemplarStore.in_workspace(settings.workspace, settings.lexicon_version, catalog.index.fingerprint) if settings.exemplars
+                 else ExemplarStore(None))
     return MetQA(catalog, lexicon, llm, source, settings, exemplars)
 
 
@@ -51,7 +52,7 @@ def show(result, show_query: bool) -> str:
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(prog="python -m metqa", description=__doc__.split("\n\n")[0])
     ap.add_argument("question", nargs="*")
-    ap.add_argument("--json", action="store_true", help="resposta completa no contrato 0.2.1")
+    ap.add_argument("--json", action="store_true", help="resposta completa no contrato 0.3.0")
     ap.add_argument("--show-query", action="store_true", help="mostra o SPARQL e o SQL gerado pelo Ontop")
     ap.add_argument("--lexicon", choices=["evo", "ontology"], help="léxico: camada EvoOntology (padrão) ou só a ontologia formal")
     ap.add_argument("--budget", type=float, help="teto de gasto desta sessão em US$")

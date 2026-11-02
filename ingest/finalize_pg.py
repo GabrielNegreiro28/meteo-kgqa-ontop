@@ -2,18 +2,21 @@
 Uso: python ingest/finalize_pg.py ["conninfo"]
 """
 import sys
+from pathlib import Path
+
 import psycopg
 
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from ontology.catalog import quantities  # noqa: E402
+
 PG = sys.argv[1] if len(sys.argv) > 1 else "host=127.0.0.1 port=5433 user=postgres dbname=met"
-OBS = {"air_temp": "air_temp", "wet_bulb": "wet_bulb", "dew_point": "dew_point", "rel_humidity": "rel_humidity",
-       "runway_temp": "runway_temp", "qnh": "qnh", "visibility": "visibility", "wind_speed": "wind_speed",
-       "wind_dir": "wind_dir", "wind_gust": "wind_gust", "precip": "precip", "precip_duration": "precip_duration",
-       "cloud_layer": "cloud"}
 
 with psycopg.connect(PG, autocommit=True) as c:
     # Sensores virtuais: um por (estação, variável) que tenha ao menos uma observação.
     c.execute("DROP TABLE IF EXISTS station_sensor")
-    sel = " UNION ALL ".join(f"SELECT DISTINCT sigla, '{var}' AS var FROM obs_{t}" for t, var in OBS.items())
+    # do catálogo de grandezas; nas camadas de nuvem, só as estações em que a coluna da grandeza tem valor
+    sel = " UNION ALL ".join(f"SELECT DISTINCT sigla, '{q.sensor}' AS var FROM {q.table}"
+                             + ("" if q.column == "value" else f" WHERE {q.column} IS NOT NULL") for q in quantities().values())
     c.execute(f"CREATE TABLE station_sensor AS {sel}")
     c.execute("ALTER TABLE station_sensor ADD PRIMARY KEY (sigla, var)")
     print("station_sensor:", c.execute("SELECT COUNT(*) FROM station_sensor").fetchone()[0])

@@ -36,6 +36,8 @@ time:hasBeginning          rdfs:domain time:Interval ;           rdfs:range time
 time:hasEnd                rdfs:domain time:Interval ;           rdfs:range time:Instant .
 qudt:numericValue          rdfs:domain qudt:QuantityValue .
 met:localDate              rdfs:domain sosa:Observation ; met:alsoDomain met:WeatherReport .   # dia civil local (UTC−3); só aparece no contexto quando o grafo o popula (grafo real)
+met:localHour              rdfs:domain sosa:Observation .   # hora local (UTC−3) do instante da leitura
+met:localWeekday           rdfs:domain sosa:Observation .   # dia da semana de met:localDate (0 = segunda)
 qudt:unit                  rdfs:domain qudt:QuantityValue ;      rdfs:range qudt:Unit .   # a unidade é um RECURSO (unit:DEG_C), nunca um texto
 
 time:Instant  rdfs:subClassOf time:TemporalEntity .
@@ -79,6 +81,23 @@ met:symbol a owl:AnnotationProperty ; rdfs:label "símbolo"@pt .
 <http://qudt.org/vocab/unit/M>      met:symbol "m" .
 <http://qudt.org/vocab/unit/DEG>    met:symbol "°" .
 <http://qudt.org/vocab/unit/MIN>    met:symbol "min" .
+<http://qudt.org/vocab/unit/KiloM>  met:symbol "km" .
+<http://qudt.org/vocab/unit/OKTA>   met:symbol "oitavos" .
+
+# ---------- Dimensão e conversão de cada unidade (ontology/catalog.py: a única tabela de unidades) ----------
+met:dimension  a owl:AnnotationProperty ; rdfs:label "dimensão física"@pt .
+met:baseUnit   a owl:AnnotationProperty ; rdfs:label "unidade base da dimensão"@pt .
+met:multiplier a owl:AnnotationProperty ; rdfs:label "fator para a unidade base"@pt .
+<http://qudt.org/vocab/unit/DEG_C>   met:dimension "temperature" .
+<http://qudt.org/vocab/unit/PERCENT> met:dimension "ratio" .
+<http://qudt.org/vocab/unit/MilliM>  met:dimension "precipitation_depth" .
+<http://qudt.org/vocab/unit/HectoPA> met:dimension "pressure" .
+<http://qudt.org/vocab/unit/KN>      met:dimension "speed" .
+<http://qudt.org/vocab/unit/M>       met:dimension "length" .
+<http://qudt.org/vocab/unit/KiloM>   met:dimension "length" ; met:baseUnit <http://qudt.org/vocab/unit/M> ; met:multiplier 1000 .
+<http://qudt.org/vocab/unit/DEG>     met:dimension "angle" .
+<http://qudt.org/vocab/unit/MIN>     met:dimension "time" .
+<http://qudt.org/vocab/unit/OKTA>    met:dimension "cover" .
 
 # ---------- Qual tipo de observação cada grandeza produz ----------
 met:observedAs a owl:ObjectProperty ;
@@ -99,6 +118,8 @@ met:WindGust              met:observedAs met:InstantaneousObservation .
 met:Precipitation         met:observedAs met:AccumulatedObservation .
 met:PrecipitationDuration met:observedAs met:AccumulatedObservation .
 met:CloudCover            met:observedAs met:CloudLayerObservation .
+met:CloudBaseHeight       met:observedAs met:InstantaneousObservation .     # provisória
+met:CloudOktas            met:observedAs met:InstantaneousObservation .     # provisória
 
 # ---------- Agregações que cada grandeza admite ----------
 met:AggregationFunction a owl:Class ; rdfs:label "função de agregação"@pt .
@@ -128,6 +149,8 @@ met:Precipitation        met:allowsAggregation met:Sum, met:Max, met:Min, met:Co
 met:PrecipitationDuration met:allowsAggregation met:Sum, met:Max, met:Count .
 met:WindDirection        met:allowsAggregation met:Count .
 met:CloudCover           met:allowsAggregation met:Count .
+met:CloudBaseHeight      met:allowsAggregation met:Avg, met:Min, met:Max, met:Count .
+met:CloudOktas           met:allowsAggregation met:Min, met:Max, met:Count .        # ordinal: média não
 
 # ---------- Ressalvas que acompanham a RESPOSTA (pipeline/caveats.py) ----------
 # Texto curto, em português, para o usuário. Só entra o que muda a leitura de um número e o usuário não adivinha. Cada uma foi
@@ -139,3 +162,32 @@ met:PrevailingVisibility met:answerCaveat "Visibilidade: 20.000 m é o teto do r
 met:WindGust             met:answerCaveat "Rajada só é registrada quando há rajada: a ausência de registro não significa vento calmo."@pt .
 met:RunwayTemperature    met:answerCaveat "A fonte não identifica a pista, e a temperatura da pista existe só em parte dos aeródromos."@pt .
 met:PressureQNH          met:answerCaveat "QNH é a pressão reduzida ao nível médio do mar (padrão ICAO), não a pressão medida na estação."@pt .
+
+# ---------- Camada de dados: origem, tipo e faixa física de cada grandeza (ontology/catalog.py) ----------
+# A faixa física (na unidade canônica, inclusiva) é a MESMA para a quarentena da ingestão e para o SHACL (gerado do catálogo).
+met:sourceTable    a owl:AnnotationProperty ; rdfs:label "tabela de origem"@pt .
+met:sourceColumn   a owl:AnnotationProperty ; rdfs:label "coluna do valor (padrão: value)"@pt .
+met:sourceFileName a owl:AnnotationProperty ; rdfs:label "arquivo da fonte"@pt .
+met:sensorName     a owl:AnnotationProperty ; rdfs:label "nome do sensor virtual"@pt .
+met:valueDatatype  a owl:AnnotationProperty ; rdfs:label "tipo do valor"@pt .
+met:physicalMin    a owl:AnnotationProperty ; rdfs:label "mínimo físico"@pt .
+met:physicalMax    a owl:AnnotationProperty ; rdfs:label "máximo físico"@pt .
+met:provisional    a owl:AnnotationProperty ; rdfs:label "provisória (à espera da equipe de ontologia)"@pt .
+
+met:AirTemperature        met:sourceTable "obs_air_temp" ;        met:sensorName "air_temp" ;        met:sourceFileName "temperatura.csv" ;  met:valueDatatype xsd:decimal ; met:physicalMin -30 ;  met:physicalMax 50 .
+met:WetBulbTemperature    met:sourceTable "obs_wet_bulb" ;        met:sensorName "wet_bulb" ;        met:sourceFileName "temperatura.csv" ;  met:valueDatatype xsd:decimal ; met:physicalMin -30 ;  met:physicalMax 45 .
+met:DewPointTemperature   met:sourceTable "obs_dew_point" ;       met:sensorName "dew_point" ;       met:sourceFileName "temperatura.csv" ;  met:valueDatatype xsd:decimal ; met:physicalMin -40 ;  met:physicalMax 40 .
+met:RelativeHumidity      met:sourceTable "obs_rel_humidity" ;    met:sensorName "rel_humidity" ;    met:sourceFileName "temperatura.csv" ;  met:valueDatatype xsd:decimal ; met:physicalMin 1 ;    met:physicalMax 100 .
+met:RunwayTemperature     met:sourceTable "obs_runway_temp" ;     met:sensorName "runway_temp" ;     met:sourceFileName "temperatura.csv" ;  met:valueDatatype xsd:decimal ; met:physicalMin -30 ;  met:physicalMax 75 .
+met:PressureQNH           met:sourceTable "obs_qnh" ;             met:sensorName "qnh" ;             met:sourceFileName "pressao.csv" ;      met:valueDatatype xsd:decimal ; met:physicalMin 900 ;  met:physicalMax 1100 .
+met:PrevailingVisibility  met:sourceTable "obs_visibility" ;      met:sensorName "visibility" ;      met:sourceFileName "visibilidade.csv" ; met:valueDatatype xsd:integer ; met:physicalMin 0 ;    met:physicalMax 20000 .
+met:WindSpeed             met:sourceTable "obs_wind_speed" ;      met:sensorName "wind_speed" ;      met:sourceFileName "vento.csv" ;        met:valueDatatype xsd:decimal ; met:physicalMin 0 ;    met:physicalMax 150 .
+met:WindDirection         met:sourceTable "obs_wind_dir" ;        met:sensorName "wind_dir" ;        met:sourceFileName "vento.csv" ;        met:valueDatatype xsd:integer ; met:physicalMin 10 ;   met:physicalMax 360 .
+met:WindGust              met:sourceTable "obs_wind_gust" ;       met:sensorName "wind_gust" ;       met:sourceFileName "vento.csv" ;        met:valueDatatype xsd:decimal ; met:physicalMin 0 ;    met:physicalMax 200 .
+met:Precipitation         met:sourceTable "obs_precip" ;          met:sensorName "precip" ;          met:sourceFileName "precipitacao.csv" ; met:valueDatatype xsd:decimal ; met:physicalMin 0 ;    met:physicalMax 150 .
+met:PrecipitationDuration met:sourceTable "obs_precip_duration" ; met:sensorName "precip_duration" ; met:sourceFileName "precipitacao.csv" ; met:valueDatatype xsd:integer ; met:physicalMin 0 ;    met:physicalMax 60 .
+met:CloudCover            met:sourceTable "obs_cloud_layer" ;     met:sensorName "cloud" ;           met:sourceFileName "nuvem.csv" .
+met:CloudBaseHeight       met:sourceTable "obs_cloud_layer" ;     met:sensorName "cloud_base" ;      met:sourceFileName "nuvem.csv" ;        met:valueDatatype xsd:integer ; met:physicalMin 0 ;    met:physicalMax 9990 ;
+                          met:sourceColumn "base_m" ; met:provisional true .
+met:CloudOktas            met:sourceTable "obs_cloud_layer" ;     met:sensorName "cloud_oktas" ;     met:sourceFileName "nuvem.csv" ;        met:valueDatatype xsd:integer ; met:physicalMin 1 ;    met:physicalMax 8 ;
+                          met:sourceColumn "okta" ; met:provisional true .

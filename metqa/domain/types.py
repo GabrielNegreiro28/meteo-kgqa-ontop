@@ -1,4 +1,4 @@
-"""Tipos do domínio: os contratos entre os estágios. Puros (sem I/O); o contrato externo é o de `kgqa/contract.py` (0.2.1).
+"""Tipos do domínio: os contratos entre os estágios. Puros (sem I/O); o contrato externo é o de `kgqa/contract.py` (0.3.0).
 
 A `CanonicalQuery` é a "consulta canônica" do documento da arquitetura (§8): o que foi perguntado, em IRIs da ontologia, sem depender de
 onde os dados estão. Responde à questão aberta do §16 com uma representação intermediária leve, compilada para SPARQL por código.

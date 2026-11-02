@@ -126,6 +126,9 @@ met:WindSpeedQuality             a owl:Class ; rdfs:subClassOf obo:BFO_0000019 ;
 met:WindDirectionQuality         a owl:Class ; rdfs:subClassOf obo:BFO_0000019 ; rdfs:label "direção do vento (qualidade)"@pt .
 met:WindGustQuality              a owl:Class ; rdfs:subClassOf obo:BFO_0000019 ; rdfs:label "rajada de vento (qualidade)"@pt .
 met:CloudCoverQuality            a owl:Class ; rdfs:subClassOf obo:BFO_0000019 ; rdfs:label "nebulosidade (qualidade)"@pt .
+# provisórias, como as grandezas que as denotam (met.ttl): qualidades de uma camada de nuvem
+met:CloudBaseHeightQuality       a owl:Class ; rdfs:subClassOf obo:BFO_0000019 ; rdfs:label "altura da base da nuvem (qualidade)"@pt .
+met:CloudLayerCoverQuality       a owl:Class ; rdfs:subClassOf obo:BFO_0000019 ; rdfs:label "cobertura da camada de nuvem (qualidade)"@pt .
 
 # =====================================================================
 # 2. REGISTRO DE CATEGORIAS DAS GRANDEZAS (derivado: categoria da classe de qualidade que cada uma denota)
@@ -144,3 +147,5 @@ met:WindSpeed             met:denotesQuality met:WindSpeedQuality ;             
 met:WindDirection         met:denotesQuality met:WindDirectionQuality ;         met:bfoCategory obo:BFO_0000019 .
 met:WindGust              met:denotesQuality met:WindGustQuality ;              met:bfoCategory obo:BFO_0000019 .
 met:CloudCover            met:denotesQuality met:CloudCoverQuality ;            met:bfoCategory obo:BFO_0000019 .
+met:CloudBaseHeight       met:denotesQuality met:CloudBaseHeightQuality ;       met:bfoCategory obo:BFO_0000019 .
+met:CloudOktas            met:denotesQuality met:CloudLayerCoverQuality ;       met:bfoCategory obo:BFO_0000019 .

@@ -371,6 +371,14 @@ met:AirTemperatureQuality a owl:Class ;
     rdfs:label "temperatura do ar (qualidade)"@pt ;
     rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000019> .
 
+met:CloudBaseHeight a owl:NamedIndividual ;
+    rdfs:label "cloud base height"@en,
+        "altura da base da nuvem"@pt .
+
+met:CloudBaseHeightQuality a owl:Class ;
+    rdfs:label "altura da base da nuvem (qualidade)"@pt ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000019> .
+
 met:CloudCover a owl:NamedIndividual ;
     rdfs:label "nebulosidade"@pt .
 
@@ -380,6 +388,10 @@ met:CloudCoverQuality a owl:Class ;
 
 met:CloudGenusScheme rdfs:label "gêneros de nuvem"@pt .
 
+met:CloudLayerCoverQuality a owl:Class ;
+    rdfs:label "cobertura da camada de nuvem (qualidade)"@pt ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000019> .
+
 met:CloudLayerObservation a owl:Class ;
     rdfs:label "observação de camada de nuvens"@pt ;
     rdfs:subClassOf sosa:Observation ;
@@ -388,6 +400,10 @@ met:CloudLayerObservation a owl:Class ;
 met:CloudLayerResult a owl:Class ;
     rdfs:label "resultado de camada de nuvens"@pt ;
     rdfs:subClassOf sosa:Result .
+
+met:CloudOktas a owl:NamedIndividual ;
+    rdfs:label "cloud layer cover"@en,
+        "cobertura da camada de nuvem"@pt .
 
 met:DewPointTemperature a owl:NamedIndividual ;
     rdfs:label "temperatura do ponto de orvalho"@pt .
@@ -507,6 +523,9 @@ met:alsoDomain a owl:AnnotationProperty .
 
 met:answerCaveat a owl:AnnotationProperty .
 
+met:baseUnit a owl:AnnotationProperty ;
+    rdfs:label "unidade base da dimensão"@pt .
+
 met:bfoCategory a owl:AnnotationProperty .
 
 met:canonicalUnit a owl:AnnotationProperty ;
@@ -522,6 +541,9 @@ met:cloudMovement a owl:DatatypeProperty ;
     rdfs:label "direção de deslocamento da nuvem"@pt .
 
 met:denotesQuality a owl:AnnotationProperty .
+
+met:dimension a owl:AnnotationProperty ;
+    rdfs:label "dimensão física"@pt .
 
 met:forStation a owl:ObjectProperty ;
     rdfs:label "previsão para a estação"@pt .
@@ -546,14 +568,32 @@ met:issuedAt a owl:DatatypeProperty ;
 met:localDate a owl:DatatypeProperty ;
     rdfs:label "data local"@pt .
 
+met:localHour a owl:DatatypeProperty ;
+    rdfs:label "hora local"@pt .
+
+met:localWeekday a owl:DatatypeProperty ;
+    rdfs:label "dia da semana local"@pt .
+
 met:multipleReadings a owl:DatatypeProperty ;
     rdfs:label "leituras múltiplas"@pt .
+
+met:multiplier a owl:AnnotationProperty ;
+    rdfs:label "fator para a unidade base"@pt .
 
 met:observedAs a owl:ObjectProperty ;
     rdfs:label "é observada como"@pt .
 
 met:oktas a owl:DatatypeProperty ;
     rdfs:label "cobertura em oitavos"@pt .
+
+met:physicalMax a owl:AnnotationProperty ;
+    rdfs:label "máximo físico"@pt .
+
+met:physicalMin a owl:AnnotationProperty ;
+    rdfs:label "mínimo físico"@pt .
+
+met:provisional a owl:AnnotationProperty ;
+    rdfs:label "provisória (à espera da equipe de ontologia)"@pt .
 
 met:reportOf a owl:ObjectProperty ;
     rdfs:label "boletim da estação"@pt .
@@ -564,17 +604,29 @@ met:requiresFullContainment a owl:AnnotationProperty ;
 met:runwayDesignator a owl:DatatypeProperty ;
     rdfs:label "cabeceira da pista"@pt .
 
+met:sensorName a owl:AnnotationProperty ;
+    rdfs:label "nome do sensor virtual"@pt .
+
 met:siteOf a owl:ObjectProperty ;
     rdfs:label "local da estação"@pt .
 
 met:skyObscured a owl:DatatypeProperty ;
     rdfs:label "céu obscurecido"@pt .
 
+met:sourceColumn a owl:AnnotationProperty ;
+    rdfs:label "coluna do valor (padrão: value)"@pt .
+
 met:sourceFile a owl:DatatypeProperty ;
     rdfs:label "arquivo de origem"@pt .
 
+met:sourceFileName a owl:AnnotationProperty ;
+    rdfs:label "arquivo da fonte"@pt .
+
 met:sourceRow a owl:DatatypeProperty ;
     rdfs:label "linha de origem"@pt .
+
+met:sourceTable a owl:AnnotationProperty ;
+    rdfs:label "tabela de origem"@pt .
 
 met:stationCode a owl:DatatypeProperty ;
     rdfs:label "código da estação"@pt .
@@ -584,6 +636,9 @@ met:symbol a owl:AnnotationProperty ;
 
 met:validTime a owl:ObjectProperty ;
     rdfs:label "instante de validade da previsão"@pt .
+
+met:valueDatatype a owl:AnnotationProperty ;
+    rdfs:label "tipo do valor"@pt .
 
 met:windCondition a owl:DatatypeProperty ;
     rdfs:label "condição do vento"@pt .

@@ -22,7 +22,7 @@ DAILY_AGGS = {"max", "min", "avg", "sum"}
 @dataclass
 class Parsed:
     status: str = "ok"
-    parts: list[tuple[str, CanonicalQuery]] = field(default_factory=list)   # (rótulo, consulta); 2 partes = comparação de períodos
+    parts: list[tuple[str, CanonicalQuery]] = field(default_factory=list)   # (rótulo, consulta); 2 a 4 partes = comparação de períodos
     errors: list[str] = field(default_factory=list)
     reason: str = ""
     alternatives: list[str] = field(default_factory=list)
@@ -63,6 +63,18 @@ def _condition(c: Any, what: str, errors: list[str], daily: bool = False) -> dic
     if c.get("unit"):
         out["unit"] = str(c["unit"]) if str(c["unit"]).startswith("unit:") else f"unit:{c['unit']}"
     return out
+
+
+def _constant(dim: str, cq: CanonicalQuery) -> bool:
+    """Agrupar por uma dimensão que só tem um valor no recorte não muda o resultado (ano dentro de uma janela de um ano, estação com uma
+    estação só): normalizado fora, para que duas leituras que diferem só nisso concordem (E112 do novo_b)."""
+    s = cq.scope
+    if dim == "station":
+        return len(cq.stations) == 1 and not cq.order
+    if s.start is None or cq.order:
+        return False
+    return {"year": s.start.year == s.end.year, "month": (s.start.year, s.start.month) == (s.end.year, s.end.month),
+            "day": s.start == s.end}.get(dim, False)
 
 
 def intent_of(cq: CanonicalQuery, compare: bool) -> str:
@@ -116,8 +128,8 @@ def parse(raw: dict[str, Any]) -> Parsed:
             e.append(f"time.ranges[{i}]: início {s} depois do fim {t}")
         elif s and t:
             ranges.append((s, t))
-    if len(ranges) > 2:
-        e.append("no máximo duas janelas de tempo (uma, ou duas numa comparação)")
+    if len(ranges) > 4:
+        e.append("no máximo quatro janelas de tempo (uma, ou uma por período numa comparação)")
     hours = _int_set(time.get("local_hours"), 0, 23, "time.local_hours", e)
     weekdays = _int_set(time.get("weekdays"), 0, 6, "time.weekdays", e)
     instant = None
@@ -166,10 +178,11 @@ def parse(raw: dict[str, Any]) -> Parsed:
                             scope=TimeScope(s, t, hours, weekdays, instant), aggregation=agg, count_of=count_of,
                             conditions=list(conditions), daily=dict(daily) if daily else None, group_by=list(group_by),
                             attributes=list(attributes), order=order, spans=dict(p.evidence), assumptions=list(p.assumptions))
+        cq.group_by = [g for g in cq.group_by if not _constant(g, cq)]
         if agg == "count" and cq.count_of is None:
             cq.count_of = "days" if daily else "readings"
             cq.assumptions.append("contei leituras" if not daily else "contei dias")
-        cq.intent = intent_of(cq, len(windows) == 2)
+        cq.intent = intent_of(cq, len(windows) > 1)
         p.parts.append((label, cq))
     return p
 

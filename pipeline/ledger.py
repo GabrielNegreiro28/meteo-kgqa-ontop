@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import os
+import threading
 import time
 from contextlib import contextmanager
 from pathlib import Path
@@ -89,6 +90,7 @@ class LedgerLLM:
     def __init__(self, client: LLMClient, ledger: Ledger, *, base_cap_usd: float, run: str, model: str = ""):
         self.client, self.ledger, self.base_cap, self.run, self.model = client, ledger, base_cap_usd, run, model
         self.spent_usd = 0.0                                # desta execução
+        self._spent_lock = threading.Lock()                 # leituras em paralelo
 
     @property
     def cap(self) -> float:
@@ -108,6 +110,7 @@ class LedgerLLM:
         except BaseException:
             self.ledger._append({"run": self.run, "model": self.model, "usage": {}, "cost_usd": round(cost_in - reserve, 6), "note": f"falha:{stage}"})
             raise
-        self.spent_usd += resp.cost_usd
+        with self._spent_lock:
+            self.spent_usd += resp.cost_usd
         self.ledger.record(resp.cost_usd - reserve, run=self.run, model=self.model, usage=resp.usage, note=f"ajuste:{stage}")
         return resp

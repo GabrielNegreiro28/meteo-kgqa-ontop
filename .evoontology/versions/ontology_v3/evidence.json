@@ -1,0 +1,378 @@
+[
+  {
+    "id": "ev.AccumulatedObservation",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.AccumulatedObservation",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:AccumulatedObservation declarado na ontologia  (impressão a40f2e3f54d7); categoria process"
+  },
+  {
+    "id": "ev.CloudLayerObservation",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.CloudLayerObservation",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:CloudLayerObservation declarado na ontologia  (impressão a40f2e3f54d7); categoria process"
+  },
+  {
+    "id": "ev.CloudLayerResult",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.CloudLayerResult",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:CloudLayerResult declarado na ontologia  (impressão a40f2e3f54d7); categoria information_content_entity"
+  },
+  {
+    "id": "ev.Forecast",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.Forecast",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:Forecast declarado na ontologia  (impressão a40f2e3f54d7); categoria information_content_entity"
+  },
+  {
+    "id": "ev.InstantaneousObservation",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.InstantaneousObservation",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:InstantaneousObservation declarado na ontologia  (impressão a40f2e3f54d7); categoria process"
+  },
+  {
+    "id": "ev.Site",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.Site",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:Site declarado na ontologia  (impressão a40f2e3f54d7); categoria material_entity"
+  },
+  {
+    "id": "ev.WeatherReport",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.WeatherReport",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:WeatherReport declarado na ontologia  (impressão a40f2e3f54d7); categoria information_content_entity"
+  },
+  {
+    "id": "ev.WeatherStation",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.WeatherStation",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:WeatherStation declarado na ontologia  (impressão a40f2e3f54d7); categoria material_entity"
+  },
+  {
+    "id": "ev.AirTemperature",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.AirTemperature",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:AirTemperature declarado na ontologia  (impressão a40f2e3f54d7); categoria quality"
+  },
+  {
+    "id": "ev.RelativeHumidity",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.RelativeHumidity",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:RelativeHumidity declarado na ontologia  (impressão a40f2e3f54d7); categoria quality"
+  },
+  {
+    "id": "ev.Precipitation",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.Precipitation",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:Precipitation declarado na ontologia  (impressão a40f2e3f54d7); categoria quality"
+  },
+  {
+    "id": "ev.WetBulbTemperature",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.WetBulbTemperature",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:WetBulbTemperature declarado na ontologia  (impressão a40f2e3f54d7); categoria quality"
+  },
+  {
+    "id": "ev.DewPointTemperature",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.DewPointTemperature",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:DewPointTemperature declarado na ontologia  (impressão a40f2e3f54d7); categoria quality"
+  },
+  {
+    "id": "ev.RunwayTemperature",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.RunwayTemperature",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:RunwayTemperature declarado na ontologia  (impressão a40f2e3f54d7); categoria quality"
+  },
+  {
+    "id": "ev.PressureQNH",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.PressureQNH",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:PressureQNH declarado na ontologia  (impressão a40f2e3f54d7); categoria quality"
+  },
+  {
+    "id": "ev.PrevailingVisibility",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.PrevailingVisibility",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:PrevailingVisibility declarado na ontologia  (impressão a40f2e3f54d7); categoria quality"
+  },
+  {
+    "id": "ev.PrecipitationDuration",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.PrecipitationDuration",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:PrecipitationDuration declarado na ontologia  (impressão a40f2e3f54d7); categoria quality"
+  },
+  {
+    "id": "ev.WindSpeed",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.WindSpeed",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:WindSpeed declarado na ontologia  (impressão a40f2e3f54d7); categoria quality"
+  },
+  {
+    "id": "ev.WindDirection",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.WindDirection",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:WindDirection declarado na ontologia  (impressão a40f2e3f54d7); categoria quality"
+  },
+  {
+    "id": "ev.WindGust",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.WindGust",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:WindGust declarado na ontologia  (impressão a40f2e3f54d7); categoria quality"
+  },
+  {
+    "id": "ev.CloudCover",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.CloudCover",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:CloudCover declarado na ontologia  (impressão a40f2e3f54d7); categoria quality"
+  },
+  {
+    "id": "ev.CloudBaseHeight",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.CloudBaseHeight",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:CloudBaseHeight declarado na ontologia  (impressão a40f2e3f54d7); categoria quality"
+  },
+  {
+    "id": "ev.CloudOktas",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.CloudOktas",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:CloudOktas declarado na ontologia  (impressão a40f2e3f54d7); categoria quality"
+  },
+  {
+    "id": "ev.cloudBaseHeight",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.cloudBaseHeight",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:cloudBaseHeight declarado na ontologia  (impressão a40f2e3f54d7)"
+  },
+  {
+    "id": "ev.cloudGenus",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.cloudGenus",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:cloudGenus declarado na ontologia  (impressão a40f2e3f54d7)"
+  },
+  {
+    "id": "ev.cloudMovement",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.cloudMovement",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:cloudMovement declarado na ontologia  (impressão a40f2e3f54d7)"
+  },
+  {
+    "id": "ev.forStation",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.forStation",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:forStation declarado na ontologia  (impressão a40f2e3f54d7)"
+  },
+  {
+    "id": "ev.forecastedProperty",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.forecastedProperty",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:forecastedProperty declarado na ontologia  (impressão a40f2e3f54d7)"
+  },
+  {
+    "id": "ev.inReport",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.inReport",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:inReport declarado na ontologia  (impressão a40f2e3f54d7)"
+  },
+  {
+    "id": "ev.isHourly",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.isHourly",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:isHourly declarado na ontologia  (impressão a40f2e3f54d7)"
+  },
+  {
+    "id": "ev.isSynthetic",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.isSynthetic",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:isSynthetic declarado na ontologia  (impressão a40f2e3f54d7)"
+  },
+  {
+    "id": "ev.issuedAt",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.issuedAt",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:issuedAt declarado na ontologia  (impressão a40f2e3f54d7)"
+  },
+  {
+    "id": "ev.localDate",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.localDate",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:localDate declarado na ontologia  (impressão a40f2e3f54d7)"
+  },
+  {
+    "id": "ev.localHour",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.localHour",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:localHour declarado na ontologia  (impressão a40f2e3f54d7)"
+  },
+  {
+    "id": "ev.localWeekday",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.localWeekday",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:localWeekday declarado na ontologia  (impressão a40f2e3f54d7)"
+  },
+  {
+    "id": "ev.multipleReadings",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.multipleReadings",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:multipleReadings declarado na ontologia  (impressão a40f2e3f54d7)"
+  },
+  {
+    "id": "ev.oktas",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.oktas",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:oktas declarado na ontologia  (impressão a40f2e3f54d7)"
+  },
+  {
+    "id": "ev.reportOf",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.reportOf",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:reportOf declarado na ontologia  (impressão a40f2e3f54d7)"
+  },
+  {
+    "id": "ev.runwayDesignator",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.runwayDesignator",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:runwayDesignator declarado na ontologia  (impressão a40f2e3f54d7)"
+  },
+  {
+    "id": "ev.siteOf",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.siteOf",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:siteOf declarado na ontologia  (impressão a40f2e3f54d7)"
+  },
+  {
+    "id": "ev.skyObscured",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.skyObscured",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:skyObscured declarado na ontologia  (impressão a40f2e3f54d7)"
+  },
+  {
+    "id": "ev.sourceFile",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.sourceFile",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:sourceFile declarado na ontologia  (impressão a40f2e3f54d7)"
+  },
+  {
+    "id": "ev.sourceRow",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.sourceRow",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:sourceRow declarado na ontologia  (impressão a40f2e3f54d7)"
+  },
+  {
+    "id": "ev.stationCode",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.stationCode",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:stationCode declarado na ontologia  (impressão a40f2e3f54d7)"
+  },
+  {
+    "id": "ev.validTime",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.validTime",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:validTime declarado na ontologia  (impressão a40f2e3f54d7)"
+  },
+  {
+    "id": "ev.windCondition",
+    "source": "ontology/met.ttl",
+    "query": "https://example.org/kgqa-met/evidence/ev.windCondition",
+    "validation_method": "derivado da ontologia (determinístico)",
+    "timestamp": "",
+    "result": "met:windCondition declarado na ontologia  (impressão a40f2e3f54d7)"
+  },
+  {
+    "id": "ev.evolve.alias_choveu_term_Precipitation",
+    "source": "semantics.evolve (trajetórias de construção)",
+    "query": "",
+    "validation_method": "minerado: 5 trajetórias confiáveis (seed_questions_D05, seed_questions_T12, seed_questions_real_RD02, seed_questions_real_RD04, seed_questions_real_RT07)",
+    "timestamp": "",
+    "result": "'choveu' aparece sem cobertura em 5 trajetórias confiáveis que terminaram em precipitação: sinônimo."
+  }
+]
