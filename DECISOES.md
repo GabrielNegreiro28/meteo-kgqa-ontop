@@ -428,3 +428,24 @@ Mantém-se a pergunta ao professor sobre **perguntas reais de usuários da área
   trigramas), ela vai como exemplo para as duas leituras. Saída não verificada do LLM nunca entra.
 - **D-106 Horas do dia como conjunto**: "das 18h às 6h" = {18..23, 0..5}, fim exclusivo, dito ao usuário. O compilador converte cada hora
   local para UTC (D-85); não há caso especial para atravessar a meia-noite.
+
+## Versão final do módulo (plano `docs/PLANO_ARQUITETURA_FINAL.md`, 2026-11-02)
+- D-107 O compilador declara o papel de cada coluna (`ResultShape`): qual é o valor, qual é a base, se é contagem, as chaves e os
+  atributos. Status e texto leem isso, não o nome da variável. Contagem com condição traz a base: 0 com dados é resposta; sem dados, `no_results`.
+  Reverter: voltar `verify_post` e `render` a `kgqa/verify.py::result_status` (tag `legado-v8`).
+- D-108 Hora e dia da semana locais no grafo (`met:localHour`, `met:localWeekday`), de colunas geradas no PostgreSQL a partir de `tmin` e
+  `local_date` (o Ontop recusa colunas calculadas no SQL do mapeamento: perde o tipo). A hora é a do instante da leitura (fim do intervalo
+  nos acumulados), igual à forma anterior; equivalência medida em `eval/equivalencia_hora_local.py`. Substitui a conversão para UTC de D-106
+  e a lista de datas dos dias da semana (que passava de 6000 caracteres).
+- D-109 Conservação da evidência: todo número do trecho citado para um campo tem de estar no valor normalizado do campo; o trecho de tempo
+  é relido sozinho numa chamada curta quando a janela passa de um dia. A evidência é comparada tolerante na forma (aspas, pontuação, acento,
+  palavras no meio) e a da grandeza vale também pelo léxico. Ablação: `--prompts metqa-noconserv`.
+- D-110 Confirmação pela API exige o token da opção (HMAC da pergunta, da interpretação e da versão do catálogo; `METQA_SECRET`).
+- D-111 Uma só tabela de grandezas, unidades, fatores e faixas físicas (`ontology/catalog.py`), lida de anotações da ontologia
+  (`met-structure.ttl`); ingestão, exportação, sensores, chaves, mapeamento e SHACL saem dela. As faixas do SHACL passaram a ser as da
+  ingestão (por grandeza, não por unidade).
+- D-112 Grandezas provisórias `met:CloudBaseHeight` e `met:CloudOktas`, uma observação por camada de nuvem, à espera da equipe de ontologia
+  (`docs/DUVIDAS_ONTOLOGIA.md`, seção 9).
+- D-113 Comparação de 2 a 4 partes de mesma forma (períodos de uma estação, ou estações de um período quando a forma não sai numa consulta
+  agrupada). Agrupar por dimensão que só tem um valor no recorte é normalizado fora (o mesmo mês em dois anos não é mais recusado).
+- D-114 Fim do legado: o `metqa/` contém o que usa; `pipeline/`, `kgqa/`, os prompts v1–v8 e os testes só deles estão na tag `legado-v8`.

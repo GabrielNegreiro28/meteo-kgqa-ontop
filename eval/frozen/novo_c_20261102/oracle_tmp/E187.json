@@ -1,0 +1,20 @@
+{
+  "id": "E187",
+  "status": "ok",
+  "result": [
+    [
+      0
+    ]
+  ],
+  "reads": [
+    {
+      "file": "vento.csv",
+      "usecols": [
+        "sigla",
+        "hora_observacao",
+        "rajada"
+      ],
+      "chunksize": 100000
+    }
+  ]
+}

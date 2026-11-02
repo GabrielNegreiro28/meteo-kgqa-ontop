@@ -1,0 +1,33 @@
+{
+  "id": "E202",
+  "status": "ok",
+  "result": [
+    [
+      "SBIZ",
+      195.0
+    ],
+    [
+      "SBMI",
+      195.0
+    ],
+    [
+      "SBBR",
+      177.0
+    ],
+    [
+      "SBCF",
+      174.0
+    ]
+  ],
+  "reads": [
+    {
+      "file": "vento.csv",
+      "usecols": [
+        "sigla",
+        "hora_observacao",
+        "rajada"
+      ],
+      "chunksize": 100000
+    }
+  ]
+}

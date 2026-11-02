@@ -1,0 +1,17 @@
+{
+  "id": "E205",
+  "status": "error",
+  "error": "AssertionError: ",
+  "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\meteo-kgqa-ontop\\eval\\independent_evaluation\\oracle_worker.py\", line 37, in <module>\n    exec(compile(q['oracle_pandas'],qid,'exec'),ns)\n    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"E205\", line 16, in <module>\nAssertionError\n",
+  "reads": [
+    {
+      "file": "vento.csv",
+      "usecols": [
+        "sigla",
+        "hora_observacao",
+        "rajada"
+      ],
+      "chunksize": 100000
+    }
+  ]
+}

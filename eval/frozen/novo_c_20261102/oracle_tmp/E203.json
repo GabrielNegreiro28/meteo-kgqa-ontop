@@ -1,0 +1,25 @@
+{
+  "id": "E203",
+  "status": "ok",
+  "result": [
+    [
+      "SBAU",
+      38.0
+    ],
+    [
+      "SBLP",
+      42.700885668276975
+    ]
+  ],
+  "reads": [
+    {
+      "file": "temperatura.csv",
+      "usecols": [
+        "sigla",
+        "hora_observacao",
+        "ur"
+      ],
+      "chunksize": 100000
+    }
+  ]
+}

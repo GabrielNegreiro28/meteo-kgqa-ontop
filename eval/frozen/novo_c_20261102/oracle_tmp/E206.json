@@ -1,0 +1,29 @@
+{
+  "id": "E206",
+  "status": "ok",
+  "result": [
+    [
+      "SBJU",
+      30.158513513513512
+    ],
+    [
+      "SBKG",
+      23.994148936170212
+    ],
+    [
+      "SBME",
+      24.819525065963063
+    ]
+  ],
+  "reads": [
+    {
+      "file": "temperatura.csv",
+      "usecols": [
+        "sigla",
+        "hora_observacao",
+        "bseco"
+      ],
+      "chunksize": 100000
+    }
+  ]
+}

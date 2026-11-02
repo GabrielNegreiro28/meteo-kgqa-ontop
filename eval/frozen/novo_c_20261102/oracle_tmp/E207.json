@@ -1,0 +1,33 @@
+{
+  "id": "E207",
+  "status": "ok",
+  "result": [
+    [
+      "SBMG",
+      1012.5568123393316
+    ],
+    [
+      "SBMK",
+      1015.2464128843338
+    ],
+    [
+      "SBMT",
+      1015.851395730706
+    ],
+    [
+      "SBPK",
+      1014.2561965811966
+    ]
+  ],
+  "reads": [
+    {
+      "file": "pressao.csv",
+      "usecols": [
+        "sigla",
+        "hora_observacao",
+        "qnh"
+      ],
+      "chunksize": 100000
+    }
+  ]
+}

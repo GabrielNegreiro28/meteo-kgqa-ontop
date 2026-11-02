@@ -1,0 +1,2267 @@
+{
+ "sha256": "8e8b42fe19be223c7a28ca089b21d0957fb73e2d911794662ebba16df0d02764",
+ "results": [
+  {
+   "id": "E151",
+   "status": "ok",
+   "result": [
+    [
+     33.4
+    ]
+   ],
+   "reads": [
+    {
+     "file": "temperatura.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "bseco"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E152",
+   "status": "ok",
+   "result": [
+    [
+     56.590120160213615
+    ]
+   ],
+   "reads": [
+    {
+     "file": "temperatura.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "ur"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E153",
+   "status": "ok",
+   "result": [
+    [
+     1004.7
+    ]
+   ],
+   "reads": [
+    {
+     "file": "pressao.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "qnh"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E154",
+   "status": "ok",
+   "result": [
+    [
+     43.0
+    ]
+   ],
+   "reads": [
+    {
+     "file": "vento.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "rajada"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E155",
+   "status": "ok",
+   "result": [
+    [
+     23.549466666666664
+    ]
+   ],
+   "reads": [
+    {
+     "file": "temperatura.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "bumido"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E156",
+   "status": "ok",
+   "result": [
+    [
+     18.166795865633073
+    ]
+   ],
+   "reads": [
+    {
+     "file": "visibilidade.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "visibpre"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E157",
+   "status": "ok",
+   "result": [
+    [
+     43.2
+    ]
+   ],
+   "reads": [
+    {
+     "file": "precipitacao.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "precip"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E158",
+   "status": "ok",
+   "result": [
+    [
+     60.0
+    ]
+   ],
+   "reads": [
+    {
+     "file": "precipitacao.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "durpreci"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E159",
+   "status": "ok",
+   "result": [
+    [
+     30.0
+    ]
+   ],
+   "reads": [
+    {
+     "file": "vento.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "velvento"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E160",
+   "status": "ok",
+   "result": [
+    [
+     22.2
+    ]
+   ],
+   "reads": [
+    {
+     "file": "temperatura.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "temppo"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E161",
+   "status": "ok",
+   "result": [
+    [
+     100
+    ]
+   ],
+   "reads": [
+    {
+     "file": "vento.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "rajada"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E162",
+   "status": "ok",
+   "result": [
+    [
+     681.0829817158931
+    ]
+   ],
+   "reads": [
+    {
+     "file": "nuvem.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "altnuvem"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E163",
+   "status": "ok",
+   "result": [
+    [
+     10.3
+    ]
+   ],
+   "reads": [
+    {
+     "file": "temperatura.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "bseco"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E164",
+   "status": "ok",
+   "result": [
+    [
+     1016.1
+    ]
+   ],
+   "reads": [
+    {
+     "file": "pressao.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "qnh"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E165",
+   "status": "ok",
+   "result": [
+    [
+     16.915818559859925
+    ]
+   ],
+   "reads": [
+    {
+     "file": "temperatura.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "temppo"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E166",
+   "status": "ok",
+   "result": [
+    [
+     100.0
+    ]
+   ],
+   "reads": [
+    {
+     "file": "temperatura.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "ur"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E167",
+   "status": "ok",
+   "result": [
+    [
+     14.7
+    ]
+   ],
+   "reads": [
+    {
+     "file": "temperatura.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "bumido"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E168",
+   "status": "ok",
+   "result": [
+    [
+     540.0
+    ]
+   ],
+   "reads": [
+    {
+     "file": "nuvem.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "altnuvem"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E169",
+   "status": "ok",
+   "result": [
+    [
+     1034.7
+    ]
+   ],
+   "reads": [
+    {
+     "file": "pressao.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "qnh"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E170",
+   "status": "ok",
+   "result": [
+    [
+     50.0
+    ]
+   ],
+   "reads": [
+    {
+     "file": "visibilidade.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "visibpre"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E171",
+   "status": "ok",
+   "result": [
+    [
+     100.0
+    ]
+   ],
+   "reads": [
+    {
+     "file": "precipitacao.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "precip"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E172",
+   "status": "ok",
+   "result": [
+    [
+     5.699288256227758
+    ]
+   ],
+   "reads": [
+    {
+     "file": "vento.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "velvento"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E173",
+   "status": "ok",
+   "result": [
+    [
+     172
+    ]
+   ],
+   "reads": [
+    {
+     "file": "visibilidade.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "visibpre"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E174",
+   "status": "ok",
+   "result": [
+    [
+     4
+    ]
+   ],
+   "reads": [
+    {
+     "file": "temperatura.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "bseco"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E175",
+   "status": "ok",
+   "result": [
+    [
+     40
+    ]
+   ],
+   "reads": [
+    {
+     "file": "temperatura.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "ur"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E176",
+   "status": "ok",
+   "result": [
+    [
+     15
+    ]
+   ],
+   "reads": [
+    {
+     "file": "temperatura.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "bseco"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E177",
+   "status": "ok",
+   "result": [
+    [
+     31
+    ]
+   ],
+   "reads": [
+    {
+     "file": "vento.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "rajada"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E178",
+   "status": "ok",
+   "result": [
+    [
+     0
+    ]
+   ],
+   "reads": [
+    {
+     "file": "precipitacao.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "precip"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E179",
+   "status": "ok",
+   "result": [
+    [
+     2452
+    ]
+   ],
+   "reads": [
+    {
+     "file": "pressao.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "qnh"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E180",
+   "status": "ok",
+   "result": [
+    [
+     1191
+    ]
+   ],
+   "reads": [
+    {
+     "file": "nuvem.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "altnuvem"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E181",
+   "status": "ok",
+   "result": [
+    [
+     4472
+    ]
+   ],
+   "reads": [
+    {
+     "file": "temperatura.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "temppo"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E182",
+   "status": "ok",
+   "result": [
+    [
+     12
+    ]
+   ],
+   "reads": [
+    {
+     "file": "vento.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "velvento"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E183",
+   "status": "ok",
+   "result": [
+    [
+     432
+    ]
+   ],
+   "reads": [
+    {
+     "file": "precipitacao.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "durpreci"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E184",
+   "status": "ok",
+   "result": [
+    [
+     2439
+    ]
+   ],
+   "reads": [
+    {
+     "file": "temperatura.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "bumido"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E185",
+   "status": "ok",
+   "result": [
+    [
+     1
+    ]
+   ],
+   "reads": [
+    {
+     "file": "temperatura.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "ur"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E186",
+   "status": "ok",
+   "result": [
+    [
+     154
+    ]
+   ],
+   "reads": [
+    {
+     "file": "temperatura.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "bseco"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E187",
+   "status": "ok",
+   "result": [
+    [
+     0
+    ]
+   ],
+   "reads": [
+    {
+     "file": "vento.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "rajada"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E188",
+   "status": "ok",
+   "result": [
+    [
+     20
+    ]
+   ],
+   "reads": [
+    {
+     "file": "visibilidade.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "visibpre"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E189",
+   "status": "ok",
+   "result": [
+    [
+     1,
+     86.57679738562092
+    ],
+    [
+     2,
+     83.97435897435898
+    ],
+    [
+     3,
+     83.46808510638297
+    ],
+    [
+     4,
+     84.45123966942148
+    ],
+    [
+     5,
+     84.55573770491803
+    ],
+    [
+     6,
+     81.70890410958904
+    ],
+    [
+     7,
+     72.45833333333333
+    ],
+    [
+     8,
+     76.96212121212122
+    ],
+    [
+     9,
+     81.29657228017884
+    ],
+    [
+     10,
+     80.10719424460432
+    ],
+    [
+     11,
+     80.60098522167488
+    ],
+    [
+     12,
+     82.1328
+    ]
+   ],
+   "reads": [
+    {
+     "file": "temperatura.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "ur"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E190",
+   "status": "ok",
+   "result": [
+    [
+     1,
+     37.2
+    ],
+    [
+     2,
+     37.8
+    ],
+    [
+     3,
+     33.4
+    ],
+    [
+     4,
+     32.9
+    ],
+    [
+     5,
+     32.8
+    ],
+    [
+     6,
+     30.8
+    ],
+    [
+     7,
+     31.8
+    ],
+    [
+     8,
+     36.2
+    ],
+    [
+     9,
+     38.3
+    ],
+    [
+     10,
+     38.1
+    ],
+    [
+     11,
+     38.4
+    ],
+    [
+     12,
+     35.3
+    ]
+   ],
+   "reads": [
+    {
+     "file": "temperatura.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "bseco"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E191",
+   "status": "ok",
+   "result": [
+    [
+     1,
+     1008.4
+    ],
+    [
+     2,
+     1004.2
+    ],
+    [
+     3,
+     1004.7
+    ],
+    [
+     4,
+     1009.0
+    ],
+    [
+     5,
+     1008.7
+    ],
+    [
+     6,
+     1012.0
+    ],
+    [
+     7,
+     1011.1
+    ],
+    [
+     8,
+     1008.3
+    ],
+    [
+     9,
+     1007.2
+    ],
+    [
+     10,
+     1006.6
+    ],
+    [
+     11,
+     1002.4
+    ],
+    [
+     12,
+     1004.9
+    ]
+   ],
+   "reads": [
+    {
+     "file": "pressao.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "qnh"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E192",
+   "status": "ok",
+   "result": [
+    [
+     1,
+     253.9
+    ],
+    [
+     2,
+     271.4
+    ],
+    [
+     3,
+     259.5
+    ],
+    [
+     4,
+     37.1
+    ],
+    [
+     5,
+     72.5
+    ],
+    [
+     6,
+     69.8
+    ],
+    [
+     7,
+     11.0
+    ],
+    [
+     8,
+     97.39999999999999
+    ],
+    [
+     9,
+     188.0
+    ],
+    [
+     10,
+     288.6
+    ],
+    [
+     11,
+     103.9
+    ],
+    [
+     12,
+     85.2
+    ]
+   ],
+   "reads": [
+    {
+     "file": "precipitacao.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "precip"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E193",
+   "status": "ok",
+   "result": [
+    [
+     9,
+     29.0
+    ],
+    [
+     10,
+     25.0
+    ],
+    [
+     11,
+     17.0
+    ],
+    [
+     12,
+     16.0
+    ]
+   ],
+   "reads": [
+    {
+     "file": "vento.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "rajada"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E194",
+   "status": "ok",
+   "result": [
+    [
+     1,
+     1000.0
+    ],
+    [
+     2,
+     1000.0
+    ],
+    [
+     3,
+     500.0
+    ],
+    [
+     4,
+     1000.0
+    ],
+    [
+     5,
+     400.0
+    ],
+    [
+     6,
+     1500.0
+    ],
+    [
+     7,
+     1500.0
+    ],
+    [
+     8,
+     1500.0
+    ],
+    [
+     9,
+     5000.0
+    ],
+    [
+     10,
+     10000.0
+    ],
+    [
+     11,
+     6000.0
+    ],
+    [
+     12,
+     4000.0
+    ]
+   ],
+   "reads": [
+    {
+     "file": "visibilidade.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "visibpre"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E195",
+   "status": "ok",
+   "result": [
+    [
+     1,
+     24.646143617021277
+    ],
+    [
+     2,
+     24.864922206506364
+    ],
+    [
+     3,
+     24.879392338177016
+    ],
+    [
+     4,
+     24.97414030261348
+    ],
+    [
+     5,
+     24.895382585751978
+    ],
+    [
+     6,
+     22.61103448275862
+    ],
+    [
+     7,
+     19.27424547283702
+    ],
+    [
+     8,
+     19.343165467625898
+    ],
+    [
+     9,
+     20.793869731800765
+    ],
+    [
+     10,
+     23.100510204081633
+    ],
+    [
+     11,
+     24.248453608247424
+    ],
+    [
+     12,
+     24.49703947368421
+    ]
+   ],
+   "reads": [
+    {
+     "file": "temperatura.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "temppo"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E196",
+   "status": "ok",
+   "result": [
+    [
+     1,
+     120.0
+    ],
+    [
+     2,
+     60.0
+    ],
+    [
+     3,
+     60.0
+    ],
+    [
+     4,
+     60.0
+    ],
+    [
+     5,
+     30.0
+    ],
+    [
+     6,
+     60.0
+    ],
+    [
+     7,
+     60.0
+    ],
+    [
+     8,
+     150.0
+    ],
+    [
+     9,
+     60.0
+    ],
+    [
+     10,
+     60.0
+    ],
+    [
+     11,
+     90.0
+    ],
+    [
+     12,
+     90.0
+    ]
+   ],
+   "reads": [
+    {
+     "file": "nuvem.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "altnuvem"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E197",
+   "status": "ok",
+   "result": [
+    [
+     2016,
+     29.227873888439774
+    ],
+    [
+     2017,
+     29.550009489466692
+    ],
+    [
+     2018,
+     29.116840000000003
+    ],
+    [
+     2019,
+     29.27214849009425
+    ],
+    [
+     2020,
+     29.699514857489387
+    ],
+    [
+     2021,
+     28.904681895412498
+    ],
+    [
+     2022,
+     29.213244650086757
+    ],
+    [
+     2023,
+     30.158887614678896
+    ],
+    [
+     2024,
+     29.60652610441767
+    ],
+    [
+     2025,
+     28.778319755600812
+    ]
+   ],
+   "reads": [
+    {
+     "file": "temperatura.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "bseco"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E198",
+   "status": "ok",
+   "result": [
+    [
+     2016,
+     60.0
+    ],
+    [
+     2017,
+     60.0
+    ],
+    [
+     2018,
+     60.0
+    ],
+    [
+     2019,
+     60.0
+    ],
+    [
+     2020,
+     60.0
+    ],
+    [
+     2021,
+     60.0
+    ],
+    [
+     2022,
+     60.0
+    ],
+    [
+     2023,
+     60.0
+    ],
+    [
+     2024,
+     60.0
+    ],
+    [
+     2025,
+     60.0
+    ]
+   ],
+   "reads": [
+    {
+     "file": "precipitacao.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "durpreci"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E199",
+   "status": "ok",
+   "result": [
+    [
+     2016,
+     761.8
+    ],
+    [
+     2017,
+     885.6
+    ],
+    [
+     2018,
+     1064.0
+    ],
+    [
+     2019,
+     899.7
+    ],
+    [
+     2020,
+     1417.8
+    ],
+    [
+     2021,
+     1150.0
+    ],
+    [
+     2022,
+     1253.2
+    ],
+    [
+     2023,
+     573.2
+    ],
+    [
+     2024,
+     815.7
+    ],
+    [
+     2025,
+     846.7
+    ]
+   ],
+   "reads": [
+    {
+     "file": "precipitacao.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "precip"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E200",
+   "status": "ok",
+   "result": [
+    [
+     2016,
+     25.0
+    ],
+    [
+     2017,
+     30.0
+    ],
+    [
+     2018,
+     32.0
+    ],
+    [
+     2019,
+     30.0
+    ],
+    [
+     2020,
+     35.0
+    ],
+    [
+     2021,
+     140.0
+    ],
+    [
+     2022,
+     30.0
+    ],
+    [
+     2023,
+     76.0
+    ],
+    [
+     2024,
+     40.0
+    ],
+    [
+     2025,
+     28.0
+    ]
+   ],
+   "reads": [
+    {
+     "file": "vento.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "velvento"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E201",
+   "status": "ok",
+   "result": [
+    [
+     "SBPC",
+     -3.3
+    ],
+    [
+     "SBYS",
+     -2.7
+    ],
+    [
+     "SBCT",
+     -2.4
+    ]
+   ],
+   "reads": [
+    {
+     "file": "temperatura.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "bseco"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E202",
+   "status": "ok",
+   "result": [
+    [
+     "SBIZ",
+     195.0
+    ],
+    [
+     "SBMI",
+     195.0
+    ],
+    [
+     "SBBR",
+     177.0
+    ],
+    [
+     "SBCF",
+     174.0
+    ]
+   ],
+   "reads": [
+    {
+     "file": "vento.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "rajada"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E203",
+   "status": "ok",
+   "result": [
+    [
+     "SBAU",
+     38.0
+    ],
+    [
+     "SBLP",
+     42.700885668276975
+    ]
+   ],
+   "reads": [
+    {
+     "file": "temperatura.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "ur"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E204",
+   "status": "ok",
+   "result": [
+    [
+     "SBIT",
+     23894.8
+    ]
+   ],
+   "reads": [
+    {
+     "file": "precipitacao.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "precip"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E205",
+   "status": "error",
+   "error": "AssertionError: ",
+   "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\Gabriel\\OneDrive\\Área de Trabalho\\Parente\\meteo-kgqa-ontop\\eval\\independent_evaluation\\oracle_worker.py\", line 37, in <module>\n    exec(compile(q['oracle_pandas'],qid,'exec'),ns)\n    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"E205\", line 16, in <module>\nAssertionError\n",
+   "reads": [
+    {
+     "file": "vento.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "rajada"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E206",
+   "status": "ok",
+   "result": [
+    [
+     "SBJU",
+     30.158513513513512
+    ],
+    [
+     "SBKG",
+     23.994148936170212
+    ],
+    [
+     "SBME",
+     24.819525065963063
+    ]
+   ],
+   "reads": [
+    {
+     "file": "temperatura.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "bseco"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E207",
+   "status": "ok",
+   "result": [
+    [
+     "SBMG",
+     1012.5568123393316
+    ],
+    [
+     "SBMK",
+     1015.2464128843338
+    ],
+    [
+     "SBMT",
+     1015.851395730706
+    ],
+    [
+     "SBPK",
+     1014.2561965811966
+    ]
+   ],
+   "reads": [
+    {
+     "file": "pressao.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "qnh"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E208",
+   "status": "ok",
+   "result": [
+    [
+     "SBSJ",
+     100.0
+    ],
+    [
+     "SBSM",
+     100.0
+    ]
+   ],
+   "reads": [
+    {
+     "file": "visibilidade.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "visibpre"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E209",
+   "status": "ok",
+   "result": [
+    [
+     2016,
+     47.798063623789766
+    ],
+    [
+     2020,
+     30.258345428156748
+    ],
+    [
+     2024,
+     35.784271284271284
+    ]
+   ],
+   "reads": [
+    {
+     "file": "temperatura.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "ur"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E210",
+   "status": "ok",
+   "result": [
+    [
+     2017,
+     18.0
+    ],
+    [
+     2021,
+     14.0
+    ]
+   ],
+   "reads": [
+    {
+     "file": "vento.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "velvento"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E211",
+   "status": "ok",
+   "result": [
+    [
+     2018,
+     42.4
+    ],
+    [
+     2022,
+     186.7
+    ]
+   ],
+   "reads": [
+    {
+     "file": "precipitacao.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "precip"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E212",
+   "status": "ok",
+   "result": [
+    [
+     2019,
+     14.0
+    ],
+    [
+     2025,
+     20.6
+    ]
+   ],
+   "reads": [
+    {
+     "file": "temperatura.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "temppo"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E213",
+   "status": "ok",
+   "result": [
+    [
+     1,
+     25.996873679763414
+    ],
+    [
+     2,
+     27.727330604820374
+    ]
+   ],
+   "reads": [
+    {
+     "file": "temperatura.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "bseco"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E214",
+   "status": "ok",
+   "result": [
+    [
+     2016,
+     1011.4118263311373
+    ],
+    [
+     2025,
+     1011.575165742854
+    ]
+   ],
+   "reads": [
+    {
+     "file": "pressao.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "qnh"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E215",
+   "status": "not_applicable",
+   "expected_behavior": "unsupported"
+  },
+  {
+   "id": "E216",
+   "status": "not_applicable",
+   "expected_behavior": "unsupported"
+  },
+  {
+   "id": "E217",
+   "status": "not_applicable",
+   "expected_behavior": "unsupported"
+  },
+  {
+   "id": "E218",
+   "status": "not_applicable",
+   "expected_behavior": "unsupported"
+  },
+  {
+   "id": "E219",
+   "status": "not_applicable",
+   "expected_behavior": "unsupported"
+  },
+  {
+   "id": "E220",
+   "status": "not_applicable",
+   "expected_behavior": "unsupported"
+  },
+  {
+   "id": "E221",
+   "status": "not_applicable",
+   "expected_behavior": "unsupported"
+  },
+  {
+   "id": "E222",
+   "status": "not_applicable",
+   "expected_behavior": "unsupported"
+  },
+  {
+   "id": "E223",
+   "status": "not_applicable",
+   "expected_behavior": "unsupported"
+  },
+  {
+   "id": "E224",
+   "status": "not_applicable",
+   "expected_behavior": "unsupported"
+  },
+  {
+   "id": "E225",
+   "status": "not_applicable",
+   "expected_behavior": "unsupported"
+  },
+  {
+   "id": "E226",
+   "status": "not_applicable",
+   "expected_behavior": "unsupported"
+  },
+  {
+   "id": "E227",
+   "status": "not_applicable",
+   "expected_behavior": "needs_clarification"
+  },
+  {
+   "id": "E228",
+   "status": "not_applicable",
+   "expected_behavior": "needs_clarification"
+  },
+  {
+   "id": "E229",
+   "status": "not_applicable",
+   "expected_behavior": "needs_clarification"
+  },
+  {
+   "id": "E230",
+   "status": "not_applicable",
+   "expected_behavior": "needs_clarification"
+  },
+  {
+   "id": "E231",
+   "status": "not_applicable",
+   "expected_behavior": "needs_clarification"
+  },
+  {
+   "id": "E232",
+   "status": "not_applicable",
+   "expected_behavior": "needs_clarification"
+  },
+  {
+   "id": "E233",
+   "status": "not_applicable",
+   "expected_behavior": "needs_clarification"
+  },
+  {
+   "id": "E234",
+   "status": "not_applicable",
+   "expected_behavior": "needs_clarification"
+  },
+  {
+   "id": "E235",
+   "status": "ok",
+   "result": [
+    [
+     31.8
+    ]
+   ],
+   "reads": [
+    {
+     "file": "temperatura.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "bseco"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E236",
+   "status": "ok",
+   "result": [
+    [
+     61.81818181818182
+    ]
+   ],
+   "reads": [
+    {
+     "file": "temperatura.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "ur"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E237",
+   "status": "ok",
+   "result": [
+    [
+     1011.3
+    ]
+   ],
+   "reads": [
+    {
+     "file": "pressao.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "qnh"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E238",
+   "status": "ok",
+   "result": [
+    [
+     100.0
+    ]
+   ],
+   "reads": [
+    {
+     "file": "visibilidade.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "visibpre"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E239",
+   "status": "ok",
+   "result": [
+    [
+     32.0
+    ]
+   ],
+   "reads": [
+    {
+     "file": "vento.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "rajada"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E240",
+   "status": "ok",
+   "result": [
+    [
+     16.25
+    ]
+   ],
+   "reads": [
+    {
+     "file": "temperatura.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "temppo"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E241",
+   "status": "ok",
+   "result": [
+    [
+     16.4
+    ]
+   ],
+   "reads": [
+    {
+     "file": "precipitacao.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "precip"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E242",
+   "status": "ok",
+   "result": [
+    [
+     5.166666666666667
+    ]
+   ],
+   "reads": [
+    {
+     "file": "vento.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "velvento"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E243",
+   "status": "ok",
+   "result": [
+    [
+     78.92374727668846
+    ]
+   ],
+   "reads": [
+    {
+     "file": "temperatura.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "ur"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E244",
+   "status": "ok",
+   "result": [
+    [
+     11
+    ]
+   ],
+   "reads": [
+    {
+     "file": "vento.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "rajada"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E245",
+   "status": "ok",
+   "result": [
+    [
+     1.4
+    ]
+   ],
+   "reads": [
+    {
+     "file": "temperatura.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "bseco"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E246",
+   "status": "ok",
+   "result": [
+    [
+     33.9
+    ]
+   ],
+   "reads": [
+    {
+     "file": "temperatura.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "bseco"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E247",
+   "status": "ok",
+   "result": [
+    [
+     19.611594202898548
+    ]
+   ],
+   "reads": [
+    {
+     "file": "temperatura.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "temppo"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E248",
+   "status": "ok",
+   "result": [
+    [
+     0.1
+    ]
+   ],
+   "reads": [
+    {
+     "file": "precipitacao.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "precip"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E249",
+   "status": "ok",
+   "result": [
+    [
+     12
+    ]
+   ],
+   "reads": [
+    {
+     "file": "visibilidade.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "visibpre"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  },
+  {
+   "id": "E250",
+   "status": "ok",
+   "result": [
+    [
+     3.0197368421052633
+    ]
+   ],
+   "reads": [
+    {
+     "file": "vento.csv",
+     "usecols": [
+      "sigla",
+      "hora_observacao",
+      "velvento"
+     ],
+     "chunksize": 100000
+    }
+   ]
+  }
+ ]
+}

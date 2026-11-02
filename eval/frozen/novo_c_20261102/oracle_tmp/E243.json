@@ -1,0 +1,20 @@
+{
+  "id": "E243",
+  "status": "ok",
+  "result": [
+    [
+      78.92374727668846
+    ]
+  ],
+  "reads": [
+    {
+      "file": "temperatura.csv",
+      "usecols": [
+        "sigla",
+        "hora_observacao",
+        "ur"
+      ],
+      "chunksize": 100000
+    }
+  ]
+}

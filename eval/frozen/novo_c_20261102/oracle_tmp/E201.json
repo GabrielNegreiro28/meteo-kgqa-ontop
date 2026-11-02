@@ -1,0 +1,29 @@
+{
+  "id": "E201",
+  "status": "ok",
+  "result": [
+    [
+      "SBPC",
+      -3.3
+    ],
+    [
+      "SBYS",
+      -2.7
+    ],
+    [
+      "SBCT",
+      -2.4
+    ]
+  ],
+  "reads": [
+    {
+      "file": "temperatura.csv",
+      "usecols": [
+        "sigla",
+        "hora_observacao",
+        "bseco"
+      ],
+      "chunksize": 100000
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "name": "novo_c_20261102",
+  "source": "100 perguntas escritas por um agente separado (Sonnet), sem acesso ao código nem aos resultados, 2026-11-02",
+  "frozen_utc": "2026-11-02T18:35:47.546753+00:00",
+  "count": 100,
+  "pipeline_executed": false,
+  "files": {
+    "questions.yaml": "8e8b42fe19be223c7a28ca089b21d0957fb73e2d911794662ebba16df0d02764"
+  }
+}

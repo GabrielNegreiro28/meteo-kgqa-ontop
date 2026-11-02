@@ -1,0 +1,20 @@
+{
+  "id": "E173",
+  "status": "ok",
+  "result": [
+    [
+      172
+    ]
+  ],
+  "reads": [
+    {
+      "file": "visibilidade.csv",
+      "usecols": [
+        "sigla",
+        "hora_observacao",
+        "visibpre"
+      ],
+      "chunksize": 100000
+    }
+  ]
+}

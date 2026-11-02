@@ -1,0 +1,25 @@
+{
+  "id": "E212",
+  "status": "ok",
+  "result": [
+    [
+      2019,
+      14.0
+    ],
+    [
+      2025,
+      20.6
+    ]
+  ],
+  "reads": [
+    {
+      "file": "temperatura.csv",
+      "usecols": [
+        "sigla",
+        "hora_observacao",
+        "temppo"
+      ],
+      "chunksize": 100000
+    }
+  ]
+}

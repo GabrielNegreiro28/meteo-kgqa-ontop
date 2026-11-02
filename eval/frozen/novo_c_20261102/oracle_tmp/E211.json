@@ -1,0 +1,25 @@
+{
+  "id": "E211",
+  "status": "ok",
+  "result": [
+    [
+      2018,
+      42.4
+    ],
+    [
+      2022,
+      186.7
+    ]
+  ],
+  "reads": [
+    {
+      "file": "precipitacao.csv",
+      "usecols": [
+        "sigla",
+        "hora_observacao",
+        "precip"
+      ],
+      "chunksize": 100000
+    }
+  ]
+}

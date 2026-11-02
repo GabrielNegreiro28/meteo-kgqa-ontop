@@ -1,0 +1,25 @@
+{
+  "id": "E208",
+  "status": "ok",
+  "result": [
+    [
+      "SBSJ",
+      100.0
+    ],
+    [
+      "SBSM",
+      100.0
+    ]
+  ],
+  "reads": [
+    {
+      "file": "visibilidade.csv",
+      "usecols": [
+        "sigla",
+        "hora_observacao",
+        "visibpre"
+      ],
+      "chunksize": 100000
+    }
+  ]
+}

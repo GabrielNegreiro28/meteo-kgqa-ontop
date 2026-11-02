@@ -1,0 +1,25 @@
+{
+  "id": "E214",
+  "status": "ok",
+  "result": [
+    [
+      2016,
+      1011.4118263311373
+    ],
+    [
+      2025,
+      1011.575165742854
+    ]
+  ],
+  "reads": [
+    {
+      "file": "pressao.csv",
+      "usecols": [
+        "sigla",
+        "hora_observacao",
+        "qnh"
+      ],
+      "chunksize": 100000
+    }
+  ]
+}
