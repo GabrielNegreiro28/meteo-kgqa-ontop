@@ -25,6 +25,9 @@ class MetqaAdapter:
         self.questions = {q["id"]: q for q in load_frozen(d / "questions.yaml") if not ids or q["id"] in ids}
         self.oracle = {r["id"]: r["result"] for r in json.loads((d / "oracle_results.json").read_text(encoding="utf-8"))["results"]
                        if r["status"] == "ok"}
+        missing = [cid for cid, q in self.questions.items() if q["expected_behavior"] == "answerable" and cid not in self.oracle]
+        if missing:
+            raise ValueError(f"missing references: {missing}")
 
     def evaluate(self, subject: str, cases: list[str] | None = None, output_hint: str | None = None) -> dict[str, Any]:
         from eval.adjudicate import robust_match
@@ -38,7 +41,7 @@ class MetqaAdapter:
             r = qa.ask(q["question"]).response
             prows = sparql_rows(r.results)
             e = judge_row(q, r.status.value, prows, self.oracle)
-            ok = (r.status.value == "answered" and robust_match(prows, self.oracle.get(cid) or [])) if e["expected_behavior"] == "answerable" \
+            ok = (r.status.value in {"answered", "no_results"} and robust_match(prows, self.oracle[cid])) if e["expected_behavior"] == "answerable" \
                 else bool(e["status_ok"])
             rows.append({"id": cid, "score": 1.0 if ok else 0.0, "status": r.status.value})
         mean = sum(r["score"] for r in rows) / len(rows) if rows else 0.0

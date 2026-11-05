@@ -16,6 +16,9 @@ AVG_ROW = table({"value": lit(25.1, XD), "n": lit(24)})
 
 
 def run(script: dict, q: str, *tables, user=None, **settings):
+    # Cases about evidence/serialization do not implicitly test an unavailable rereader.
+    # Temporal tests supply an explicit scripted reread, including failure cases.
+    settings.setdefault("reread", "reread_time" in script)
     llm = ScriptedLLM({k: [json.dumps(x, ensure_ascii=False) if isinstance(x, dict) else x for x in v] for k, v in script.items()})
     app = MetQA(CAT, OntologyLexicon(CAT), llm, Rows(*tables), Settings(**settings), ExemplarStore(None))
     return app.ask(q, user=user).response, llm

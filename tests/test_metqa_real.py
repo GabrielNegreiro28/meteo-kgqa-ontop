@@ -67,7 +67,9 @@ def real():
 def ask(real, question, ir, **kw):
     source, catalog = real
     a = json.dumps(ir, ensure_ascii=False)
-    qa = MetQA(catalog, OntologyLexicon(catalog), ScriptedLLM({"interpret_A": [a], "interpret_B": [a]}), source, Settings(timeout_s=120),
+    # A releitura é parte do protocolo: o teste do grafo fornece uma resposta explícita, sem LLM real.
+    qa = MetQA(catalog, OntologyLexicon(catalog), ScriptedLLM({"interpret_A": [a], "interpret_B": [a],
+               "reread_time": [json.dumps(ir['time'])]}), source, Settings(timeout_s=120),
                ExemplarStore(None))
     return qa.ask(question, **kw)
 

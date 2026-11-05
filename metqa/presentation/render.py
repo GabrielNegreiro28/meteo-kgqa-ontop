@@ -136,7 +136,7 @@ def _one(e: Executed, catalog: DomainCatalog) -> list[str]:
     if q.order:                                       # a consulta traz uma linha a mais: ela só aparece se empata com a última pedida
         k = q.order["limit"]
         if len(rs) > k and rs[k].get(sh.value) == rs[k - 1].get(sh.value):
-            tie = f" — empate: {len([r for r in rs[k:] if r.get(sh.value) == rs[k - 1].get(sh.value)])} a mais com o mesmo valor"
+            tie = " — empate no limite: há outros empatados; a lista pode não incluir todos"
             rs = [r for r in rs if r.get(sh.value) != rs[k - 1].get(sh.value)][:k - 1] + [r for r in rs if r.get(sh.value) == rs[k - 1].get(sh.value)]
         else:
             rs = rs[:k]
@@ -161,13 +161,16 @@ def _compare(done: list[Executed], catalog: DomainCatalog) -> list[str]:
         lines.append(f"- {e.part.label}: " + _one(e, catalog)[0])
     unit = "" if done[0].shape.is_count else f" {shown(done[0].part.query, catalog)[1]}"
     what = "estações" if len({e.part.query.stations[0]["iri"] for e in done if e.part.query.stations}) > 1 else "períodos"
-    if any(v is None for _, v in vals):
+    if any(e.truncated for e in done):
+        lines.append("Não dá para declarar vencedor: há resultados parciais.")
+    elif any(v is None for _, v in vals):
         lines.append(f"Não dá para comparar: há {what} sem registros.")
     elif len({v for _, v in vals}) == 1:
         lines.append(f"{'Os' if what == 'períodos' else 'As'} {len(vals)} {what} têm o mesmo valor.")
     else:
         ranked = sorted(vals, key=lambda x: -x[1])
         (lb, b), (ls, s) = ranked[0], ranked[-1]
+        lb = ", ".join(label for label, value in ranked if value == b)
         rest = f" contra {num(s)}" if len(vals) == 2 else f"; menor em {ls}: {num(s)}"
         lines.append(f"Maior em {lb}: {num(b)}{rest} (diferença de {num(b - s)}{unit}).")
     return lines
@@ -188,7 +191,24 @@ def render(done: list[Executed], combine: str, catalog: DomainCatalog, caveats: 
 
 def units_of(e: Executed, catalog: DomainCatalog) -> dict[str, str]:
     m = catalog.measure(e.part.query.measure)
-    if not m or not m.unit or e.shape.is_count:
+    if not m or not m.unit:
         return {}
-    shown_unit = UNIT_NS + e.part.query.unit.split(":")[-1] if e.part.query.unit else m.unit   # o JSON diz a unidade do texto
-    return {e.shape.value: shown_unit, **({"measured": m.unit} if "value" in e.part.query.group_by else {})}
+    return {**({e.shape.value: m.unit} if not e.shape.is_count else {}),
+            **({"measured": m.unit} if "value" in e.part.query.group_by else {})}
+
+
+def presentation_of(e: Executed, catalog: DomainCatalog) -> dict:
+    """Converted values are separate from unmodified SPARQL bindings."""
+    from copy import deepcopy
+    from ..execution.source import typed_rows
+    values = deepcopy(typed_rows(e.results))
+    cv, symbol = shown(e.part.query, catalog)
+    if not e.shape.is_count:
+        for row in values:
+            if row.get(e.shape.value) is not None:
+                row[e.shape.value] = cv(row[e.shape.value])
+    units = units_of(e, catalog)
+    if e.part.query.unit and not e.shape.is_count:
+        units[e.shape.value] = UNIT_NS + e.part.query.unit.split(":")[-1]
+    return {"label": e.part.label, "rows": [{k: str(v) if isinstance(v, Decimal) else v for k,v in r.items()} for r in values],
+            "units": units, "decimal_encoding": "string", "display_places": 2, "truncated": e.truncated}

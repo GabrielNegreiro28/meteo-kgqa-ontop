@@ -25,6 +25,7 @@ class LexiconHit:
     ambiguous: list[dict[str, Any]] = field(default_factory=list)
     uncovered: list[str] = field(default_factory=list)
     info: dict[str, Any] = field(default_factory=dict)          # o que vai para a trilha (evento "semantics")
+    context: str = ""
 
 
 class Lexicon(Protocol):
@@ -44,16 +45,17 @@ class OntologyLexicon:
 
 
 class EvoLexicon:
-    def __init__(self, catalog: DomainCatalog, workspace: str | Path, version: str | None = None):
+    def __init__(self, catalog: DomainCatalog, workspace: str | Path, version: str | None = None, *, bfo_context: bool = True):
         from semantics.facade import GroundedLayer
         from semantics.ground import SemanticGrounder
         self.catalog = catalog
         self.grounder = SemanticGrounder(GroundedLayer.open(workspace, version))
         self.version = self.grounder.version
+        self.bfo_context = bfo_context
 
     def lookup(self, text: str) -> LexiconHit:
-        _, info = self.grounder.block(text)
+        context, info = self.grounder.block(text, include_bfo=self.bfo_context)
         measures = {expand(r["iri"]): r["phrase"] for r in info["resolved"] if self.catalog.measure(r["iri"])}
         for iri, label in self.catalog.measures_in(text).items():          # rótulo formal que a camada não cobriu (nunca o contrário)
             measures.setdefault(iri, label)
-        return LexiconHit(measures=measures, ambiguous=info["ambiguous"], uncovered=info["uncovered"], info=info)
+        return LexiconHit(measures=measures, ambiguous=info["ambiguous"], uncovered=info["uncovered"], info=info, context=context)

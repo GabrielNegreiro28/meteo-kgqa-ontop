@@ -59,21 +59,40 @@ def execute(part: SubQuery, compiled: CompiledQuery, catalog: DomainCatalog, sou
     if not ex.ok:                                  # detalhe interno (URL, pilha) fica na trilha, não na resposta
         msg = "A fonte não respondeu dentro do limite de tempo." if ex.error_kind == "timeout" else "Falha ao executar a consulta na fonte."
         return Stop(Status.EXECUTION_ERROR, [Diagnostic((ex.error_kind or "runtime").upper(), "error", msg)])
+    try:
+        typed_rows(ex.results)
+    except (ValueError, ArithmeticError, TypeError):
+        return Stop.of(Status.EXECUTION_ERROR, "INVALID_RESULT", "A fonte retornou um valor numérico inválido.", "error")
     return Executed(part, sparql, ex.results, ex.truncated, result_status(ex.results, compiled.shape), engine_sql, compiled.shape)
 
 
 def rows(results: dict[str, Any] | None) -> list[dict[str, Any]]:
-    """Linhas como dicionários de valores Python (números como float, IRIs pelo nome local)."""
-    out = []
-    for b in (results or {}).get("results", {}).get("bindings", []):
-        row = {}
+    """Valores exatos; nomes locais são usados somente nos rótulos de apresentação."""
+    out = typed_rows(results)
+    for row, b in zip(out, (results or {}).get("results", {}).get("bindings", [])):
         for k, t in b.items():
-            v = t.get("value")
             if t.get("type") == "uri":
-                row[k] = v.rstrip("/").rsplit("/", 1)[-1].rsplit("#", 1)[-1]
-            elif t.get("datatype", "").rsplit("#", 1)[-1] in {"integer", "decimal", "double", "float", "int", "long"}:
-                row[k] = float(v)
-            else:
-                row[k] = v
+                row[k] = str(row[k]).rstrip("/").rsplit("/", 1)[-1].rsplit("#", 1)[-1]
+    return out
+
+
+def typed_rows(results: dict | None) -> list[dict]:
+    """Lossless values for public presentation: preserve IRIs and decimal precision."""
+    from decimal import Decimal
+    out = []
+    for binding in (results or {}).get("results", {}).get("bindings", []):
+        row = {}
+        for key, term in binding.items():
+            value = term.get("value")
+            dt = term.get("datatype", "").rsplit("#", 1)[-1]
+            if dt in {"integer", "decimal", "double", "float", "int", "long"}:
+                value = Decimal(value)
+                if not value.is_finite():
+                    raise ValueError("non-finite result")
+                if dt in {"integer", "int", "long"}:
+                    if value != value.to_integral_value():
+                        raise ValueError("non-integral integer result")
+                    value = int(value)
+            row[key] = value
         out.append(row)
     return out

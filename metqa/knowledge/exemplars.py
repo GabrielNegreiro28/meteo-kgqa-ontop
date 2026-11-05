@@ -85,6 +85,7 @@ class ExemplarStore:
         if any(e["ir"] == ir for e in same):
             return False
         item = {"event": "added", "id": uuid.uuid4().hex[:12], "question": question, "ir": ir, "verified_by": verified_by, "note": note,
+                "verification_scope": "interpretation" if verified_by == "user" else "reference_result",
                 "catalog": self.catalog, "t": _now()}
         self._write(item)
         for old in same:

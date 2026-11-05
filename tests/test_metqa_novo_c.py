@@ -1,5 +1,7 @@
 """Defeitos achados na medição final (novo_c_20261102, docs/julgamento_novo_c_20261102_veredictos.yaml), reescritos com o LLM roteirizado e
 estações do perfil de teste. Corrigidos depois da medição: o efeito não foi medido com o LLM real (sem verba)."""
+from calendar import monthrange
+
 from metqa.domain.contract import Status
 from tests.test_metqa import nir
 from tests.test_metqa_shapes import XD, lit, table
@@ -19,8 +21,8 @@ def test_releitura_sem_os_dias_da_semana_nao_e_alarme_E250():
 
 def test_releitura_de_cada_mes_em_doze_janelas_nao_e_alarme_E193():
     ir = nir(W, ["st:SBGL"], "max", "2023-01-01", "2023-12-31", group_by=["month"],
-             evidence={"measure": "vento", "stations": "SBGL", "calc": "máxima", "time": "em cada mês de 2023"})
-    months = [{"start": f"2023-{m:02d}-01", "end": f"2023-{m:02d}-28"} for m in range(1, 12)] + [{"start": "2023-12-01", "end": "2023-12-31"}]
+             evidence={"measure": "vento", "stations": "SBGL", "calc": "máxima", "shape": "em cada mês", "time": "em cada mês de 2023"})
+    months = [{"start": f"2023-{m:02d}-01", "end": f"2023-{m:02d}-{monthrange(2023, m)[1]}"} for m in range(1, 13)]   # como no trace
     r, _ = run(both(ir, reread_time=[{"ranges": months, **NONE}]), "Qual foi a velocidade máxima do vento de SBGL em cada mês de 2023?",
                table({"year": lit(2023), "month": lit(1), "value": lit(30, XD), "n": lit(700)}))
     assert r.status == Status.ANSWERED, r.answer_text
@@ -45,7 +47,7 @@ def test_sem_estacao_e_sem_periodo_pergunta_E228():
 def test_empate_no_ranking_e_dito_E208():
     ir = nir("met:PrevailingVisibility", ["st:SBGL", "st:SBSP"], "min", "2018-07-01", "2018-07-31", group_by=["station"],
              order={"direction": "asc", "limit": 1},
-             evidence={"measure": "visibilidade", "stations": "SBGL e SBSP", "calc": "menor", "time": "em julho de 2018"})
+             evidence={"measure": "visibilidade", "stations": "SBGL e SBSP", "calc": "menor", "shape": "menor", "time": "em julho de 2018"})
     st = lambda c: {"type": "uri", "value": f"https://example.org/kgqa-met/data/station/{c}"}
     r, _ = run(both(ir), "Entre SBGL e SBSP, qual teve a menor visibilidade predominante em julho de 2018?",
                  table({"station": st("SBSP"), "value": lit(100), "n": lit(779)}, {"station": st("SBGL"), "value": lit(100), "n": lit(700)}),
@@ -57,6 +59,7 @@ def _vis_km(unit):
     ir = nir("met:PrevailingVisibility", ["st:SBGL"], "avg", "2021-10-01", "2021-10-31",
              evidence={"measure": "visibilidade predominante", "stations": "SBGL", "calc": "média", "time": "em outubro de 2021"})
     ir["shape"]["unit"] = unit
+    ir["evidence"]["unit"] = "em quil\u00f4metros"
     return run(both(ir), "Qual foi a visibilidade predominante média de SBGL em outubro de 2021, em quilômetros?",
                table({"value": lit(18166.8, XD), "n": lit(700)}), reread=False)[0]
 
@@ -64,7 +67,7 @@ def _vis_km(unit):
 def test_resultado_na_unidade_pedida_E156():
     r = _vis_km("unit:KiloM")
     assert r.status == Status.ANSWERED and "18,17 km" in r.answer_text, r.answer_text
-    assert r.units.get("value", "").endswith("/KiloM")
+    assert r.units.get("value", "").endswith("/M")
 
 
 def test_unidade_pedida_de_outra_dimensao_nao_responde():

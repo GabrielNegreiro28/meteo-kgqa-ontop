@@ -2,7 +2,8 @@
 
   python -m eval.adjudicate novo_a v4=v4_a v5_v1=v5_l1_1,v5_l1_2 v5_v2=v5_l2 v7=v7_a
 
-O comparador automático de `run_independent` só vê números e trata período escrito como texto (`2019-09`, `07`) como divergência. Aqui:
+O padrão compara linhas tipadas, com cardinalidade e identificadores preservados. Referência ausente é erro.
+As regras abaixo só são usadas com --historical para inspecionar julgamentos antigos, não para validar o contrato 0.4.0:
 - `correto`: a resposta contém todas as linhas da referência (rótulos de período em qualquer formato), OU divergiu por diferença de limpeza declarada
   em `docs/julgamento_<set>_veredictos.yaml` (`cleaning_difference` ou `oracle_error`) e outra condição deu o mesmo valor (a diferença vem do conjunto de regras, não do acaso);
 - `errado`: respondeu e não bate (`pipeline_error`, ou divergência sem veredito); respondeu onde devia recusar ou esclarecer;
@@ -13,53 +14,24 @@ Os vereditos do arquivo são julgamento do Claude, sem revisão humana: o placar
 from __future__ import annotations
 
 import json
-import re
 import sys
 from pathlib import Path
 
 import yaml
 
-from eval.run_independent import _close
 from eval.stats import mcnemar_exact, wilson
 
 ROOT = Path(__file__).resolve().parent.parent
 
 
-def _nums(row: list) -> list[float]:
-    out: list[float] = []
-    for x in row:
-        if isinstance(x, bool):
-            continue
-        if isinstance(x, (int, float)):
-            out.append(float(x))
-        elif isinstance(x, str):
-            t = re.sub(r"(\d{4})-(\d{2})(?:-(\d{2}))?", lambda m: " ".join(str(int(g)) for g in m.groups() if g), x)
-            out += [float(v) for v in re.findall(r"(?<![\d.])-?\d+(?:\.\d+)?", t)]
-    return out
+def robust_match(system_rows, oracle_rows):
+    from eval.matching import match_rows
+    return match_rows(system_rows, oracle_rows)
 
 
-def _row_has(oracle_row: list, system_row: list) -> bool:
-    pool = _nums(system_row)
-    for w in _nums(oracle_row):
-        i = next((k for k, h in enumerate(pool) if _close(w, h)), None)
-        if i is None:
-            return False
-        pool.pop(i)
-    return True
-
-
-def robust_match(system_rows: list[list], oracle_rows: list[list]) -> bool:
-    left = list(system_rows)
-    for o in oracle_rows:
-        i = next((k for k, s in enumerate(left) if _row_has(o, s)), None)
-        if i is None:
-            return False
-        left.pop(i)
-    return True
-
-
-def signature(rows: list[list]) -> frozenset:
-    return frozenset(round(v, 1) for r in rows for v in _nums(r))
+def signature(rows):
+    # Preserve row boundaries, types, identities and multiplicity.
+    return tuple(sorted(json.dumps(r, ensure_ascii=False) for r in rows))
 
 
 def load(name: str, files: str) -> dict[str, dict]:
@@ -74,13 +46,23 @@ def not_run(r: dict) -> bool:
     return r["status"] == "execution_error" and "BUDGET_EXCEEDED" in r.get("diagnostics", [])
 
 
-def classify(conds: dict[str, dict[str, dict]], verdicts: dict[str, dict]) -> dict[str, dict[str, str]]:
+def classify(conds: dict[str, dict[str, dict]], verdicts: dict[str, dict], *, historical: bool = False) -> dict[str, dict[str, str]]:
     ids = sorted(set.intersection(*[set(d) for d in conds.values()]))
     ids = [i for i in ids if not any(not_run(d[i]) for d in conds.values())]
     out: dict[str, dict[str, str]] = {c: {} for c in conds}
     for i in ids:
         for c, d in conds.items():
             r = d[i]
+            if not historical:
+                if r['expected_behavior'] != 'answerable':
+                    out[c][i] = 'correto' if r['status_ok'] else 'errado'
+                elif r.get('oracle_rows') is None:
+                    raise ValueError(f'missing reference: {i}')
+                elif r['status'] not in ('answered', 'no_results'):
+                    out[c][i] = 'absteve'
+                else:
+                    out[c][i] = 'correto' if robust_match(r['pipeline_rows'], r['oracle_rows']) else 'errado'
+                continue
             v = (verdicts.get(i) or {}).get("verdict")
             if r["expected_behavior"] == "answerable":
                 # o oráculo errou ou limpou diferente, e outra condição deu a MESMA resposta: é o conjunto de regras, não acaso
@@ -94,7 +76,7 @@ def classify(conds: dict[str, dict[str, dict]], verdicts: dict[str, dict]) -> di
                     out[c][i] = "correto"                 # "não há registros" certo: o oráculo contou um valor que a limpeza descarta
                 elif r["status"] != "answered":
                     out[c][i] = "absteve"
-                elif robust_match(r["pipeline_rows"], r.get("oracle_rows") or []) or agreed:
+                elif robust_match(r["pipeline_rows"], r.get("oracle_rows")) or agreed:
                     out[c][i] = "correto"
                 else:
                     out[c][i] = "errado"
@@ -104,10 +86,13 @@ def classify(conds: dict[str, dict[str, dict]], verdicts: dict[str, dict]) -> di
 
 
 def main(argv: list[str]) -> int:
+    historical = '--historical' in argv
+    argv = [a for a in argv if a != '--historical']
     name, spec = argv[0], dict(a.split("=", 1) for a in argv[1:])
     conds = {c: load(name, f) for c, f in spec.items()}
-    verdicts = yaml.safe_load((ROOT / "docs" / f"julgamento_{name}_veredictos.yaml").read_text(encoding="utf-8")) or {}
-    res = classify(conds, verdicts)
+    verdict_file = ROOT / "docs" / f"julgamento_{name}_veredictos.yaml"
+    verdicts = (yaml.safe_load(verdict_file.read_text(encoding="utf-8")) or {}) if historical else {}
+    res = classify(conds, verdicts, historical=historical)
     ids = sorted(next(iter(res.values())))
     skipped = sorted(set.intersection(*[set(d) for d in conds.values()]) - set(ids))
     n = len(ids)

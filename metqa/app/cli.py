@@ -29,6 +29,9 @@ def build(settings: Settings, run: str = "metqa-cli"):
 
     source = OntopBackend(settings.endpoint)
     catalog = DomainCatalog.from_ontop(source)
+    if settings.snapshot:
+        from ingest.manifest import load
+        catalog.snapshot = load(settings.snapshot)
     lexicon = EvoLexicon(catalog, settings.workspace, settings.lexicon_version) if settings.lexicon == "evo" else OntologyLexicon(catalog)
     client = OpenAIChatClient.from_env(str(settings.env_file))
     cap = float(load_env(str(settings.env_file)).get("KGQA_BUDGET_USD", "5.0"))
@@ -52,7 +55,7 @@ def show(result, show_query: bool) -> str:
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(prog="python -m metqa", description=__doc__.split("\n\n")[0])
     ap.add_argument("question", nargs="*")
-    ap.add_argument("--json", action="store_true", help="resposta completa no contrato 0.3.0")
+    ap.add_argument("--json", action="store_true", help="resposta completa no contrato 0.4.0")
     ap.add_argument("--show-query", action="store_true", help="mostra o SPARQL e o SQL gerado pelo Ontop")
     ap.add_argument("--lexicon", choices=["evo", "ontology"], help="léxico: camada EvoOntology (padrão) ou só a ontologia formal")
     ap.add_argument("--budget", type=float, help="teto de gasto desta sessão em US$")

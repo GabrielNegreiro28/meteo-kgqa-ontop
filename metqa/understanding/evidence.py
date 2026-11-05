@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import re
 import unicodedata
+from datetime import date, datetime, timedelta
 from decimal import Decimal, InvalidOperation
 
 from ..domain import CanonicalQuery
@@ -93,24 +94,41 @@ def conservation(evidence: dict[str, str], parts: list[CanonicalQuery]) -> list[
     return out
 
 
-def time_key(parts: list[CanonicalQuery]) -> tuple:
-    """O que a releitura isolada pode conferir: o ENVELOPE das datas (do primeiro início ao último fim) ou o instante. Horas e dias da semana
-    ficam fora: o trecho citado para o tempo muitas vezes não os carrega ("aos domingos" ... "de 2017"), e "em cada mês de 2023" relido
-    sozinho vira doze janelas com o mesmo envelope (E192, E193, E243, E250 do novo_c)."""
-    scopes = [cq.scope for cq in parts]
-    starts, ends = [s.start for s in scopes if s.start], [s.end for s in scopes if s.end]
-    return (min(starts) if starts else None, max(ends) if ends else None, tuple(sorted(str(s.instant) for s in scopes if s.instant)))
+def _merged(ranges: list[tuple[date, date]]) -> list[tuple[date, date]]:
+    """União das janelas, fundindo as contíguas: os 12 meses de 2023 viram 2023 inteiro."""
+    out: list[tuple[date, date]] = []
+    for a, b in sorted(ranges):
+        if out and a <= out[-1][1] + timedelta(days=1):
+            out[-1] = (out[-1][0], max(out[-1][1], b))
+        else:
+            out.append((a, b))
+    return out
 
 
-def reread_key(raw: dict) -> tuple | None:
-    """O envelope da releitura (mesma forma de `time_key`), direto do JSON: ela pode trazer mais janelas do que uma consulta aceita."""
-    from datetime import date, datetime
+def reread_agrees(raw: dict, parts: list[CanonicalQuery]) -> bool:
+    """A releitura isolada confere só o que consegue ver no trecho de tempo.
+    Datas: a união das janelas tem de ser a mesma ("em cada mês de 2023" relido em 12 janelas = 2023, E192/E193; um buraco no meio diverge).
+    Horas e dias da semana: só quando a releitura os devolve; null quer dizer que o trecho não os carrega ("de 2017", E243/E250)."""
     try:
-        rs = [(date.fromisoformat(str(r["start"])), date.fromisoformat(str(r["end"]))) for r in raw.get("ranges") or []]
-        inst = str(datetime.fromisoformat(str(raw["instant"]))) if raw.get("instant") else None
+        ranges = [(date.fromisoformat(r["start"]), date.fromisoformat(r["end"])) for r in raw.get("ranges") or []]
+        hours, days = raw.get("local_hours"), raw.get("weekdays")
+        if any(a > b for a, b in ranges):
+            return False
+        if any(type(h) is not int or not 0 <= h <= 23 for h in hours or []):
+            return False
+        if any(type(d) is not int or not 0 <= d <= 6 for d in days or []):
+            return False
+        instant = str(datetime.fromisoformat(raw["instant"])) if raw.get("instant") else None
     except (KeyError, TypeError, ValueError):
-        return None
-    return (min(a for a, _ in rs) if rs else None, max(b for _, b in rs) if rs else None, (inst,) if inst else ())
+        return False
+    scopes = [q.scope for q in parts]
+    if _merged(ranges) != _merged([(s.start, s.end) for s in scopes if s.start and s.end]):
+        return False
+    if {instant} - {None} != {str(s.instant) for s in scopes if s.instant}:
+        return False
+    if hours is not None and set(hours) != {h for s in scopes for h in s.hours or []}:
+        return False
+    return days is None or set(days) == {d for s in scopes for d in s.weekdays or []}
 
 
 def needs_reread(evidence: dict[str, str], parts: list[CanonicalQuery]) -> bool:

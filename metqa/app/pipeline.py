@@ -31,7 +31,7 @@ from ..knowledge import DomainCatalog, ExemplarStore, Lexicon
 from ..planning import compile_query, plan, to_interp
 from ..presentation import render, units_of
 from ..understanding import Interpreter, Parsed, canonical_form, describe_diff, diff, parse
-from ..understanding.evidence import needs_reread, reread_key, time_key
+from ..understanding.evidence import needs_reread, reread_agrees
 from ..verification import verify_post, verify_pre
 from .settings import Settings
 
@@ -88,7 +88,7 @@ class MetQA:
 
     def confirmation_token(self, question: str, interpretation: dict) -> str:
         """Assina uma opção devolvida ao cliente (pergunta + interpretação + versão do catálogo): só ela pode voltar como `confirmed`."""
-        body = json.dumps({"q": question.strip(), "ir": interpretation, "catalog": self.catalog.index.fingerprint}, sort_keys=True,
+        body = json.dumps({"q": question.strip(), "ir": interpretation, "catalog": self.catalog.index.fingerprint, "lexicon": self.lexicon.version, "snapshot": (self.catalog.snapshot or {}).get("snapshot_id")}, sort_keys=True,
                           ensure_ascii=False)
         return hmac.new(self.settings.secret, body.encode(), hashlib.sha256).hexdigest()
 
@@ -157,6 +157,7 @@ class MetQA:
         corrections: list[str] = []
         previous = None
         for rnd in range(self.settings.max_rounds + 1):
+            hit = self.lexicon.lookup(" ".join([q, *corrections]))
             exemplars = self.exemplars.search(" ".join([q, *corrections])) if self.settings.exemplars else []
             log("exemplars", found=[e["question"] for e in exemplars])
             framings = ("A", "B")[:max(1, self.settings.readings)]
@@ -189,11 +190,21 @@ class MetQA:
             options = ok if differ else ok[:1]
             base = options[0].parsed if options else a.parsed
             risk = assess(q if not corrections else " ".join([q, *corrections]), base, b.parsed if b else None, differ, bool(exemplars),
-                          frozenset(hit.measures), conservation=self.settings.conservation)
+                          frozenset(hit.measures), station_matches=frozenset(self.catalog.stations_in(base.evidence.get('stations', ''))), conservation=self.settings.conservation)
+            if len(ok) == 2:
+                other = ok[1].parsed
+                second_risk = assess(" ".join([q, *corrections]), other, None, [], bool(exemplars), frozenset(hit.measures),
+                                     station_matches=frozenset(self.catalog.stations_in(other.evidence.get('stations', ''))),
+                                     conservation=self.settings.conservation)
+                risk.strong = list(dict.fromkeys(risk.strong + second_risk.strong))
             if b is not None and len(ok) == 1 and not differ:
                 risk.weak.append("só uma das duas leituras foi válida (a outra falhou no LLM)")
             if options and not differ and self.settings.reread and self.settings.conservation and needs_reread(base.evidence, [x for _, x in base.parts]):
-                risk.strong += self._reread(base, log)
+                temporal = self._reread(base, log)
+                if isinstance(temporal, Stop):
+                    self._end(res, temporal, t0)
+                    return None, False
+                risk.strong += temporal
             if "needs_clarification" in statuses and not ok:
                 risk.strong.append(a.parsed.reason or "a pergunta admite mais de uma leitura")
             log("crosscheck", differ=differ, strong=risk.strong, weak=risk.weak)
@@ -251,15 +262,15 @@ class MetQA:
                 return kind, value
         return "cancel", ""
 
-    def _reread(self, p: Parsed, log) -> list[str]:
+    def _reread(self, p: Parsed, log) -> list[str] | Stop:
         """Releitura ISOLADA do trecho de tempo (sem a pergunta, sem exemplos): contexto diferente, erro menos correlacionado (plano, D1b)."""
         span = " ".join(x for x in (p.evidence.get("time"), p.evidence.get("period")) if x)
         try:
             raw = self.interpreter.reread_time(span)
         except LLMError as e:
             log("reread_time", ok=False, kind=e.kind)
-            return []
-        same = reread_key(raw) == time_key([x for _, x in p.parts])
+            return Stop.of(Status.EXECUTION_ERROR, "TEMPORAL_VERIFICATION_UNAVAILABLE", "Falha técnica na verificação temporal; tente novamente.", "error")
+        same = reread_agrees(raw, [x for _, x in p.parts])
         log("reread_time", ok=True, span=span, same=same, time=raw)
         return [] if same else [f"o trecho de tempo ('{span}'), relido sozinho, dá outro período"]
 
@@ -302,6 +313,10 @@ class MetQA:
         if isinstance(p, Stop):
             return self._end(res, p, t0)
         res.response.interpretation = to_interp(p.parts[0].query)
+        # Preflight every part before any source execution.
+        for part in p.parts:
+            if compile_query(part.query, self.catalog) is None:
+                return self._end(res, Stop.of(Status.UNSUPPORTED, "UNSUPPORTED_SHAPE", "Unsupported query shape."), t0)
         done: list[Executed] = []
         for part in p.parts:
             compiled = compile_query(part.query, self.catalog)
@@ -321,10 +336,17 @@ class MetQA:
         resp.sparql = "\n# ---\n".join(e.sparql for e in done)
         resp.results = done[0].results if len(done) == 1 else {"parts": [{"label": e.part.label, "results": e.results} for e in done]}
         resp.truncated = any(e.truncated for e in done)
+        from ..presentation.render import presentation_of
+        from dataclasses import asdict
+        resp.presentation = [presentation_of(e, self.catalog) for e in done]
+        answer = render(done, p.combine, self.catalog, caveats)
+        resp.interpretations = [{"label": e.part.label, "query": asdict(e.part.query), "evidence": dict(chosen.evidence), "confirmed": by_user}
+                                for e in done]
         resp.units = units_of(done[0], self.catalog)
         resp.result_shape = [{**e.shape.__dict__, "keys": list(e.shape.keys), "attributes": [list(a) for a in e.shape.attributes],
-                              "label": e.part.label} for e in done]
-        resp.answer_text = (render(done, p.combine, self.catalog, caveats) + "\nEntendi assim: " + paraphrase_parts(chosen.parts, self.catalog)
+                              "label": e.part.label, "units": units_of(e, self.catalog), "coverage_complete": False,
+                              "coverage": self.catalog.coverage_for(e.part.query)} for e in done]
+        resp.answer_text = (answer + "\nEntendi assim: " + paraphrase_parts(chosen.parts, self.catalog)
                             + (". Se não for isso, diga o que corrigir." if not by_user else " (confirmado por você)."))
         sql = [e.engine_sql for e in done if e.engine_sql]
         if sql:
@@ -353,6 +375,10 @@ class MetQA:
                                              "ontology": self.catalog.index.fingerprint, "model": llm_model_of(self.llm),
                                              "contract": CONTRACT_VERSION, "readings": self.settings.readings,
                                              "confirm": self.settings.confirm}.items() if v is not None}
+            p.versions['bfo_context'] = getattr(self.lexicon, 'bfo_context', False)
+            p.versions['conservation'] = self.settings.conservation
+            p.versions['reread'] = self.settings.reread
+            p.versions["snapshot"] = self.catalog.snapshot
             p.prov_turtle = prov_turtle(res.response, started)
         except Exception as e:                                        # noqa: BLE001
             p.complete = False

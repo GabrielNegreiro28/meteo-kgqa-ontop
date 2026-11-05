@@ -44,6 +44,7 @@ class Measure:
 class DomainCatalog:
     def __init__(self, index: OntologyIndex):
         self.index = index
+        self.snapshot = None
         self.measures: dict[str, Measure] = {iri: self._measure(info) for iri, info in index.properties.items()}
 
     # ---------------- construção ----------------
@@ -79,6 +80,13 @@ class DomainCatalog:
     def station_label(self, iri: str) -> str:
         iri = expand(iri)
         return iri.rsplit("/", 1)[-1]
+
+    def coverage_for(self, query) -> dict:
+        """Envelope observado por estação/grandeza; não prova continuidade temporal."""
+        coverage = (self.snapshot or {}).get("coverage", {})
+        stations = [s["iri"] for s in query.stations] or sorted(coverage)
+        return {"snapshot_id": (self.snapshot or {}).get("snapshot_id"), "complete": False,
+                "stations": {s: coverage.get(s, {}).get(query.measure) for s in stations}}
 
     def measures_in(self, text: str) -> dict[str, str]:
         """Grandezas que o texto nomeia pelos rótulos da ontologia, sem LLM: IRI -> rótulo."""
@@ -127,7 +135,7 @@ class DomainCatalog:
                          f"{'acumulada' if m.accumulated else 'instantânea'} | agregações: {aggs}{attrs}{cited}")
         lines.append("Estações reconhecidas na pergunta (use o IRI):")
         lines += [f"- st:{iri.rsplit('/', 1)[-1]} | trecho: '{text}'" for iri, text in stations.items()] or \
-                 ["- nenhuma (sem estação = todas; se a pergunta cita cidade, estado ou estação fora dos dados, status \"unsupported\")"]
+                 ["- nenhuma: peça esclarecimento; todas somente se explicitamente solicitado. Não associe cidades a siglas sem cadastro."]
         lines.append(f"Dimensões de agrupamento: {', '.join(GROUP_DIMS)}")
         lines.append("</cardapio>")
         return "\n".join(lines)

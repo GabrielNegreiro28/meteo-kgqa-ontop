@@ -5,7 +5,8 @@ pergunta em linguagem natural, entendimento conferido, SPARQL montado por códig
 105 mi de observações reais de 178 aeródromos (2016 a 2025), verificação e resposta com procedência. Fora do escopo desta fatia: roteador,
 MongoDB, PDFs e controle de acesso (o módulo expõe `capabilities()` para o roteador decidir o que mandar para cá).
 
-Plano e decisões da versão final: `docs/PLANO_ARQUITETURA_FINAL.md`. Decisões e pendências anteriores: `DECISOES.md`, `docs/ANALISE_CRITICA.md`.
+Estado atual e migração do contrato: [arquitetura 0.4.0](docs/ARQUITETURA_0_4.md). O plano de 02/11 em
+`docs/PLANO_ARQUITETURA_FINAL.md` e os placares anteriores são históricos. Decisões anteriores: `DECISOES.md`, `docs/ANALISE_CRITICA.md`.
 
 ## O módulo (`metqa/`)
 
@@ -28,10 +29,10 @@ pergunta ─► memória de exemplos ─► 2 leituras do LLM ─► mundo fecha
 ```bash
 python -m metqa "Quanto choveu em SBGL no dia 15 de fevereiro de 2024?"     # pergunta quando há dúvida (--confirm risk|always|never)
 python -m metqa --show-query "Quantas horas com chuva houve em SBCY em 2022?"
-python -m metqa --json "..."                                                    # resposta completa no contrato 0.3.0
+python -m metqa --json "..."                                                    # resposta completa no contrato 0.4.0
 python -m metqa --lexicon ontology "..."                                        # sem a camada EvoOntology (ablação)
 ```
-Como biblioteca: `MetQA.ask(pergunta, user=None, confirmed=None, confirmation=None)` devolve a resposta (contrato 0.3.0, com `result_shape`)
+Como biblioteca: `MetQA.ask(pergunta, user=None, confirmed=None, confirmation=None)` devolve a resposta (contrato 0.4.0, com `result_shape`, `presentation` e `interpretations`)
 e a trilha; `MetQA.capabilities()` diz grandezas, cobertura, formas de pergunta e limites. Cada pergunta custa centavos de LLM, limitados por
 `--budget` e pelo teto do ledger. A chave vai em `OPENAI_API_KEY` no `kgqa.env`, fora do repositório.
 

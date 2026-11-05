@@ -117,7 +117,7 @@ class SemanticGrounder:
         g.uncovered = list(dict.fromkeys(w for i, w in enumerate(words) if i not in taken and _is_candidate(w)))
         return g
 
-    def block(self, text: str) -> tuple[str, dict[str, Any]]:
+    def block(self, text: str, *, include_bfo: bool = True) -> tuple[str, dict[str, Any]]:
         """(bloco `<semantica>` para o prompt, resumo para a trilha). Vazio se nada foi resolvido: o prompt não muda."""
         g = self.ground(text)
         info = {"layer": self.version, "resolved": [{"phrase": m.phrase, "iri": m.result["term"]["iri"]} for m in g.resolved],
@@ -131,7 +131,8 @@ class SemanticGrounder:
             t = m.result["term"]
             warns = [f"[{c['severity']}] {ctx(c['description'], 220)}" for c in m.result.get("constraints", [])
                      if any(c["id"].endswith("." + k) for k in SHOWN_CONSTRAINTS)]
-            lines.append(f'- "{ctx(m.phrase, 60)}" = {_short(t["iri"])} | categoria BFO: {ctx(str(t["bfo_category"]), 40)} | '
+            category = f'categoria BFO: {ctx(str(t["bfo_category"]), 40)} | ' if include_bfo else ''
+            lines.append(f'- "{ctx(m.phrase, 60)}" = {_short(t["iri"])} | {category}'
                          f'{ctx(t["definition"], 200)}' + (" | " + " ".join(warns) if warns else ""))
         for m in g.ambiguous:
             lines.append(f'- "{ctx(m.phrase, 60)}" é ambígua entre: '

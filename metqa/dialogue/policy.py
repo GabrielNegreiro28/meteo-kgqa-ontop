@@ -32,7 +32,7 @@ class Risk:
 
 
 def assess(question: str, a: Parsed, b: Parsed | None, differ: list[str], has_exemplar: bool,
-           lexicon_measures: frozenset[str] = frozenset(), conservation: bool = True) -> Risk:
+           lexicon_measures: frozenset[str] = frozenset(), conservation: bool = True, station_matches: frozenset[str] | None = None) -> Risk:
     r = Risk()
     if differ:
         r.strong.append(f"as duas leituras independentes divergem em: {describe_diff(differ)}")
@@ -41,6 +41,23 @@ def assess(question: str, a: Parsed, b: Parsed | None, differ: list[str], has_ex
         if span_in(text, question) or (field_ == "measure" and cq is not None and cq.measure in lexicon_measures):
             continue
         r.strong.append(f"o trecho citado para '{field_}' ('{text}') não está na pergunta")
+    for _, part in a.parts:
+        required = {"measure", "stations", "time"}
+        if part.scope.instant is None or part.aggregation is not None:
+            required.add("calc")
+        if part.conditions or part.daily:
+            required.add("conditions")
+        if part.group_by or part.order or part.attributes:
+            required.add("shape")
+        if part.unit:
+            required.add("unit")
+        for key in sorted(required):
+            if not a.evidence.get(key):
+                r.strong.append(f"falta evidência explícita para {key}")
+        if station_matches is not None:
+            for station in part.stations:
+                if station["iri"] not in station_matches:
+                    r.strong.append(f"estação sem menção ou alias governado: {station['iri']}")
     cited = set(numbers(" ".join(a.evidence.values())))                            # números inteiros: 6 não está em 2016
     for n in dict.fromkeys(numbers(question)):
         if n not in cited:
@@ -48,11 +65,11 @@ def assess(question: str, a: Parsed, b: Parsed | None, differ: list[str], has_ex
     if conservation:
         r.strong += conserved(a.evidence, [q for _, q in a.parts])
     if cq is not None:
-        if not cq.stations and "station" not in cq.group_by:
+        if not cq.stations and not a.evidence.get("stations"):
             r.weak.append("sem estação na pergunta: todas as estações")
-        if cq.scope.start is None and cq.scope.instant is None:
+        if cq.scope.start is None and cq.scope.instant is None and not a.evidence.get("time"):
             r.weak.append("sem período na pergunta: todo o histórico")
-        if not cq.stations and "station" not in cq.group_by and cq.scope.start is None and cq.scope.instant is None:
+        if not cq.stations and not a.evidence.get("stations") and cq.scope.start is None and cq.scope.instant is None and not a.evidence.get("time"):
             r.strong.append("a pergunta não diz estação nem período: responderia sobre tudo")
     if not has_exemplar:
         r.weak.append("nenhuma pergunta parecida já verificada")
