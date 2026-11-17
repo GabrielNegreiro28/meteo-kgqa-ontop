@@ -22,6 +22,13 @@ def verify_post(done: list[Executed], catalog: DomainCatalog) -> tuple[Status, l
     cov = catalog.coverage
     for e in done:
         s = e.part.query.scope
+        profile = catalog.coverage_for(e.part.query)
+        if profile["snapshot_id"]:
+            for station, observed in profile["stations"].items():
+                if observed is None:
+                    caveats.append(f"cobertura de {catalog.station_label(station)} para esta grandeza não informada no manifesto")
+                elif e.status == Status.NO_RESULTS or (s.start and (s.start.isoformat() < observed['start'] or s.end.isoformat() > observed['end'])):
+                    caveats.append(f"{catalog.station_label(station)}: registros desta grandeza de {observed['start']} a {observed['end']}; isso não comprova continuidade")
         if cov and s.start is not None and (s.start < cov[0] or s.end > cov[1]):
             note = f"o período pedido vai além dos dados, que cobrem de {cov[0]:%d/%m/%Y} a {cov[1]:%d/%m/%Y}: o resultado usa só a parte com dados"
             if note not in caveats:

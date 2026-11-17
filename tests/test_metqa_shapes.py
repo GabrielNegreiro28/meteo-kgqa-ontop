@@ -43,7 +43,7 @@ def ask(ir, *tables, q="pergunta"):
     raw = json.dumps(ir)
     src = Rows(*tables)
     app = MetQA(CAT, OntologyLexicon(CAT), ScriptedLLM({"interpret_A": [raw], "interpret_B": [raw]}), src, Settings(), ExemplarStore(None))
-    return app.ask(q).response, src
+    return app.ask(q, confirmed=ir, confirmation=app.confirmation_token(q, ir)).response, src
 
 
 def two(ir, a, b):

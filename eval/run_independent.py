@@ -4,12 +4,12 @@ Diferenças em relação a `run_llm_pipeline.py`:
 - as perguntas e os códigos pandas de referência vieram de outro agente, sem as regras da pipeline; aqui não há SPARQL de referência;
 - o conjunto é verificado contra o hash do manifesto antes de rodar (se mudou, recusa: qualquer revisão é uma nova versão);
 - UMA execução por tag (recusa sobrescrever); não se ajusta regra nem prompt a partir do resultado;
-- a comparação automática é conservadora: `match` só quando todos os números da referência aparecem na resposta; o resto vai a
+- a comparação automática preserva linhas, colunas, tipos e multiplicidade; esquemas diferentes precisam de projeção explícita. O resto vai a
   JULGAMENTO HUMANO (erro da pipeline, erro da referência ou diferença declarada de limpeza), nunca é contado como erro nem acerto.
 
 Uso (gasta dinheiro; o ledger de `eval/reports/spend_ledger.jsonl` continua valendo):
-  python -m eval.run_independent --prompts v4 --budget 2.0 --tag _a
-  python -m eval.run_independent --summarize eval/reports/independent_run_v4_a.json     # recalcula o resumo sem LLM
+  python -m eval.run_independent --prompts metqa --budget 2.0 --tag _a
+  python -m eval.run_independent --summarize eval/reports/independent_run_metqa_a.json
 """
 from __future__ import annotations
 
@@ -28,7 +28,6 @@ PKG = ROOT / "eval" / "independent_evaluation"
 FROZEN = ROOT / "eval" / "questions_independent_frozen.yaml"
 EXPECTED_STATUS = {"answerable": {"answered", "no_results"}, "unsupported": {"unsupported"},
                    "needs_clarification": {"needs_clarification"}}
-REL_TOL, ABS_TOL = 1e-3, 0.01
 
 
 def sha256(path: Path) -> str:
@@ -52,32 +51,12 @@ def load_oracle(validation: Path = PKG / "independent_validation.json") -> dict[
     return {r["id"]: r["result"] for r in json.loads(validation.read_text(encoding="utf-8"))["records"] if r["status"] == "ok"}
 
 
-def numbers_of(rows: list[list]) -> list[float]:
-    return [float(v) for row in rows for v in row if isinstance(v, (int, float)) and not isinstance(v, bool)]
-
-
-def _close(a: float, b: float) -> bool:
-    return abs(a - b) <= max(ABS_TOL, REL_TOL * max(abs(a), abs(b)))
-
-
-def auto_compare(pipeline_rows: list[list], oracle_rows: list[list]) -> tuple[str, str]:
-    """('match'|'diverge', motivo). Só números: cada número da referência precisa de um número ainda não usado na resposta.
-    Texto (siglas, rótulos) não é conferido aqui; quem decide o que é resposta é o julgamento humano nos casos `diverge`."""
-    want, have = numbers_of(oracle_rows), numbers_of(pipeline_rows)
-    if not want:
-        return "diverge", "referência sem números; julgar manualmente"
-    pool = list(have)
-    missing = []
-    for w in want:
-        hit = next((i for i, h in enumerate(pool) if _close(w, h)), None)
-        if hit is None:
-            missing.append(w)
-        else:
-            pool.pop(hit)
-    if missing:
-        return "diverge", f"{len(missing)} de {len(want)} números da referência sem par na resposta: {missing[:5]}"
-    extra = len(pool)
-    return "match", "todos os números da referência aparecem" + (f" (a resposta traz {extra} número(s) a mais)" if extra else "")
+def auto_compare(pipeline_rows, oracle_rows):
+    from eval.matching import match_rows
+    if oracle_rows is None:
+        return "evaluation_error", "missing reference"
+    ok = match_rows(pipeline_rows, oracle_rows)
+    return ("match", "typed rows match") if ok else ("diverge", "typed rows differ; explicit schema alignment or review required")
 
 
 def sparql_rows(results: dict | None) -> list[list]:
@@ -112,8 +91,10 @@ def judge_row(q: dict, status: str, rows: list[list], oracle: dict[str, list[lis
     if q["expected_behavior"] == "answerable":
         if status == "answered" and q["id"] in oracle:
             e["auto"], e["auto_note"] = auto_compare(rows, oracle[q["id"]])
+        elif q["id"] not in oracle:
+            e["auto"], e["auto_note"] = "evaluation_error", "missing reference"
         elif status == "no_results":
-            e["auto"], e["auto_note"] = "diverge", "a pipeline disse que não há registros; conferir se a referência tem dados"
+            e["auto"], e["auto_note"] = auto_compare(rows, oracle[q["id"]])
         else:
             e["auto"], e["auto_note"] = "abstained", f"pipeline não respondeu ({status})"
     elif status in ("answered", "no_results"):
@@ -144,7 +125,7 @@ def summarize(rows: list[dict], model: str, prompts: str, spent: float, sha: str
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--env", default=str(ROOT.parent / "METEOROLOGIA" / "kgqa.env"))
-    ap.add_argument("--prompts", choices=["metqa", "metqa-1r", "metqa-formal", "metqa-noconserv"], default="metqa",
+    ap.add_argument("--prompts", choices=["metqa", "metqa-1r", "metqa-formal", "metqa-noconserv", "metqa-nobfo"], default="metqa",
                     help="condição, sempre sem usuário: metqa (2 leituras) | metqa-1r (1 leitura) | metqa-formal (sem EvoOntology) | "
                          "metqa-noconserv (sem conservação da evidência nem releitura). O legado (v1–v8) está na tag legado-v8")
     ap.add_argument("--budget", type=float, default=2.0, help="teto desta execução em US$ (estimado)")
@@ -157,6 +138,8 @@ def main() -> int:
     ap.add_argument("--set", dest="set_name", help="conjunto congelado por eval.freeze_set (eval/frozen/<nome>); sem isto usa o independente de 49")
     ap.add_argument("--semantic-workspace", default=str(ROOT / ".evoontology"), help="workspace da camada semântica")
     ap.add_argument("--semantic-version", help="versão da camada (padrão: a ativa)")
+    ap.add_argument("--snapshot", type=Path, help="manifesto da carga limpa declarada pelo operador")
+    ap.add_argument("--clean-reference", type=Path, help="referências tipadas geradas por eval.clean_reference")
     ap.add_argument("--summarize", help="recalcula o resumo de um independent_run_*.json sem chamar o LLM")
     args = ap.parse_args()
     if args.set_name:
@@ -199,8 +182,19 @@ def main() -> int:
     from metqa.app import MetQA, Settings
     from metqa.knowledge import DomainCatalog, EvoLexicon, OntologyLexicon
     catalog = DomainCatalog(index)
+    if args.snapshot:
+        from ingest.manifest import load
+        catalog.snapshot = load(args.snapshot)
+    clean_references = None
+    if args.clean_reference:
+        clean_references = json.loads(args.clean_reference.read_text(encoding="utf-8"))
+        if not catalog.snapshot or clean_references['snapshot_id'] != catalog.snapshot['snapshot_id']:
+            raise ValueError("reference and source snapshot must match")
+        missing = [q['id'] for q in questions if q['expected_behavior'] == 'answerable' and q['id'] not in clean_references['cases']]
+        if missing:
+            raise ValueError(f"missing clean references: {missing}")
     lexicon = (OntologyLexicon(catalog) if args.prompts == "metqa-formal"
-               else EvoLexicon(catalog, args.semantic_workspace, args.semantic_version))
+               else EvoLexicon(catalog, args.semantic_workspace, args.semantic_version, bfo_context=args.prompts != 'metqa-nobfo'))
     # sem usuário: o que exigiria confirmação vira needs_clarification (CONFIRMATION_REQUIRED); memória vazia (sem contaminação)
     mvp = MetQA(catalog, lexicon, shared, backend, Settings(timeout_s=60, readings=1 if args.prompts == "metqa-1r" else 2,
                                                              conservation=args.prompts != "metqa-noconserv"))
@@ -216,11 +210,19 @@ def main() -> int:
         r = res.response
         prows = sparql_rows(r.results)
         e = judge_row(q, r.status.value, prows, oracle)
+        if clean_references is not None and q['expected_behavior'] == 'answerable':
+            from eval.clean_reference import compare
+            ok = compare(r, clean_references['cases'][q['id']])
+            e['auto'] = 'match' if ok else ('diverge' if r.status.value in ('answered', 'no_results') else 'abstained')
+            e['auto_note'] = 'typed clean snapshot reference; explicit columns and units'
+            e['status_ok'] = r.status.value == clean_references['cases'][q['id']]['expected_status']
         e.update({"question": q["question"], "answer_text": r.answer_text, "sparql": r.sparql, "pipeline_rows": prows[:50],
                   "oracle_rows": oracle.get(q["id"]), "assumptions": q.get("assumptions"),
                   "diagnostics": [d.code for d in r.diagnostics], "elapsed_s": round(time.perf_counter() - t0, 1)})
         # a trilha inteira de cada pergunta (D9): o que as leituras disseram, a concordância, a releitura, o SPARQL e o papel das colunas
         e["result_shape"] = r.result_shape
+        e['provenance'] = r.to_dict()['provenance']
+        e['contract_version'] = r.contract_version
         trace_file.write(json.dumps({"id": q["id"], "trace": res.trace}, ensure_ascii=False, default=str) + "\n")
         trace_file.flush()
         try:                                        # trajetória de MEDIÇÃO (split "eval"): a evolução nunca a minera

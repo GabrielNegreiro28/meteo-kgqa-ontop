@@ -22,6 +22,7 @@ ROOT = Path(__file__).resolve().parent.parent.parent
 @dataclass(frozen=True)
 class Settings:
     env_file: Path = ROOT.parent / "METEOROLOGIA" / "kgqa.env"
+    snapshot: Path | None = None
     endpoint: str = "http://127.0.0.1:8080/sparql"
     workspace: Path = ROOT / ".evoontology"
     lexicon: str = "evo"
@@ -41,10 +42,19 @@ class Settings:
     reread: bool = True                            # releitura isolada do trecho de tempo quando a janela passa de um dia (plano, D1b)
     secret: bytes = field(default_factory=lambda: os.urandom(32), repr=False)   # assina as opções devolvidas (token de confirmação)
 
+    def __post_init__(self):
+        if not isinstance(self.secret, bytes) or not self.secret:
+            raise ValueError("secret must be nonempty bytes")
+        if self.readings not in (1, 2) or self.max_rounds < 0 or self.max_repairs not in (0, 1):
+            raise ValueError("invalid interpretation limits")
+        if self.timeout_s <= 0 or self.max_rows < 1 or self.max_question_chars < 1:
+            raise ValueError("execution limits must be positive")
+
     @classmethod
     def from_env(cls, **override) -> "Settings":
         env = os.environ
         base = dict(
+            snapshot=Path(env["METQA_SNAPSHOT"]) if env.get("METQA_SNAPSHOT") else None,
             env_file=Path(env["METQA_ENV"]) if env.get("METQA_ENV") else cls.env_file,
             endpoint=env.get("KGQA_ONTOP_ENDPOINT", cls.endpoint),
             workspace=Path(env["METQA_WORKSPACE"]) if env.get("METQA_WORKSPACE") else cls.workspace,
@@ -54,4 +64,6 @@ class Settings:
             record_trajectories=env.get("METQA_TRAJECTORIES") == "1",
             secret=env["METQA_SECRET"].encode() if env.get("METQA_SECRET") else None,
         )
+        if base["secret"] is None:
+            del base["secret"]
         return cls(**{**base, **{k: v for k, v in override.items() if v is not None}})

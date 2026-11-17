@@ -53,7 +53,8 @@ def app(script, catalog=SYNTH, store=None, **settings):
     return MetQA(catalog, OntologyLexicon(catalog), script, BACKEND, Settings(timeout_s=20, **settings), store or ExemplarStore(None))
 
 
-AVG = nir("met:AirTemperature", agg="avg", group_by=["station"], evidence={"measure": "temperatura", "calc": "média", "shape": "por estação"})
+AVG = nir("met:AirTemperature", agg="avg", group_by=["station"], evidence={"measure": "temperatura", "calc": "média", "shape": "por estação",
+          "stations": "todas as estações", "time": "todo o histórico"})
 
 
 # ---------------- concordância: segue sem perguntar ----------------
@@ -61,7 +62,7 @@ AVG = nir("met:AirTemperature", agg="avg", group_by=["station"], evidence={"meas
 def test_leituras_concordam_responde_igual_ao_oraculo_sem_perguntar():
     script = llm((AVG, AVG))
     user = ScriptedUser([])
-    r = app(script).ask("Qual foi a temperatura média por estação?", user=user).response
+    r = app(script).ask("Qual foi a temperatura média por estação, todas as estações, todo o histórico?", user=user).response
     assert r.status == Status.ANSWERED, [d.message for d in r.diagnostics]
     assert user.shown == []                                                     # sem risco: não incomoda o usuário
     assert {c["stage"] for c in script.calls} == {"interpret_A", "interpret_B"}  # SPARQL e texto saem de código
@@ -75,7 +76,7 @@ def test_leituras_concordam_responde_igual_ao_oraculo_sem_perguntar():
 
 def test_uma_leitura_so_quando_configurado():
     script = ScriptedLLM({"interpret_A": [json.dumps(AVG)]})
-    r = app(script, readings=1).ask("Qual foi a temperatura média por estação?").response
+    r = app(script, readings=1).ask("Qual foi a temperatura média por estação, todas as estações, todo o histórico?").response
     assert r.status == Status.ANSWERED and {c["stage"] for c in script.calls} == {"interpret_A"}
 
 
@@ -130,7 +131,7 @@ def test_usuario_escolhe_a_opcao_e_vira_exemplo_verificado():
 
 
 def test_usuario_corrige_em_texto_livre_e_a_correcao_volta_ao_llm():
-    user = ScriptedUser(["na verdade quero a máxima"])
+    user = ScriptedUser(["na verdade quero a máxima", "sim"])
     script = llm((MEAN, MAX), (MAX, MAX))
     r = app(script).ask(Q_AMB, user=user).response
     assert r.status == Status.ANSWERED

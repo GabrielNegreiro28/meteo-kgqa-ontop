@@ -1,0 +1,1691 @@
+questions:
+- id: E51
+  category: simples
+  question: Quanto marcou o menor bulbo úmido de SBAE em junho de 2016?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de bumido fora de [-40, 50] °C descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBAE']\nparts = []\nfor chunk\
+    \ in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao', 'bumido'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2016-06-01') & (chunk['hora_observacao']\
+    \ < '2016-07-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['bumido'] = pd.to_numeric(d['bumido'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['bumido'].between(-40, 50)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['bumido'].mean()\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\nresult = [(float(d['bumido'].min()),)]\n"
+- id: E52
+  category: simples
+  question: Em SBAN, qual foi a média do ponto de orvalho em setembro de 2017?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de temppo fora de [-50, 40] °C descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBAN']\nparts = []\nfor chunk\
+    \ in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao', 'temppo'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2017-09-01') & (chunk['hora_observacao']\
+    \ < '2017-10-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['temppo'] = pd.to_numeric(d['temppo'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['temppo'].between(-50, 40)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['temppo'].mean()\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\nresult = [(float(d['temppo'].mean()),)]\n"
+- id: E53
+  category: simples
+  question: Qual foi o QNH mais alto de SBBG em maio de 2018?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de qnh fora de [870, 1085] hPa descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBBG']\nparts = []\nfor chunk\
+    \ in pd.read_csv('pressao.csv', usecols=['sigla', 'hora_observacao', 'qnh'], chunksize=100000):\n\
+    \    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2018-05-01') & (chunk['hora_observacao']\
+    \ < '2018-06-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['qnh'] = pd.to_numeric(d['qnh'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['qnh'].between(870, 1085)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['qnh'].mean()\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\nresult = [(float(d['qnh'].max()),)]\n"
+- id: E54
+  category: simples
+  question: Quero saber a menor umidade relativa de SBBW em outubro de 2019.
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de ur fora de [0, 100] % descartados. Duplicatas no mesmo instante reduzidas
+    à média dos valores válidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBBW']\nparts = []\nfor chunk\
+    \ in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao', 'ur'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2019-10-01') & (chunk['hora_observacao']\
+    \ < '2019-11-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['ur'] = pd.to_numeric(d['ur'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['ur'].between(0, 100)]\nd = d.groupby(['sigla', 'hora_observacao'], as_index=False)['ur'].mean()\n\
+    assert not d.empty, 'Sem observações válidas após os filtros'\nresult = [(float(d['ur'].min()),)]\n"
+- id: E55
+  category: simples
+  question: A que altura, em metros, estava a base de nuvem mais baixa de SBCB em
+    abril de 2020?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de altnuvem fora de [0, 2000] dezenas de metros descartados. Um boletim
+    por estação e instante, usando a menor base válida entre camadas; não equivale
+    necessariamente ao teto. Dezenas de metros convertidas para metros.
+  oracle_pandas: "import pandas as pd\nstations = ['SBCB']\nparts = []\nfor chunk\
+    \ in pd.read_csv('nuvem.csv', usecols=['sigla', 'hora_observacao', 'altnuvem'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2020-04-01') & (chunk['hora_observacao']\
+    \ < '2020-05-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['altnuvem'] = pd.to_numeric(d['altnuvem'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['altnuvem'].between(0, 2000)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['altnuvem'].min()\nd['altnuvem'] *= 10\nassert not d.empty,\
+    \ 'Sem observações válidas após os filtros'\nresult = [(float(d['altnuvem'].min()),)]\n"
+- id: E56
+  category: simples
+  question: Qual foi a rajada máxima de SBSC no ano de 2021, em nós?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de rajada fora de [0, 200] nós descartados. Um boletim por estação e
+    instante, usando o maior valor entre cabeceiras.
+  oracle_pandas: "import pandas as pd\nstations = ['SBSC']\nparts = []\nfor chunk\
+    \ in pd.read_csv('vento.csv', usecols=['sigla', 'hora_observacao', 'rajada'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2021-01-01') & (chunk['hora_observacao']\
+    \ < '2022-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['rajada'] = pd.to_numeric(d['rajada'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['rajada'].between(0, 200)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['rajada'].max()\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\nresult = [(float(d['rajada'].max()),)]\n"
+- id: E57
+  category: simples
+  question: Nos boletins de SBCJ de março de 2022, qual foi a maior duração de chuva
+    em minutos?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de durpreci fora de [0, 60] minutos descartados. Duplicatas no mesmo
+    instante reduzidas à média dos valores válidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBCJ']\nparts = []\nfor chunk\
+    \ in pd.read_csv('precipitacao.csv', usecols=['sigla', 'hora_observacao', 'durpreci'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2022-03-01') & (chunk['hora_observacao']\
+    \ < '2022-04-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['durpreci'] = pd.to_numeric(d['durpreci'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['durpreci'].between(0, 60)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['durpreci'].mean()\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\nresult = [(float(d['durpreci'].max()),)]\n"
+- id: E58
+  category: simples
+  question: Quantos milímetros de chuva foram registrados em SBDB em janeiro de 2023,
+    somando apenas boletins de hora cheia?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de precip fora de [0, 300] mm descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos. Somente horas cheias para não somar janelas
+    de chuva sobrepostas; lacunas não são preenchidas.
+  oracle_pandas: "import pandas as pd\nstations = ['SBDB']\nparts = []\nfor chunk\
+    \ in pd.read_csv('precipitacao.csv', usecols=['sigla', 'hora_observacao', 'precip'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2023-01-01') & (chunk['hora_observacao']\
+    \ < '2023-02-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['precip'] = pd.to_numeric(d['precip'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['precip'].between(0, 300)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['precip'].mean()\nd = d.loc[(d['hora_observacao'].dt.minute\
+    \ == 0) & (d['hora_observacao'].dt.second == 0)]\nassert not d.empty, 'Sem observações\
+    \ válidas após os filtros'\nresult = [(float(d['precip'].sum()),)]\n"
+- id: E59R1
+  category: simples
+  question: Qual foi a menor visibilidade predominante de SBNF em julho de 2024, em
+    metros?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de visibpre fora de [0, 2000] dezenas de metros descartados. Duplicatas
+    no mesmo instante reduzidas à média dos valores válidos. Dezenas de metros convertidas
+    para metros. 2000 representa 20000 m ou mais, mantido como limite inferior de
+    20000 m.
+  oracle_pandas: "import pandas as pd\nstations = ['SBNF']\nparts = []\nfor chunk\
+    \ in pd.read_csv('visibilidade.csv', usecols=['sigla', 'hora_observacao', 'visibpre'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2024-07-01') & (chunk['hora_observacao']\
+    \ < '2024-08-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['visibpre'] = pd.to_numeric(d['visibpre'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['visibpre'].between(0, 2000)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['visibpre'].mean()\nd['visibpre'] *= 10\nassert not d.empty,\
+    \ 'Sem observações válidas após os filtros'\nresult = [(float(d['visibpre'].min()),)]\n"
+- id: E60
+  category: simples
+  question: Em dezembro de 2025, qual a velocidade média do vento de SBES, em nós?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de velvento fora de [0, 150] nós descartados. Um boletim por estação
+    e instante, usando o maior valor entre cabeceiras.
+  oracle_pandas: "import pandas as pd\nstations = ['SBES']\nparts = []\nfor chunk\
+    \ in pd.read_csv('vento.csv', usecols=['sigla', 'hora_observacao', 'velvento'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2025-12-01') & (chunk['hora_observacao']\
+    \ < '2026-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['velvento'] = pd.to_numeric(d['velvento'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['velvento'].between(0, 150)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['velvento'].max()\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\nresult = [(float(d['velvento'].mean()),)]\n"
+- id: E61
+  category: simples
+  question: Qual foi a maior temperatura do ar de SBFN em novembro de 2016?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de bseco fora de [-40, 60] °C descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBFN']\nparts = []\nfor chunk\
+    \ in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao', 'bseco'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2016-11-01') & (chunk['hora_observacao']\
+    \ < '2016-12-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['bseco'] = pd.to_numeric(d['bseco'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['bseco'].between(-40, 60)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['bseco'].mean()\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\nresult = [(float(d['bseco'].max()),)]\n"
+- id: E62
+  category: simples
+  question: Quantos boletins de SBGP em fevereiro de 2017 têm valor válido de bulbo
+    úmido?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de bumido fora de [-40, 50] °C descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBGP']\nparts = []\nfor chunk\
+    \ in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao', 'bumido'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2017-02-01') & (chunk['hora_observacao']\
+    \ < '2017-03-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['bumido'] = pd.to_numeric(d['bumido'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['bumido'].between(-40, 50)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['bumido'].mean()\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\nresult = [(int(d['bumido'].count()),)]\n"
+- id: E63
+  category: simples
+  question: Qual a média de umidade relativa registrada em SBGV entre 5 e 15 de agosto
+    de 2018, com os dois dias incluídos?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de ur fora de [0, 100] % descartados. Duplicatas no mesmo instante reduzidas
+    à média dos valores válidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBGV']\nparts = []\nfor chunk\
+    \ in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao', 'ur'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2018-08-05') & (chunk['hora_observacao']\
+    \ < '2018-08-16')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['ur'] = pd.to_numeric(d['ur'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['ur'].between(0, 100)]\nd = d.groupby(['sigla', 'hora_observacao'], as_index=False)['ur'].mean()\n\
+    assert not d.empty, 'Sem observações válidas após os filtros'\nresult = [(float(d['ur'].mean()),)]\n"
+- id: E64
+  category: simples
+  question: Em SBIH, a pressão QNH média de abril de 2019 foi de quantos hPa?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de qnh fora de [870, 1085] hPa descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBIH']\nparts = []\nfor chunk\
+    \ in pd.read_csv('pressao.csv', usecols=['sigla', 'hora_observacao', 'qnh'], chunksize=100000):\n\
+    \    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2019-04-01') & (chunk['hora_observacao']\
+    \ < '2019-05-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['qnh'] = pd.to_numeric(d['qnh'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['qnh'].between(870, 1085)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['qnh'].mean()\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\nresult = [(float(d['qnh'].mean()),)]\n"
+- id: E65
+  category: simples
+  question: Qual o menor ponto de orvalho observado em SBIT em agosto de 2020?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de temppo fora de [-50, 40] °C descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBIT']\nparts = []\nfor chunk\
+    \ in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao', 'temppo'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2020-08-01') & (chunk['hora_observacao']\
+    \ < '2020-09-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['temppo'] = pd.to_numeric(d['temppo'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['temppo'].between(-50, 40)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['temppo'].mean()\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\nresult = [(float(d['temppo'].min()),)]\n"
+- id: E66
+  category: simples
+  question: Quero a temperatura do ar média de SBJD em outubro de 2021.
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de bseco fora de [-40, 60] °C descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBJD']\nparts = []\nfor chunk\
+    \ in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao', 'bseco'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2021-10-01') & (chunk['hora_observacao']\
+    \ < '2021-11-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['bseco'] = pd.to_numeric(d['bseco'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['bseco'].between(-40, 60)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['bseco'].mean()\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\nresult = [(float(d['bseco'].mean()),)]\n"
+- id: E67
+  category: simples
+  question: Quanto atingiu a maior velocidade de vento registrada em SBJE em junho
+    de 2022, em nós?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de velvento fora de [0, 150] nós descartados. Um boletim por estação
+    e instante, usando o maior valor entre cabeceiras.
+  oracle_pandas: "import pandas as pd\nstations = ['SBJE']\nparts = []\nfor chunk\
+    \ in pd.read_csv('vento.csv', usecols=['sigla', 'hora_observacao', 'velvento'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2022-06-01') & (chunk['hora_observacao']\
+    \ < '2022-07-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['velvento'] = pd.to_numeric(d['velvento'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['velvento'].between(0, 150)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['velvento'].max()\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\nresult = [(float(d['velvento'].max()),)]\n"
+- id: E68
+  category: simples
+  question: Qual foi o maior valor de bulbo úmido em SBJI em dezembro de 2023?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de bumido fora de [-40, 50] °C descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBJI']\nparts = []\nfor chunk\
+    \ in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao', 'bumido'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2023-12-01') & (chunk['hora_observacao']\
+    \ < '2024-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['bumido'] = pd.to_numeric(d['bumido'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['bumido'].between(-40, 50)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['bumido'].mean()\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\nresult = [(float(d['bumido'].max()),)]\n"
+- id: E69
+  category: simples
+  question: Qual a umidade relativa máxima de SBJR em fevereiro de 2024?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de ur fora de [0, 100] % descartados. Duplicatas no mesmo instante reduzidas
+    à média dos valores válidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBJR']\nparts = []\nfor chunk\
+    \ in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao', 'ur'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2024-02-01') & (chunk['hora_observacao']\
+    \ < '2024-03-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['ur'] = pd.to_numeric(d['ur'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['ur'].between(0, 100)]\nd = d.groupby(['sigla', 'hora_observacao'], as_index=False)['ur'].mean()\n\
+    assert not d.empty, 'Sem observações válidas após os filtros'\nresult = [(float(d['ur'].max()),)]\n"
+- id: E70
+  category: simples
+  question: Quantas observações de SBNM em setembro de 2025 informaram pressão QNH
+    válida?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de qnh fora de [870, 1085] hPa descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBNM']\nparts = []\nfor chunk\
+    \ in pd.read_csv('pressao.csv', usecols=['sigla', 'hora_observacao', 'qnh'], chunksize=100000):\n\
+    \    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2025-09-01') & (chunk['hora_observacao']\
+    \ < '2025-10-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['qnh'] = pd.to_numeric(d['qnh'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['qnh'].between(870, 1085)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['qnh'].mean()\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\nresult = [(int(d['qnh'].count()),)]\n"
+- id: E71
+  category: simples
+  question: Qual a menor temperatura do ar em SBPC em julho de 2016?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de bseco fora de [-40, 60] °C descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBPC']\nparts = []\nfor chunk\
+    \ in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao', 'bseco'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2016-07-01') & (chunk['hora_observacao']\
+    \ < '2016-08-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['bseco'] = pd.to_numeric(d['bseco'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['bseco'].between(-40, 60)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['bseco'].mean()\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\nresult = [(float(d['bseco'].min()),)]\n"
+- id: E72
+  category: simples
+  question: Até quanto chegou a duração da chuva em um boletim de SBPB em março de
+    2017?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de durpreci fora de [0, 60] minutos descartados. Duplicatas no mesmo
+    instante reduzidas à média dos valores válidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBPB']\nparts = []\nfor chunk\
+    \ in pd.read_csv('precipitacao.csv', usecols=['sigla', 'hora_observacao', 'durpreci'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2017-03-01') & (chunk['hora_observacao']\
+    \ < '2017-04-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['durpreci'] = pd.to_numeric(d['durpreci'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['durpreci'].between(0, 60)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['durpreci'].mean()\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\nresult = [(float(d['durpreci'].max()),)]\n"
+- id: E73
+  category: simples
+  question: Qual foi a visibilidade predominante mínima de SBPK em agosto de 2018,
+    expressa em metros?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de visibpre fora de [0, 2000] dezenas de metros descartados. Duplicatas
+    no mesmo instante reduzidas à média dos valores válidos. Dezenas de metros convertidas
+    para metros. 2000 representa 20000 m ou mais, mantido como limite inferior de
+    20000 m.
+  oracle_pandas: "import pandas as pd\nstations = ['SBPK']\nparts = []\nfor chunk\
+    \ in pd.read_csv('visibilidade.csv', usecols=['sigla', 'hora_observacao', 'visibpre'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2018-08-01') & (chunk['hora_observacao']\
+    \ < '2018-09-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['visibpre'] = pd.to_numeric(d['visibpre'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['visibpre'].between(0, 2000)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['visibpre'].mean()\nd['visibpre'] *= 10\nassert not d.empty,\
+    \ 'Sem observações válidas após os filtros'\nresult = [(float(d['visibpre'].min()),)]\n"
+- id: E74
+  category: simples
+  question: Qual foi o QNH mínimo de SBRD em novembro de 2019?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de qnh fora de [870, 1085] hPa descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBRD']\nparts = []\nfor chunk\
+    \ in pd.read_csv('pressao.csv', usecols=['sigla', 'hora_observacao', 'qnh'], chunksize=100000):\n\
+    \    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2019-11-01') & (chunk['hora_observacao']\
+    \ < '2019-12-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['qnh'] = pd.to_numeric(d['qnh'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['qnh'].between(870, 1085)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['qnh'].mean()\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\nresult = [(float(d['qnh'].min()),)]\n"
+- id: E75
+  category: condicao
+  question: Em quantos boletins de SBBI em 2016 o ponto de orvalho ficou abaixo de
+    5 °C?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de temppo fora de [-50, 40] °C descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBBI']\nparts = []\nfor chunk\
+    \ in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao', 'temppo'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2016-01-01') & (chunk['hora_observacao']\
+    \ < '2017-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['temppo'] = pd.to_numeric(d['temppo'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['temppo'].between(-50, 40)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['temppo'].mean()\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\nresult = [(int((d['temppo'] < 5).sum()),)]\n"
+- id: E76
+  category: condicao
+  question: Quantas observações de SBBP em 2017 tiveram umidade relativa menor que
+    30%?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de ur fora de [0, 100] % descartados. Duplicatas no mesmo instante reduzidas
+    à média dos valores válidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBBP']\nparts = []\nfor chunk\
+    \ in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao', 'ur'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2017-01-01') & (chunk['hora_observacao']\
+    \ < '2018-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['ur'] = pd.to_numeric(d['ur'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['ur'].between(0, 100)]\nd = d.groupby(['sigla', 'hora_observacao'], as_index=False)['ur'].mean()\n\
+    assert not d.empty, 'Sem observações válidas após os filtros'\nresult = [(int((d['ur']\
+    \ < 30).sum()),)]\n"
+- id: E77
+  category: condicao
+  question: Conte as vezes em que o QNH de SBBU passou de 1020 hPa em 2018.
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de qnh fora de [870, 1085] hPa descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBBU']\nparts = []\nfor chunk\
+    \ in pd.read_csv('pressao.csv', usecols=['sigla', 'hora_observacao', 'qnh'], chunksize=100000):\n\
+    \    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2018-01-01') & (chunk['hora_observacao']\
+    \ < '2019-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['qnh'] = pd.to_numeric(d['qnh'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['qnh'].between(870, 1085)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['qnh'].mean()\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\nresult = [(int((d['qnh'] > 1020).sum()),)]\n"
+- id: E78
+  category: condicao
+  question: Em 2019, quantos boletins de SBCC registraram bulbo úmido acima de 25
+    °C?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de bumido fora de [-40, 50] °C descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBCC']\nparts = []\nfor chunk\
+    \ in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao', 'bumido'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2019-01-01') & (chunk['hora_observacao']\
+    \ < '2020-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['bumido'] = pd.to_numeric(d['bumido'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['bumido'].between(-40, 50)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['bumido'].mean()\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\nresult = [(int((d['bumido'] > 25).sum()),)]\n"
+- id: E79
+  category: condicao
+  question: Quantos boletins de SBCN em 2020 apresentaram vento superior a 15 nós
+    em pelo menos uma cabeceira?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de velvento fora de [0, 150] nós descartados. Um boletim por estação
+    e instante, usando o maior valor entre cabeceiras.
+  oracle_pandas: "import pandas as pd\nstations = ['SBCN']\nparts = []\nfor chunk\
+    \ in pd.read_csv('vento.csv', usecols=['sigla', 'hora_observacao', 'velvento'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2020-01-01') & (chunk['hora_observacao']\
+    \ < '2021-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['velvento'] = pd.to_numeric(d['velvento'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['velvento'].between(0, 150)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['velvento'].max()\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\nresult = [(int((d['velvento'] > 15).sum()),)]\n"
+- id: E80
+  category: condicao
+  question: Em SBGM, quantas observações de 2021 indicaram visibilidade predominante
+    abaixo de 3000 metros?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de visibpre fora de [0, 2000] dezenas de metros descartados. Duplicatas
+    no mesmo instante reduzidas à média dos valores válidos. Dezenas de metros convertidas
+    para metros. 2000 representa 20000 m ou mais, mantido como limite inferior de
+    20000 m.
+  oracle_pandas: "import pandas as pd\nstations = ['SBGM']\nparts = []\nfor chunk\
+    \ in pd.read_csv('visibilidade.csv', usecols=['sigla', 'hora_observacao', 'visibpre'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2021-01-01') & (chunk['hora_observacao']\
+    \ < '2022-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['visibpre'] = pd.to_numeric(d['visibpre'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['visibpre'].between(0, 2000)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['visibpre'].mean()\nd['visibpre'] *= 10\nassert not d.empty,\
+    \ 'Sem observações válidas após os filtros'\nresult = [(int((d['visibpre'] < 3000).sum()),)]\n"
+- id: E81
+  category: condicao
+  question: Em quantos boletins de SBGW de 2022 havia base de nuvem inferior a 500
+    metros?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de altnuvem fora de [0, 2000] dezenas de metros descartados. Um boletim
+    por estação e instante, usando a menor base válida entre camadas; não equivale
+    necessariamente ao teto. Dezenas de metros convertidas para metros.
+  oracle_pandas: "import pandas as pd\nstations = ['SBGW']\nparts = []\nfor chunk\
+    \ in pd.read_csv('nuvem.csv', usecols=['sigla', 'hora_observacao', 'altnuvem'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2022-01-01') & (chunk['hora_observacao']\
+    \ < '2023-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['altnuvem'] = pd.to_numeric(d['altnuvem'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['altnuvem'].between(0, 2000)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['altnuvem'].min()\nd['altnuvem'] *= 10\nassert not d.empty,\
+    \ 'Sem observações válidas após os filtros'\nresult = [(int((d['altnuvem'] < 500).sum()),)]\n"
+- id: E82
+  category: condicao
+  question: Quantos registros de SBLS em 2023 informaram chuva com duração de pelo
+    menos 45 minutos?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de durpreci fora de [0, 60] minutos descartados. Duplicatas no mesmo
+    instante reduzidas à média dos valores válidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBLS']\nparts = []\nfor chunk\
+    \ in pd.read_csv('precipitacao.csv', usecols=['sigla', 'hora_observacao', 'durpreci'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2023-01-01') & (chunk['hora_observacao']\
+    \ < '2024-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['durpreci'] = pd.to_numeric(d['durpreci'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['durpreci'].between(0, 60)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['durpreci'].mean()\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\nresult = [(int((d['durpreci'] >= 45).sum()),)]\n"
+- id: E83
+  category: condicao
+  question: Quantas observações de SBML em 2024 tiveram temperatura do ar igual ou
+    superior a 32 °C?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de bseco fora de [-40, 60] °C descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBML']\nparts = []\nfor chunk\
+    \ in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao', 'bseco'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2024-01-01') & (chunk['hora_observacao']\
+    \ < '2025-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['bseco'] = pd.to_numeric(d['bseco'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['bseco'].between(-40, 60)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['bseco'].mean()\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\nresult = [(int((d['bseco'] >= 32).sum()),)]\n"
+- id: E84
+  category: condicao
+  question: Em 2025, quantos boletins de SBMO apresentaram QNH abaixo de 1005 hPa?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de qnh fora de [870, 1085] hPa descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBMO']\nparts = []\nfor chunk\
+    \ in pd.read_csv('pressao.csv', usecols=['sigla', 'hora_observacao', 'qnh'], chunksize=100000):\n\
+    \    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2025-01-01') & (chunk['hora_observacao']\
+    \ < '2026-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['qnh'] = pd.to_numeric(d['qnh'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['qnh'].between(870, 1085)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['qnh'].mean()\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\nresult = [(int((d['qnh'] < 1005).sum()),)]\n"
+- id: E85
+  category: condicao
+  question: Em quantos boletins de SBNT de 2016 o bulbo úmido foi inferior a 20 °C?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de bumido fora de [-40, 50] °C descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBNT']\nparts = []\nfor chunk\
+    \ in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao', 'bumido'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2016-01-01') & (chunk['hora_observacao']\
+    \ < '2017-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['bumido'] = pd.to_numeric(d['bumido'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['bumido'].between(-40, 50)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['bumido'].mean()\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\nresult = [(int((d['bumido'] < 20).sum()),)]\n"
+- id: E86
+  category: condicao
+  question: Quantos boletins de SBPA em 2017 registraram rajada de pelo menos 25 nós?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de rajada fora de [0, 200] nós descartados. Um boletim por estação e
+    instante, usando o maior valor entre cabeceiras.
+  oracle_pandas: "import pandas as pd\nstations = ['SBPA']\nparts = []\nfor chunk\
+    \ in pd.read_csv('vento.csv', usecols=['sigla', 'hora_observacao', 'rajada'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2017-01-01') & (chunk['hora_observacao']\
+    \ < '2018-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['rajada'] = pd.to_numeric(d['rajada'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['rajada'].between(0, 200)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['rajada'].max()\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\nresult = [(int((d['rajada'] >= 25).sum()),)]\n"
+- id: E87
+  category: condicao
+  question: Em quantos dias de 2018 a mínima de temperatura do ar de SBPR ficou abaixo
+    de 12 °C?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de bseco fora de [-40, 60] °C descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos. Contam-se datas locais com pelo menos uma
+    observação válida; dias sem dados não contam.
+  oracle_pandas: "import pandas as pd\nstations = ['SBPR']\nparts = []\nfor chunk\
+    \ in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao', 'bseco'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2018-01-01') & (chunk['hora_observacao']\
+    \ < '2019-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['bseco'] = pd.to_numeric(d['bseco'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['bseco'].between(-40, 60)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['bseco'].mean()\n\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\ns = d.groupby(d['hora_observacao'].dt.date)['bseco'].min()\n\
+    result = [(int((s < 12).sum()),)]\n"
+- id: E88
+  category: condicao
+  question: Quantos dias de 2019 tiveram umidade relativa mínima abaixo de 25% em
+    SBRP?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de ur fora de [0, 100] % descartados. Duplicatas no mesmo instante reduzidas
+    à média dos valores válidos. Contam-se datas locais com pelo menos uma observação
+    válida; dias sem dados não contam.
+  oracle_pandas: "import pandas as pd\nstations = ['SBRP']\nparts = []\nfor chunk\
+    \ in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao', 'ur'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2019-01-01') & (chunk['hora_observacao']\
+    \ < '2020-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['ur'] = pd.to_numeric(d['ur'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['ur'].between(0, 100)]\nd = d.groupby(['sigla', 'hora_observacao'], as_index=False)['ur'].mean()\n\
+    \nassert not d.empty, 'Sem observações válidas após os filtros'\ns = d.groupby(d['hora_observacao'].dt.date)['ur'].min()\n\
+    result = [(int((s < 25).sum()),)]\n"
+- id: E89
+  category: condicao
+  question: Em SBSJ, quantos dias de 2020 tiveram temperatura máxima acima de 30 °C?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de bseco fora de [-40, 60] °C descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos. Contam-se datas locais com pelo menos uma
+    observação válida; dias sem dados não contam.
+  oracle_pandas: "import pandas as pd\nstations = ['SBSJ']\nparts = []\nfor chunk\
+    \ in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao', 'bseco'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2020-01-01') & (chunk['hora_observacao']\
+    \ < '2021-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['bseco'] = pd.to_numeric(d['bseco'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['bseco'].between(-40, 60)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['bseco'].mean()\n\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\ns = d.groupby(d['hora_observacao'].dt.date)['bseco'].max()\n\
+    result = [(int((s > 30).sum()),)]\n"
+- id: E90
+  category: condicao
+  question: Em 2021, em quantos dias SBSM teve pelo menos uma leitura de visibilidade
+    predominante abaixo de 1000 metros?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de visibpre fora de [0, 2000] dezenas de metros descartados. Duplicatas
+    no mesmo instante reduzidas à média dos valores válidos. Dezenas de metros convertidas
+    para metros. 2000 representa 20000 m ou mais, mantido como limite inferior de
+    20000 m. Contam-se datas locais com pelo menos uma observação válida; dias sem
+    dados não contam.
+  oracle_pandas: "import pandas as pd\nstations = ['SBSM']\nparts = []\nfor chunk\
+    \ in pd.read_csv('visibilidade.csv', usecols=['sigla', 'hora_observacao', 'visibpre'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2021-01-01') & (chunk['hora_observacao']\
+    \ < '2022-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['visibpre'] = pd.to_numeric(d['visibpre'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['visibpre'].between(0, 2000)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['visibpre'].mean()\nd['visibpre'] *= 10\n\nassert not d.empty,\
+    \ 'Sem observações válidas após os filtros'\ns = d.groupby(d['hora_observacao'].dt.date)['visibpre'].min()\n\
+    result = [(int((s < 1000).sum()),)]\n"
+- id: E91
+  category: serie_ranking
+  question: Mostre as temperaturas do ar mínimas mensais de SBSR em 2016.
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de bseco fora de [-40, 60] °C descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos. Meses com dados válidos em ordem cronológica;
+    meses ausentes omitidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBSR']\nparts = []\nfor chunk\
+    \ in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao', 'bseco'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2016-01-01') & (chunk['hora_observacao']\
+    \ < '2017-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['bseco'] = pd.to_numeric(d['bseco'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['bseco'].between(-40, 60)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['bseco'].mean()\n\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\ns = d.groupby(d['hora_observacao'].dt.month)['bseco'].min()\n\
+    result = [(int(month), float(value)) for month, value in s.items()]\n"
+- id: E92
+  category: serie_ranking
+  question: Como ficaram as médias de bulbo úmido de SBST por mês de 2017?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de bumido fora de [-40, 50] °C descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos. Meses com dados válidos em ordem cronológica;
+    meses ausentes omitidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBST']\nparts = []\nfor chunk\
+    \ in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao', 'bumido'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2017-01-01') & (chunk['hora_observacao']\
+    \ < '2018-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['bumido'] = pd.to_numeric(d['bumido'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['bumido'].between(-40, 50)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['bumido'].mean()\n\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\ns = d.groupby(d['hora_observacao'].dt.month)['bumido'].mean()\n\
+    result = [(int(month), float(value)) for month, value in s.items()]\n"
+- id: E93
+  category: serie_ranking
+  question: Liste, em metros, a menor base de nuvem registrada em SBTA em cada mês
+    de 2018.
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de altnuvem fora de [0, 2000] dezenas de metros descartados. Um boletim
+    por estação e instante, usando a menor base válida entre camadas; não equivale
+    necessariamente ao teto. Dezenas de metros convertidas para metros. Meses com
+    dados válidos em ordem cronológica; meses ausentes omitidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBTA']\nparts = []\nfor chunk\
+    \ in pd.read_csv('nuvem.csv', usecols=['sigla', 'hora_observacao', 'altnuvem'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2018-01-01') & (chunk['hora_observacao']\
+    \ < '2019-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['altnuvem'] = pd.to_numeric(d['altnuvem'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['altnuvem'].between(0, 2000)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['altnuvem'].min()\nd['altnuvem'] *= 10\n\nassert not d.empty,\
+    \ 'Sem observações válidas após os filtros'\ns = d.groupby(d['hora_observacao'].dt.month)['altnuvem'].min()\n\
+    result = [(int(month), float(value)) for month, value in s.items()]\n"
+- id: E94
+  category: serie_ranking
+  question: Qual foi a duração máxima da chuva em um boletim de SBTB em cada mês de
+    2019?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de durpreci fora de [0, 60] minutos descartados. Duplicatas no mesmo
+    instante reduzidas à média dos valores válidos. Meses com dados válidos em ordem
+    cronológica; meses ausentes omitidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBTB']\nparts = []\nfor chunk\
+    \ in pd.read_csv('precipitacao.csv', usecols=['sigla', 'hora_observacao', 'durpreci'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2019-01-01') & (chunk['hora_observacao']\
+    \ < '2020-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['durpreci'] = pd.to_numeric(d['durpreci'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['durpreci'].between(0, 60)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['durpreci'].mean()\n\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\ns = d.groupby(d['hora_observacao'].dt.month)['durpreci'].max()\n\
+    result = [(int(month), float(value)) for month, value in s.items()]\n"
+- id: E95
+  category: serie_ranking
+  question: Preciso do ponto de orvalho médio de SBTC mês a mês em 2020.
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de temppo fora de [-50, 40] °C descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos. Meses com dados válidos em ordem cronológica;
+    meses ausentes omitidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBTC']\nparts = []\nfor chunk\
+    \ in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao', 'temppo'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2020-01-01') & (chunk['hora_observacao']\
+    \ < '2021-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['temppo'] = pd.to_numeric(d['temppo'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['temppo'].between(-50, 40)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['temppo'].mean()\n\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\ns = d.groupby(d['hora_observacao'].dt.month)['temppo'].mean()\n\
+    result = [(int(month), float(value)) for month, value in s.items()]\n"
+- id: E96
+  category: serie_ranking
+  question: Qual a umidade relativa mínima de SBTD em cada mês de 2021?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de ur fora de [0, 100] % descartados. Duplicatas no mesmo instante reduzidas
+    à média dos valores válidos. Meses com dados válidos em ordem cronológica; meses
+    ausentes omitidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBTD']\nparts = []\nfor chunk\
+    \ in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao', 'ur'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2021-01-01') & (chunk['hora_observacao']\
+    \ < '2022-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['ur'] = pd.to_numeric(d['ur'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['ur'].between(0, 100)]\nd = d.groupby(['sigla', 'hora_observacao'], as_index=False)['ur'].mean()\n\
+    \nassert not d.empty, 'Sem observações válidas após os filtros'\ns = d.groupby(d['hora_observacao'].dt.month)['ur'].min()\n\
+    result = [(int(month), float(value)) for month, value in s.items()]\n"
+- id: E97
+  category: serie_ranking
+  question: Mostre os máximos mensais de QNH de SBTF em 2022.
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de qnh fora de [870, 1085] hPa descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos. Meses com dados válidos em ordem cronológica;
+    meses ausentes omitidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBTF']\nparts = []\nfor chunk\
+    \ in pd.read_csv('pressao.csv', usecols=['sigla', 'hora_observacao', 'qnh'], chunksize=100000):\n\
+    \    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2022-01-01') & (chunk['hora_observacao']\
+    \ < '2023-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['qnh'] = pd.to_numeric(d['qnh'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['qnh'].between(870, 1085)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['qnh'].mean()\n\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\ns = d.groupby(d['hora_observacao'].dt.month)['qnh'].max()\n\
+    result = [(int(month), float(value)) for month, value in s.items()]\n"
+- id: E98
+  category: serie_ranking
+  question: Como variou a velocidade média do vento de SBTG ao longo dos meses de
+    2023?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de velvento fora de [0, 150] nós descartados. Um boletim por estação
+    e instante, usando o maior valor entre cabeceiras. Meses com dados válidos em
+    ordem cronológica; meses ausentes omitidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBTG']\nparts = []\nfor chunk\
+    \ in pd.read_csv('vento.csv', usecols=['sigla', 'hora_observacao', 'velvento'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2023-01-01') & (chunk['hora_observacao']\
+    \ < '2024-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['velvento'] = pd.to_numeric(d['velvento'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['velvento'].between(0, 150)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['velvento'].max()\n\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\ns = d.groupby(d['hora_observacao'].dt.month)['velvento'].mean()\n\
+    result = [(int(month), float(value)) for month, value in s.items()]\n"
+- id: E99
+  category: serie_ranking
+  question: Qual foi a maior temperatura do ar de SBTS em cada ano entre 2016 e 2025?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de bseco fora de [-40, 60] °C descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos. Anos com dados válidos em ordem cronológica;
+    anos ausentes omitidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBTS']\nparts = []\nfor chunk\
+    \ in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao', 'bseco'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2016-01-01') & (chunk['hora_observacao']\
+    \ < '2026-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['bseco'] = pd.to_numeric(d['bseco'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['bseco'].between(-40, 60)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['bseco'].mean()\n\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\ns = d.groupby(d['hora_observacao'].dt.year)['bseco'].max()\n\
+    result = [(int(year), float(value)) for year, value in s.items()]\n"
+- id: E100
+  category: serie_ranking
+  question: De 2016 até 2025, apresente a pressão QNH média anual de SBUF.
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de qnh fora de [870, 1085] hPa descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos. Anos com dados válidos em ordem cronológica;
+    anos ausentes omitidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBUF']\nparts = []\nfor chunk\
+    \ in pd.read_csv('pressao.csv', usecols=['sigla', 'hora_observacao', 'qnh'], chunksize=100000):\n\
+    \    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2016-01-01') & (chunk['hora_observacao']\
+    \ < '2026-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['qnh'] = pd.to_numeric(d['qnh'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['qnh'].between(870, 1085)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['qnh'].mean()\n\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\ns = d.groupby(d['hora_observacao'].dt.year)['qnh'].mean()\n\
+    result = [(int(year), float(value)) for year, value in s.items()]\n"
+- id: E101
+  category: serie_ranking
+  question: Quais as menores visibilidades predominantes de SBUY por ano, de 2016
+    a 2025, em metros?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de visibpre fora de [0, 2000] dezenas de metros descartados. Duplicatas
+    no mesmo instante reduzidas à média dos valores válidos. Dezenas de metros convertidas
+    para metros. 2000 representa 20000 m ou mais, mantido como limite inferior de
+    20000 m. Anos com dados válidos em ordem cronológica; anos ausentes omitidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBUY']\nparts = []\nfor chunk\
+    \ in pd.read_csv('visibilidade.csv', usecols=['sigla', 'hora_observacao', 'visibpre'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2016-01-01') & (chunk['hora_observacao']\
+    \ < '2026-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['visibpre'] = pd.to_numeric(d['visibpre'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['visibpre'].between(0, 2000)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['visibpre'].mean()\nd['visibpre'] *= 10\n\nassert not d.empty,\
+    \ 'Sem observações válidas após os filtros'\ns = d.groupby(d['hora_observacao'].dt.year)['visibpre'].min()\n\
+    result = [(int(year), float(value)) for year, value in s.items()]\n"
+- id: E102
+  category: serie_ranking
+  question: Quero as médias anuais de bulbo úmido de SBUL entre 2016 e 2025.
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de bumido fora de [-40, 50] °C descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos. Anos com dados válidos em ordem cronológica;
+    anos ausentes omitidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBUL']\nparts = []\nfor chunk\
+    \ in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao', 'bumido'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2016-01-01') & (chunk['hora_observacao']\
+    \ < '2026-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['bumido'] = pd.to_numeric(d['bumido'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['bumido'].between(-40, 50)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['bumido'].mean()\n\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\ns = d.groupby(d['hora_observacao'].dt.year)['bumido'].mean()\n\
+    result = [(int(year), float(value)) for year, value in s.items()]\n"
+- id: E103
+  category: serie_ranking
+  question: Quais cinco estações tiveram os maiores valores de bulbo úmido em 2024?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de bumido fora de [-40, 50] °C descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos. Todas as siglas com ao menos uma observação
+    válida, inclusive identificadores especiais; sem exigência de cobertura mínima.
+    Empates ordenados pela sigla.
+  oracle_pandas: "import pandas as pd\nstations = None\nparts = []\nfor chunk in pd.read_csv('temperatura.csv',\
+    \ usecols=['sigla', 'hora_observacao', 'bumido'], chunksize=100000):\n    if stations\
+    \ is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n   \
+    \ chunk = chunk.loc[(chunk['hora_observacao'] >= '2024-01-01') & (chunk['hora_observacao']\
+    \ < '2025-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['bumido'] = pd.to_numeric(d['bumido'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['bumido'].between(-40, 50)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['bumido'].mean()\n\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\ns = d.groupby('sigla')['bumido'].max().reset_index(name='value')\n\
+    s = s.sort_values(['value', 'sigla'], ascending=[False, True]).head(5)\nresult\
+    \ = [(str(row.sigla), float(row.value)) for row in s.itertuples()]\n"
+- id: E104
+  category: serie_ranking
+  question: Em 2025, quais foram as cinco estações com menor QNH médio?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de qnh fora de [870, 1085] hPa descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos. Todas as siglas com ao menos uma observação
+    válida, inclusive identificadores especiais; sem exigência de cobertura mínima.
+    Empates ordenados pela sigla.
+  oracle_pandas: "import pandas as pd\nstations = None\nparts = []\nfor chunk in pd.read_csv('pressao.csv',\
+    \ usecols=['sigla', 'hora_observacao', 'qnh'], chunksize=100000):\n    if stations\
+    \ is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n   \
+    \ chunk = chunk.loc[(chunk['hora_observacao'] >= '2025-01-01') & (chunk['hora_observacao']\
+    \ < '2026-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['qnh'] = pd.to_numeric(d['qnh'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['qnh'].between(870, 1085)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['qnh'].mean()\n\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\ns = d.groupby('sigla')['qnh'].mean().reset_index(name='value')\n\
+    s = s.sort_values(['value', 'sigla'], ascending=[True, True]).head(5)\nresult\
+    \ = [(str(row.sigla), float(row.value)) for row in s.itertuples()]\n"
+- id: E105
+  category: serie_ranking
+  question: Qual estação registrou a maior velocidade de vento em 2018?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de velvento fora de [0, 150] nós descartados. Um boletim por estação
+    e instante, usando o maior valor entre cabeceiras. Todas as siglas com ao menos
+    uma observação válida, inclusive identificadores especiais; sem exigência de cobertura
+    mínima. Empates ordenados pela sigla.
+  oracle_pandas: "import pandas as pd\nstations = None\nparts = []\nfor chunk in pd.read_csv('vento.csv',\
+    \ usecols=['sigla', 'hora_observacao', 'velvento'], chunksize=100000):\n    if\
+    \ stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2018-01-01') & (chunk['hora_observacao']\
+    \ < '2019-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['velvento'] = pd.to_numeric(d['velvento'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['velvento'].between(0, 150)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['velvento'].max()\n\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\ns = d.groupby('sigla')['velvento'].max().reset_index(name='value')\n\
+    s = s.sort_values(['value', 'sigla'], ascending=[False, True]).head(1)\nresult\
+    \ = [(str(row.sigla), float(row.value)) for row in s.itertuples()]\n"
+- id: E106
+  category: serie_ranking
+  question: Quais três estações apresentaram as maiores médias de ponto de orvalho
+    em 2019?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de temppo fora de [-50, 40] °C descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos. Todas as siglas com ao menos uma observação
+    válida, inclusive identificadores especiais; sem exigência de cobertura mínima.
+    Empates ordenados pela sigla.
+  oracle_pandas: "import pandas as pd\nstations = None\nparts = []\nfor chunk in pd.read_csv('temperatura.csv',\
+    \ usecols=['sigla', 'hora_observacao', 'temppo'], chunksize=100000):\n    if stations\
+    \ is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n   \
+    \ chunk = chunk.loc[(chunk['hora_observacao'] >= '2019-01-01') & (chunk['hora_observacao']\
+    \ < '2020-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['temppo'] = pd.to_numeric(d['temppo'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['temppo'].between(-50, 40)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['temppo'].mean()\n\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\ns = d.groupby('sigla')['temppo'].mean().reset_index(name='value')\n\
+    s = s.sort_values(['value', 'sigla'], ascending=[False, True]).head(3)\nresult\
+    \ = [(str(row.sigla), float(row.value)) for row in s.itertuples()]\n"
+- id: E107
+  category: comparacao
+  question: Como se comparam as mínimas de temperatura do ar de SBAR e SBJP em julho
+    de 2024?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de bseco fora de [-40, 60] °C descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBAR', 'SBJP']\nparts = []\nfor\
+    \ chunk in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao',\
+    \ 'bseco'], chunksize=100000):\n    if stations is not None:\n        chunk =\
+    \ chunk.loc[chunk['sigla'].isin(stations)]\n    chunk = chunk.loc[(chunk['hora_observacao']\
+    \ >= '2024-07-01') & (chunk['hora_observacao'] < '2024-08-01')].copy()\n    parts.append(chunk)\n\
+    d = pd.concat(parts, ignore_index=True)\nd['hora_observacao'] = pd.to_datetime(d['hora_observacao'],\
+    \ errors='coerce')\nd['bseco'] = pd.to_numeric(d['bseco'], errors='coerce')\n\
+    d = d.loc[d['hora_observacao'].notna() & d['bseco'].between(-40, 60)]\nd = d.groupby(['sigla',\
+    \ 'hora_observacao'], as_index=False)['bseco'].mean()\nassert not d.empty, 'Sem\
+    \ observações válidas após os filtros'\ns = d.groupby('sigla')['bseco'].min()\n\
+    assert set(s.index) == set(stations)\nresult = [(str(station), float(value)) for\
+    \ station, value in s.items()]\n"
+- id: E108
+  category: comparacao
+  question: Compare o QNH médio de SBBE com o de SBSN em maio de 2025.
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de qnh fora de [870, 1085] hPa descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBBE', 'SBSN']\nparts = []\nfor\
+    \ chunk in pd.read_csv('pressao.csv', usecols=['sigla', 'hora_observacao', 'qnh'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2025-05-01') & (chunk['hora_observacao']\
+    \ < '2025-06-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['qnh'] = pd.to_numeric(d['qnh'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['qnh'].between(870, 1085)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['qnh'].mean()\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\ns = d.groupby('sigla')['qnh'].mean()\nassert set(s.index)\
+    \ == set(stations)\nresult = [(str(station), float(value)) for station, value\
+    \ in s.items()]\n"
+- id: E109
+  category: comparacao
+  question: Qual foi o bulbo úmido médio de SBCG em comparação com SBCY em setembro
+    de 2016?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de bumido fora de [-40, 50] °C descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBCG', 'SBCY']\nparts = []\nfor\
+    \ chunk in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao',\
+    \ 'bumido'], chunksize=100000):\n    if stations is not None:\n        chunk =\
+    \ chunk.loc[chunk['sigla'].isin(stations)]\n    chunk = chunk.loc[(chunk['hora_observacao']\
+    \ >= '2016-09-01') & (chunk['hora_observacao'] < '2016-10-01')].copy()\n    parts.append(chunk)\n\
+    d = pd.concat(parts, ignore_index=True)\nd['hora_observacao'] = pd.to_datetime(d['hora_observacao'],\
+    \ errors='coerce')\nd['bumido'] = pd.to_numeric(d['bumido'], errors='coerce')\n\
+    d = d.loc[d['hora_observacao'].notna() & d['bumido'].between(-40, 50)]\nd = d.groupby(['sigla',\
+    \ 'hora_observacao'], as_index=False)['bumido'].mean()\nassert not d.empty, 'Sem\
+    \ observações válidas após os filtros'\ns = d.groupby('sigla')['bumido'].mean()\n\
+    assert set(s.index) == set(stations)\nresult = [(str(station), float(value)) for\
+    \ station, value in s.items()]\n"
+- id: E110
+  category: comparacao
+  question: Compare o menor ponto de orvalho de SBFL e SBCT em agosto de 2017.
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de temppo fora de [-50, 40] °C descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBFL', 'SBCT']\nparts = []\nfor\
+    \ chunk in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao',\
+    \ 'temppo'], chunksize=100000):\n    if stations is not None:\n        chunk =\
+    \ chunk.loc[chunk['sigla'].isin(stations)]\n    chunk = chunk.loc[(chunk['hora_observacao']\
+    \ >= '2017-08-01') & (chunk['hora_observacao'] < '2017-09-01')].copy()\n    parts.append(chunk)\n\
+    d = pd.concat(parts, ignore_index=True)\nd['hora_observacao'] = pd.to_datetime(d['hora_observacao'],\
+    \ errors='coerce')\nd['temppo'] = pd.to_numeric(d['temppo'], errors='coerce')\n\
+    d = d.loc[d['hora_observacao'].notna() & d['temppo'].between(-50, 40)]\nd = d.groupby(['sigla',\
+    \ 'hora_observacao'], as_index=False)['temppo'].mean()\nassert not d.empty, 'Sem\
+    \ observações válidas após os filtros'\ns = d.groupby('sigla')['temppo'].min()\n\
+    assert set(s.index) == set(stations)\nresult = [(str(station), float(value)) for\
+    \ station, value in s.items()]\n"
+- id: E111
+  category: comparacao
+  question: O QNH mínimo de SBFI em junho foi quanto em 2018 e em 2023?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de qnh fora de [870, 1085] hPa descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBFI']\nparts = []\nfor chunk\
+    \ in pd.read_csv('pressao.csv', usecols=['sigla', 'hora_observacao', 'qnh'], chunksize=100000):\n\
+    \    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2018-01-01') & (chunk['hora_observacao']\
+    \ < '2024-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['qnh'] = pd.to_numeric(d['qnh'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['qnh'].between(870, 1085)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['qnh'].mean()\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\nd = d.loc[(d['hora_observacao'].dt.month == 6) & d['hora_observacao'].dt.year.isin([2018,\
+    \ 2023])]\ns = d.groupby(d['hora_observacao'].dt.year)['qnh'].min()\nassert set(s.index)\
+    \ == set([2018, 2023])\nresult = [(int(year), float(value)) for year, value in\
+    \ s.items()]\n"
+- id: E112
+  category: comparacao
+  question: Compare a umidade relativa média de SBFZ em novembro de 2019 e novembro
+    de 2024.
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de ur fora de [0, 100] % descartados. Duplicatas no mesmo instante reduzidas
+    à média dos valores válidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBFZ']\nparts = []\nfor chunk\
+    \ in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao', 'ur'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2019-01-01') & (chunk['hora_observacao']\
+    \ < '2025-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['ur'] = pd.to_numeric(d['ur'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['ur'].between(0, 100)]\nd = d.groupby(['sigla', 'hora_observacao'], as_index=False)['ur'].mean()\n\
+    assert not d.empty, 'Sem observações válidas após os filtros'\nd = d.loc[(d['hora_observacao'].dt.month\
+    \ == 11) & d['hora_observacao'].dt.year.isin([2019, 2024])]\ns = d.groupby(d['hora_observacao'].dt.year)['ur'].mean()\n\
+    assert set(s.index) == set([2019, 2024])\nresult = [(int(year), float(value))\
+    \ for year, value in s.items()]\n"
+- id: E113
+  category: comparacao
+  question: Como diferem os máximos de velocidade do vento de SBGO em agosto de 2020
+    e de 2025?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de velvento fora de [0, 150] nós descartados. Um boletim por estação
+    e instante, usando o maior valor entre cabeceiras.
+  oracle_pandas: "import pandas as pd\nstations = ['SBGO']\nparts = []\nfor chunk\
+    \ in pd.read_csv('vento.csv', usecols=['sigla', 'hora_observacao', 'velvento'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2020-01-01') & (chunk['hora_observacao']\
+    \ < '2026-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['velvento'] = pd.to_numeric(d['velvento'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['velvento'].between(0, 150)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['velvento'].max()\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\nd = d.loc[(d['hora_observacao'].dt.month == 8) & d['hora_observacao'].dt.year.isin([2020,\
+    \ 2025])]\ns = d.groupby(d['hora_observacao'].dt.year)['velvento'].max()\nassert\
+    \ set(s.index) == set([2020, 2025])\nresult = [(int(year), float(value)) for year,\
+    \ value in s.items()]\n"
+- id: E114
+  category: comparacao
+  question: Compare as médias de bulbo úmido de SBGR em fevereiro de 2021 e de 2022.
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de bumido fora de [-40, 50] °C descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBGR']\nparts = []\nfor chunk\
+    \ in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao', 'bumido'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2021-01-01') & (chunk['hora_observacao']\
+    \ < '2023-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['bumido'] = pd.to_numeric(d['bumido'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['bumido'].between(-40, 50)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['bumido'].mean()\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\nd = d.loc[(d['hora_observacao'].dt.month == 2) & d['hora_observacao'].dt.year.isin([2021,\
+    \ 2022])]\ns = d.groupby(d['hora_observacao'].dt.year)['bumido'].mean()\nassert\
+    \ set(s.index) == set([2021, 2022])\nresult = [(int(year), float(value)) for year,\
+    \ value in s.items()]\n"
+- id: E115
+  category: impossivel
+  question: A estação SBVC pertence a qual município?
+  expected_behavior: unsupported
+  rationale: Não há cadastro de municípios nos arquivos.
+  assumptions: nenhuma
+- id: E116
+  category: impossivel
+  question: Em que estado brasileiro está SDAM?
+  expected_behavior: unsupported
+  rationale: Não há relação entre siglas e estados nos CSVs.
+  assumptions: nenhuma
+- id: E117
+  category: impossivel
+  question: Qual é a longitude de SSKW?
+  expected_behavior: unsupported
+  rationale: Longitude não está entre as colunas disponíveis.
+  assumptions: nenhuma
+- id: E118
+  category: impossivel
+  question: A quantos metros de altitude está o aeródromo SBPO?
+  expected_behavior: unsupported
+  rationale: Altitude da estação não é fornecida.
+  assumptions: nenhuma
+- id: E119
+  category: impossivel
+  question: Qual a previsão de chuva para SBPV em 7 de fevereiro de 2027?
+  expected_behavior: unsupported
+  rationale: Os dados históricos não fornecem previsões.
+  assumptions: nenhuma
+- id: E120
+  category: impossivel
+  question: Qual será a visibilidade predominante em SBRF às 8h de 1º de janeiro de
+    2028?
+  expected_behavior: unsupported
+  rationale: Não há observações futuras nem produto de previsão.
+  assumptions: nenhuma
+- id: E121
+  category: impossivel
+  question: Quanta radiação ultravioleta SBVT recebeu em dezembro de 2022?
+  expected_behavior: unsupported
+  rationale: Radiação ultravioleta não foi medida nas colunas fornecidas.
+  assumptions: nenhuma
+- id: E122
+  category: impossivel
+  question: Qual foi a concentração média de material particulado em SBRJ em julho
+    de 2021?
+  expected_behavior: unsupported
+  rationale: Não há medições de qualidade do ar.
+  assumptions: nenhuma
+- id: E123
+  category: impossivel
+  question: Qual foi a temperatura do ar máxima de SBSP em janeiro de 2014?
+  expected_behavior: unsupported
+  rationale: O período antecede o início de 2016.
+  assumptions: nenhuma
+- id: E124
+  category: impossivel
+  question: Qual a pressão QNH média de SBGL em março de 2026?
+  expected_behavior: unsupported
+  rationale: O período ultrapassa o término da série em 2025.
+  assumptions: nenhuma
+- id: E125
+  category: impossivel
+  question: Quantos milímetros de chuva a estação ZZXQ registrou em 2020?
+  expected_behavior: unsupported
+  rationale: ZZXQ não está na lista extraída dos CSVs.
+  assumptions: nenhuma
+- id: E126
+  category: impossivel
+  question: Qual foi a velocidade máxima do vento na estação QQQZ em 2024?
+  expected_behavior: unsupported
+  rationale: QQQZ não está na lista extraída dos CSVs.
+  assumptions: nenhuma
+- id: E127
+  category: ambigua
+  question: Qual foi a melhor época para operar em SBKP?
+  expected_behavior: needs_clarification
+  rationale: Faltam período e critério meteorológico para melhor época.
+  assumptions: nenhuma
+- id: E128
+  category: ambigua
+  question: A umidade estava baixa em SBLE?
+  expected_behavior: needs_clarification
+  rationale: Faltam o período e o limiar para umidade baixa.
+  assumptions: nenhuma
+- id: E129
+  category: ambigua
+  question: Me mostre as maiores temperaturas do ano.
+  expected_behavior: needs_clarification
+  rationale: Faltam estação, ano e quantidade de resultados desejada.
+  assumptions: nenhuma
+- id: E130
+  category: ambigua
+  question: Como ficou a pressão de SBLJ naquele mês?
+  expected_behavior: needs_clarification
+  rationale: O mês e o ano referidos não foram informados.
+  assumptions: nenhuma
+- id: E131
+  category: ambigua
+  question: Quanto tempo durou a chuva em SBLP?
+  expected_behavior: needs_clarification
+  rationale: Faltam o período e a agregação da duração dos boletins.
+  assumptions: nenhuma
+- id: E132
+  category: ambigua
+  question: Compare o tempo de SBMI e SDCO.
+  expected_behavior: needs_clarification
+  rationale: Faltam o período e as grandezas ou critérios para a comparação.
+  assumptions: nenhuma
+- id: E133
+  category: ambigua
+  question: A visibilidade estava boa em SBIP em maio de 2018?
+  expected_behavior: needs_clarification
+  rationale: É necessário esclarecer o critério para boa visibilidade e como resumir
+    o mês.
+  assumptions: nenhuma
+- id: E134
+  category: ambigua
+  question: Qual foi a base de nuvem em SBJC em 2020?
+  expected_behavior: needs_clarification
+  rationale: Falta especificar o instante ou a estatística e como selecionar as camadas.
+  assumptions: nenhuma
+- id: E135
+  category: informal
+  question: qual foi a umidade relativa mais baixa em sbaf em outubro de 2016?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de ur fora de [0, 100] % descartados. Duplicatas no mesmo instante reduzidas
+    à média dos valores válidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBAF']\nparts = []\nfor chunk\
+    \ in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao', 'ur'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2016-10-01') & (chunk['hora_observacao']\
+    \ < '2016-11-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['ur'] = pd.to_numeric(d['ur'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['ur'].between(0, 100)]\nd = d.groupby(['sigla', 'hora_observacao'], as_index=False)['ur'].mean()\n\
+    assert not d.empty, 'Sem observações válidas após os filtros'\nresult = [(float(d['ur'].min()),)]\n"
+- id: E136
+  category: informal
+  question: Me passa a média da temperatua do ar de SBAQ em janeiro de 2017.
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de bseco fora de [-40, 60] °C descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBAQ']\nparts = []\nfor chunk\
+    \ in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao', 'bseco'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2017-01-01') & (chunk['hora_observacao']\
+    \ < '2017-02-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['bseco'] = pd.to_numeric(d['bseco'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['bseco'].between(-40, 60)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['bseco'].mean()\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\nresult = [(float(d['bseco'].mean()),)]\n"
+- id: E137
+  category: informal
+  question: Em vinte e dois de maio de 2018, qual foi o maior QNH de SBAX?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de qnh fora de [870, 1085] hPa descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBAX']\nparts = []\nfor chunk\
+    \ in pd.read_csv('pressao.csv', usecols=['sigla', 'hora_observacao', 'qnh'], chunksize=100000):\n\
+    \    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2018-05-22') & (chunk['hora_observacao']\
+    \ < '2018-05-23')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['qnh'] = pd.to_numeric(d['qnh'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['qnh'].between(870, 1085)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['qnh'].mean()\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\nresult = [(float(d['qnh'].max()),)]\n"
+- id: E138
+  category: informal
+  question: Do ponto de orvalho de SBCA em junho de 2019, eu queria só a média.
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de temppo fora de [-50, 40] °C descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBCA']\nparts = []\nfor chunk\
+    \ in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao', 'temppo'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2019-06-01') & (chunk['hora_observacao']\
+    \ < '2019-07-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['temppo'] = pd.to_numeric(d['temppo'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['temppo'].between(-50, 40)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['temppo'].mean()\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\nresult = [(float(d['temppo'].mean()),)]\n"
+- id: E139
+  category: informal
+  question: O vento em sbco chegou a quantos nós no máximo em setembro de 2020?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de velvento fora de [0, 150] nós descartados. Um boletim por estação
+    e instante, usando o maior valor entre cabeceiras.
+  oracle_pandas: "import pandas as pd\nstations = ['SBCO']\nparts = []\nfor chunk\
+    \ in pd.read_csv('vento.csv', usecols=['sigla', 'hora_observacao', 'velvento'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2020-09-01') & (chunk['hora_observacao']\
+    \ < '2020-10-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['velvento'] = pd.to_numeric(d['velvento'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['velvento'].between(0, 150)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['velvento'].max()\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\nresult = [(float(d['velvento'].max()),)]\n"
+- id: E140
+  category: informal
+  question: 'Dá uma olhada: qual a menor visibildade predominante de SBCP em abril
+    de 2021, em metros?'
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de visibpre fora de [0, 2000] dezenas de metros descartados. Duplicatas
+    no mesmo instante reduzidas à média dos valores válidos. Dezenas de metros convertidas
+    para metros. 2000 representa 20000 m ou mais, mantido como limite inferior de
+    20000 m.
+  oracle_pandas: "import pandas as pd\nstations = ['SBCP']\nparts = []\nfor chunk\
+    \ in pd.read_csv('visibilidade.csv', usecols=['sigla', 'hora_observacao', 'visibpre'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2021-04-01') & (chunk['hora_observacao']\
+    \ < '2021-05-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['visibpre'] = pd.to_numeric(d['visibpre'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['visibpre'].between(0, 2000)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['visibpre'].mean()\nd['visibpre'] *= 10\nassert not d.empty,\
+    \ 'Sem observações válidas após os filtros'\nresult = [(float(d['visibpre'].min()),)]\n"
+- id: E141
+  category: informal
+  question: Em SBES, no dia cinco de fevereiro de 2022, qual foi a média de bulbo
+    úmido?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de bumido fora de [-40, 50] °C descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBES']\nparts = []\nfor chunk\
+    \ in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao', 'bumido'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2022-02-05') & (chunk['hora_observacao']\
+    \ < '2022-02-06')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['bumido'] = pd.to_numeric(d['bumido'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['bumido'].between(-40, 50)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['bumido'].mean()\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\nresult = [(float(d['bumido'].mean()),)]\n"
+- id: E142
+  category: informal
+  question: preciso da menor temperatura do ar de sbmg em julho de 2023, valeu!
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de bseco fora de [-40, 60] °C descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBMG']\nparts = []\nfor chunk\
+    \ in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao', 'bseco'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2023-07-01') & (chunk['hora_observacao']\
+    \ < '2023-08-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['bseco'] = pd.to_numeric(d['bseco'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['bseco'].between(-40, 60)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['bseco'].mean()\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\nresult = [(float(d['bseco'].min()),)]\n"
+- id: E143
+  category: tempo
+  question: Nos sábados e domingos de 2016, qual foi a temperatura do ar média de
+    SBBR?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de bseco fora de [-40, 60] °C descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos. Fim de semana definido por sábado e domingo
+    na data local.
+  oracle_pandas: "import pandas as pd\nstations = ['SBBR']\nparts = []\nfor chunk\
+    \ in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao', 'bseco'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2016-01-01') & (chunk['hora_observacao']\
+    \ < '2017-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['bseco'] = pd.to_numeric(d['bseco'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['bseco'].between(-40, 60)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['bseco'].mean()\nd = d.loc[d['hora_observacao'].dt.dayofweek\
+    \ >= 5]\nassert not d.empty, 'Sem observações válidas após os filtros'\nresult\
+    \ = [(float(d['bseco'].mean()),)]\n"
+- id: E144
+  category: tempo
+  question: Qual o QNH mínimo de SBEG nas madrugadas de maio de 2017, entre meia-noite
+    e antes das 6h?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de qnh fora de [870, 1085] hPa descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos. Madrugada no intervalo local [00:00, 06:00).
+  oracle_pandas: "import pandas as pd\nstations = ['SBEG']\nparts = []\nfor chunk\
+    \ in pd.read_csv('pressao.csv', usecols=['sigla', 'hora_observacao', 'qnh'], chunksize=100000):\n\
+    \    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2017-05-01') & (chunk['hora_observacao']\
+    \ < '2017-06-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['qnh'] = pd.to_numeric(d['qnh'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['qnh'].between(870, 1085)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['qnh'].mean()\nd = d.loc[d['hora_observacao'].dt.hour < 6]\n\
+    assert not d.empty, 'Sem observações válidas após os filtros'\nresult = [(float(d['qnh'].min()),)]\n"
+- id: E145
+  category: tempo
+  question: Qual a umidade relativa média de SBMA nas tardes de agosto de 2018, das
+    12h até antes das 18h?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de ur fora de [0, 100] % descartados. Duplicatas no mesmo instante reduzidas
+    à média dos valores válidos. Tarde no intervalo local [12:00, 18:00).
+  oracle_pandas: "import pandas as pd\nstations = ['SBMA']\nparts = []\nfor chunk\
+    \ in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao', 'ur'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2018-08-01') & (chunk['hora_observacao']\
+    \ < '2018-09-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['ur'] = pd.to_numeric(d['ur'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['ur'].between(0, 100)]\nd = d.groupby(['sigla', 'hora_observacao'], as_index=False)['ur'].mean()\n\
+    d = d.loc[d['hora_observacao'].dt.hour.between(12, 17)]\nassert not d.empty, 'Sem\
+    \ observações válidas após os filtros'\nresult = [(float(d['ur'].mean()),)]\n"
+- id: E146
+  category: tempo
+  question: Durante as noites de julho de 2019, das 18h às 6h, qual foi a menor visibilidade
+    predominante de SBME, em metros?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: 'UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de visibpre fora de [0, 2000] dezenas de metros descartados. Duplicatas
+    no mesmo instante reduzidas à média dos valores válidos. Dezenas de metros convertidas
+    para metros. 2000 representa 20000 m ou mais, mantido como limite inferior de
+    20000 m. Noite: [18:00, 24:00) ou [00:00, 06:00); julho pela data local de cada
+    leitura.'
+  oracle_pandas: "import pandas as pd\nstations = ['SBME']\nparts = []\nfor chunk\
+    \ in pd.read_csv('visibilidade.csv', usecols=['sigla', 'hora_observacao', 'visibpre'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2019-07-01') & (chunk['hora_observacao']\
+    \ < '2019-08-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['visibpre'] = pd.to_numeric(d['visibpre'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['visibpre'].between(0, 2000)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['visibpre'].mean()\nd['visibpre'] *= 10\nh = d['hora_observacao'].dt.hour\n\
+    d = d.loc[(h >= 18) | (h < 6)]\nassert not d.empty, 'Sem observações válidas após\
+    \ os filtros'\nresult = [(float(d['visibpre'].min()),)]\n"
+- id: E147
+  category: tempo
+  question: No segundo trimestre de 2020, qual foi o bulbo úmido médio de SBMT?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de bumido fora de [-40, 50] °C descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos. Segundo trimestre compreende abril, maio
+    e junho completos.
+  oracle_pandas: "import pandas as pd\nstations = ['SBMT']\nparts = []\nfor chunk\
+    \ in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao', 'bumido'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2020-04-01') & (chunk['hora_observacao']\
+    \ < '2020-07-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['bumido'] = pd.to_numeric(d['bumido'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['bumido'].between(-40, 50)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['bumido'].mean()\n\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\nresult = [(float(d['bumido'].mean()),)]\n"
+- id: E148
+  category: tempo
+  question: Qual a maior temperatura do ar de SBPS no verão de 2022, considerando
+    janeiro, fevereiro e março?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de bseco fora de [-40, 60] °C descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos. O verão é operacionalmente definido na
+    própria pergunta como os três primeiros meses completos de 2022.
+  oracle_pandas: "import pandas as pd\nstations = ['SBPS']\nparts = []\nfor chunk\
+    \ in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao', 'bseco'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2022-01-01') & (chunk['hora_observacao']\
+    \ < '2022-04-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['bseco'] = pd.to_numeric(d['bseco'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['bseco'].between(-40, 60)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['bseco'].mean()\n\nassert not d.empty, 'Sem observações válidas\
+    \ após os filtros'\nresult = [(float(d['bseco'].max()),)]\n"
+- id: E149
+  category: tempo
+  question: Em dias de segunda a sexta de 2024, qual a velocidade média do vento de
+    SBRB, em nós?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de velvento fora de [0, 150] nós descartados. Um boletim por estação
+    e instante, usando o maior valor entre cabeceiras. Segunda a sexta pela data local,
+    incluindo feriados.
+  oracle_pandas: "import pandas as pd\nstations = ['SBRB']\nparts = []\nfor chunk\
+    \ in pd.read_csv('vento.csv', usecols=['sigla', 'hora_observacao', 'velvento'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2024-01-01') & (chunk['hora_observacao']\
+    \ < '2025-01-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['velvento'] = pd.to_numeric(d['velvento'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['velvento'].between(0, 150)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['velvento'].max()\nd = d.loc[d['hora_observacao'].dt.dayofweek\
+    \ < 5]\nassert not d.empty, 'Sem observações válidas após os filtros'\nresult\
+    \ = [(float(d['velvento'].mean()),)]\n"
+- id: E150
+  category: tempo
+  question: Qual o ponto de orvalho mínimo de SBVC nas manhãs de setembro de 2025,
+    das 6h até antes do meio-dia?
+  expected_behavior: answerable
+  rationale: A grandeza e o recorte pedidos estão disponíveis nos CSVs originais.
+  assumptions: UTC−3 fixo; início inclusivo e fim exclusivo. Vazios, datas inválidas
+    e valores de temppo fora de [-50, 40] °C descartados. Duplicatas no mesmo instante
+    reduzidas à média dos valores válidos. Manhã no intervalo local [06:00, 12:00).
+  oracle_pandas: "import pandas as pd\nstations = ['SBVC']\nparts = []\nfor chunk\
+    \ in pd.read_csv('temperatura.csv', usecols=['sigla', 'hora_observacao', 'temppo'],\
+    \ chunksize=100000):\n    if stations is not None:\n        chunk = chunk.loc[chunk['sigla'].isin(stations)]\n\
+    \    chunk = chunk.loc[(chunk['hora_observacao'] >= '2025-09-01') & (chunk['hora_observacao']\
+    \ < '2025-10-01')].copy()\n    parts.append(chunk)\nd = pd.concat(parts, ignore_index=True)\n\
+    d['hora_observacao'] = pd.to_datetime(d['hora_observacao'], errors='coerce')\n\
+    d['temppo'] = pd.to_numeric(d['temppo'], errors='coerce')\nd = d.loc[d['hora_observacao'].notna()\
+    \ & d['temppo'].between(-50, 40)]\nd = d.groupby(['sigla', 'hora_observacao'],\
+    \ as_index=False)['temppo'].mean()\nd = d.loc[d['hora_observacao'].dt.hour.between(6,\
+    \ 11)]\nassert not d.empty, 'Sem observações válidas após os filtros'\nresult\
+    \ = [(float(d['temppo'].min()),)]\n"

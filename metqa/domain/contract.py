@@ -10,7 +10,7 @@ from dataclasses import asdict, dataclass, field
 from enum import Enum
 from typing import Any
 
-CONTRACT_VERSION = "0.3.0"      # 0.2.0: Provenance ganhou generated_sql, engine, versions e prov_turtle; 0.2.1: executed_sparql e complete (opcionais)
+CONTRACT_VERSION = "0.4.0"      # 0.2.0: Provenance ganhou generated_sql, engine, versions e prov_turtle; 0.2.1: executed_sparql e complete (opcionais)
 # 0.3.0: result_shape (o papel de cada coluna, por parte) e, em CONFIRMATION_REQUIRED, confirmation_token em cada opção (exigido na volta)
 
 
@@ -85,9 +85,20 @@ class QueryResponse:
     answer_text: str | None = None          # opcional, só para demonstração
     timings_ms: dict[str, float] = field(default_factory=dict)
     result_shape: list[dict[str, Any]] | None = None   # 0.3.0: por parte, {value, n, n_of, is_count, keys, attributes, time, label}
+    presentation: list[dict[str, Any]] | None = None
+    interpretations: list[dict[str, Any]] | None = None
     contract_version: str = CONTRACT_VERSION
 
     def to_dict(self) -> dict[str, Any]:
         d = asdict(self)
         d["status"] = self.status.value
-        return d
+        import json
+        from datetime import date, datetime
+        from decimal import Decimal
+        def encode(value):
+            if isinstance(value, (date, datetime)):
+                return value.isoformat()
+            if isinstance(value, Decimal) and value.is_finite():
+                return str(value)
+            raise TypeError(f"unsupported contract value: {type(value).__name__}")
+        return json.loads(json.dumps(d, default=encode, allow_nan=False))

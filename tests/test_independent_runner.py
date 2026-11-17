@@ -22,7 +22,7 @@ def test_frozen_hash_mismatch_refuses(tmp_path):
 
 
 def test_auto_compare_match_and_tolerance():
-    assert ri.auto_compare([["SBGL", 22.0472]], [[22.047192513368984]])[0] == "match"
+    assert ri.auto_compare([["SBGL", 22.0472]], [["SBGL", 22.047192513368984]])[0] == "match"
     assert ri.auto_compare([[5.0]], [[22.0]])[0] == "diverge"
 
 
@@ -32,7 +32,7 @@ def test_auto_compare_uses_each_number_once():
 
 
 def test_auto_compare_no_numbers_goes_to_human():
-    assert ri.auto_compare([["SBGL"]], [["SBGL"]])[0] == "diverge"
+    assert ri.auto_compare([["SBGL"]], [["SBGL"]])[0] == "match"
 
 
 def _q(beh):

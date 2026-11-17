@@ -10,6 +10,7 @@ from tests.test_metqa_understanding import MAX, MEAN, Q_AMB, run
 from metqa.app import MetQA, Settings
 from metqa.knowledge import ExemplarStore, OntologyLexicon
 from metqa.llm.client import ScriptedLLM
+from metqa.understanding import parse
 
 ROW = table({"value": lit(39, XD), "n": lit(8000)})
 
@@ -17,7 +18,7 @@ ROW = table({"value": lit(39, XD), "n": lit(8000)})
 def test_capacidades_dizem_o_que_o_modulo_responde_sem_llm_nem_consulta():
     llm, src = ScriptedLLM({}), Rows()
     cap = MetQA(CAT, OntologyLexicon(CAT), llm, src, Settings(), ExemplarStore(None)).capabilities()
-    assert cap["contract"] == CONTRACT_VERSION == "0.3.0" and cap["coverage"] == {"start": "2016-01-01", "end": "2025-12-31"}
+    assert cap["contract"] == CONTRACT_VERSION == "0.4.0" and cap["coverage"] == {"start": "2016-01-01", "end": "2025-12-31"}
     iris = {m["iri"].rsplit("#", 1)[-1] for m in cap["measures"]}
     assert {"AirTemperature", "Precipitation", "WindSpeed"} <= iris and cap["limits"]["comparison_parts"] == 4
     assert "weekdays" in cap["time_filters"] and llm.calls == [] and src.queries == []
@@ -25,11 +26,12 @@ def test_capacidades_dizem_o_que_o_modulo_responde_sem_llm_nem_consulta():
 
 
 def test_resposta_traz_o_papel_das_colunas():
-    ir = nir("met:AirTemperature", ["st:SBGL"], "avg", "2020-01-01", "2020-12-31", evidence={"measure": "temperatura", "time": "em 2020"})
+    ir = nir("met:AirTemperature", ["st:SBGL"], "avg", "2020-01-01", "2020-12-31", evidence={"measure": "temperatura", "time": "em 2020", "stations": "SBGL", "calc": "média"})
     r, _ = run({"interpret_A": [ir], "interpret_B": [ir]}, "Qual a temperatura média de SBGL em 2020?", ROW, reread=False)
     assert r.result_shape == [{"value": "value", "n": "n", "n_of": "readings", "is_count": False, "keys": [], "attributes": [], "time": None,
-                               "label": ""}]
-    assert r.to_dict()["contract_version"] == "0.3.0"
+                               "label": "", "units": {"value": "http://qudt.org/vocab/unit/DEG_C"}, "coverage_complete": False,
+                               "coverage": CAT.coverage_for(parse(ir).parts[0][1])}]
+    assert r.to_dict()["contract_version"] == "0.4.0"
 
 
 def test_trilha_do_metqa_vira_trajetoria_com_os_sinais_novos():

@@ -1,0 +1,10 @@
+{
+  "name": "novo_b_100_20261028_validado",
+  "source": "OpenAI GPT-6 (Codex); revisão com substituição documentada de E59 por E59R1",
+  "frozen_utc": "2026-10-28T12:46:15.950786+00:00",
+  "count": 100,
+  "pipeline_executed": false,
+  "files": {
+    "questions.yaml": "2212294fa92cd29b98b05a77f5b421a57ede41fd3d6f82b3b79b4498dd65a729"
+  }
+}

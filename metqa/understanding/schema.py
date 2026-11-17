@@ -8,6 +8,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from datetime import date, datetime
 from typing import Any
+import math
 
 from metqa.verification.rules import AGGREGATIONS, MAX_LIMIT
 from metqa.knowledge.index import expand
@@ -33,7 +34,7 @@ class Parsed:
 
 
 def _is_num(v: Any) -> bool:
-    return isinstance(v, (int, float)) and not isinstance(v, bool)
+    return isinstance(v, (int, float)) and not isinstance(v, bool) and math.isfinite(v)
 
 
 def _date(v: Any, what: str, errors: list[str]) -> date | None:
@@ -200,12 +201,12 @@ def canonical_form(parts: list[tuple[str, CanonicalQuery]], to_canonical) -> lis
     for _, cq in parts:
         def canon(c: dict) -> tuple:
             v = to_canonical(c["value"], c.get("unit"), cq.measure)
-            return (c.get("agg") or "", c["op"], f"{float(v):g}" if v is not None else f"?{c['value']}:{c.get('unit')}")
+            return (c.get("agg") or "", c["op"], format(v.normalize(), "f") if v is not None else f"?{c['value']}:{c.get('unit')}")
         s = cq.scope
         out.append({"measure": cq.measure, "stations": sorted(x["iri"] for x in cq.stations),
                     "range": (s.start.isoformat() if s.start else None, s.end.isoformat() if s.end else None),
                     "hours": s.hours, "weekdays": s.weekdays, "instant": s.instant.isoformat() if s.instant else None,
-                    "aggregation": cq.aggregation, "count_of": cq.count_of, "conditions": sorted(canon(c) for c in cq.conditions),
+                    "unit": cq.unit, "aggregation": cq.aggregation, "count_of": cq.count_of, "conditions": sorted(canon(c) for c in cq.conditions),
                     "daily": canon(cq.daily) if cq.daily else None, "group_by": sorted(cq.group_by), "attributes": sorted(cq.attributes),
                     "order": (cq.order["direction"], cq.order["limit"]) if cq.order else None})
     return out

@@ -49,7 +49,7 @@ class Interpreter:
         fixes = "".join(f"<correcao_do_usuario>{_as_data(c)}</correcao_do_usuario>\n" for c in corrections)
         if corrections:
             fixes += "Aplique as correções do usuário à interpretação anterior; o que ele não corrigiu permanece.\n"
-        user = f"{menu}\n{units}\n{ex}<pergunta>{_as_data(question)}</pergunta>\n{prev}{fixes}{feedback}"
+        user = f"{menu}\n{units}\n{hit.context}\n{ex}<pergunta>{_as_data(question)}</pergunta>\n{prev}{fixes}{feedback}"
         r = self.llm.complete(f"interpret_{framing}", system, user, MAX_TOKENS)
         return Proposal(parse_json_object(r.text, keys), framing, r.cost_usd, r.finish_reason)
 
