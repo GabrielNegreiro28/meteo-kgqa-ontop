@@ -48,6 +48,7 @@ RULES = """Regras:
    "Quantos mm/minutos" pede uma medida (sum), não uma contagem.
 5. "shape": "por estação/ano/mês/dia", "anual", "mensal", "cada cabeceira" = group_by; "as N … com maior/menor" = group_by + order;
    "o mês/ano mais X" (um só) = group_by + order com limit 1; "a maior X e em qual <atributo>" = attributes.
+   Várias estações citadas = um valor por estação (group_by ["station"]); não é ambiguidade, o sistema não mistura estações.
    "shape.unit": a unidade em que a pergunta pede o resultado ("em km", "em hPa"); sem pedido: null.
 6. "evidence": para cada parte decidida, o TRECHO LITERAL da pergunta que a justifica, copiado como está. O trecho time deve incluir horas, dias da semana e todos os intervalos. Parte sem trecho na pergunta
    (um padrão que você assumiu) vai em "assumptions", não em "evidence".
