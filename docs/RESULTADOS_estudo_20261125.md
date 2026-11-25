@@ -74,3 +74,8 @@ Este conjunto agora é conhecido; as correções abaixo precisam ser medidas em 
 - Conservação da evidência: minutos de horário ("5h59") e números que fazem parte de nomes ("P-20").
 - Comparador estrito: `no_results` nos dois lados é acerto, independentemente do conteúdo da linha agregada.
 - Período fora da cobertura: status `unsupported` (hoje `no_results`, com a mensagem certa).
+
+## O que veio depois
+
+As listas feitas à mão (gentílicos, apelidos, regiões) foram trocadas por diretrizes gerais ao LLM com o diretório das estações (D-122), e o
+modelo passou a ser o gpt-6.2-sol. Medição num conjunto inédito: `docs/RESULTADOS_estudo2_20261125.md`.

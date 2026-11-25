@@ -18,6 +18,10 @@ mappingId	station_place
 target		:station/{sigla} met:municipalityName {municipio}^^xsd:string ; met:stateCode {uf}^^xsd:string ; met:stateName {estado}^^xsd:string ; met:regionName {regiao}^^xsd:string .
 source		SELECT sigla, municipio, uf, estado, regiao FROM station WHERE uf IS NOT NULL
 
+mappingId	station_served_city
+target		:station/{sigla} met:servedCityName {cidade_atendida}^^xsd:string .
+source		SELECT sigla, cidade_atendida FROM station WHERE cidade_atendida IS NOT NULL
+
 mappingId	station_alias
 target		:station/{sigla} skos:altLabel {alias}^^xsd:string .
 source		SELECT sigla, alias FROM station_alias

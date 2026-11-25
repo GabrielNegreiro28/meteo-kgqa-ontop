@@ -97,6 +97,8 @@ def all_mappings():
         ("station_place", ":station/{sigla} met:municipalityName {municipio}^^xsd:string ; met:stateCode {uf}^^xsd:string ; "
                           "met:stateName {estado}^^xsd:string ; met:regionName {regiao}^^xsd:string .",
          "SELECT sigla, municipio, uf, estado, regiao FROM station WHERE uf IS NOT NULL"),
+        ("station_served_city", ":station/{sigla} met:servedCityName {cidade_atendida}^^xsd:string .",
+         "SELECT sigla, cidade_atendida FROM station WHERE cidade_atendida IS NOT NULL"),
         ("station_alias", ":station/{sigla} skos:altLabel {alias}^^xsd:string .", "SELECT sigla, alias FROM station_alias"),
         ("station_sensor", ":station/{sigla} sosa:hosts :sensor/{sigla}/{var} . :sensor/{sigla}/{var} a sosa:Sensor .",
          "SELECT sigla, var FROM station_sensor"),

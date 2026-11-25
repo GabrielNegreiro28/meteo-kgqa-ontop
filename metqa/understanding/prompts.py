@@ -26,8 +26,17 @@ SCHEMA = """{"status": "ok" | "needs_clarification" | "unsupported",
  "assumptions": ["..."], "alternatives": ["..."], "reason": "..."}"""
 
 RULES = """Regras:
-1. Use SÓ as grandezas, estações, unidades, dimensões e atributos do <cardapio>. Fora dele: status "unsupported" com o motivo em "reason"
-   (ex.: lugar sem estação no cardápio, coordenadas, previsão do futuro, grandeza que não existe, estação que não está nos dados).
+0. Boas práticas (valem para tudo abaixo):
+   - Lugar: resolva pelo diretório do <cardapio> usando também o que você sabe de geografia brasileira e de nomes populares (apelidos de
+     cidade e de aeroporto, gentílicos, regiões, a cidade que o aeroporto atende). O nome mais específico vence: "Curitiba (Afonso Pena)" é só
+     a estação de Afonso Pena. Um lugar com várias estações vale por TODAS quando a pergunta pede o conjunto (ranking, lista, "estações do
+     Sul"); quando pede um valor único sem dizer qual, é "needs_clarification" com as estações em "alternatives". Lugar sem estação no
+     diretório (ou fora do Brasil) é "unsupported". Em evidence.stations, o trecho literal que nomeia o lugar.
+   - Limites: não decida o que o sistema consegue calcular; se a pergunta cabe no formato, responda com status "ok". "unsupported" é só para
+     o que os dados não têm (grandeza fora do cardápio, lugar sem estação, período fora da cobertura, previsão do futuro, coordenadas).
+   - Ambiguidade: só peça esclarecimento quando leituras plausíveis mudariam a consulta, e diga quais em "alternatives". Sem alternativas
+     concretas, escolha a leitura usual, diga em "assumptions" e responda.
+1. Use SÓ as grandezas, estações, unidades, dimensões e atributos do <cardapio>. Fora dele: status "unsupported" com o motivo em "reason".
 2. NORMALIZE você mesmo, na hora local da estação (o sistema aplica o fuso de cada uma):
    - "time.ranges": as janelas de datas, com início e fim INCLUSIVOS (um dia: início = fim; um mês: do dia 1 ao último dia; um ano: 01-01 a 12-31).
      Uma janela só, exceto quando a pergunta compara períodos (aí, uma por período, até 4: "junho de 2018 e de 2023" = duas janelas,
@@ -49,8 +58,6 @@ RULES = """Regras:
 5. "shape": "por estação/ano/mês/dia", "anual", "mensal", "cada cabeceira" = group_by; "as N … com maior/menor" = group_by + order;
    "o mês/ano mais X" (um só) = group_by + order com limit 1; "a maior X e em qual <atributo>" = attributes.
    Várias estações citadas = um valor por estação (group_by ["station"]); não é ambiguidade, o sistema não mistura estações.
-   Cidade, estado ou região: as estações que o cardápio lista para aquele trecho. Se o trecho cobre várias e a pergunta não diz qual
-   ("no Rio de Janeiro"), status "needs_clarification" com as estações em "alternatives"; "todas as estações do Paraná" = todas as listadas.
    "shape.unit": a unidade em que a pergunta pede o resultado ("em km", "em hPa"); sem pedido: null.
 6. "evidence": para cada parte decidida, o TRECHO LITERAL da pergunta que a justifica, copiado como está. O trecho time deve incluir horas, dias da semana e todos os intervalos. Parte sem trecho na pergunta
    (um padrão que você assumiu) vai em "assumptions", não em "evidence".

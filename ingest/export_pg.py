@@ -6,6 +6,7 @@ Toda tabela de observação leva também a hora civil local da estação (`local
 gerado de `local_date`), que o mapeamento expõe como met:localHour e met:localWeekday. A estação leva o cadastro (data/estacoes.csv).
 Uso: python ingest/export_pg.py <duckdb> "<conninfo postgres>"
      python ingest/export_pg.py --local-time ["<conninfo>"]      # só acrescenta o dia da semana a um banco já carregado
+     python ingest/export_pg.py --stations ["<conninfo>"]        # só atualiza o cadastro das estações (data/estacoes.csv)
 """
 import os, sys, time
 from pathlib import Path
@@ -27,8 +28,9 @@ H = "hour(t_local) AS local_hour"                 # hora civil da estação (R1)
 STATIONS = Path(__file__).resolve().parent.parent / "data" / "estacoes.csv"
 CSV = f"read_csv('{STATIONS}', header = true, all_varchar = true)"
 TABLES = {
-    "station": ("sigla text PRIMARY KEY, municipio text, uf text, estado text, regiao text, fuso_iana text NOT NULL",
-                "SELECT s.sigla, NULLIF(c.municipio, ''), NULLIF(c.uf, ''), NULLIF(c.estado, ''), NULLIF(c.regiao, ''), c.fuso_iana "
+    "station": ("sigla text PRIMARY KEY, municipio text, uf text, estado text, regiao text, fuso_iana text NOT NULL, cidade_atendida text",
+                "SELECT s.sigla, NULLIF(c.municipio, ''), NULLIF(c.uf, ''), NULLIF(c.estado, ''), NULLIF(c.regiao, ''), c.fuso_iana, "
+                "NULLIF(c.cidade_atendida, '') "
                 f"FROM clean.station s JOIN {CSV} c USING (sigla)"),
     "station_alias": ("sigla text, alias text",
                       f"SELECT sigla, trim(unnest(string_split(apelidos, ';'))) FROM {CSV} WHERE coalesce(apelidos, '') <> ''"),
@@ -54,11 +56,36 @@ assert {t for t in TABLES if t.startswith("obs_")} == set(tables()), "tabelas de
 LOCAL_TIME = ("local_weekday smallint GENERATED ALWAYS AS ((local_date - DATE '1970-01-05') % 7) STORED",)
 
 
+def refresh_stations(conninfo: str) -> None:
+    """Atualiza o cadastro (data/estacoes.csv) num banco já carregado, sem recriar `station`: as chaves estrangeiras das observações
+    continuam valendo. Os apelidos (`station_alias`) não têm chave estrangeira e são recarregados inteiros."""
+    import csv
+    rows = {r["sigla"]: r for r in csv.DictReader(open(STATIONS, encoding="utf-8"))}
+    cols = ("municipio", "uf", "estado", "regiao", "fuso_iana", "cidade_atendida")
+    with psycopg.connect(conninfo, autocommit=True) as pg:
+        for c in cols:
+            pg.execute(f"ALTER TABLE station ADD COLUMN IF NOT EXISTS {c} text")
+        for (sigla,) in pg.execute("SELECT sigla FROM station").fetchall():
+            r = rows[sigla]
+            pg.execute(f"UPDATE station SET {', '.join(c + ' = %s' for c in cols)} WHERE sigla = %s",
+                       [r.get(c) or None for c in cols] + [sigla])
+        pg.execute("DROP TABLE IF EXISTS station_alias")
+        pg.execute("CREATE TABLE station_alias (sigla text, alias text)")
+        for sigla, r in rows.items():
+            for a in filter(None, (x.strip() for x in (r.get("apelidos") or "").split(";"))):
+                pg.execute("INSERT INTO station_alias VALUES (%s, %s)", (sigla, a))
+        pg.execute("GRANT SELECT ON station, station_alias TO kgqa_reader")
+    print(f"cadastro atualizado: {len(rows)} estações")
+
+
 def add_local_time(pg, name):
     pg.execute(f"ALTER TABLE {name} " + ", ".join(f"ADD COLUMN IF NOT EXISTS {c}" for c in LOCAL_TIME))
 
 
 def main():
+    if sys.argv[1:2] == ["--stations"]:
+        refresh_stations(sys.argv[2] if len(sys.argv) > 2 else PG)
+        return
     if sys.argv[1:2] == ["--local-time"]:
         with psycopg.connect(sys.argv[2] if len(sys.argv) > 2 else PG, autocommit=True) as pg:
             for name in (n for n in TABLES if n.startswith("obs_")):

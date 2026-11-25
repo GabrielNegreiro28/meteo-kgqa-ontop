@@ -47,9 +47,12 @@ APELIDOS = {"SBGR": "Cumbica;Aeroporto de Guarulhos", "SBSP": "Congonhas", "SBMT
             "SBCO": "Base Aérea de Canoas", "SBNT": "Base Aérea de Natal", "SBST": "Base Aérea de Santos", "SBAN": "Base Aérea de Anápolis",
             "SBYS": "Academia da Força Aérea", "SBLS": "Base Aérea de Lagoa Santa", "SBTA": "Base de Aviação de Taubaté",
             "SBCC": "Cachimbo", "SBSG": "Aeroporto de São Gonçalo do Amarante", "SBQV": "Aeroporto antigo de Vitória da Conquista"}
+# Cidade ATENDIDA pelo aeroporto (a da fonte), quando difere do município onde ele fica: a pergunta costuma citar essa ("Cuiabá" para SBCY).
+# Plataformas de petróleo não atendem cidade.
+SEM_CIDADE_ATENDIDA = {"SBEC", "SBLB", "SBMM"}
 # município que é também palavra comum: não serve para reconhecer a estação no texto (fica só no cadastro)
 MUNICIPIO_AMBIGUO = {"Bonito", "Sorriso", "Cruz", "Una", "Bacia de Campos (plataforma)"}
-CAMPOS = ["sigla", "nome", "municipio", "apelidos", "uf", "estado", "regiao", "lat", "lon", "altitude_m", "fuso_legal", "fuso_iana",
+CAMPOS = ["sigla", "nome", "municipio", "cidade_atendida", "apelidos", "uf", "estado", "regiao", "lat", "lon", "altitude_m", "fuso_legal", "fuso_iana",
           "horario_verao_ate_2019", "fonte_id", "situacao"]
 
 
@@ -85,7 +88,9 @@ def build(airports: str, siglas: list[str]) -> list[dict]:
         uf = r["iso_region"].split("-")[1]
         lon = float(r["longitude_deg"])
         tz, zona = fuso(uf, lon)
-        out.append({"sigla": s, "nome": r["name"], "apelidos": APELIDOS.get(s, ""), "municipio": MUNICIPIO.get(s, r["municipality"].replace(" De ", " de ").replace(" Dos ", " dos ")), "uf": uf, "estado": UF_NOME[uf],
+        served = r["municipality"].replace(" De ", " de ").replace(" Dos ", " dos ")
+        out.append({"sigla": s, "nome": r["name"], "apelidos": APELIDOS.get(s, ""),
+                    "cidade_atendida": "" if s in SEM_CIDADE_ATENDIDA else served, "municipio": MUNICIPIO.get(s, r["municipality"].replace(" De ", " de ").replace(" Dos ", " dos ")), "uf": uf, "estado": UF_NOME[uf],
                     "regiao": REGIAO[uf], "lat": round(float(r["latitude_deg"]), 5), "lon": round(lon, 5),
                     "altitude_m": round(float(r["elevation_ft"]) * 0.3048) if r["elevation_ft"] else "",
                     "fuso_legal": tz, "fuso_iana": zona, "horario_verao_ate_2019": uf in HORARIO_VERAO, "fonte_id": r["ident"],
