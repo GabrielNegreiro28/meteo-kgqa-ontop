@@ -1,0 +1,725 @@
+{
+ "reviewed_by": "segundo gerador independente (Claude Sonnet 5.5, 25/11/2026)",
+ "questions": [
+  {
+   "id": "T001",
+   "question": "Quantos dias chuvosos Recife teve em 2019?",
+   "expected_behavior": "needs_clarification",
+   "rationale": "'Dia chuvoso' não está definido (limiar de chuva diária)."
+  },
+  {
+   "id": "T002",
+   "question": "Rajada máxima de cada mês de 2021 em Santa Maria",
+   "expected_behavior": "answerable",
+   "rationale": "Série mensal da rajada máxima em SBSM em 2021."
+  },
+  {
+   "id": "T003",
+   "question": "Velocidade máxima do vento em Pelotas em agosto de 2023",
+   "expected_behavior": "answerable",
+   "rationale": "Máxima da velocidade do vento em SBPK em agosto de 2023."
+  },
+  {
+   "id": "T004",
+   "question": "Qual a velocidade média do vento em Natal em 2022?",
+   "expected_behavior": "needs_clarification",
+   "rationale": "Natal pode ser Base Aérea de Natal ou São Gonçalo do Amarante, e o tratamento de calmaria é ambíguo."
+  },
+  {
+   "id": "T005",
+   "question": "Temperatura média à noite, das 18h às 23h59, em Palmas em outubro de 2020",
+   "expected_behavior": "answerable",
+   "rationale": "Média entre 18h e 23h59 locais em SBPJ em outubro de 2020."
+  },
+  {
+   "id": "T006",
+   "question": "Em Campinas, quantas horas de nevoeiro houve em 2017?",
+   "expected_behavior": "needs_clarification",
+   "rationale": "'Nevoeiro' sem critério de visibilidade definido."
+  },
+  {
+   "id": "T007",
+   "question": "Vai chover em Brasília amanhã?",
+   "expected_behavior": "unsupported",
+   "rationale": "Previsão do futuro: os dados são só observações passadas."
+  },
+  {
+   "id": "T008",
+   "question": "Visibilidade mínima registrada em Guarulhos em julho de 2020 (em metros)",
+   "expected_behavior": "answerable",
+   "rationale": "Mínima da visibilidade em SBGR em julho de 2020."
+  },
+  {
+   "id": "T009",
+   "question": "Me mostra a temperatura média de cada ano de 2016 a 2025 em Brasília.",
+   "expected_behavior": "answerable",
+   "rationale": "Série anual da média da temperatura em SBBR, 2016 a 2025."
+  },
+  {
+   "id": "T010",
+   "question": "Qual a temperatura média em Gramado em 2019?",
+   "expected_behavior": "unsupported",
+   "rationale": "Gramado não tem estação no cadastro."
+  },
+  {
+   "id": "T011",
+   "question": "Quantas leituras de temperatura acima de 30 °C houve em Campo Grande em 2023?",
+   "expected_behavior": "answerable",
+   "rationale": "Contagem de leituras de temperatura > 30 °C em SBCG em 2023."
+  },
+  {
+   "id": "T012",
+   "question": "Qual foi a temperatura mais alta que o aeroporto de Brasília registrou em 2019?",
+   "expected_behavior": "answerable",
+   "rationale": "Máxima da temperatura do ar em SBBR em 2019."
+  },
+  {
+   "id": "T013",
+   "question": "Temperatura de bulbo úmido média em Val de Cans durante 2025, por favor.",
+   "expected_behavior": "answerable",
+   "rationale": "Média do bulbo úmido em SBBE em 2025."
+  },
+  {
+   "id": "T014",
+   "question": "Top 3 de chuva acumulada em 2022: quais aeroportos?",
+   "expected_behavior": "answerable",
+   "rationale": "Top 3 estações pela soma de chuva em 2022."
+  },
+  {
+   "id": "T015",
+   "question": "Temperatura em Jericoacoara em dezembro de 2022",
+   "expected_behavior": "unsupported",
+   "rationale": "Jericoacoara não tem estação."
+  },
+  {
+   "id": "T016",
+   "question": "Máxima de temperatura em Campo Grande: setembro de 2019 contra setembro de 2020",
+   "expected_behavior": "answerable",
+   "rationale": "Máxima da temperatura em SBCG: setembro de 2019 versus setembro de 2020."
+  },
+  {
+   "id": "T017",
+   "question": "Temperatura média às 15h em Várzea Grande (Cuiabá) em janeiro de 2024?",
+   "expected_behavior": "answerable",
+   "rationale": "Média da temperatura às 15h locais em SBCY em janeiro de 2024."
+  },
+  {
+   "id": "T018",
+   "question": "Compara Porto Alegre com Curitiba.",
+   "expected_behavior": "needs_clarification",
+   "rationale": "Faltam a grandeza e o período da comparação."
+  },
+  {
+   "id": "T019",
+   "question": "Quais são as coordenadas geográficas do aeroporto de Confins?",
+   "expected_behavior": "unsupported",
+   "rationale": "Coordenadas não são consultáveis como observação meteorológica nesta base."
+  },
+  {
+   "id": "T020",
+   "question": "Qual a umidade média em Manaus em 2030?",
+   "expected_behavior": "unsupported",
+   "rationale": "Ano futuro, fora da cobertura."
+  },
+  {
+   "id": "T021",
+   "question": "Quantos dias de calor teve Cuiabá em 2023?",
+   "expected_behavior": "needs_clarification",
+   "rationale": "'Dia de calor' sem limiar de temperatura definido."
+  },
+  {
+   "id": "T022",
+   "question": "Maior temperatura em Belém Júlio César em 2023",
+   "expected_behavior": "answerable",
+   "rationale": "Máxima da temperatura em SBJC em 2023 (sem dados)."
+  },
+  {
+   "id": "T023",
+   "question": "Quanto choveu em Recife em 2026?",
+   "expected_behavior": "unsupported",
+   "rationale": "Ano fora da cobertura."
+  },
+  {
+   "id": "T024",
+   "question": "Considere dia com chuva aquele em que o acumulado do dia chegou a pelo menos 1 mm. Quantos dias com chuva Fortaleza (Pinto Martins) teve em 2021?",
+   "expected_behavior": "answerable",
+   "rationale": "Número de dias de 2021 com soma diária de chuva >= 1 mm em SBFZ."
+  },
+  {
+   "id": "T025",
+   "question": "Qual foi a sensação térmica em Curitiba em julho de 2021?",
+   "expected_behavior": "unsupported",
+   "rationale": "Sensação térmica não é medida nem fornecida."
+  },
+  {
+   "id": "T026",
+   "question": "Visibilidade média em Vitória em 2020",
+   "expected_behavior": "answerable",
+   "rationale": "Média da visibilidade em SBVT em 2020."
+  },
+  {
+   "id": "T027",
+   "question": "Média de temperatura do Galeão nos domingos de 2022",
+   "expected_behavior": "answerable",
+   "rationale": "Média da temperatura em SBGL nos domingos de 2022."
+  },
+  {
+   "id": "T028",
+   "question": "Qual foi a máxima da temperatura em Uberlândia nas segundas-feiras de 2017?",
+   "expected_behavior": "answerable",
+   "rationale": "Máxima da temperatura em SBUL nas segundas de 2017."
+  },
+  {
+   "id": "T029",
+   "question": "Qual a média do ponto de orvalho em Eduardo Gomes (Manaus) em dezembro de 2016?",
+   "expected_behavior": "answerable",
+   "rationale": "Média do ponto de orvalho em SBEG em dezembro de 2016."
+  },
+  {
+   "id": "T030",
+   "question": "Qual a maior chuva acumulada numa única hora em Manaus (Eduardo Gomes) em 2022?",
+   "expected_behavior": "answerable",
+   "rationale": "Máxima do acumulado horário de chuva em SBEG em 2022."
+  },
+  {
+   "id": "T031",
+   "question": "Ranking das 3 maiores rajadas de 2023 por aeroporto",
+   "expected_behavior": "answerable",
+   "rationale": "Top 3 estações pela rajada máxima em 2023."
+  },
+  {
+   "id": "T032",
+   "question": "QNH médio às 9h em Porto Alegre em 2019",
+   "expected_behavior": "answerable",
+   "rationale": "Média do QNH às 9h locais em SBPA em 2019."
+  },
+  {
+   "id": "T033",
+   "question": "Chuva dia a dia em Marabá de 10 a 16 de março de 2021",
+   "expected_behavior": "answerable",
+   "rationale": "Série diária da soma da chuva em SBMA, 10 a 16/03/2021."
+  },
+  {
+   "id": "T034",
+   "question": "Chuva total mês a mês em Confins ao longo de 2020",
+   "expected_behavior": "answerable",
+   "rationale": "Série mensal da soma da chuva em SBCF em 2020."
+  },
+  {
+   "id": "T035",
+   "question": "Qual foi a temperatura média em São Paulo em 2020?",
+   "expected_behavior": "needs_clarification",
+   "rationale": "São Paulo tem mais de uma estação (Congonhas, Campo de Marte, Guarulhos): falta escolher."
+  },
+  {
+   "id": "T036",
+   "question": "Qual a umidade do solo em Uberlândia em 2022?",
+   "expected_behavior": "unsupported",
+   "rationale": "Umidade do solo não existe nos dados."
+  },
+  {
+   "id": "T037",
+   "question": "Em quantos dias de 2020 a temperatura chegou a 35 °C ou mais em Cuiabá/Várzea Grande?",
+   "expected_behavior": "answerable",
+   "rationale": "Número de dias de 2020 com alguma leitura >= 35 °C em SBCY."
+  },
+  {
+   "id": "T038",
+   "question": "Evolução mensal da temperatura média em Curitiba (Afonso Pena) em 2019",
+   "expected_behavior": "answerable",
+   "rationale": "Série mensal da média da temperatura em SBCT em 2019."
+  },
+  {
+   "id": "T039",
+   "question": "Compare a umidade relativa média de Eduardo Gomes (Manaus) em fevereiro e agosto de 2019.",
+   "expected_behavior": "answerable",
+   "rationale": "Média da umidade em SBEG: fevereiro versus agosto de 2019."
+  },
+  {
+   "id": "T040",
+   "question": "Qual a melhor época para voar em Florianópolis?",
+   "expected_behavior": "needs_clarification",
+   "rationale": "Critério de 'melhor' indefinido (visibilidade, vento, chuva?) e sem período."
+  },
+  {
+   "id": "T041",
+   "question": "temp máxima em Boa Vista em março de 2024?",
+   "expected_behavior": "answerable",
+   "rationale": "Máxima da temperatura em SBBV em março de 2024."
+  },
+  {
+   "id": "T042",
+   "question": "Fez frio em Caxias do Sul no inverno de 2021?",
+   "expected_behavior": "needs_clarification",
+   "rationale": "'Inverno' e 'frio' sem convenção (datas e limiar)."
+  },
+  {
+   "id": "T043",
+   "question": "Quantas leituras de direção do vento entre 80° e 100° (vento de leste) Salvador teve em 2022?",
+   "expected_behavior": "answerable",
+   "rationale": "Contagem de leituras de direção entre 80 e 100 graus em SBSV em 2022."
+  },
+  {
+   "id": "T044",
+   "question": "Para este pedido, dia de chuva forte é aquele com acumulado diário de pelo menos 10 mm. Quantos dias de chuva forte São Luís teve em fevereiro de 2020?",
+   "expected_behavior": "answerable",
+   "rationale": "Número de dias de fev/2020 com soma diária >= 10 mm em SBSL."
+  },
+  {
+   "id": "T045",
+   "question": "Quantos minutos de chuva Porto Alegre (Salgado Filho) teve em 2023?",
+   "expected_behavior": "answerable",
+   "rationale": "Soma da duração da chuva em SBPA em 2023."
+  },
+  {
+   "id": "T046",
+   "question": "Total anual de chuva em Belém (Val de Cans), de 2016 até 2025",
+   "expected_behavior": "answerable",
+   "rationale": "Série anual da soma da chuva em SBBE, 2016 a 2025."
+  },
+  {
+   "id": "T047",
+   "question": "Soma da duração da chuva em Macapá em abril de 2025, em minutos",
+   "expected_behavior": "answerable",
+   "rationale": "Soma da duração da chuva em SBMQ em abril de 2025."
+  },
+  {
+   "id": "T048",
+   "question": "Quais os 5 aeroportos com maior umidade relativa média em julho de 2020?",
+   "expected_behavior": "answerable",
+   "rationale": "Top 5 estações pela média da umidade em julho de 2020."
+  },
+  {
+   "id": "T049",
+   "question": "Qual a média de umidade relativa às 14h em Natal (Parnamirim) em dezembro de 2021?",
+   "expected_behavior": "answerable",
+   "rationale": "Média da umidade às 14h locais em SBNT em dezembro de 2021."
+  },
+  {
+   "id": "T050",
+   "question": "Quantas vezes Confins ficou abaixo dos mínimos em 2022?",
+   "expected_behavior": "needs_clarification",
+   "rationale": "'Mínimos' sem critério definido (visibilidade, teto?)."
+  },
+  {
+   "id": "T051",
+   "question": "Quanto choveu em 2019 em cada aeroporto do Pará?",
+   "expected_behavior": "answerable",
+   "rationale": "Soma da chuva em 2019 por estação do Pará."
+  },
+  {
+   "id": "T052",
+   "question": "Pressão QNH média do aeroporto de Salvador em 2024",
+   "expected_behavior": "answerable",
+   "rationale": "Média do QNH em SBSV em 2024."
+  },
+  {
+   "id": "T053",
+   "question": "Qual o índice UV em Fortaleza em 2021?",
+   "expected_behavior": "unsupported",
+   "rationale": "Índice UV não existe nos dados."
+  },
+  {
+   "id": "T054",
+   "question": "Quanta radiação solar Cuiabá recebeu em outubro de 2020?",
+   "expected_behavior": "unsupported",
+   "rationale": "Radiação solar não existe nos dados."
+  },
+  {
+   "id": "T055",
+   "question": "Choveu mais em Belém (Val de Cans) em 2017 ou em 2018?",
+   "expected_behavior": "answerable",
+   "rationale": "Soma da chuva em SBBE: 2017 versus 2018."
+  },
+  {
+   "id": "T056",
+   "question": "Número de camadas de cumulonimbus (CB) reportadas em Macapá em 2020",
+   "expected_behavior": "answerable",
+   "rationale": "Contagem de camadas CB em SBMQ em 2020."
+  },
+  {
+   "id": "T057",
+   "question": "A temperatura média em Florianópolis (Hercílio Luz) subiu entre o período 2016-2020 e o período 2021-2025?",
+   "expected_behavior": "answerable",
+   "rationale": "Média da temperatura em SBFL: 2016-2020 versus 2021-2025."
+  },
+  {
+   "id": "T058",
+   "question": "Qual a visibilidade em Manaus em janeiro de 2018?",
+   "expected_behavior": "needs_clarification",
+   "rationale": "Manaus tem duas estações (Eduardo Gomes e Ponta Pelada) e falta a estatística."
+  },
+  {
+   "id": "T059",
+   "question": "Em 2019, quais 9 estações tiveram mais leituras de visibilidade abaixo de 1000 m?",
+   "expected_behavior": "answerable",
+   "rationale": "Top 9 estações pela contagem de visibilidade < 1000 m em 2019."
+  },
+  {
+   "id": "T060",
+   "question": "Quantos raios (descargas elétricas) caíram em Belém em 2019?",
+   "expected_behavior": "unsupported",
+   "rationale": "Descargas elétricas não existem nos dados."
+  },
+  {
+   "id": "T061",
+   "question": "Maior velocidade do vento em 2022 em cada aeroporto do estado do Rio de Janeiro",
+   "expected_behavior": "answerable",
+   "rationale": "Máxima do vento em 2022 por estação do RJ."
+  },
+  {
+   "id": "T062",
+   "question": "Qual o vento máximo em Campos do Jordão em 2018?",
+   "expected_behavior": "unsupported",
+   "rationale": "Campos do Jordão não tem estação."
+  },
+  {
+   "id": "T063",
+   "question": "Qual foi a maior rajada?",
+   "expected_behavior": "needs_clarification",
+   "rationale": "Faltam estação e período."
+  },
+  {
+   "id": "T064",
+   "question": "As 6 estações com mais minutos de chuva ao longo de 2021 (duração da chuva)",
+   "expected_behavior": "answerable",
+   "rationale": "Top 6 estações pela soma da duração da chuva em 2021."
+  },
+  {
+   "id": "T065",
+   "question": "Quantas horas com chuva (acumulado maior que zero) Belém Val de Cans teve em março de 2019?",
+   "expected_behavior": "answerable",
+   "rationale": "Contagem de horas com chuva > 0 em SBBE em março de 2019."
+  },
+  {
+   "id": "T066",
+   "question": "Janeiro de 2016 foi mais quente ou mais frio que janeiro de 2025 em Porto Alegre? Quero as médias.",
+   "expected_behavior": "answerable",
+   "rationale": "Média da temperatura em SBPA: janeiro de 2016 versus janeiro de 2025."
+  },
+  {
+   "id": "T067",
+   "question": "Por ano, quantas leituras acima de 35 °C Cuiabá (Várzea Grande) teve de 2016 a 2025?",
+   "expected_behavior": "answerable",
+   "rationale": "Série anual da contagem de leituras > 35 °C em SBCY."
+  },
+  {
+   "id": "T068",
+   "question": "Em Brasília, quantas leituras de umidade relativa ficaram abaixo de 30% em agosto de 2021?",
+   "expected_behavior": "answerable",
+   "rationale": "Contagem de leituras de umidade < 30% em SBBR em agosto de 2021."
+  },
+  {
+   "id": "T069",
+   "question": "Quantos boletins de vento calmo teve a Base Aérea de Natal em 2019?",
+   "expected_behavior": "answerable",
+   "rationale": "Contagem de leituras de vento calmo em SBNT em 2019."
+  },
+  {
+   "id": "T070",
+   "question": "Uberlândia: chuva de dezembro de 2021 versus dezembro de 2022, em mm",
+   "expected_behavior": "answerable",
+   "rationale": "Soma da chuva em SBUL: dezembro de 2021 versus dezembro de 2022."
+  },
+  {
+   "id": "T071",
+   "question": "Quanto choveu em Ouro Preto em 2021?",
+   "expected_behavior": "unsupported",
+   "rationale": "Ouro Preto não tem estação."
+  },
+  {
+   "id": "T072",
+   "question": "Quais foram as 5 estações com a maior temperatura média em 2023?",
+   "expected_behavior": "answerable",
+   "rationale": "Top 5 estações pela média da temperatura em 2023."
+  },
+  {
+   "id": "T073",
+   "question": "Como estava o vento em Brasília em 1998?",
+   "expected_behavior": "unsupported",
+   "rationale": "Ano fora da cobertura."
+  },
+  {
+   "id": "T074",
+   "question": "umidade relativa média anual em Ponta Pelada, ano a ano",
+   "expected_behavior": "answerable",
+   "rationale": "Série anual da média da umidade em SBMN, 2016 a 2025."
+  },
+  {
+   "id": "T075",
+   "question": "Qual foi a temperatura média em 2024 no Carlos Prates (SBPR)?",
+   "expected_behavior": "answerable",
+   "rationale": "Média da temperatura em SBPR em 2024 (estação sem dados nesse período)."
+  },
+  {
+   "id": "T076",
+   "question": "umidade relativa média em Ponta Pelada, julho/2022",
+   "expected_behavior": "answerable",
+   "rationale": "Média da umidade relativa em SBMN em julho de 2022."
+  },
+  {
+   "id": "T077",
+   "question": "Qual aeroporto é o mais quente do Brasil?",
+   "expected_behavior": "needs_clarification",
+   "rationale": "Faltam o período e o critério de 'mais quente' (média, máxima, ...)."
+  },
+  {
+   "id": "T078",
+   "question": "Qual foi mais quente no Galeão, 24/12/2022 ou 25/12/2022? Pela temperatura máxima de cada dia.",
+   "expected_behavior": "answerable",
+   "rationale": "Máxima da temperatura em SBGL em 24/12/2022 versus 25/12/2022."
+  },
+  {
+   "id": "T079",
+   "question": "Qual a temperatura média de Campo de Marte no primeiro trimestre de 2019 (janeiro a março)?",
+   "expected_behavior": "answerable",
+   "rationale": "Média da temperatura em SBMT de 01/01 a 31/03/2019."
+  },
+  {
+   "id": "T080",
+   "question": "Qual a temperatura em Guarulhos?",
+   "expected_behavior": "needs_clarification",
+   "rationale": "Falta o período (e a estatística) para a temperatura em SBGR."
+  },
+  {
+   "id": "T081",
+   "question": "Qual foi a temperatura máxima de cada dia entre 1 e 7 de fevereiro de 2023 em Congonhas?",
+   "expected_behavior": "answerable",
+   "rationale": "Série diária da máxima da temperatura em SBSP, 1 a 7/02/2023."
+  },
+  {
+   "id": "T082",
+   "question": "Quantos centímetros de neve caíram em Lages em 2016?",
+   "expected_behavior": "unsupported",
+   "rationale": "Altura de neve não existe nos dados."
+  },
+  {
+   "id": "T083",
+   "question": "Maior velocidade de vento no Santos Dumont em junho de 2018?",
+   "expected_behavior": "answerable",
+   "rationale": "Máxima da velocidade do vento em SBRJ em junho de 2018."
+  },
+  {
+   "id": "T084",
+   "question": "Temperatura mínima diária em Caxias do Sul de 20 a 26 de julho de 2021",
+   "expected_behavior": "answerable",
+   "rationale": "Série diária da mínima da temperatura em SBCX, 20 a 26/07/2021."
+  },
+  {
+   "id": "T085",
+   "question": "Temperatura mais alta em Santarém em outubro de 2023?",
+   "expected_behavior": "answerable",
+   "rationale": "Máxima da temperatura em SBSN em outubro de 2023."
+  },
+  {
+   "id": "T086",
+   "question": "Rajada máxima em Cumbica em 2025",
+   "expected_behavior": "answerable",
+   "rationale": "Máxima da rajada em SBGR em 2025."
+  },
+  {
+   "id": "T087",
+   "question": "Qual foi a maior temperatura de pista medida em Palmas em 2019?",
+   "expected_behavior": "answerable",
+   "rationale": "Máxima da temperatura da pista em SBPJ em 2019."
+  },
+  {
+   "id": "T088",
+   "question": "Média de chuva em Belo Horizonte em 2018",
+   "expected_behavior": "needs_clarification",
+   "rationale": "Belo Horizonte tem Pampulha, Confins e Carlos Prates: falta escolher a estação."
+  },
+  {
+   "id": "T089",
+   "question": "Qual a base mais baixa de nuvem, em metros, entre as camadas com cobertura de 5 oitavos ou mais no Galeão em 2019?",
+   "expected_behavior": "answerable",
+   "rationale": "Mínima de base_m das camadas com okta >= 5 em SBGL em 2019."
+  },
+  {
+   "id": "T090",
+   "question": "Total de chuva em Salvador, abril de 2019 x abril de 2020",
+   "expected_behavior": "answerable",
+   "rationale": "Soma da chuva em SBSV: abril de 2019 versus abril de 2020."
+  },
+  {
+   "id": "T091",
+   "question": "Como foi o vento em Brasília ontem?",
+   "expected_behavior": "needs_clarification",
+   "rationale": "'Ontem' não tem data definida e falta a estatística do vento."
+  },
+  {
+   "id": "T092",
+   "question": "Quantas leituras de visibilidade abaixo de 5 km (5000 m) teve Porto Alegre em junho de 2017?",
+   "expected_behavior": "answerable",
+   "rationale": "Contagem de visibilidade < 5000 m em SBPA em junho de 2017."
+  },
+  {
+   "id": "T093",
+   "question": "Me diga a latitude e a longitude de SBGR.",
+   "expected_behavior": "unsupported",
+   "rationale": "Pedido de coordenadas."
+  },
+  {
+   "id": "T094",
+   "question": "Quanto choveu no total em Recife (Guararapes) em maio de 2017, em mm?",
+   "expected_behavior": "answerable",
+   "rationale": "Soma da chuva horária em SBRF em maio de 2017."
+  },
+  {
+   "id": "T095",
+   "question": "Qual foi a rajada máxima de vento, em nós, em Santa Maria (RS) em 2022?",
+   "expected_behavior": "answerable",
+   "rationale": "Máxima da rajada em SBSM em 2022."
+  },
+  {
+   "id": "T096",
+   "question": "Qual a pressão em Brasília?",
+   "expected_behavior": "needs_clarification",
+   "rationale": "Faltam período e estatística."
+  },
+  {
+   "id": "T097",
+   "question": "Quantas camadas de nuvem com cobertura total (8 oitavos) foram reportadas em Afonso Pena em julho de 2019?",
+   "expected_behavior": "answerable",
+   "rationale": "Contagem de camadas com okta = 8 em SBCT em julho de 2019."
+  },
+  {
+   "id": "T098",
+   "question": "Qual será a temperatura média em Salvador em janeiro de 2027?",
+   "expected_behavior": "unsupported",
+   "rationale": "Previsão fora do período 2016-2025."
+  },
+  {
+   "id": "T099",
+   "question": "Choveu muito em Salvador no verão de 2022?",
+   "expected_behavior": "needs_clarification",
+   "rationale": "'Verão' e 'muito' não têm convenção definida: falta delimitar o período e o limiar."
+  },
+  {
+   "id": "T100",
+   "question": "Qual a temperatura da pista em Caldas Novas em 2025?",
+   "expected_behavior": "answerable",
+   "rationale": "Máxima da temperatura da pista em SBCN em 2025 (sem dados)."
+  },
+  {
+   "id": "T101",
+   "question": "Maior velocidade do vento em Floripa (Hercílio Luz) em 2020, em nós",
+   "expected_behavior": "answerable",
+   "rationale": "Máxima da velocidade do vento em SBFL em 2020."
+  },
+  {
+   "id": "T102",
+   "question": "Em que estação do ano chove mais em Belém?",
+   "expected_behavior": "needs_clarification",
+   "rationale": "Faltam o período e a definição das estações do ano."
+  },
+  {
+   "id": "T103",
+   "question": "Qual a concentração de PM2.5 em São Paulo em 2022?",
+   "expected_behavior": "unsupported",
+   "rationale": "Poluição do ar não existe nos dados."
+  },
+  {
+   "id": "T104",
+   "question": "Quanto choveu em Fernando de Noronha em 2022, no total?",
+   "expected_behavior": "answerable",
+   "rationale": "Soma da chuva em SBFN em 2022 (sem dados)."
+  },
+  {
+   "id": "T105",
+   "question": "Qual foi a menor umidade relativa em Goiânia em setembro de 2020?",
+   "expected_behavior": "answerable",
+   "rationale": "Mínima da umidade relativa em SBGO em setembro de 2020."
+  },
+  {
+   "id": "T106",
+   "question": "Qual a temperatura mínima de madrugada (entre 0h e 5h59, hora local) em Porto Alegre em julho de 2021?",
+   "expected_behavior": "answerable",
+   "rationale": "Mínima da temperatura entre 0h e 5h59 locais em SBPA em julho de 2021."
+  },
+  {
+   "id": "T107",
+   "question": "Mostre a temperatura de Foz do Iguaçu em dezembro.",
+   "expected_behavior": "needs_clarification",
+   "rationale": "Falta o ano (e a estatística)."
+  },
+  {
+   "id": "T108",
+   "question": "Quais as 5 estações que registraram a menor temperatura em 2021?",
+   "expected_behavior": "answerable",
+   "rationale": "5 estações com menor mínima da temperatura em 2021."
+  },
+  {
+   "id": "T109",
+   "question": "Rio de Janeiro: qual foi a umidade em março de 2021?",
+   "expected_behavior": "needs_clarification",
+   "rationale": "O Rio tem várias estações (Galeão, Santos Dumont, Afonsos, Santa Cruz, Jacarepaguá) e falta a estatística."
+  },
+  {
+   "id": "T110",
+   "question": "temperatura média à tarde (12h às 17h59) em Porto Velho em setembro de 2018",
+   "expected_behavior": "answerable",
+   "rationale": "Média entre 12h e 17h59 locais em SBPV em setembro de 2018."
+  },
+  {
+   "id": "T111",
+   "question": "Umidade relativa média por estação da região Sul em outubro de 2021",
+   "expected_behavior": "answerable",
+   "rationale": "Média da umidade por estação do Sul em outubro de 2021."
+  },
+  {
+   "id": "T112",
+   "question": "Quais os 3 aeroportos mais secos em 2020, pela umidade relativa média?",
+   "expected_behavior": "answerable",
+   "rationale": "3 estações com menor média de umidade em 2020."
+  },
+  {
+   "id": "T113",
+   "question": "Em Congonhas, quantas leituras de visibilidade ficaram abaixo de 1000 m ao longo de 2018?",
+   "expected_behavior": "answerable",
+   "rationale": "Contagem de leituras de visibilidade < 1000 m em SBSP em 2018."
+  },
+  {
+   "id": "T114",
+   "question": "Quantas vezes houve rajada de 40 nós ou mais em Cascavel (PR) em 2021?",
+   "expected_behavior": "answerable",
+   "rationale": "Contagem de rajadas >= 40 nós em SBCA em 2021."
+  },
+  {
+   "id": "T115",
+   "question": "Quantas leituras de visibilidade abaixo de 1000 m Guarulhos teve em 2016 e quantas em 2024?",
+   "expected_behavior": "answerable",
+   "rationale": "Contagem de visibilidade < 1000 m em SBGR: 2016 versus 2024."
+  },
+  {
+   "id": "T116",
+   "question": "Mês a mês de 2019, quantas leituras de visibilidade abaixo de 1000 m em Guarulhos?",
+   "expected_behavior": "answerable",
+   "rationale": "Série mensal da contagem de visibilidade < 1000 m em SBGR em 2019."
+  },
+  {
+   "id": "T117",
+   "question": "Base média, em metros, das camadas de CB em Belém (Val de Cans) em 2022",
+   "expected_behavior": "answerable",
+   "rationale": "Média de base_m das camadas CB em SBBE em 2022."
+  },
+  {
+   "id": "T118",
+   "question": "Menor temperatura do ar em Afonso Pena (Curitiba) durante 2021?",
+   "expected_behavior": "answerable",
+   "rationale": "Mínima da temperatura do ar em SBCT em 2021."
+  },
+  {
+   "id": "T119",
+   "question": "Qual a altura das ondas em Santos em 2020?",
+   "expected_behavior": "unsupported",
+   "rationale": "Altura de ondas não existe nos dados."
+  },
+  {
+   "id": "T120",
+   "question": "Qual foi a temperatura média em Guarulhos em 2014?",
+   "expected_behavior": "unsupported",
+   "rationale": "Período fora de 2016-2025."
+  }
+ ]
+}

@@ -32,7 +32,7 @@ from ..knowledge import DomainCatalog, ExemplarStore, Lexicon
 from ..planning import compile_query, plan, to_interp
 from ..presentation import render, units_of
 from ..understanding import Interpreter, Parsed, canonical_form, describe_diff, diff, parse
-from ..understanding.evidence import needs_reread, reread_agrees
+from ..understanding.evidence import needs_reread, numbers, reread_agrees
 from ..verification import verify_post, verify_pre
 from .settings import Settings
 
@@ -117,6 +117,18 @@ class MetQA:
     def _log(self, res: Result, t0: float):
         return lambda event, **kw: res.trace.append({"t_ms": round((time.perf_counter() - t0) * 1000, 1), "event": event, **kw})
 
+    @staticmethod
+    def _tolerable(answer: Parsed, other: Parsed) -> bool:
+        """Divergência só no status que não pede o usuário (D-119): a outra leitura diz "não suportado" (quem decide o que o sistema
+        calcula é o código: a leitura que respondeu passou no mundo fechado) ou pede esclarecimento SEM alternativas concretas; e a leitura
+        que respondeu tem evidência literal para estação, período e cálculo. Com alternativas, continua perguntando."""
+        if other.status == "needs_clarification" and other.alternatives:
+            return False
+        if other.status not in ("unsupported", "needs_clarification"):
+            return False
+        need = {"stations", "time", "calc"}
+        return all((answer.evidence.get(k) or "").strip() for k in need)
+
     def _localize(self, p: Parsed) -> None:
         """O horário pedido ("às 14h") é hora civil da estação: recebe o fuso dela (met:timeZone), não o de Brasília."""
         for _, cq in p.parts:
@@ -193,23 +205,42 @@ class MetQA:
 
             # concordância e risco
             differ: list[str] = []
+            tolerated = None
             if b is not None and len(ok) == 2:
                 differ = diff(canonical_form(a.parsed.parts, self.catalog.to_canonical),
                               canonical_form(b.parsed.parts, self.catalog.to_canonical))
             elif b is not None and len(ok) == 1 and all(r.parsed is not None for r in readings):
-                differ = ["status"]                                       # uma leitura respondeu, a outra disse que não dá: divergem
+                other = next(r.parsed for r in readings if r is not ok[0])
+                if self._tolerable(ok[0].parsed, other):
+                    tolerated = other
+                else:
+                    differ = ["status"]                                   # uma leitura respondeu, a outra disse que não dá: divergem
             options = ok if differ else ok[:1]
             base = options[0].parsed if options else a.parsed
-            risk = assess(q if not corrections else " ".join([q, *corrections]), base, b.parsed if b else None, differ, bool(exemplars),
-                          frozenset(hit.measures), station_matches=frozenset(self.catalog.stations_in(base.evidence.get('stations', ''))), conservation=self.settings.conservation)
+            asked = " ".join([q, *corrections])
+            name_numbers = frozenset(n for name in self.catalog.index.mentioned_names(asked) for n in numbers(name))
+            literal = frozenset(self.catalog.stations_in(base.evidence.get('stations', '')))
+            agreed = len(ok) == 2 and not differ                  # as duas leituras independentes escolheram as mesmas estações
+            risk = assess(q if not corrections else asked, base, b.parsed if b else None, differ, bool(exemplars),
+                          frozenset(hit.measures), station_matches=None if agreed else literal,
+                          conservation=self.settings.conservation, name_numbers=name_numbers)
+            if agreed:
+                guessed = [s["iri"] for _, part in base.parts for s in part.stations if s["iri"] not in literal]
+                if guessed:
+                    risk.weak.append(f"'{base.evidence.get('stations', '')}' entendido como "
+                                     f"{', '.join(self.catalog.station_label(i) for i in dict.fromkeys(guessed))} (pelas duas leituras)")
+            if tolerated is not None:
+                what = "considerou a pergunta fora do que o sistema faz" if tolerated.status == "unsupported" else "pediu esclarecimento"
+                risk.weak.append(f"uma das duas leituras {what} ({(tolerated.reason or 'sem motivo')[:120]}); usei a outra, que tem evidência "
+                                 "literal para estação, período e cálculo e passou nas conferências")
             if len(ok) == 2:
                 other = ok[1].parsed
                 second_risk = assess(" ".join([q, *corrections]), other, None, [], bool(exemplars), frozenset(hit.measures),
-                                     station_matches=frozenset(self.catalog.stations_in(other.evidence.get('stations', ''))),
-                                     conservation=self.settings.conservation)
+                                     station_matches=None if agreed else frozenset(self.catalog.stations_in(other.evidence.get('stations', ''))),
+                                     conservation=self.settings.conservation, name_numbers=name_numbers)
                 risk.strong = list(dict.fromkeys(risk.strong + second_risk.strong))
-            # nome que cobre várias estações ("Rio de Janeiro") e a leitura escolheu só algumas, sem outra menção que as identifique
-            asked = " ".join([q, *corrections])
+            # nome que cobre várias estações ("Rio de Janeiro") e a leitura escolheu só algumas, sem outra menção que as identifique;
+            # ou a pergunta identificou o aeroporto ("Curitiba (Afonso Pena)") e a leitura levou a cidade inteira
             for r_ in ok:
                 chosen = {s["iri"] for _, part in r_.parsed.parts for s in part.stations}
                 risk.strong = list(dict.fromkeys(risk.strong + self.catalog.index.ambiguous_mentions(asked, chosen)))

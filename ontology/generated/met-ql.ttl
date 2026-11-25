@@ -632,6 +632,11 @@ met:runwayDesignator a owl:DatatypeProperty ;
 met:sensorName a owl:AnnotationProperty ;
     rdfs:label "nome do sensor virtual"@pt .
 
+met:servedCityName a owl:DatatypeProperty ;
+    rdfs:label "cidade atendida pela estação"@pt ;
+    rdfs:domain met:WeatherStation ;
+    rdfs:range xsd:string .
+
 met:siteOf a owl:ObjectProperty ;
     rdfs:label "local da estação"@pt ;
     rdfs:domain met:Site ;
@@ -977,12 +982,6 @@ met:Forecast a owl:Class ;
     rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000002> ;
     owl:disjointWith <http://purl.obolibrary.org/obo/BFO_0000031> .
 
-met:WeatherStation a owl:Class ;
-    rdfs:label "weather station"@en,
-        "estação meteorológica"@pt ;
-    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000040>,
-        sosa:Platform .
-
 <http://purl.obolibrary.org/obo/BFO_0000008> a owl:Class ;
     rdfs:label "temporal region"@en ;
     rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000003> .
@@ -990,6 +989,12 @@ met:WeatherStation a owl:Class ;
 <http://purl.obolibrary.org/obo/IAO_0000030> a owl:Class ;
     rdfs:label "information content entity"@en ;
     rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000031> .
+
+met:WeatherStation a owl:Class ;
+    rdfs:label "weather station"@en,
+        "estação meteorológica"@pt ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000040>,
+        sosa:Platform .
 
 sosa:Observation a owl:Class ;
     rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000015> .

@@ -48,6 +48,14 @@ def numbers(text: str) -> list[Decimal]:
     return out
 
 
+CLOCK_MINUTES = re.compile(r"(?<![\d])\d{1,2}\s*(?:h|:)\s*(\d{2})(?![\d])")
+
+
+def clock_minutes(text: str) -> set[int]:
+    """Os minutos de um horário escrito ("5h59", "17:30"): o recorte é por hora, então eles não são uma restrição a conservar."""
+    return {int(m) for m in CLOCK_MINUTES.findall(norm(text))}
+
+
 def _time_values(parts: list[CanonicalQuery]) -> tuple[set[int], set[int]]:
     """(números que o tempo normalizado justifica sempre, números que só valem como mês)."""
     always, months = set(), set()
@@ -71,6 +79,8 @@ def conservation(evidence: dict[str, str], parts: list[CanonicalQuery]) -> list[
     time = evidence.get("time", "") + " " + evidence.get("period", "")
     if time.strip() and parts:
         always, months = _time_values(parts)
+        if any(cq.scope.hours for cq in parts):
+            always |= clock_minutes(time)
         named_month = any(m in words(time) for m in MONTHS)
         for n in dict.fromkeys(numbers(time)):
             if n != n.to_integral_value():

@@ -465,3 +465,19 @@ Mantém-se a pergunta ao professor sobre **perguntas reais de usuários da área
   (`OntologyIndex.ambiguous_mentions`). Escolher todas é legítimo (um valor por estação). Município que é palavra comum ("Bonito",
   "Sorriso") não reconhece estação.
 - D-118 Ressalva da chuva: os totais ficam abaixo da climatologia em várias estações; toda resposta sobre chuva diz isso (`met:answerCaveat`).
+
+## Correções depois do estudo_20261125 (2026-11-25; não medidas: o estudo_20261125 agora é conhecido)
+- D-119 Divergência só no status não pede o usuário quando a outra leitura diz "não suportado" (o que o sistema calcula é decidido pelo
+  código: a leitura que respondeu passou no mundo fechado) ou pede esclarecimento sem alternativas, e a leitura que respondeu tem evidência
+  literal para estação, período e cálculo. A resposta diz que uma leitura discordou. Com alternativas concretas, continua perguntando
+  (`MetQA._tolerable`).
+- D-120 Cidade atendida pelo aeroporto (`met:servedCityName`, coluna `cidade_atendida` do cadastro, da fonte) como nome que pode cobrir
+  várias estações. `export_pg.py --stations` atualiza o cadastro sem recriar a tabela. Listas feitas à mão de gentílicos, apelidos de
+  cidade e regiões sem "região", testadas nesta mesma data, foram retiradas em favor de D-122.
+- D-121 Conservação: os minutos de um horário escrito ("5h59") não são restrição quando o recorte é por hora, e números que fazem parte
+  de um nome de lugar reconhecido ("P-20") não contam como número esquecido.
+- D-122 Lugares e limites por diretrizes gerais, não por listas: o cardápio leva o diretório das 178 estações (município, cidade atendida,
+  UF, região, apelidos) e o prompt diz como resolver lugar com o conhecimento do modelo (apelidos, gentílicos, regiões), que o nome mais
+  específico vence, quando um lugar vale por todas as estações e quando é ambíguo, que limites de capacidade são do código e que só se pede
+  esclarecimento com alternativas concretas. Estação escolhida pelo modelo sem ligação literal no texto, com as duas leituras de acordo, é
+  nota visível em "Como entendi"; com leituras divergentes ou leitura única, continua sinal forte. Medição: `docs/RESULTADOS_estudo2_20261125.md`.

@@ -1,0 +1,825 @@
+[
+ {
+  "id": "T002",
+  "label": "",
+  "n_rows": 12,
+  "first_row": [
+   "1",
+   "40.0"
+  ],
+  "error": null
+ },
+ {
+  "id": "T003",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "26.0"
+  ],
+  "error": null
+ },
+ {
+  "id": "T005",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "28.511170212765958"
+  ],
+  "error": null
+ },
+ {
+  "id": "T008",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "100"
+  ],
+  "error": null
+ },
+ {
+  "id": "T009",
+  "label": "",
+  "n_rows": 10,
+  "first_row": [
+   "2016",
+   "22.15339122787732"
+  ],
+  "error": null
+ },
+ {
+  "id": "T011",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "1330"
+  ],
+  "error": null
+ },
+ {
+  "id": "T012",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "35.8"
+  ],
+  "error": null
+ },
+ {
+  "id": "T013",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "24.66256379664612"
+  ],
+  "error": null
+ },
+ {
+  "id": "T014",
+  "label": "",
+  "n_rows": 3,
+  "first_row": [
+   "https://example.org/kgqa-met/data/station/SBEG",
+   "2774.0"
+  ],
+  "error": null
+ },
+ {
+  "id": "T016",
+  "label": "01/09/2019 a 30/09/2019",
+  "n_rows": 1,
+  "first_row": [
+   "39.6"
+  ],
+  "error": null
+ },
+ {
+  "id": "T016",
+  "label": "01/09/2020 a 30/09/2020",
+  "n_rows": 1,
+  "first_row": [
+   "39.4"
+  ],
+  "error": null
+ },
+ {
+  "id": "T017",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "31.64054054054054"
+  ],
+  "error": null
+ },
+ {
+  "id": "T022",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "None"
+  ],
+  "error": null
+ },
+ {
+  "id": "T024",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "83"
+  ],
+  "error": null
+ },
+ {
+  "id": "T026",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "18525.361827227498"
+  ],
+  "error": null
+ },
+ {
+  "id": "T027",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "23.603177878662816"
+  ],
+  "error": null
+ },
+ {
+  "id": "T028",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "33.3"
+  ],
+  "error": null
+ },
+ {
+  "id": "T029",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "23.006485084306096"
+  ],
+  "error": null
+ },
+ {
+  "id": "T030",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "95.0"
+  ],
+  "error": null
+ },
+ {
+  "id": "T031",
+  "label": "",
+  "n_rows": 3,
+  "first_row": [
+   "https://example.org/kgqa-met/data/station/SBYS",
+   "65.0"
+  ],
+  "error": null
+ },
+ {
+  "id": "T032",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "1016.9823232323232"
+  ],
+  "error": null
+ },
+ {
+  "id": "T033",
+  "label": "",
+  "n_rows": 7,
+  "first_row": [
+   "2021-03-10",
+   "0.1"
+  ],
+  "error": null
+ },
+ {
+  "id": "T034",
+  "label": "",
+  "n_rows": 12,
+  "first_row": [
+   "1",
+   "319.5"
+  ],
+  "error": null
+ },
+ {
+  "id": "T037",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "153"
+  ],
+  "error": null
+ },
+ {
+  "id": "T038",
+  "label": "",
+  "n_rows": 12,
+  "first_row": [
+   "1",
+   "22.812377450980392"
+  ],
+  "error": null
+ },
+ {
+  "id": "T039",
+  "label": "01/02/2019 a 28/02/2019",
+  "n_rows": 1,
+  "first_row": [
+   "87.82352941176471"
+  ],
+  "error": null
+ },
+ {
+  "id": "T039",
+  "label": "01/08/2019 a 31/08/2019",
+  "n_rows": 1,
+  "first_row": [
+   "74.92406692406692"
+  ],
+  "error": null
+ },
+ {
+  "id": "T041",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "36.9"
+  ],
+  "error": null
+ },
+ {
+  "id": "T043",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "3854"
+  ],
+  "error": null
+ },
+ {
+  "id": "T044",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "5"
+  ],
+  "error": null
+ },
+ {
+  "id": "T045",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "40540"
+  ],
+  "error": null
+ },
+ {
+  "id": "T046",
+  "label": "",
+  "n_rows": 10,
+  "first_row": [
+   "2016",
+   "2386.9"
+  ],
+  "error": null
+ },
+ {
+  "id": "T047",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "3900"
+  ],
+  "error": null
+ },
+ {
+  "id": "T048",
+  "label": "",
+  "n_rows": 5,
+  "first_row": [
+   "https://example.org/kgqa-met/data/station/SBSG",
+   "86.71635311143271"
+  ],
+  "error": null
+ },
+ {
+  "id": "T049",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "64.90322580645162"
+  ],
+  "error": null
+ },
+ {
+  "id": "T051",
+  "label": "",
+  "n_rows": 14,
+  "first_row": [
+   "https://example.org/kgqa-met/data/station/SBAA",
+   "1016.4"
+  ],
+  "error": null
+ },
+ {
+  "id": "T052",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "1015.1431996311665"
+  ],
+  "error": null
+ },
+ {
+  "id": "T055",
+  "label": "01/01/2017 a 31/12/2017",
+  "n_rows": 1,
+  "first_row": [
+   "2870.0"
+  ],
+  "error": null
+ },
+ {
+  "id": "T055",
+  "label": "01/01/2018 a 31/12/2018",
+  "n_rows": 1,
+  "first_row": [
+   "2919.9"
+  ],
+  "error": null
+ },
+ {
+  "id": "T056",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "227"
+  ],
+  "error": null
+ },
+ {
+  "id": "T057",
+  "label": "01/01/2016 a 31/12/2020",
+  "n_rows": 1,
+  "first_row": [
+   "21.276605845803797"
+  ],
+  "error": null
+ },
+ {
+  "id": "T057",
+  "label": "01/01/2021 a 31/12/2025",
+  "n_rows": 1,
+  "first_row": [
+   "21.25597542432088"
+  ],
+  "error": null
+ },
+ {
+  "id": "T059",
+  "label": "",
+  "n_rows": 9,
+  "first_row": [
+   "https://example.org/kgqa-met/data/station/SBCT",
+   "297"
+  ],
+  "error": null
+ },
+ {
+  "id": "T061",
+  "label": "",
+  "n_rows": 12,
+  "first_row": [
+   "https://example.org/kgqa-met/data/station/SBAF",
+   "23.0"
+  ],
+  "error": null
+ },
+ {
+  "id": "T064",
+  "label": "",
+  "n_rows": 6,
+  "first_row": [
+   "https://example.org/kgqa-met/data/station/SBJV",
+   "49978"
+  ],
+  "error": null
+ },
+ {
+  "id": "T065",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "220"
+  ],
+  "error": null
+ },
+ {
+  "id": "T066",
+  "label": "01/01/2016 a 31/01/2016",
+  "n_rows": 1,
+  "first_row": [
+   "25.632991014120666"
+  ],
+  "error": null
+ },
+ {
+  "id": "T066",
+  "label": "01/01/2025 a 31/01/2025",
+  "n_rows": 1,
+  "first_row": [
+   "25.44777927321669"
+  ],
+  "error": null
+ },
+ {
+  "id": "T067",
+  "label": "",
+  "n_rows": 10,
+  "first_row": [
+   "2016",
+   "270"
+  ],
+  "error": null
+ },
+ {
+  "id": "T068",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "128"
+  ],
+  "error": null
+ },
+ {
+  "id": "T069",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "119"
+  ],
+  "error": null
+ },
+ {
+  "id": "T070",
+  "label": "01/12/2021 a 31/12/2021",
+  "n_rows": 1,
+  "first_row": [
+   "174.2"
+  ],
+  "error": null
+ },
+ {
+  "id": "T070",
+  "label": "01/12/2022 a 31/12/2022",
+  "n_rows": 1,
+  "first_row": [
+   "314.4"
+  ],
+  "error": null
+ },
+ {
+  "id": "T072",
+  "label": "",
+  "n_rows": 5,
+  "first_row": [
+   "https://example.org/kgqa-met/data/station/SBJE",
+   "32.315506003430535"
+  ],
+  "error": null
+ },
+ {
+  "id": "T074",
+  "label": "",
+  "n_rows": 10,
+  "first_row": [
+   "2016",
+   "76.64400895856663"
+  ],
+  "error": null
+ },
+ {
+  "id": "T075",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "None"
+  ],
+  "error": null
+ },
+ {
+  "id": "T076",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "76.4805890227577"
+  ],
+  "error": null
+ },
+ {
+  "id": "T078",
+  "label": "24/12/2022",
+  "n_rows": 1,
+  "first_row": [
+   "28.5"
+  ],
+  "error": null
+ },
+ {
+  "id": "T078",
+  "label": "25/12/2022",
+  "n_rows": 1,
+  "first_row": [
+   "30.2"
+  ],
+  "error": null
+ },
+ {
+  "id": "T079",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "24.200275330396476"
+  ],
+  "error": null
+ },
+ {
+  "id": "T081",
+  "label": "",
+  "n_rows": 7,
+  "first_row": [
+   "2023-02-01",
+   "28.6"
+  ],
+  "error": null
+ },
+ {
+  "id": "T083",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "18.0"
+  ],
+  "error": null
+ },
+ {
+  "id": "T084",
+  "label": "",
+  "n_rows": 6,
+  "first_row": [
+   "2021-07-20",
+   "5.0"
+  ],
+  "error": null
+ },
+ {
+  "id": "T085",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "36.2"
+  ],
+  "error": null
+ },
+ {
+  "id": "T086",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "45.0"
+  ],
+  "error": null
+ },
+ {
+  "id": "T087",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "41.1"
+  ],
+  "error": null
+ },
+ {
+  "id": "T089",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "50"
+  ],
+  "error": null
+ },
+ {
+  "id": "T090",
+  "label": "01/04/2019 a 30/04/2019",
+  "n_rows": 1,
+  "first_row": [
+   "79.0"
+  ],
+  "error": null
+ },
+ {
+  "id": "T090",
+  "label": "01/04/2020 a 30/04/2020",
+  "n_rows": 1,
+  "first_row": [
+   "177.9"
+  ],
+  "error": null
+ },
+ {
+  "id": "T092",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "123"
+  ],
+  "error": null
+ },
+ {
+  "id": "T094",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "365.4"
+  ],
+  "error": null
+ },
+ {
+  "id": "T095",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "62.0"
+  ],
+  "error": null
+ },
+ {
+  "id": "T097",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "110"
+  ],
+  "error": null
+ },
+ {
+  "id": "T100",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "None"
+  ],
+  "error": null
+ },
+ {
+  "id": "T101",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "38.0"
+  ],
+  "error": null
+ },
+ {
+  "id": "T104",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "None"
+  ],
+  "error": null
+ },
+ {
+  "id": "T105",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "13.0"
+  ],
+  "error": null
+ },
+ {
+  "id": "T106",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "1.4"
+  ],
+  "error": null
+ },
+ {
+  "id": "T108",
+  "label": "",
+  "n_rows": 5,
+  "first_row": [
+   "https://example.org/kgqa-met/data/station/SBPC",
+   "-3.3"
+  ],
+  "error": null
+ },
+ {
+  "id": "T110",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "32.096296296296295"
+  ],
+  "error": null
+ },
+ {
+  "id": "T111",
+  "label": "",
+  "n_rows": 24,
+  "first_row": [
+   "https://example.org/kgqa-met/data/station/SBBG",
+   "52.005025125628144"
+  ],
+  "error": null
+ },
+ {
+  "id": "T112",
+  "label": "",
+  "n_rows": 3,
+  "first_row": [
+   "https://example.org/kgqa-met/data/station/SBGP",
+   "52.794359576968276"
+  ],
+  "error": null
+ },
+ {
+  "id": "T113",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "14"
+  ],
+  "error": null
+ },
+ {
+  "id": "T114",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "6"
+  ],
+  "error": null
+ },
+ {
+  "id": "T115",
+  "label": "01/01/2016 a 31/12/2016",
+  "n_rows": 1,
+  "first_row": [
+   "117"
+  ],
+  "error": null
+ },
+ {
+  "id": "T115",
+  "label": "01/01/2024 a 31/12/2024",
+  "n_rows": 1,
+  "first_row": [
+   "86"
+  ],
+  "error": null
+ },
+ {
+  "id": "T116",
+  "label": "",
+  "n_rows": 11,
+  "first_row": [
+   "1",
+   "12"
+  ],
+  "error": null
+ },
+ {
+  "id": "T117",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "940.995670995671"
+  ],
+  "error": null
+ },
+ {
+  "id": "T118",
+  "label": "",
+  "n_rows": 1,
+  "first_row": [
+   "-2.4"
+  ],
+  "error": null
+ }
+]

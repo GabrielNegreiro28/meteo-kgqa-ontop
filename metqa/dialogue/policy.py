@@ -32,7 +32,8 @@ class Risk:
 
 
 def assess(question: str, a: Parsed, b: Parsed | None, differ: list[str], has_exemplar: bool,
-           lexicon_measures: frozenset[str] = frozenset(), conservation: bool = True, station_matches: frozenset[str] | None = None) -> Risk:
+           lexicon_measures: frozenset[str] = frozenset(), conservation: bool = True, station_matches: frozenset[str] | None = None,
+           name_numbers: frozenset = frozenset()) -> Risk:
     r = Risk()
     if differ:
         r.strong.append(f"as duas leituras independentes divergem em: {describe_diff(differ)}")
@@ -60,7 +61,7 @@ def assess(question: str, a: Parsed, b: Parsed | None, differ: list[str], has_ex
                     r.strong.append(f"estação sem menção ou alias governado: {station['iri']}")
     cited = set(numbers(" ".join(a.evidence.values())))                            # números inteiros: 6 não está em 2016
     for n in dict.fromkeys(numbers(question)):
-        if n not in cited:
+        if n not in cited and n not in name_numbers:              # o 20 de "P-20" é parte do nome da estação, não uma restrição
             r.strong.append(f"o número '{n}' da pergunta não foi usado na interpretação")
     if conservation:
         r.strong += conserved(a.evidence, [q for _, q in a.parts])

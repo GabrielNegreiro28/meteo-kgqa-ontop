@@ -254,8 +254,8 @@ class OntologyIndex:
         "região X" podem ser de várias (cadastro em data/estacoes.csv). Município que é palavra comum ("Bonito") não conta."""
         names = [(n, True) for n in [*self.entities.get(iri, []), iri.rsplit("/", 1)[-1], *self.aliases.get(iri, [])]]
         p = self.places.get(iri, {})
-        if p.get("municipio") and fold(p["municipio"]) not in COMMON_WORD_PLACES:
-            names.append((p["municipio"], False))
+        cities = [c for c in (p.get("municipio"), p.get("cidade")) if c and fold(c) not in COMMON_WORD_PLACES]
+        names += [(city, False) for city in dict.fromkeys(cities)]
         if p.get("estado"):
             names.append((p["estado"], False))
         if p.get("regiao"):
@@ -279,14 +279,18 @@ class OntologyIndex:
                 if not any(s2 <= s and e <= e2 and (e2 - s2) > (e - s) for s2, e2, _, _ in spans)}
 
     def link_entities(self, question: str) -> dict[str, str]:
-        """Estações que a PERGUNTA cita (código, rótulo, apelido, município, estado ou região), sem LLM: IRI -> nome encontrado.
-        É a verdade de referência para conferir as entidades da interpretação (omitidas ou inventadas)."""
+        """Estações que a PERGUNTA cita (código, rótulo, apelido, município, cidade atendida, estado ou região), sem LLM: IRI -> nome
+        encontrado. É a verdade de referência para conferir as entidades da interpretação (omitidas ou inventadas)."""
         found: dict[str, str] = {}
         names = {fold(n): n for iri in self.entities for n, _ in self.mention_names(iri)}
         for n, iris in sorted(self._mentions(question).items(), key=lambda kv: len(kv[1])):
             for iri in sorted(iris):
                 found.setdefault(iri, names.get(n, n))
         return found
+
+    def mentioned_names(self, question: str) -> list[str]:
+        """Os nomes de lugar reconhecidos na pergunta ("P-20", "Angra 2"): os números deles não são restrições da consulta."""
+        return list(self._mentions(question))
 
     def ambiguous_mentions(self, question: str, chosen: set[str]) -> list[str]:
         """Nome citado que cobre várias estações ("Rio de Janeiro": cidade com 6 estações, estado com 15) e a leitura escolheu só parte
@@ -299,6 +303,25 @@ class OntologyIndex:
             if len(iris) > 1 and picked and picked != iris and not (picked & specific):
                 codes = ", ".join(self.station_display(i) for i in sorted(iris))
                 out.append(f"'{n}' corresponde a {len(iris)} estações ({codes}); diga qual, ou peça todas")
+            named = iris & specific
+            if len(iris) > 1 and named and (picked - specific):
+                # "cidade (aeroporto)": a pergunta identificou a estação; as outras da cidade não foram pedidas
+                extra = ", ".join(self.station_display(i) for i in sorted(picked - specific))
+                out.append(f"a pergunta identifica {', '.join(self.station_display(i) for i in sorted(named))} em '{n}'; "
+                           f"{extra} não foi pedida")
+        return out
+
+    def directory(self) -> list[str]:
+        """Uma linha por estação com os fatos do cadastro, para o LLM resolver o lugar com o próprio conhecimento (D-122)."""
+        out = []
+        for iri in sorted(self.entities):
+            code, p = iri.rsplit("/", 1)[-1], self.places.get(iri, {})
+            if not p.get("uf"):
+                out.append(f"{code} | sem cadastro")
+                continue
+            served = f" (atende {p['cidade']})" if p.get("cidade") and p.get("cidade") != p.get("municipio") else ""
+            nick = f" | {'; '.join(self.aliases.get(iri, []))}" if self.aliases.get(iri) else ""
+            out.append(f"{code} | {p.get('municipio', '')}{served} | {p['uf']} | {p.get('regiao', '')}{nick}")
         return out
 
     def station_display(self, iri: str) -> str:
@@ -484,7 +507,8 @@ class OntologyIndex:
         return "\n".join(lines)
 
 
-PLACE_PROPS = {"municipio": "municipalityName", "uf": "stateCode", "estado": "stateName", "regiao": "regionName", "tz": "timeZone"}
+PLACE_PROPS = {"municipio": "municipalityName", "cidade": "servedCityName", "uf": "stateCode", "estado": "stateName", "regiao": "regionName",
+               "tz": "timeZone"}
 COMMON_WORD_PLACES = {"bonito", "sorriso", "cruz", "una", "bacia de campos (plataforma)"}   # municípios que também são palavras comuns
 
 

@@ -613,6 +613,9 @@ met:runwayDesignator a owl:DatatypeProperty ;
 met:sensorName a owl:AnnotationProperty ;
     rdfs:label "nome do sensor virtual"@pt .
 
+met:servedCityName a owl:DatatypeProperty ;
+    rdfs:label "cidade atendida pela estação"@pt .
+
 met:siteOf a owl:ObjectProperty ;
     rdfs:label "local da estação"@pt .
 

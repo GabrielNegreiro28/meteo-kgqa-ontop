@@ -133,9 +133,10 @@ class DomainCatalog:
             cited = f"  <- citada na pergunta como '{candidates[m.iri]}'" if m.iri in candidates else ""
             lines.append(f"- {m.short} | {', '.join(m.labels[:4])} | unidade: {m.symbol or 'sem unidade'} | "
                          f"{'acumulada' if m.accumulated else 'instantânea'} | agregações: {aggs}{attrs}{cited}")
-        lines.append("Estações reconhecidas na pergunta (use o IRI; o trecho é o nome citado, que pode cobrir várias estações):")
-        lines += [f"- st:{iri.rsplit('/', 1)[-1]} = {self.station_label(iri)} | trecho: '{text}'" for iri, text in stations.items()] or \
-                 ["- nenhuma: peça esclarecimento; todas somente se explicitamente solicitado. Lugar sem estação nesta lista não tem estação."]
+        lines.append("Estações citadas literalmente (código ou nome do cadastro; o nome pode cobrir várias estações):")
+        lines += [f"- st:{iri.rsplit('/', 1)[-1]} = {self.station_label(iri)} | trecho: '{text}'" for iri, text in stations.items()] or ["- nenhuma"]
+        lines.append("Diretório de todas as estações (IRI st:CÓDIGO | município (cidade atendida) | UF | região | apelidos):")
+        lines += [f"- {row}" for row in self.index.directory()]
         lines.append(f"Dimensões de agrupamento: {', '.join(GROUP_DIMS)}")
         lines.append("</cardapio>")
         return "\n".join(lines)

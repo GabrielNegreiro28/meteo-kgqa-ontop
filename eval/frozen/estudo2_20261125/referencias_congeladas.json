@@ -1,0 +1,2765 @@
+{
+  "version": 1,
+  "snapshot_id": "414e5277a59d175ee0e83dd4a659bdb33049c0910f10bb66b75d96e1f60995cb",
+  "spec_sha256": "9699c2b45a7b148191360d18d5f25d5285a5594f246c5f3169ccf7b0487115ff",
+  "cases": {
+    "T002": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "month",
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/KN"
+          },
+          "rows": [
+            [
+              1,
+              {
+                "number": "40.0"
+              }
+            ],
+            [
+              2,
+              {
+                "number": "30.0"
+              }
+            ],
+            [
+              3,
+              {
+                "number": "38.0"
+              }
+            ],
+            [
+              4,
+              {
+                "number": "31.0"
+              }
+            ],
+            [
+              5,
+              {
+                "number": "31.0"
+              }
+            ],
+            [
+              6,
+              {
+                "number": "45.0"
+              }
+            ],
+            [
+              7,
+              {
+                "number": "34.0"
+              }
+            ],
+            [
+              8,
+              {
+                "number": "35.0"
+              }
+            ],
+            [
+              9,
+              {
+                "number": "33.0"
+              }
+            ],
+            [
+              10,
+              {
+                "number": "25.0"
+              }
+            ],
+            [
+              11,
+              {
+                "number": "34.0"
+              }
+            ],
+            [
+              12,
+              {
+                "number": "29.0"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T003": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/KN"
+          },
+          "rows": [
+            [
+              {
+                "number": "26.0"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T005": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/DEG_C"
+          },
+          "rows": [
+            [
+              {
+                "number": "28.511170212765958"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T008": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/M"
+          },
+          "rows": [
+            [
+              100
+            ]
+          ]
+        }
+      ]
+    },
+    "T009": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "year",
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/DEG_C"
+          },
+          "rows": [
+            [
+              2016,
+              {
+                "number": "22.15339122787732"
+              }
+            ],
+            [
+              2017,
+              {
+                "number": "21.982588105726872"
+              }
+            ],
+            [
+              2018,
+              {
+                "number": "21.006796645245615"
+              }
+            ],
+            [
+              2019,
+              {
+                "number": "23.109837849602787"
+              }
+            ],
+            [
+              2020,
+              {
+                "number": "22.09850948509485"
+              }
+            ],
+            [
+              2021,
+              {
+                "number": "21.446128423040605"
+              }
+            ],
+            [
+              2022,
+              {
+                "number": "21.385862445414848"
+              }
+            ],
+            [
+              2023,
+              {
+                "number": "22.149959895728895"
+              }
+            ],
+            [
+              2024,
+              {
+                "number": "22.01661886186324"
+              }
+            ],
+            [
+              2025,
+              {
+                "number": "21.935613986013987"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T011": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {},
+          "rows": [
+            [
+              1330
+            ]
+          ]
+        }
+      ]
+    },
+    "T012": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/DEG_C"
+          },
+          "rows": [
+            [
+              {
+                "number": "35.8"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T013": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/DEG_C"
+          },
+          "rows": [
+            [
+              {
+                "number": "24.66256379664612"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T014": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "station",
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/MilliM"
+          },
+          "rows": [
+            [
+              "https://example.org/kgqa-met/data/station/SBEG",
+              {
+                "number": "2774.0"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBBE",
+              {
+                "number": "2599.2"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBCZ",
+              {
+                "number": "2007.2"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T016": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "01/09/2019 a 30/09/2019",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/DEG_C"
+          },
+          "rows": [
+            [
+              {
+                "number": "39.6"
+              }
+            ]
+          ]
+        },
+        {
+          "label": "01/09/2020 a 30/09/2020",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/DEG_C"
+          },
+          "rows": [
+            [
+              {
+                "number": "39.4"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T017": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/DEG_C"
+          },
+          "rows": [
+            [
+              {
+                "number": "31.64054054054054"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T022": {
+      "expected_status": "no_results",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/DEG_C"
+          },
+          "rows": [
+            [
+              null
+            ]
+          ]
+        }
+      ]
+    },
+    "T024": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {},
+          "rows": [
+            [
+              83
+            ]
+          ]
+        }
+      ]
+    },
+    "T026": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/M"
+          },
+          "rows": [
+            [
+              {
+                "number": "18525.361827227498"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T027": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/DEG_C"
+          },
+          "rows": [
+            [
+              {
+                "number": "23.603177878662816"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T028": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/DEG_C"
+          },
+          "rows": [
+            [
+              {
+                "number": "33.3"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T029": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/DEG_C"
+          },
+          "rows": [
+            [
+              {
+                "number": "23.006485084306096"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T030": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/MilliM"
+          },
+          "rows": [
+            [
+              {
+                "number": "95.0"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T031": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "station",
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/KN"
+          },
+          "rows": [
+            [
+              "https://example.org/kgqa-met/data/station/SBYS",
+              {
+                "number": "65.0"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBMG",
+              {
+                "number": "64.0"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBCG",
+              {
+                "number": "62.0"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T032": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/HectoPA"
+          },
+          "rows": [
+            [
+              {
+                "number": "1016.9823232323232"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T033": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "day",
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/MilliM"
+          },
+          "rows": [
+            [
+              "2021-03-10",
+              {
+                "number": "0.1"
+              }
+            ],
+            [
+              "2021-03-11",
+              {
+                "number": "0.2"
+              }
+            ],
+            [
+              "2021-03-12",
+              {
+                "number": "49.1"
+              }
+            ],
+            [
+              "2021-03-13",
+              {
+                "number": "0.8"
+              }
+            ],
+            [
+              "2021-03-14",
+              {
+                "number": "2.0"
+              }
+            ],
+            [
+              "2021-03-15",
+              {
+                "number": "4.1"
+              }
+            ],
+            [
+              "2021-03-16",
+              {
+                "number": "0.0"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T034": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "month",
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/MilliM"
+          },
+          "rows": [
+            [
+              1,
+              {
+                "number": "319.5"
+              }
+            ],
+            [
+              2,
+              {
+                "number": "184.6"
+              }
+            ],
+            [
+              3,
+              {
+                "number": "188.2"
+              }
+            ],
+            [
+              4,
+              {
+                "number": "54.4"
+              }
+            ],
+            [
+              5,
+              {
+                "number": "36.3"
+              }
+            ],
+            [
+              6,
+              {
+                "number": "0.3"
+              }
+            ],
+            [
+              7,
+              {
+                "number": "1.0"
+              }
+            ],
+            [
+              8,
+              {
+                "number": "7.5"
+              }
+            ],
+            [
+              9,
+              {
+                "number": "5.1"
+              }
+            ],
+            [
+              10,
+              {
+                "number": "78.9"
+              }
+            ],
+            [
+              11,
+              {
+                "number": "86.1"
+              }
+            ],
+            [
+              12,
+              {
+                "number": "137.4"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T037": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {},
+          "rows": [
+            [
+              153
+            ]
+          ]
+        }
+      ]
+    },
+    "T038": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "month",
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/DEG_C"
+          },
+          "rows": [
+            [
+              1,
+              {
+                "number": "22.812377450980392"
+              }
+            ],
+            [
+              2,
+              {
+                "number": "20.258169934640524"
+              }
+            ],
+            [
+              3,
+              {
+                "number": "19.85880195599022"
+              }
+            ],
+            [
+              4,
+              {
+                "number": "18.95871212121212"
+              }
+            ],
+            [
+              5,
+              {
+                "number": "17.061341463414635"
+              }
+            ],
+            [
+              6,
+              {
+                "number": "15.296582278481013"
+              }
+            ],
+            [
+              7,
+              {
+                "number": "13.62175"
+              }
+            ],
+            [
+              8,
+              {
+                "number": "13.97663782447466"
+              }
+            ],
+            [
+              9,
+              {
+                "number": "16.160329531051964"
+              }
+            ],
+            [
+              10,
+              {
+                "number": "18.794584382871538"
+              }
+            ],
+            [
+              11,
+              {
+                "number": "18.528422425032595"
+              }
+            ],
+            [
+              12,
+              {
+                "number": "19.7"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T039": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "01/02/2019 a 28/02/2019",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/PERCENT"
+          },
+          "rows": [
+            [
+              {
+                "number": "87.82352941176471"
+              }
+            ]
+          ]
+        },
+        {
+          "label": "01/08/2019 a 31/08/2019",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/PERCENT"
+          },
+          "rows": [
+            [
+              {
+                "number": "74.92406692406692"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T041": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/DEG_C"
+          },
+          "rows": [
+            [
+              {
+                "number": "36.9"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T043": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {},
+          "rows": [
+            [
+              3854
+            ]
+          ]
+        }
+      ]
+    },
+    "T044": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {},
+          "rows": [
+            [
+              5
+            ]
+          ]
+        }
+      ]
+    },
+    "T045": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/MIN"
+          },
+          "rows": [
+            [
+              40540
+            ]
+          ]
+        }
+      ]
+    },
+    "T046": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "year",
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/MilliM"
+          },
+          "rows": [
+            [
+              2016,
+              {
+                "number": "2386.9"
+              }
+            ],
+            [
+              2017,
+              {
+                "number": "2870.0"
+              }
+            ],
+            [
+              2018,
+              {
+                "number": "2919.9"
+              }
+            ],
+            [
+              2019,
+              {
+                "number": "3196.0"
+              }
+            ],
+            [
+              2020,
+              {
+                "number": "3056.7"
+              }
+            ],
+            [
+              2021,
+              {
+                "number": "2970.8"
+              }
+            ],
+            [
+              2022,
+              {
+                "number": "2599.2"
+              }
+            ],
+            [
+              2023,
+              {
+                "number": "2038.8"
+              }
+            ],
+            [
+              2024,
+              {
+                "number": "1836.2"
+              }
+            ],
+            [
+              2025,
+              {
+                "number": "2250.4"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T047": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/MIN"
+          },
+          "rows": [
+            [
+              3900
+            ]
+          ]
+        }
+      ]
+    },
+    "T048": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "station",
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/PERCENT"
+          },
+          "rows": [
+            [
+              "https://example.org/kgqa-met/data/station/SBSG",
+              {
+                "number": "86.71635311143271"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBPA",
+              {
+                "number": "86.13920454545455"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBMQ",
+              {
+                "number": "85.87776141384388"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBNM",
+              {
+                "number": "85.1875"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBSN",
+              {
+                "number": "84.83993902439025"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T049": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/PERCENT"
+          },
+          "rows": [
+            [
+              {
+                "number": "64.90322580645162"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T051": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "station",
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/MilliM"
+          },
+          "rows": [
+            [
+              "https://example.org/kgqa-met/data/station/SBAA",
+              {
+                "number": "1016.4"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBBE",
+              {
+                "number": "3196.0"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBCC",
+              {
+                "number": "769.0"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBCJ",
+              {
+                "number": "557.3"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBEK",
+              {
+                "number": "1720.5"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBHT",
+              {
+                "number": "1722.0"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBIH",
+              {
+                "number": "1603.5"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBJC",
+              {
+                "number": "3830.0"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBMA",
+              {
+                "number": "1061.1"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBMD",
+              {
+                "number": "2604.5"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBSN",
+              {
+                "number": "1804.4"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBTB",
+              {
+                "number": "2818.7"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBTS",
+              {
+                "number": "473.3"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBTU",
+              {
+                "number": "1872.7"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T052": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/HectoPA"
+          },
+          "rows": [
+            [
+              {
+                "number": "1015.1431996311665"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T055": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "01/01/2017 a 31/12/2017",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/MilliM"
+          },
+          "rows": [
+            [
+              {
+                "number": "2870.0"
+              }
+            ]
+          ]
+        },
+        {
+          "label": "01/01/2018 a 31/12/2018",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/MilliM"
+          },
+          "rows": [
+            [
+              {
+                "number": "2919.9"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T056": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {},
+          "rows": [
+            [
+              227
+            ]
+          ]
+        }
+      ]
+    },
+    "T057": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "01/01/2016 a 31/12/2020",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/DEG_C"
+          },
+          "rows": [
+            [
+              {
+                "number": "21.276605845803797"
+              }
+            ]
+          ]
+        },
+        {
+          "label": "01/01/2021 a 31/12/2025",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/DEG_C"
+          },
+          "rows": [
+            [
+              {
+                "number": "21.25597542432088"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T059": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "station",
+            "value"
+          ],
+          "units": {},
+          "rows": [
+            [
+              "https://example.org/kgqa-met/data/station/SBCT",
+              297
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBMG",
+              256
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBCX",
+              232
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBJV",
+              205
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBPP",
+              196
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBFI",
+              166
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBCH",
+              157
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBCO",
+              143
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBRB",
+              134
+            ]
+          ]
+        }
+      ]
+    },
+    "T061": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "station",
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/KN"
+          },
+          "rows": [
+            [
+              "https://example.org/kgqa-met/data/station/SBAF",
+              {
+                "number": "23.0"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBCB",
+              {
+                "number": "34.0"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBCP",
+              {
+                "number": "28.0"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBES",
+              {
+                "number": "24.0"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBFS",
+              {
+                "number": "33.0"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBGL",
+              {
+                "number": "31.0"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBJR",
+              {
+                "number": "14.0"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBME",
+              {
+                "number": "21.0"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBMI",
+              {
+                "number": "26.0"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBPW",
+              {
+                "number": "23.0"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBRJ",
+              {
+                "number": "27.0"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBSC",
+              {
+                "number": "24.0"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T064": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "station",
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/MIN"
+          },
+          "rows": [
+            [
+              "https://example.org/kgqa-met/data/station/SBJV",
+              49978
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBFL",
+              42018
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBCT",
+              41283
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBVT",
+              38277
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBBH",
+              33583
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBGR",
+              32869
+            ]
+          ]
+        }
+      ]
+    },
+    "T065": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {},
+          "rows": [
+            [
+              220
+            ]
+          ]
+        }
+      ]
+    },
+    "T066": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "01/01/2016 a 31/01/2016",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/DEG_C"
+          },
+          "rows": [
+            [
+              {
+                "number": "25.632991014120666"
+              }
+            ]
+          ]
+        },
+        {
+          "label": "01/01/2025 a 31/01/2025",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/DEG_C"
+          },
+          "rows": [
+            [
+              {
+                "number": "25.44777927321669"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T067": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "year",
+            "value"
+          ],
+          "units": {},
+          "rows": [
+            [
+              2016,
+              270
+            ],
+            [
+              2017,
+              413
+            ],
+            [
+              2018,
+              191
+            ],
+            [
+              2019,
+              667
+            ],
+            [
+              2020,
+              767
+            ],
+            [
+              2021,
+              449
+            ],
+            [
+              2022,
+              324
+            ],
+            [
+              2023,
+              772
+            ],
+            [
+              2024,
+              623
+            ],
+            [
+              2025,
+              400
+            ]
+          ]
+        }
+      ]
+    },
+    "T068": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {},
+          "rows": [
+            [
+              128
+            ]
+          ]
+        }
+      ]
+    },
+    "T069": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {},
+          "rows": [
+            [
+              119
+            ]
+          ]
+        }
+      ]
+    },
+    "T070": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "01/12/2021 a 31/12/2021",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/MilliM"
+          },
+          "rows": [
+            [
+              {
+                "number": "174.2"
+              }
+            ]
+          ]
+        },
+        {
+          "label": "01/12/2022 a 31/12/2022",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/MilliM"
+          },
+          "rows": [
+            [
+              {
+                "number": "314.4"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T072": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "station",
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/DEG_C"
+          },
+          "rows": [
+            [
+              "https://example.org/kgqa-met/data/station/SBJE",
+              {
+                "number": "32.315506003430535"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBMS",
+              {
+                "number": "31.730824790307548"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBAT",
+              {
+                "number": "31.231429416987275"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBUF",
+              {
+                "number": "31.03629906542056"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBPB",
+              {
+                "number": "30.166054343666286"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T074": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "year",
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/PERCENT"
+          },
+          "rows": [
+            [
+              2016,
+              {
+                "number": "76.64400895856663"
+              }
+            ],
+            [
+              2017,
+              {
+                "number": "78.5797609911194"
+              }
+            ],
+            [
+              2018,
+              {
+                "number": "80.69160305343512"
+              }
+            ],
+            [
+              2019,
+              {
+                "number": "81.94582344053529"
+              }
+            ],
+            [
+              2020,
+              {
+                "number": "81.7901859390472"
+              }
+            ],
+            [
+              2021,
+              {
+                "number": "83.90165915833425"
+              }
+            ],
+            [
+              2022,
+              {
+                "number": "81.59063180827887"
+              }
+            ],
+            [
+              2023,
+              {
+                "number": "77.13692810457516"
+              }
+            ],
+            [
+              2024,
+              {
+                "number": "76.33865308432371"
+              }
+            ],
+            [
+              2025,
+              {
+                "number": "79.26955950032873"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T075": {
+      "expected_status": "no_results",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/DEG_C"
+          },
+          "rows": [
+            [
+              null
+            ]
+          ]
+        }
+      ]
+    },
+    "T076": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/PERCENT"
+          },
+          "rows": [
+            [
+              {
+                "number": "76.4805890227577"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T078": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "24/12/2022",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/DEG_C"
+          },
+          "rows": [
+            [
+              {
+                "number": "28.5"
+              }
+            ]
+          ]
+        },
+        {
+          "label": "25/12/2022",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/DEG_C"
+          },
+          "rows": [
+            [
+              {
+                "number": "30.2"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T079": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/DEG_C"
+          },
+          "rows": [
+            [
+              {
+                "number": "24.200275330396476"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T081": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "day",
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/DEG_C"
+          },
+          "rows": [
+            [
+              "2023-02-01",
+              {
+                "number": "28.6"
+              }
+            ],
+            [
+              "2023-02-02",
+              {
+                "number": "29.8"
+              }
+            ],
+            [
+              "2023-02-03",
+              {
+                "number": "28.0"
+              }
+            ],
+            [
+              "2023-02-04",
+              {
+                "number": "27.3"
+              }
+            ],
+            [
+              "2023-02-05",
+              {
+                "number": "28.2"
+              }
+            ],
+            [
+              "2023-02-06",
+              {
+                "number": "26.9"
+              }
+            ],
+            [
+              "2023-02-07",
+              {
+                "number": "26.8"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T083": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/KN"
+          },
+          "rows": [
+            [
+              {
+                "number": "18.0"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T084": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "day",
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/DEG_C"
+          },
+          "rows": [
+            [
+              "2021-07-20",
+              {
+                "number": "5.0"
+              }
+            ],
+            [
+              "2021-07-21",
+              {
+                "number": "7.0"
+              }
+            ],
+            [
+              "2021-07-22",
+              {
+                "number": "12.0"
+              }
+            ],
+            [
+              "2021-07-23",
+              {
+                "number": "15.0"
+              }
+            ],
+            [
+              "2021-07-25",
+              {
+                "number": "15.0"
+              }
+            ],
+            [
+              "2021-07-26",
+              {
+                "number": "17.0"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T085": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/DEG_C"
+          },
+          "rows": [
+            [
+              {
+                "number": "36.2"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T086": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/KN"
+          },
+          "rows": [
+            [
+              {
+                "number": "45.0"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T087": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/DEG_C"
+          },
+          "rows": [
+            [
+              {
+                "number": "41.1"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T089": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/M"
+          },
+          "rows": [
+            [
+              50
+            ]
+          ]
+        }
+      ]
+    },
+    "T090": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "01/04/2019 a 30/04/2019",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/MilliM"
+          },
+          "rows": [
+            [
+              {
+                "number": "79.0"
+              }
+            ]
+          ]
+        },
+        {
+          "label": "01/04/2020 a 30/04/2020",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/MilliM"
+          },
+          "rows": [
+            [
+              {
+                "number": "177.9"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T092": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {},
+          "rows": [
+            [
+              123
+            ]
+          ]
+        }
+      ]
+    },
+    "T094": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/MilliM"
+          },
+          "rows": [
+            [
+              {
+                "number": "365.4"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T095": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/KN"
+          },
+          "rows": [
+            [
+              {
+                "number": "62.0"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T097": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {},
+          "rows": [
+            [
+              110
+            ]
+          ]
+        }
+      ]
+    },
+    "T100": {
+      "expected_status": "no_results",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/DEG_C"
+          },
+          "rows": [
+            [
+              null
+            ]
+          ]
+        }
+      ]
+    },
+    "T101": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/KN"
+          },
+          "rows": [
+            [
+              {
+                "number": "38.0"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T104": {
+      "expected_status": "no_results",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/MilliM"
+          },
+          "rows": [
+            [
+              null
+            ]
+          ]
+        }
+      ]
+    },
+    "T105": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/PERCENT"
+          },
+          "rows": [
+            [
+              {
+                "number": "13.0"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T106": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/DEG_C"
+          },
+          "rows": [
+            [
+              {
+                "number": "1.4"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T108": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "station",
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/DEG_C"
+          },
+          "rows": [
+            [
+              "https://example.org/kgqa-met/data/station/SBPC",
+              {
+                "number": "-3.3"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBYS",
+              {
+                "number": "-2.7"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBCT",
+              {
+                "number": "-2.4"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBFI",
+              {
+                "number": "-2.1"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBCH",
+              {
+                "number": "-1.2"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T110": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/DEG_C"
+          },
+          "rows": [
+            [
+              {
+                "number": "32.096296296296295"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T111": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "station",
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/PERCENT"
+          },
+          "rows": [
+            [
+              "https://example.org/kgqa-met/data/station/SBBG",
+              {
+                "number": "52.005025125628144"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBBI",
+              {
+                "number": "83.39752650176679"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBCA",
+              {
+                "number": "67.97916666666667"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBCH",
+              {
+                "number": "70.30321592649311"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBCO",
+              {
+                "number": "71.8320726172466"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBCT",
+              {
+                "number": "89.51937046004842"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBCX",
+              {
+                "number": "59.829896907216494"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBFI",
+              {
+                "number": "79.9835294117647"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBFL",
+              {
+                "number": "71.97146118721462"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBJA",
+              {
+                "number": "77.89414414414415"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBJV",
+              {
+                "number": "88.07469512195122"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBLJ",
+              {
+                "number": "74.61643835616438"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBLO",
+              {
+                "number": "77.50686641697878"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBMG",
+              {
+                "number": "76.64499349804942"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBNF",
+              {
+                "number": "83.34430856067733"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBNM",
+              {
+                "number": "66.18120805369128"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBPA",
+              {
+                "number": "75.73856209150327"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBPF",
+              {
+                "number": "58.5"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBPG",
+              {
+                "number": "67.70967741935483"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBPK",
+              {
+                "number": "62.92944785276074"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBPO",
+              {
+                "number": "71.82151589242054"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBSM",
+              {
+                "number": "74.79809220985692"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBTD",
+              {
+                "number": "73.82692307692308"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBUG",
+              {
+                "number": "59.93886462882096"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T112": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "station",
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/PERCENT"
+          },
+          "rows": [
+            [
+              "https://example.org/kgqa-met/data/station/SBGP",
+              {
+                "number": "52.794359576968276"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBSR",
+              {
+                "number": "52.977135017720364"
+              }
+            ],
+            [
+              "https://example.org/kgqa-met/data/station/SBTG",
+              {
+                "number": "53.93173758865248"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T113": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {},
+          "rows": [
+            [
+              14
+            ]
+          ]
+        }
+      ]
+    },
+    "T114": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {},
+          "rows": [
+            [
+              6
+            ]
+          ]
+        }
+      ]
+    },
+    "T115": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "01/01/2016 a 31/12/2016",
+          "columns": [
+            "value"
+          ],
+          "units": {},
+          "rows": [
+            [
+              117
+            ]
+          ]
+        },
+        {
+          "label": "01/01/2024 a 31/12/2024",
+          "columns": [
+            "value"
+          ],
+          "units": {},
+          "rows": [
+            [
+              86
+            ]
+          ]
+        }
+      ]
+    },
+    "T116": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "month",
+            "value"
+          ],
+          "units": {},
+          "rows": [
+            [
+              1,
+              12
+            ],
+            [
+              2,
+              7
+            ],
+            [
+              3,
+              3
+            ],
+            [
+              4,
+              11
+            ],
+            [
+              5,
+              19
+            ],
+            [
+              6,
+              22
+            ],
+            [
+              7,
+              15
+            ],
+            [
+              8,
+              11
+            ],
+            [
+              9,
+              4
+            ],
+            [
+              10,
+              2
+            ],
+            [
+              11,
+              2
+            ]
+          ]
+        }
+      ]
+    },
+    "T117": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/M"
+          },
+          "rows": [
+            [
+              {
+                "number": "940.995670995671"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "T118": {
+      "expected_status": "answered",
+      "parts": [
+        {
+          "label": "",
+          "columns": [
+            "value"
+          ],
+          "units": {
+            "value": "http://qudt.org/vocab/unit/DEG_C"
+          },
+          "rows": [
+            [
+              {
+                "number": "-2.4"
+              }
+            ]
+          ]
+        }
+      ]
+    }
+  }
+}

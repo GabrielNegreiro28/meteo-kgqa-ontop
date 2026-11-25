@@ -64,6 +64,11 @@ met:municipalityName a owl:DatatypeProperty ;
     rdfs:domain met:WeatherStation ; rdfs:range xsd:string ;
     rdfs:label "município da estação"@pt .
 
+met:servedCityName a owl:DatatypeProperty ;
+    rdfs:domain met:WeatherStation ; rdfs:range xsd:string ;
+    rdfs:label "cidade atendida pela estação"@pt ;
+    rdfs:comment "A cidade que o aeroporto atende, quando difere do município onde ele fica (SBCY fica em Várzea Grande e atende Cuiabá)."@pt .
+
 met:stateCode a owl:DatatypeProperty ;
     rdfs:domain met:WeatherStation ; rdfs:range xsd:string ;
     rdfs:label "sigla da UF da estação"@pt .
