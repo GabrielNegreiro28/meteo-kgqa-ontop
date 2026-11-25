@@ -1,0 +1,933 @@
+[
+ {
+  "id": "S001",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "13.0"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S003",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "249.9"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S004",
+  "label": "",
+  "rows": 10,
+  "first": [
+   "2016",
+   "80.34768827194229"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S006",
+  "label": "01/01/2016 a 31/12/2016",
+  "rows": 1,
+  "first": [
+   "45.0"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S006",
+  "label": "01/01/2025 a 31/12/2025",
+  "rows": 1,
+  "first": [
+   "27.0"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S007",
+  "label": "",
+  "rows": 12,
+  "first": [
+   "1",
+   "22.65505252626313"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S008",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "25.07613265879708"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S009",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "935"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S010",
+  "label": "",
+  "rows": 5,
+  "first": [
+   "https://example.org/kgqa-met/data/station/SBMG",
+   "80.0"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S011",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "23.929642248722317"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S012",
+  "label": "",
+  "rows": 10,
+  "first": [
+   "2022-06-01",
+   "5.0"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S013",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "1006.9"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S014",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "67"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S015",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "852.5"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S017",
+  "label": "01/01/2018 a 31/12/2018",
+  "rows": 1,
+  "first": [
+   "82.43799587001413"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S017",
+  "label": "01/01/2019 a 31/12/2019",
+  "rows": 1,
+  "first": [
+   "83.17121826328142"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S019",
+  "label": "",
+  "rows": 3,
+  "first": [
+   "https://example.org/kgqa-met/data/station/SBFL",
+   "20.87901904667917"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S021",
+  "label": "",
+  "rows": 12,
+  "first": [
+   "2022",
+   "1",
+   "213.3"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S024",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "760.0"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S025",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "1325"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S026",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "30.0"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S027",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "84.27554080102806"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S030",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "877"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S031",
+  "label": "",
+  "rows": 12,
+  "first": [
+   "2022",
+   "1",
+   "1016.4974106041924"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S033",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "None"
+  ],
+  "error": null,
+  "status": "no_results"
+ },
+ {
+  "id": "S034",
+  "label": "",
+  "rows": 10,
+  "first": [
+   "2016",
+   "13603.064752724225"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S035",
+  "label": "",
+  "rows": 5,
+  "first": [
+   "https://example.org/kgqa-met/data/station/SBYS",
+   "-2.7"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S036",
+  "label": "",
+  "rows": 3,
+  "first": [
+   "https://example.org/kgqa-met/data/station/SBIH",
+   "29.213244650086754"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S037",
+  "label": "01/01/2016 a 31/12/2016",
+  "rows": 1,
+  "first": [
+   "1213"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S037",
+  "label": "01/01/2024 a 31/12/2024",
+  "rows": 1,
+  "first": [
+   "1649"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S039",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "244"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S040",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "21.40367775831874"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S041",
+  "label": "01/07/2019 a 31/07/2019",
+  "rows": 1,
+  "first": [
+   "19.8492"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S041",
+  "label": "01/07/2020 a 31/07/2020",
+  "rows": 1,
+  "first": [
+   "18.88596881959911"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S043",
+  "label": "",
+  "rows": 3,
+  "first": [
+   "https://example.org/kgqa-met/data/station/SBPW",
+   "10.889487870619947"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S045",
+  "label": "",
+  "rows": 10,
+  "first": [
+   "2016",
+   "22.15339122787732"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S046",
+  "label": "",
+  "rows": 3,
+  "first": [
+   "https://example.org/kgqa-met/data/station/SBBW",
+   "42.0"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S048",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "363.9"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S049",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "183"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S053",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "27.75460431654676"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S054",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "39.4"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S055",
+  "label": "",
+  "rows": 3,
+  "first": [
+   "https://example.org/kgqa-met/data/station/SBBQ",
+   "15570.189328743545"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S057",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "23.527180685358257"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S058",
+  "label": "",
+  "rows": 3,
+  "first": [
+   "https://example.org/kgqa-met/data/station/SBLP",
+   "42.49543378995434"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S060",
+  "label": "",
+  "rows": 7,
+  "first": [
+   "2023-03-05",
+   "30.0"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S061",
+  "label": "01/06/2022 a 30/06/2022",
+  "rows": 1,
+  "first": [
+   "550"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S061",
+  "label": "01/06/2023 a 30/06/2023",
+  "rows": 1,
+  "first": [
+   "200"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S063",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "13283"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S064",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "39.9"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S065",
+  "label": "",
+  "rows": 3,
+  "first": [
+   "https://example.org/kgqa-met/data/station/SBFZ",
+   "1566.2"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S066",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "767"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S067",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "35.0"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S068",
+  "label": "",
+  "rows": 10,
+  "first": [
+   "2016",
+   "1.9"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S069",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "14281.18811881188"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S070",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "26.0"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S071",
+  "label": "",
+  "rows": 10,
+  "first": [
+   "2016",
+   "361"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S072",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "6265"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S073",
+  "label": "",
+  "rows": 10,
+  "first": [
+   "2016",
+   "270"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S074",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "None"
+  ],
+  "error": null,
+  "status": "no_results"
+ },
+ {
+  "id": "S076",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "1021.6245660881175"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S078",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "37.9"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S080",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "0"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S081",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "1168.9"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S082",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "23.842261103633916"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S083",
+  "label": "",
+  "rows": 7,
+  "first": [
+   "2024-01-01",
+   "22.788888888888888"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S084",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "-2.4"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S085",
+  "label": "22/02/2020 a 26/02/2020",
+  "rows": 1,
+  "first": [
+   "23.940298507462686"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S085",
+  "label": "10/02/2024 a 14/02/2024",
+  "rows": 1,
+  "first": [
+   "27.86341463414634"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S086",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "802"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S091",
+  "label": "",
+  "rows": 5,
+  "first": [
+   "https://example.org/kgqa-met/data/station/SBCJ",
+   "80.0"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S092",
+  "label": "01/03/2022 a 31/03/2022",
+  "rows": 1,
+  "first": [
+   "365.5"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S092",
+  "label": "01/03/2023 a 31/03/2023",
+  "rows": 1,
+  "first": [
+   "432.9"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S093",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "52.0"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S096",
+  "label": "",
+  "rows": 12,
+  "first": [
+   "2023",
+   "1",
+   "30.7"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S097",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "12"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S098",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "15720.741862225586"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S099",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "24.327754642656163"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S101",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "12.751677852348994"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S104",
+  "label": "01/01/2017 a 31/12/2017",
+  "rows": 1,
+  "first": [
+   "1015.7906386799865"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S104",
+  "label": "01/01/2023 a 31/12/2023",
+  "rows": 1,
+  "first": [
+   "1015.0526827632461"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S106",
+  "label": "",
+  "rows": 10,
+  "first": [
+   "2016",
+   "48.0"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S109",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "161"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S110",
+  "label": "",
+  "rows": 1,
+  "first": [
+   "689.3116052391106"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S111",
+  "label": "01/09/2019 a 30/09/2019",
+  "rows": 1,
+  "first": [
+   "41.3"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S111",
+  "label": "01/09/2023 a 30/09/2023",
+  "rows": 1,
+  "first": [
+   "41.3"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S113",
+  "label": "",
+  "rows": 2,
+  "first": [
+   "https://example.org/kgqa-met/data/station/SBGL",
+   "803.9"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S115",
+  "label": "",
+  "rows": 12,
+  "first": [
+   "2021",
+   "1",
+   "9.82010582010582"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S118",
+  "label": "01/01/2021 a 31/01/2021",
+  "rows": 1,
+  "first": [
+   "171.0"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S118",
+  "label": "01/01/2022 a 31/01/2022",
+  "rows": 1,
+  "first": [
+   "309.5"
+  ],
+  "error": null,
+  "status": "answered"
+ },
+ {
+  "id": "S120",
+  "label": "",
+  "rows": 3,
+  "first": [
+   "https://example.org/kgqa-met/data/station/SBGL",
+   "23.77690603870366"
+  ],
+  "error": null,
+  "status": "answered"
+ }
+]

@@ -12,7 +12,7 @@ from ..presentation.render import AGG, AGG_ART, COUNTED, DIMS, OPS, _cond, _wher
 def paraphrase(cq: CanonicalQuery, catalog: DomainCatalog) -> str:
     m = catalog.measure(cq.measure)
     label = m.label if m else cq.measure.rsplit("#", 1)[-1]
-    where, when = _where(cq), cq.scope.describe()
+    where, when = _where(cq, catalog), cq.scope.describe()
     cond = _cond(cq, catalog) if m else ""
     if cq.scope.instant is not None:
         return f"o valor de {label} {where} {when}"

@@ -5,7 +5,9 @@ pergunta em linguagem natural, entendimento conferido, SPARQL montado por códig
 105 mi de observações reais de 178 aeródromos (2016 a 2025), verificação e resposta com procedência. Fora do escopo desta fatia: roteador,
 MongoDB, PDFs e controle de acesso (o módulo expõe `capabilities()` para o roteador decidir o que mandar para cá).
 
-Estado atual e migração do contrato: [arquitetura 0.4.0](docs/ARQUITETURA_0_4.md). O plano de 02/11 em
+Estado atual e migração do contrato: [arquitetura 0.4.0](docs/ARQUITETURA_0_4.md). Base de dados: o relógio dos CSV e as unidades foram
+conferidos contra METAR em 25/11/2026 ([VERIFICACAO_PREMISSAS](data/VERIFICACAO_PREMISSAS.md)); dias e horas são a hora civil de cada
+estação, e as estações têm cadastro (`data/estacoes.csv`: município, estado, região, fuso, apelidos), então a pergunta pode citar o lugar. O plano de 02/11 em
 `docs/PLANO_ARQUITETURA_FINAL.md` e os placares anteriores são históricos. Decisões anteriores: `DECISOES.md`, `docs/ANALISE_CRITICA.md`.
 
 ## O módulo (`metqa/`)
@@ -64,8 +66,9 @@ PACK=<pasta com os .npz> bash infra/rebuild.sh        # ~28 min: carga, limpeza,
 bash infra/verify.sh                                   # sobe o que estiver parado e roda a suíte inteira contra o grafo real
 ```
 Os `.npz` saem de `ingest/pack.py` sobre os CSV. Os dados reais nunca vão ao git. O endpoint do Ontop não tem autenticação: o script o
-prende ao loopback (`SERVER_ADDRESS=127.0.0.1`); não mude isso. Num banco já carregado antes das colunas de hora local:
-`python ingest/export_pg.py --local-time` e `python ingest/finalize_pg.py` (sensores das grandezas de nuvem).
+prende ao loopback (`SERVER_ADDRESS=127.0.0.1`); não mude isso. Depois de mudar a limpeza ou o cadastro (`data/estacoes.csv`), refaça a
+camada limpa e a exportação: `python ingest/transform.py <met.duckdb>`, `python ingest/export_pg.py <met.duckdb> "<conninfo>"`,
+`python ingest/finalize_pg.py` e `python ingest/constraints.py`.
 
 Medir com o LLM real (gasta dinheiro; o teto acumulado fica em `eval/reports/spend_ledger.jsonl`, e passar dele exige `--authorize-usd`,
 `--authorized-by` e `--reason`):

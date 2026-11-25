@@ -78,8 +78,8 @@ class DomainCatalog:
         return self.index.link_entities(text)
 
     def station_label(self, iri: str) -> str:
-        iri = expand(iri)
-        return iri.rsplit("/", 1)[-1]
+        """'SBGR (Guarulhos/SP)' quando há cadastro; senão o código."""
+        return self.index.station_display(expand(iri))
 
     def coverage_for(self, query) -> dict:
         """Envelope observado por estação/grandeza; não prova continuidade temporal."""
@@ -133,9 +133,9 @@ class DomainCatalog:
             cited = f"  <- citada na pergunta como '{candidates[m.iri]}'" if m.iri in candidates else ""
             lines.append(f"- {m.short} | {', '.join(m.labels[:4])} | unidade: {m.symbol or 'sem unidade'} | "
                          f"{'acumulada' if m.accumulated else 'instantânea'} | agregações: {aggs}{attrs}{cited}")
-        lines.append("Estações reconhecidas na pergunta (use o IRI):")
-        lines += [f"- st:{iri.rsplit('/', 1)[-1]} | trecho: '{text}'" for iri, text in stations.items()] or \
-                 ["- nenhuma: peça esclarecimento; todas somente se explicitamente solicitado. Não associe cidades a siglas sem cadastro."]
+        lines.append("Estações reconhecidas na pergunta (use o IRI; o trecho é o nome citado, que pode cobrir várias estações):")
+        lines += [f"- st:{iri.rsplit('/', 1)[-1]} = {self.station_label(iri)} | trecho: '{text}'" for iri, text in stations.items()] or \
+                 ["- nenhuma: peça esclarecimento; todas somente se explicitamente solicitado. Lugar sem estação nesta lista não tem estação."]
         lines.append(f"Dimensões de agrupamento: {', '.join(GROUP_DIMS)}")
         lines.append("</cardapio>")
         return "\n".join(lines)

@@ -1,0 +1,1002 @@
+[
+ {
+  "id": "S001",
+  "measure": "rel_humidity",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT min(value) AS value FROM clean.obs_rel_humidity WHERE sigla = 'SBBR' AND local_date BETWEEN DATE '2019-09-01' AND DATE '2019-09-30'"
+   }
+  ]
+ },
+ {
+  "id": "S003",
+  "measure": "precip",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT sum(value) AS value FROM clean.obs_precip WHERE sigla = 'SBFL' AND local_date BETWEEN DATE '2020-01-01' AND DATE '2020-12-31' AND isodow(local_date) IN (6, 7)"
+   }
+  ]
+ },
+ {
+  "id": "S004",
+  "measure": "rel_humidity",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT year(local_date) AS year, avg(value) AS value FROM clean.obs_rel_humidity WHERE sigla = 'SBEG' AND local_date BETWEEN DATE '2016-01-01' AND DATE '2025-12-31' GROUP BY 1 ORDER BY 1"
+   }
+  ]
+ },
+ {
+  "id": "S006",
+  "measure": "wind_speed",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "01/01/2016 a 31/12/2016",
+    "sql": "SELECT max(value) AS value FROM clean.obs_wind_speed WHERE sigla = 'SBFL' AND local_date BETWEEN DATE '2016-01-01' AND DATE '2016-12-31'"
+   },
+   {
+    "label": "01/01/2025 a 31/12/2025",
+    "sql": "SELECT max(value) AS value FROM clean.obs_wind_speed WHERE sigla = 'SBFL' AND local_date BETWEEN DATE '2025-01-01' AND DATE '2025-12-31'"
+   }
+  ]
+ },
+ {
+  "id": "S007",
+  "measure": "air_temp",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT month(local_date) AS month, avg(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBBR' AND local_date BETWEEN DATE '2016-01-01' AND DATE '2025-12-31' GROUP BY 1 ORDER BY 1"
+   }
+  ]
+ },
+ {
+  "id": "S008",
+  "measure": "air_temp",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT avg(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBMO' AND local_date BETWEEN DATE '2016-01-01' AND DATE '2016-12-31'"
+   }
+  ]
+ },
+ {
+  "id": "S009",
+  "measure": "cloud_layer",
+  "is_count": true,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT count(*) AS value FROM clean.obs_cloud_layer WHERE sigla = 'SBEG' AND local_date BETWEEN DATE '2021-01-01' AND DATE '2021-12-31' AND genus = 'CB'"
+   }
+  ]
+ },
+ {
+  "id": "S010",
+  "measure": "wind_gust",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT 'https://example.org/kgqa-met/data/station/' || sigla AS station, max(value) AS value FROM clean.obs_wind_gust WHERE sigla IN ('SBBG','SBBI','SBCA','SBCH','SBCM','SBCO','SBCT','SBCX','SBFI','SBFL','SBJA','SBJV','SBLJ','SBLO','SBMG','SBNF','SBNM','SBPA','SBPF','SBPG','SBPK','SBPO','SBSM','SBTD','SBUG','SNCP','SSVL') AND local_date BETWEEN DATE '2021-01-01' AND DATE '2021-12-31' GROUP BY sigla ORDER BY value DESC, sigla LIMIT 5"
+   }
+  ]
+ },
+ {
+  "id": "S011",
+  "measure": "air_temp",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT avg(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBMT' AND local_date BETWEEN DATE '2020-12-21' AND DATE '2021-03-20'"
+   }
+  ]
+ },
+ {
+  "id": "S012",
+  "measure": "precip",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT local_date AS day, sum(value) AS value FROM clean.obs_precip WHERE sigla = 'SBRF' AND local_date BETWEEN DATE '2022-06-01' AND DATE '2022-06-10' GROUP BY 1 ORDER BY 1"
+   }
+  ]
+ },
+ {
+  "id": "S013",
+  "measure": "qnh",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT min(value) AS value FROM clean.obs_qnh WHERE sigla = 'SBAR' AND local_date BETWEEN DATE '2025-01-01' AND DATE '2025-12-31'"
+   }
+  ]
+ },
+ {
+  "id": "S014",
+  "measure": "visibility",
+  "is_count": true,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT count(*) AS value FROM clean.obs_visibility WHERE sigla = 'SBGR' AND local_date BETWEEN DATE '2018-01-01' AND DATE '2018-12-31' AND value < 1000"
+   }
+  ]
+ },
+ {
+  "id": "S015",
+  "measure": "precip",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT sum(value) AS value FROM clean.obs_precip WHERE sigla = 'SBBV' AND local_date BETWEEN DATE '2024-05-01' AND DATE '2024-07-31'"
+   }
+  ]
+ },
+ {
+  "id": "S017",
+  "measure": "rel_humidity",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "01/01/2018 a 31/12/2018",
+    "sql": "SELECT avg(value) AS value FROM clean.obs_rel_humidity WHERE sigla = 'SBEG' AND local_date BETWEEN DATE '2018-01-01' AND DATE '2018-12-31'"
+   },
+   {
+    "label": "01/01/2019 a 31/12/2019",
+    "sql": "SELECT avg(value) AS value FROM clean.obs_rel_humidity WHERE sigla = 'SBEG' AND local_date BETWEEN DATE '2019-01-01' AND DATE '2019-12-31'"
+   }
+  ]
+ },
+ {
+  "id": "S019",
+  "measure": "air_temp",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT 'https://example.org/kgqa-met/data/station/' || sigla AS station, avg(value) AS value FROM clean.obs_air_temp WHERE sigla IN ('SBFL','SBNF','SBJV') AND local_date BETWEEN DATE '2022-01-01' AND DATE '2022-12-31' GROUP BY sigla ORDER BY sigla"
+   }
+  ]
+ },
+ {
+  "id": "S021",
+  "measure": "precip",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT year(local_date) AS year, month(local_date) AS month, sum(value) AS value FROM clean.obs_precip WHERE sigla = 'SBBE' AND local_date BETWEEN DATE '2022-01-01' AND DATE '2022-12-31' GROUP BY 1,2 ORDER BY 1,2"
+   }
+  ]
+ },
+ {
+  "id": "S024",
+  "measure": "precip",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT sum(value) AS value FROM clean.obs_precip WHERE sigla = 'SBNT' AND local_date BETWEEN DATE '2023-01-01' AND DATE '2023-06-30'"
+   }
+  ]
+ },
+ {
+  "id": "S025",
+  "measure": "wind_speed",
+  "is_count": true,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT count(*) AS value FROM clean.obs_wind_speed WHERE sigla = 'SBBR' AND local_date BETWEEN DATE '2021-01-01' AND DATE '2021-12-31' AND condition = 'calm'"
+   }
+  ]
+ },
+ {
+  "id": "S026",
+  "measure": "runway_temp",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT avg(value) AS value FROM clean.obs_runway_temp WHERE sigla = 'SBGR' AND local_date BETWEEN DATE '2023-02-01' AND DATE '2023-02-28'"
+   }
+  ]
+ },
+ {
+  "id": "S027",
+  "measure": "rel_humidity",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT avg(value) AS value FROM clean.obs_rel_humidity WHERE sigla = 'SBEG' AND local_date BETWEEN DATE '2022-01-01' AND DATE '2022-12-31'"
+   }
+  ]
+ },
+ {
+  "id": "S030",
+  "measure": "wind_gust",
+  "is_count": true,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT count(*) AS value FROM clean.obs_wind_gust WHERE sigla = 'SBSM' AND local_date BETWEEN DATE '2016-01-01' AND DATE '2025-12-31' AND value >= 30"
+   }
+  ]
+ },
+ {
+  "id": "S031",
+  "measure": "qnh",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT year(local_date) AS year, month(local_date) AS month, avg(value) AS value FROM clean.obs_qnh WHERE sigla = 'SBCT' AND local_date BETWEEN DATE '2022-01-01' AND DATE '2022-12-31' GROUP BY 1,2 ORDER BY 1,2"
+   }
+  ]
+ },
+ {
+  "id": "S033",
+  "measure": "precip",
+  "is_count": false,
+  "expected_status": "no_results",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT sum(value) AS value FROM clean.obs_precip WHERE sigla = 'SBMM' AND local_date BETWEEN DATE '2021-01-01' AND DATE '2021-12-31'"
+   }
+  ]
+ },
+ {
+  "id": "S034",
+  "measure": "visibility",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT year(local_date) AS year, avg(value) AS value FROM clean.obs_visibility WHERE sigla = 'SBGR' AND local_date BETWEEN DATE '2016-01-01' AND DATE '2025-12-31' GROUP BY 1 ORDER BY 1"
+   }
+  ]
+ },
+ {
+  "id": "S035",
+  "measure": "air_temp",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT 'https://example.org/kgqa-met/data/station/' || sigla AS station, min(value) AS value FROM clean.obs_air_temp WHERE sigla IN ('SBAE','SBAQ','SBAU','SBBP','SBBU','SBDN','SBGP','SBGR','SBGW','SBIL','SBJD','SBJH','SBKP','SBML','SBMT','SBRP','SBSJ','SBSP','SBSR','SBST','SBTA','SBYS','SDAM','SDCO','SDSC','SIMK','SSXK') AND local_date BETWEEN DATE '2021-01-01' AND DATE '2021-12-31' GROUP BY sigla ORDER BY value ASC, sigla LIMIT 5"
+   }
+  ]
+ },
+ {
+  "id": "S036",
+  "measure": "air_temp",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT 'https://example.org/kgqa-met/data/station/' || sigla AS station, avg(value) AS value FROM clean.obs_air_temp WHERE sigla IN ('SBAA','SBBE','SBCC','SBCJ','SBEK','SBHT','SBIH','SBJC','SBMA','SBMD','SBSN','SBTB','SBTS','SBTU') AND local_date BETWEEN DATE '2022-01-01' AND DATE '2022-12-31' GROUP BY sigla ORDER BY value DESC, sigla LIMIT 3"
+   }
+  ]
+ },
+ {
+  "id": "S037",
+  "measure": "air_temp",
+  "is_count": true,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "01/01/2016 a 31/12/2016",
+    "sql": "SELECT count(*) AS value FROM clean.obs_air_temp WHERE sigla = 'SBGO' AND local_date BETWEEN DATE '2016-01-01' AND DATE '2016-12-31' AND value > 30"
+   },
+   {
+    "label": "01/01/2024 a 31/12/2024",
+    "sql": "SELECT count(*) AS value FROM clean.obs_air_temp WHERE sigla = 'SBGO' AND local_date BETWEEN DATE '2024-01-01' AND DATE '2024-12-31' AND value > 30"
+   }
+  ]
+ },
+ {
+  "id": "S039",
+  "measure": "rel_humidity",
+  "is_count": true,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT count(*) AS value FROM clean.obs_rel_humidity WHERE sigla = 'SBBR' AND local_date BETWEEN DATE '2024-01-01' AND DATE '2024-12-31' AND value < 20"
+   }
+  ]
+ },
+ {
+  "id": "S040",
+  "measure": "air_temp",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT avg(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBCG' AND local_date BETWEEN DATE '2023-01-01' AND DATE '2023-12-31' AND hour(t_local) BETWEEN 0 AND 5"
+   }
+  ]
+ },
+ {
+  "id": "S041",
+  "measure": "air_temp",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "01/07/2019 a 31/07/2019",
+    "sql": "SELECT avg(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBBR' AND local_date BETWEEN DATE '2019-07-01' AND DATE '2019-07-31'"
+   },
+   {
+    "label": "01/07/2020 a 31/07/2020",
+    "sql": "SELECT avg(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBBR' AND local_date BETWEEN DATE '2020-07-01' AND DATE '2020-07-31'"
+   }
+  ]
+ },
+ {
+  "id": "S043",
+  "measure": "wind_speed",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT 'https://example.org/kgqa-met/data/station/' || sigla AS station, avg(value) AS value FROM clean.obs_wind_speed WHERE sigla IN ('SBAF','SBCB','SBCP','SBEC','SBES','SBFS','SBGL','SBJR','SBLB','SBME','SBMI','SBMM','SBPW','SBRJ','SBSC','SIHL') AND local_date BETWEEN DATE '2022-01-01' AND DATE '2022-12-31' GROUP BY sigla ORDER BY value DESC, sigla LIMIT 3"
+   }
+  ]
+ },
+ {
+  "id": "S045",
+  "measure": "air_temp",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT year(local_date) AS year, avg(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBBR' AND local_date BETWEEN DATE '2016-01-01' AND DATE '2025-12-31' GROUP BY 1 ORDER BY 1"
+   }
+  ]
+ },
+ {
+  "id": "S046",
+  "measure": "air_temp",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT 'https://example.org/kgqa-met/data/station/' || sigla AS station, max(value) AS value FROM clean.obs_air_temp WHERE sigla IN ('SBAN','SBAT','SBBR','SBBW','SBCG','SBCN','SBCR','SBCY','SBDB','SBDO','SBGO','SBIT','SBNV','SBPP','SBRD','SBSI','SBSO','SBTG','SSGG') AND local_date BETWEEN DATE '2024-01-01' AND DATE '2024-12-31' GROUP BY sigla ORDER BY value DESC, sigla LIMIT 3"
+   }
+  ]
+ },
+ {
+  "id": "S048",
+  "measure": "precip",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT sum(value) AS value FROM clean.obs_precip WHERE sigla = 'SBBE' AND local_date BETWEEN DATE '2021-03-01' AND DATE '2021-03-31'"
+   }
+  ]
+ },
+ {
+  "id": "S049",
+  "measure": "precip",
+  "is_count": true,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT count(*) AS value FROM clean.obs_precip WHERE sigla = 'SBPA' AND local_date BETWEEN DATE '2024-01-01' AND DATE '2024-12-31' AND value > 0 AND isodow(local_date) BETWEEN 1 AND 5"
+   }
+  ]
+ },
+ {
+  "id": "S053",
+  "measure": "air_temp",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT avg(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBFN' AND local_date BETWEEN DATE '2018-01-01' AND DATE '2018-12-31'"
+   }
+  ]
+ },
+ {
+  "id": "S054",
+  "measure": "air_temp",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT max(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBPA' AND local_date BETWEEN DATE '2022-01-01' AND DATE '2022-01-31' AND hour(t_local) BETWEEN 12 AND 17"
+   }
+  ]
+ },
+ {
+  "id": "S055",
+  "measure": "visibility",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT 'https://example.org/kgqa-met/data/station/' || sigla AS station, avg(value) AS value FROM clean.obs_visibility WHERE sigla IN ('SBAX','SBBH','SBBQ','SBCF','SBGV','SBIP','SBJF','SBLS','SBMK','SBPC','SBPR','SBUL','SBUR','SBVG','SBZM') AND local_date BETWEEN DATE '2018-01-01' AND DATE '2018-12-31' GROUP BY sigla ORDER BY value ASC, sigla LIMIT 3"
+   }
+  ]
+ },
+ {
+  "id": "S057",
+  "measure": "air_temp",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT avg(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBGO' AND local_date BETWEEN DATE '2018-01-01' AND DATE '2018-12-31' AND isodow(local_date) = 7"
+   }
+  ]
+ },
+ {
+  "id": "S058",
+  "measure": "rel_humidity",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT 'https://example.org/kgqa-met/data/station/' || sigla AS station, avg(value) AS value FROM clean.obs_rel_humidity WHERE sigla IN ('SBAC','SBAR','SBCI','SBFN','SBFZ','SBIZ','SBJE','SBJP','SBJU','SBKG','SBLE','SBLP','SBMO','SBMS','SBNT','SBPB','SBPL','SBPS','SBQV','SBRF','SBSG','SBSL','SBSV','SBTC','SBTE','SBTV','SBUF','SBVC') AND local_date BETWEEN DATE '2019-01-01' AND DATE '2019-12-31' GROUP BY sigla ORDER BY value ASC, sigla LIMIT 3"
+   }
+  ]
+ },
+ {
+  "id": "S060",
+  "measure": "air_temp",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT local_date AS day, max(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBRJ' AND local_date BETWEEN DATE '2023-03-05' AND DATE '2023-03-11' GROUP BY 1 ORDER BY 1"
+   }
+  ]
+ },
+ {
+  "id": "S061",
+  "measure": "visibility",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "01/06/2022 a 30/06/2022",
+    "sql": "SELECT min(value) AS value FROM clean.obs_visibility WHERE sigla = 'SBCT' AND local_date BETWEEN DATE '2022-06-01' AND DATE '2022-06-30'"
+   },
+   {
+    "label": "01/06/2023 a 30/06/2023",
+    "sql": "SELECT min(value) AS value FROM clean.obs_visibility WHERE sigla = 'SBCT' AND local_date BETWEEN DATE '2023-06-01' AND DATE '2023-06-30'"
+   }
+  ]
+ },
+ {
+  "id": "S063",
+  "measure": "wind_dir",
+  "is_count": true,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT count(*) AS value FROM clean.obs_wind_dir WHERE sigla = 'SBFZ' AND local_date BETWEEN DATE '2022-01-01' AND DATE '2022-12-31' AND value BETWEEN 90 AND 180"
+   }
+  ]
+ },
+ {
+  "id": "S064",
+  "measure": "air_temp",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT max(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBTE' AND local_date BETWEEN DATE '2023-10-01' AND DATE '2023-10-31'"
+   }
+  ]
+ },
+ {
+  "id": "S065",
+  "measure": "precip",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT 'https://example.org/kgqa-met/data/station/' || sigla AS station, sum(value) AS value FROM clean.obs_precip WHERE sigla IN ('SBFZ','SBNT','SBRF') AND local_date BETWEEN DATE '2020-01-01' AND DATE '2020-12-31' GROUP BY sigla ORDER BY sigla"
+   }
+  ]
+ },
+ {
+  "id": "S066",
+  "measure": "air_temp",
+  "is_count": true,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT count(*) AS value FROM clean.obs_air_temp WHERE sigla = 'SBCY' AND local_date BETWEEN DATE '2020-01-01' AND DATE '2020-12-31' AND value > 35"
+   }
+  ]
+ },
+ {
+  "id": "S067",
+  "measure": "air_temp",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT max(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBSP' AND local_date BETWEEN DATE '2019-01-01' AND DATE '2019-12-31'"
+   }
+  ]
+ },
+ {
+  "id": "S068",
+  "measure": "air_temp",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT year(local_date) AS year, min(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBPA' AND local_date BETWEEN DATE '2016-01-01' AND DATE '2025-12-31' GROUP BY 1 ORDER BY 1"
+   }
+  ]
+ },
+ {
+  "id": "S069",
+  "measure": "visibility",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT avg(value) AS value FROM clean.obs_visibility WHERE sigla = 'SBRJ' AND local_date BETWEEN DATE '2019-01-01' AND DATE '2019-12-31' AND hour(t_local) = 7"
+   }
+  ]
+ },
+ {
+  "id": "S070",
+  "measure": "wind_speed",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT max(value) AS value FROM clean.obs_wind_speed WHERE sigla = 'SBFI' AND local_date BETWEEN DATE '2023-10-01' AND DATE '2023-10-31'"
+   }
+  ]
+ },
+ {
+  "id": "S071",
+  "measure": "cloud_layer",
+  "is_count": true,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT year(local_date) AS year, count(*) AS value FROM clean.obs_cloud_layer WHERE sigla = 'SBBE' AND genus = 'CB' AND local_date BETWEEN DATE '2016-01-01' AND DATE '2025-12-31' GROUP BY 1 ORDER BY 1"
+   }
+  ]
+ },
+ {
+  "id": "S072",
+  "measure": "precip_duration",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT sum(value) AS value FROM clean.obs_precip_duration WHERE sigla = 'SBRF' AND local_date BETWEEN DATE '2022-05-01' AND DATE '2022-05-31'"
+   }
+  ]
+ },
+ {
+  "id": "S073",
+  "measure": "air_temp",
+  "is_count": true,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT year(local_date) AS year, count(*) AS value FROM clean.obs_air_temp WHERE sigla = 'SBCY' AND value > 35 AND local_date BETWEEN DATE '2016-01-01' AND DATE '2025-12-31' GROUP BY 1 ORDER BY 1"
+   }
+  ]
+ },
+ {
+  "id": "S074",
+  "measure": "air_temp",
+  "is_count": false,
+  "expected_status": "no_results",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT avg(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBFN' AND local_date BETWEEN DATE '2023-01-01' AND DATE '2023-12-31'"
+   }
+  ]
+ },
+ {
+  "id": "S076",
+  "measure": "qnh",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT avg(value) AS value FROM clean.obs_qnh WHERE sigla = 'SBBR' AND local_date BETWEEN DATE '2018-08-01' AND DATE '2018-08-31'"
+   }
+  ]
+ },
+ {
+  "id": "S078",
+  "measure": "precip",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT max(value) AS value FROM clean.obs_precip WHERE sigla = 'SBBH' AND local_date BETWEEN DATE '2022-01-01' AND DATE '2022-12-31'"
+   }
+  ]
+ },
+ {
+  "id": "S080",
+  "measure": "visibility",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT min(value) AS value FROM clean.obs_visibility WHERE sigla = 'SBGL' AND local_date BETWEEN DATE '2017-01-01' AND DATE '2017-12-31'"
+   }
+  ]
+ },
+ {
+  "id": "S081",
+  "measure": "precip",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT sum(value) AS value FROM clean.obs_precip WHERE sigla = 'SBRF' AND local_date BETWEEN DATE '2019-01-01' AND DATE '2019-12-31'"
+   }
+  ]
+ },
+ {
+  "id": "S082",
+  "measure": "dew_point",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT avg(value) AS value FROM clean.obs_dew_point WHERE sigla = 'SBFZ' AND local_date BETWEEN DATE '2024-01-01' AND DATE '2024-01-31'"
+   }
+  ]
+ },
+ {
+  "id": "S083",
+  "measure": "air_temp",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT local_date AS day, avg(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBBR' AND local_date BETWEEN DATE '2024-01-01' AND DATE '2024-01-07' GROUP BY 1 ORDER BY 1"
+   }
+  ]
+ },
+ {
+  "id": "S084",
+  "measure": "air_temp",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT min(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBCT' AND local_date BETWEEN DATE '2021-07-01' AND DATE '2021-07-31'"
+   }
+  ]
+ },
+ {
+  "id": "S085",
+  "measure": "air_temp",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "22/02/2020 a 26/02/2020",
+    "sql": "SELECT avg(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBLO' AND local_date BETWEEN DATE '2020-02-22' AND DATE '2020-02-26'"
+   },
+   {
+    "label": "10/02/2024 a 14/02/2024",
+    "sql": "SELECT avg(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBLO' AND local_date BETWEEN DATE '2024-02-10' AND DATE '2024-02-14'"
+   }
+  ]
+ },
+ {
+  "id": "S086",
+  "measure": "precip",
+  "is_count": true,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT count(*) AS value FROM clean.obs_precip WHERE sigla = 'SBBE' AND local_date BETWEEN DATE '2023-01-01' AND DATE '2023-12-31' AND value > 0"
+   }
+  ]
+ },
+ {
+  "id": "S091",
+  "measure": "precip",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT 'https://example.org/kgqa-met/data/station/' || sigla AS station, max(value) AS value FROM clean.obs_precip WHERE sigla IN ('SBAA','SBBE','SBBV','SBCC','SBCJ','SBCZ','SBEG','SBEK','SBGM','SBHT','SBIC','SBIH','SBJC','SBJI','SBMA','SBMD','SBMN','SBMQ','SBMY','SBOI','SBPJ','SBPV','SBRB','SBSN','SBTB','SBTF','SBTK','SBTS','SBTT','SBTU','SBUA','SBUY','SBVH','SSKW','SWGN') AND local_date BETWEEN DATE '2023-01-01' AND DATE '2023-12-31' GROUP BY sigla ORDER BY value DESC, sigla LIMIT 5"
+   }
+  ]
+ },
+ {
+  "id": "S092",
+  "measure": "precip",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "01/03/2022 a 31/03/2022",
+    "sql": "SELECT sum(value) AS value FROM clean.obs_precip WHERE sigla = 'SBBE' AND local_date BETWEEN DATE '2022-03-01' AND DATE '2022-03-31'"
+   },
+   {
+    "label": "01/03/2023 a 31/03/2023",
+    "sql": "SELECT sum(value) AS value FROM clean.obs_precip WHERE sigla = 'SBBE' AND local_date BETWEEN DATE '2023-03-01' AND DATE '2023-03-31'"
+   }
+  ]
+ },
+ {
+  "id": "S093",
+  "measure": "wind_gust",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT max(value) AS value FROM clean.obs_wind_gust WHERE sigla = 'SBSM' AND local_date BETWEEN DATE '2020-01-01' AND DATE '2020-12-31'"
+   }
+  ]
+ },
+ {
+  "id": "S096",
+  "measure": "air_temp",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT year(local_date) AS year, month(local_date) AS month, max(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBGO' AND local_date BETWEEN DATE '2023-01-01' AND DATE '2023-12-31' GROUP BY 1,2 ORDER BY 1,2"
+   }
+  ]
+ },
+ {
+  "id": "S097",
+  "measure": "air_temp",
+  "is_count": true,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT count(DISTINCT local_date) AS value FROM clean.obs_air_temp WHERE sigla = 'SBBI' AND local_date BETWEEN DATE '2021-01-01' AND DATE '2021-12-31' AND value < 5"
+   }
+  ]
+ },
+ {
+  "id": "S098",
+  "measure": "visibility",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT avg(value) AS value FROM clean.obs_visibility WHERE sigla = 'SBGR' AND local_date BETWEEN DATE '2019-01-01' AND DATE '2019-12-31' AND isodow(local_date) = 7"
+   }
+  ]
+ },
+ {
+  "id": "S099",
+  "measure": "air_temp",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT avg(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBVT' AND local_date BETWEEN DATE '2017-01-01' AND DATE '2017-12-31'"
+   }
+  ]
+ },
+ {
+  "id": "S101",
+  "measure": "wind_speed",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT avg(value) AS value FROM clean.obs_wind_speed WHERE sigla = 'SBNT' AND local_date BETWEEN DATE '2022-01-01' AND DATE '2022-12-31' AND hour(t_local) = 15"
+   }
+  ]
+ },
+ {
+  "id": "S104",
+  "measure": "qnh",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "01/01/2017 a 31/12/2017",
+    "sql": "SELECT avg(value) AS value FROM clean.obs_qnh WHERE sigla = 'SBSV' AND local_date BETWEEN DATE '2017-01-01' AND DATE '2017-12-31'"
+   },
+   {
+    "label": "01/01/2023 a 31/12/2023",
+    "sql": "SELECT avg(value) AS value FROM clean.obs_qnh WHERE sigla = 'SBSV' AND local_date BETWEEN DATE '2023-01-01' AND DATE '2023-12-31'"
+   }
+  ]
+ },
+ {
+  "id": "S106",
+  "measure": "wind_gust",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT year(local_date) AS year, max(value) AS value FROM clean.obs_wind_gust WHERE sigla = 'SBSM' AND local_date BETWEEN DATE '2016-01-01' AND DATE '2025-12-31' GROUP BY 1 ORDER BY 1"
+   }
+  ]
+ },
+ {
+  "id": "S109",
+  "measure": "cloud_layer",
+  "is_count": true,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT count(*) AS value FROM clean.obs_cloud_layer WHERE sigla = 'SBCT' AND local_date BETWEEN DATE '2022-07-01' AND DATE '2022-07-31' AND okta = 8"
+   }
+  ]
+ },
+ {
+  "id": "S110",
+  "measure": "cloud_layer",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT avg(base_m) AS value FROM clean.obs_cloud_layer WHERE sigla = 'SBCY' AND local_date BETWEEN DATE '2019-01-01' AND DATE '2019-12-31' AND genus = 'CU'"
+   }
+  ]
+ },
+ {
+  "id": "S111",
+  "measure": "air_temp",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "01/09/2019 a 30/09/2019",
+    "sql": "SELECT max(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBCY' AND local_date BETWEEN DATE '2019-09-01' AND DATE '2019-09-30'"
+   },
+   {
+    "label": "01/09/2023 a 30/09/2023",
+    "sql": "SELECT max(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBCY' AND local_date BETWEEN DATE '2023-09-01' AND DATE '2023-09-30'"
+   }
+  ]
+ },
+ {
+  "id": "S113",
+  "measure": "precip",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT 'https://example.org/kgqa-met/data/station/' || sigla AS station, sum(value) AS value FROM clean.obs_precip WHERE sigla IN ('SBGL','SBRJ') AND local_date BETWEEN DATE '2019-01-01' AND DATE '2019-12-31' GROUP BY sigla ORDER BY sigla"
+   }
+  ]
+ },
+ {
+  "id": "S115",
+  "measure": "wind_speed",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT year(local_date) AS year, month(local_date) AS month, avg(value) AS value FROM clean.obs_wind_speed WHERE sigla = 'SBNT' AND local_date BETWEEN DATE '2021-01-01' AND DATE '2021-12-31' GROUP BY 1,2 ORDER BY 1,2"
+   }
+  ]
+ },
+ {
+  "id": "S118",
+  "measure": "precip",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "01/01/2021 a 31/01/2021",
+    "sql": "SELECT sum(value) AS value FROM clean.obs_precip WHERE sigla = 'SBGR' AND local_date BETWEEN DATE '2021-01-01' AND DATE '2021-01-31'"
+   },
+   {
+    "label": "01/01/2022 a 31/01/2022",
+    "sql": "SELECT sum(value) AS value FROM clean.obs_precip WHERE sigla = 'SBGR' AND local_date BETWEEN DATE '2022-01-01' AND DATE '2022-01-31'"
+   }
+  ]
+ },
+ {
+  "id": "S120",
+  "measure": "air_temp",
+  "is_count": false,
+  "expected_status": "answered",
+  "parts": [
+   {
+    "label": "",
+    "sql": "SELECT 'https://example.org/kgqa-met/data/station/' || sigla AS station, avg(value) AS value FROM clean.obs_air_temp WHERE sigla IN ('SBGR','SBGL','SBSP') AND local_date BETWEEN DATE '2021-01-01' AND DATE '2021-12-31' GROUP BY sigla ORDER BY sigla"
+   }
+  ]
+ }
+]

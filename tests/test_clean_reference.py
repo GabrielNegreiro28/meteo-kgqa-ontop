@@ -69,3 +69,18 @@ def test_reference_refuses_writes_and_different_database(snapshot):
         db.execute("INSERT INTO clean.obs_air_temp VALUES ('SBGL', '2020-01-03', 10)")
     with pytest.raises(ValueError, match='snapshot'):
         manifest.verify_database(body, database)
+
+
+def test_ranking_probe_row_is_not_part_of_the_answer():
+    """O ranking traz uma linha a mais para detectar empate; o comparador estrito a ignora (ela não foi pedida)."""
+    from types import SimpleNamespace
+    from metqa.domain.contract import Status
+    st = lambda c: {"type": "uri", "value": f"https://example.org/kgqa-met/data/station/{c}"}
+    rows = [{"station": st(c), "value": lit(v, XD)} for c, v in (("SBGL", 30), ("SBSP", 28), ("SBGR", 27))]
+    response = SimpleNamespace(status=Status.ANSWERED, truncated=False, results=table(*rows),
+                               result_shape=[{"label": "", "units": {}}], interpretations=[{"query": {"order": {"limit": 2}}}])
+    reference = {"expected_status": "answered", "parts": [{"label": "", "columns": ["station", "value"], "units": {},
+                 "rows": [[st("SBGL")["value"], {"number": "30"}], [st("SBSP")["value"], {"number": "28"}]]}]}
+    assert compare(response, reference)
+    response.interpretations = [{"query": {"order": None}}]
+    assert not compare(response, reference)

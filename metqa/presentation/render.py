@@ -7,7 +7,8 @@ ressalvas.
 """
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
+from datetime import datetime
+from zoneinfo import ZoneInfo
 from decimal import ROUND_HALF_UP, Decimal
 from typing import Any
 
@@ -22,7 +23,7 @@ AGG_ART = {"avg": "a média", "max": "a máxima", "min": "a mínima", "sum": "o 
 OPS = {">": "acima de", ">=": "de pelo menos", "<": "abaixo de", "<=": "de no máximo", "=": "igual a"}
 COUNTED = {"readings": "leituras", "hours": "horas distintas", "reports": "boletins", "days": "dias"}
 DIMS = {"station": "estação", "year": "ano", "month": "mês", "day": "dia", "value": "valor medido"}
-LOCAL = timezone(timedelta(hours=-3))
+STATION_NS = "https://example.org/kgqa-met/data/station/"
 UNIT_NS = "http://qudt.org/vocab/unit/"
 
 
@@ -61,8 +62,14 @@ def shown(q: CanonicalQuery, catalog: DomainCatalog):
     return (lambda v: catalog.from_canonical(v, q.unit, q.measure)), catalog.symbol(UNIT_NS + q.unit.split(":")[-1])
 
 
-def _where(q: CanonicalQuery) -> str:
-    return "em " + ", ".join(s["iri"].rsplit("/", 1)[-1] for s in q.stations) if q.stations else "em todas as estações"
+def _where(q: CanonicalQuery, catalog: DomainCatalog) -> str:
+    return "em " + ", ".join(catalog.station_label(s["iri"]) for s in q.stations) if q.stations else "em todas as estações"
+
+
+def _zone(q: CanonicalQuery, r: dict[str, Any], catalog: DomainCatalog) -> str:
+    """Zona da hora civil em que o instante é mostrado: a da estação da linha, ou a única estação da pergunta."""
+    code = r.get("station") or (q.stations[0]["iri"].rsplit("/", 1)[-1] if len(q.stations) == 1 else None)
+    return catalog.index.station_zone(STATION_NS + str(code)) if code else "America/Sao_Paulo"
 
 
 def _cond(q: CanonicalQuery, catalog: DomainCatalog) -> str:
@@ -71,9 +78,10 @@ def _cond(q: CanonicalQuery, catalog: DomainCatalog) -> str:
     return (", com " + " e ".join(parts)) if parts else ""
 
 
-def _local(t: str) -> str:
+def _local(t: str, zone: str) -> str:
+    """Instante UTC do grafo na hora civil da estação."""
     try:
-        return datetime.fromisoformat(t.replace("Z", "+00:00")).astimezone(LOCAL).strftime("%d/%m/%Y %H:%M")
+        return datetime.fromisoformat(t.replace("Z", "+00:00")).astimezone(ZoneInfo(zone)).strftime("%d/%m/%Y %H:%M")
     except ValueError:
         return t
 
@@ -85,11 +93,11 @@ def _int(v: Any) -> str:
         return "?"
 
 
-def _keys(r: dict[str, Any], q: CanonicalQuery, sh: ResultShape) -> str:
+def _keys(r: dict[str, Any], q: CanonicalQuery, sh: ResultShape, catalog: DomainCatalog) -> str:
     out = []
     for d in q.group_by:
         if d == "station":
-            out.append(str(r.get("station", "?")))
+            out.append(catalog.station_label(STATION_NS + str(r.get("station", "?"))))
         elif d == "year":
             out.append(_int(r.get("year")))
         elif d == "month":
@@ -111,19 +119,19 @@ def _amount(v: Any, sh: ResultShape, sym: str) -> str:
 def _one(e: Executed, catalog: DomainCatalog) -> list[str]:
     q, m, sh = e.part.query, catalog.measure(e.part.query.measure), e.shape
     rs, (cv, sym) = rows(e.results), shown(q, catalog)
-    head = f"{m.label} {_where(q)}, {q.scope.describe()}{_cond(q, catalog)}"
+    head = f"{m.label} {_where(q, catalog)}, {q.scope.describe()}{_cond(q, catalog)}"
     if e.status == Status.NO_RESULTS or not rs:
         return [f"Não há registros de {head}."]
     if q.intent == "instant":
-        return [f"{m.label.capitalize()} {_where(q)} {q.scope.describe()}:"] + \
-               [f"- {num(cv(r.get(sh.value)))} {sym} (leitura de {_local(str(r.get(sh.time, '')))})" for r in rs]
+        return [f"{m.label.capitalize()} {_where(q, catalog)} {q.scope.describe()}:"] + \
+               [f"- {num(cv(r.get(sh.value)))} {sym} (leitura de {_local(str(r.get(sh.time, '')), _zone(q, r, catalog))})" for r in rs]
     if sh.attributes:
         return [f"{AGG[q.aggregation].capitalize()} de {head}:"] + \
-               [f"- {num(cv(r.get(sh.value)))} {sym} em {_local(str(r.get(sh.time, '')))} ("
+               [f"- {num(cv(r.get(sh.value)))} {sym} em {_local(str(r.get(sh.time, '')), _zone(q, r, catalog))} ("
                 + ", ".join(f"{iri.rsplit('#', 1)[-1].split(':')[-1]}: {r.get(col, '?')}" for iri, col in sh.attributes) + ")" for r in rs]
     if q.daily:
         r, d = rs[0], q.daily
-        return [f"{num(r.get(sh.value))} dias {_where(q)}, {q.scope.describe()}, em que a {AGG[d['agg']]} diária de {m.label} ficou "
+        return [f"{num(r.get(sh.value))} dias {_where(q, catalog)}, {q.scope.describe()}, em que a {AGG[d['agg']]} diária de {m.label} ficou "
                 f"{OPS[d['op']]} {num(d['value'])} {unit_of(d, q, catalog)} (de {num(r.get(sh.n))} dias com dados)."]
     if not sh.keys:
         r = rs[0]
@@ -145,10 +153,10 @@ def _one(e: Executed, catalog: DomainCatalog) -> list[str]:
              + (f" ({top(q.order)}{tie})" if q.order else "") + ":"]
     for r in rs:
         value = num(r.get(sh.value)) if sh.is_count else f"{num(cv(r.get(sh.value)))} {sym} (n = {num(r.get(sh.n))})"
-        lines.append(f"- {_keys(r, q, sh)}: {value}")
+        lines.append(f"- {_keys(r, q, sh, catalog)}: {value}")
     if "station" in q.group_by and q.stations and not q.order:     # estação citada que não voltou: dito, não omitido (E205 do novo_c)
         seen = {str(r.get("station")) for r in rs}
-        lines += [f"- {c}: sem registros" for c in (s["iri"].rsplit("/", 1)[-1] for s in q.stations) if c not in seen]
+        lines += [f"- {catalog.station_label(s['iri'])}: sem registros" for s in q.stations if s["iri"].rsplit("/", 1)[-1] not in seen]
     return lines
 
 
@@ -180,7 +188,7 @@ def render(done: list[Executed], combine: str, catalog: DomainCatalog, caveats: 
     lines = _compare(done, catalog) if combine == "compare" else _one(done[0], catalog)
     q = done[0].part.query
     if q.scope.start is not None or q.scope.instant is not None:
-        q.assumptions.append("dias e horas em UTC−3 (horário de Brasília), hipótese ainda não confirmada para todas as estações")
+        q.assumptions.append("dias e horas na hora local de cada estação")
     notes = list(dict.fromkeys(a for e in done for a in e.part.query.assumptions))
     if notes:
         lines.append("Como entendi: " + "; ".join(notes) + ".")

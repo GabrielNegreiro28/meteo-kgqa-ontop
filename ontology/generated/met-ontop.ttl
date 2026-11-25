@@ -580,6 +580,9 @@ met:multipleReadings a owl:DatatypeProperty ;
 met:multiplier a owl:AnnotationProperty ;
     rdfs:label "fator para a unidade base"@pt .
 
+met:municipalityName a owl:DatatypeProperty ;
+    rdfs:label "município da estação"@pt .
+
 met:observedAs a owl:ObjectProperty ;
     rdfs:label "é observada como"@pt .
 
@@ -594,6 +597,9 @@ met:physicalMin a owl:AnnotationProperty ;
 
 met:provisional a owl:AnnotationProperty ;
     rdfs:label "provisória (à espera da equipe de ontologia)"@pt .
+
+met:regionName a owl:DatatypeProperty ;
+    rdfs:label "região da estação"@pt .
 
 met:reportOf a owl:ObjectProperty ;
     rdfs:label "boletim da estação"@pt .
@@ -628,11 +634,20 @@ met:sourceRow a owl:DatatypeProperty ;
 met:sourceTable a owl:AnnotationProperty ;
     rdfs:label "tabela de origem"@pt .
 
+met:stateCode a owl:DatatypeProperty ;
+    rdfs:label "sigla da UF da estação"@pt .
+
+met:stateName a owl:DatatypeProperty ;
+    rdfs:label "estado da estação"@pt .
+
 met:stationCode a owl:DatatypeProperty ;
     rdfs:label "código da estação"@pt .
 
 met:symbol a owl:AnnotationProperty ;
     rdfs:label "símbolo"@pt .
+
+met:timeZone a owl:DatatypeProperty ;
+    rdfs:label "fuso horário da estação"@pt .
 
 met:validTime a owl:ObjectProperty ;
     rdfs:label "instante de validade da previsão"@pt .

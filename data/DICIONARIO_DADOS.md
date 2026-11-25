@@ -20,7 +20,8 @@ aeródromos), que lista exatamente CGT, nuvens, precipitação, pressão, temper
 
 - 178 códigos de estação (ICAO: SB.., SD.., SI.., SN.., SS.., SW..), 2016-01-01 a 2025-12-31.
 - Observações horárias em :00 (~94 %) mais boletins extras em outros minutos (prováveis SPECI). (C / H para SPECI)
-- **Não há cadastro de estações** (nome, cidade, UF, lat/lon, altitude, fuso). Precisa de fonte externa.
+- Não há cadastro de estações nos CSV. O cadastro vem de OurAirports (domínio público): `estacoes.csv`, gerado por `ingest/stations.py`
+  (município, UF, região, coordenadas, altitude, fuso legal e zona IANA; 165 de 178 siglas; as 13 restantes são códigos suspeitos).
 
 ## Relação central (C)
 Todos os arquivos compartilham a chave **(sigla, hora_observacao)**: cada chave é **um boletim de observação**
@@ -35,7 +36,11 @@ Estação (sigla) 1──N Boletim (sigla, hora) 1──1 pressão, visibilidade
                                             1──0..N camada de nuvem
 ```
 
-## Tempo (H — o ponto mais importante a confirmar)
+## Tempo (C, conferido contra METAR em 25/11/2026: `VERIFICACAO_PREMISSAS.md`)
+O relógio de `hora_observacao` é a hora legal PADRÃO de cada estação até 15/04/2021 e UTC desde 16/04/2021. A análise de 14/10, abaixo,
+olhou só 2019 em SBGR e SBBE (UTC−3) e por isso concluiu UTC−3 fixo; ela fica como registro.
+
+### Análise original de 14/10/2026 (superada)
 - `hora_observacao` **não está em UTC**: o ciclo diurno médio tem máximo ~15h e mínimo ~6h (em UTC seriam ~18h e ~9h).
 - Comporta-se como **hora de Brasília padrão (UTC−3) aplicada a todas as estações**, inclusive Manaus e Rio Branco.
 - Artefato de horário de verão: nas datas de início do HV (2016-10-16, 2017-10-15, 2018-11-04) não há hora 00:xx

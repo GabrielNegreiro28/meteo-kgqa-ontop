@@ -449,3 +449,19 @@ Mantém-se a pergunta ao professor sobre **perguntas reais de usuários da área
 - D-113 Comparação de 2 a 4 partes de mesma forma (períodos de uma estação, ou estações de um período quando a forma não sai numa consulta
   agrupada). Agrupar por dimensão que só tem um valor no recorte é normalizado fora (o mesmo mês em dois anos não é mais recusado).
 - D-114 Fim do legado: o `metqa/` contém o que usa; `pipeline/`, `kgqa/`, os prompts v1–v8 e os testes só deles estão na tag `legado-v8`.
+
+## Cadastro de estações e relógio dos dados (2026-11-25)
+- D-115 Hora civil da estação: o relógio dos CSV é a hora legal padrão de cada estação até 15/04/2021 e UTC depois (conferido contra METAR em
+  UTC, `data/VERIFICACAO_PREMISSAS.md`). A R1 calcula o instante UTC por essa regra, e `local_date`, `met:localHour` e `met:localWeekday`
+  passam a ser a hora civil da estação (zona IANA do cadastro, com o horário de verão onde e quando vigorou), não mais UTC−3 fixo (D-85,
+  D-98, D-108 superadas no fuso). O horário pontual ("às 14h") é hora de relógio da estação: o fuso que o LLM escrever é descartado e
+  `MetQA._localize` aplica o de `met:timeZone`. Reverter: R1 antiga em `ingest/transform.py` (git) e a base `met_antes_r1.duckdb`.
+- D-116 Cadastro das estações de fonte externa (OurAirports, domínio público), em `data/estacoes.csv`: município onde fica o aeroporto (não a
+  cidade atendida; conferido à mão), UF, estado, região, coordenadas, altitude, fuso e apelidos revisados à mão. No grafo: `met:municipalityName`,
+  `met:stateCode`, `met:stateName`, `met:regionName`, `met:timeZone` e `skos:altLabel`. Siglas sem cadastro (SBMI1–3, SDAM1–3, SIMK1–3, XXXX):
+  UTC−3 assumido.
+- D-117 Lugar como menção: código, rótulo e apelido identificam UMA estação; município, estado e "região X" podem cobrir várias. Se o nome
+  cobre várias e a leitura escolheu só parte delas sem outra menção que as identifique, é sinal forte e o sistema pergunta
+  (`OntologyIndex.ambiguous_mentions`). Escolher todas é legítimo (um valor por estação). Município que é palavra comum ("Bonito",
+  "Sorriso") não reconhece estação.
+- D-118 Ressalva da chuva: os totais ficam abaixo da climatologia em várias estações; toda resposta sobre chuva diz isso (`met:answerCaveat`).

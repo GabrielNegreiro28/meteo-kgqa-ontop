@@ -59,6 +59,28 @@ met:stationCode a owl:DatatypeProperty ;
     rdfs:domain met:WeatherStation ; rdfs:range xsd:string ;
     rdfs:label "código da estação"@pt .
 
+# Cadastro da estação (data/estacoes.csv, de OurAirports): dado de referência, não medição.
+met:municipalityName a owl:DatatypeProperty ;
+    rdfs:domain met:WeatherStation ; rdfs:range xsd:string ;
+    rdfs:label "município da estação"@pt .
+
+met:stateCode a owl:DatatypeProperty ;
+    rdfs:domain met:WeatherStation ; rdfs:range xsd:string ;
+    rdfs:label "sigla da UF da estação"@pt .
+
+met:stateName a owl:DatatypeProperty ;
+    rdfs:domain met:WeatherStation ; rdfs:range xsd:string ;
+    rdfs:label "estado da estação"@pt .
+
+met:regionName a owl:DatatypeProperty ;
+    rdfs:domain met:WeatherStation ; rdfs:range xsd:string ;
+    rdfs:label "região da estação"@pt .
+
+met:timeZone a owl:DatatypeProperty ;
+    rdfs:domain met:WeatherStation ; rdfs:range xsd:string ;
+    rdfs:label "fuso horário da estação"@pt ;
+    rdfs:comment "Zona IANA da hora civil da estação; met:localDate, met:localHour e met:localWeekday estão nela."@pt .
+
 met:siteOf a owl:ObjectProperty ;
     rdfs:domain met:Site ; rdfs:range met:WeatherStation ;
     rdfs:label "local da estação"@pt .

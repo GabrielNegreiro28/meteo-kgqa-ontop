@@ -32,7 +32,7 @@ PREFIXES = {
 }
 
 WIND = {"wind_speed", "wind_dir", "wind_gust"}
-# hora e dia da semana locais (UTC−3, D-85): colunas geradas no banco (ingest/export_pg.py::LOCAL_TIME)
+# hora e dia da semana CIVIS da estação (zona em met:timeZone): local_hour vem da camada limpa, local_weekday é gerada de local_date
 LOCAL = "local_hour, local_weekday"
 
 
@@ -92,8 +92,12 @@ def scalar(name, prop, unit, xsd, src, accum=False, table=None, column="value"):
 def all_mappings():
     m = [
         ("station", ":station/{sigla} a met:WeatherStation ; met:stationCode {sigla}^^xsd:string ; "
-                    "rdfs:label {sigla}^^xsd:string . :site/{sigla} a met:Site ; met:siteOf :station/{sigla} .",
-         "SELECT sigla FROM station"),
+                    "rdfs:label {sigla}^^xsd:string ; met:timeZone {fuso_iana}^^xsd:string . :site/{sigla} a met:Site ; met:siteOf :station/{sigla} .",
+         "SELECT sigla, fuso_iana FROM station"),
+        ("station_place", ":station/{sigla} met:municipalityName {municipio}^^xsd:string ; met:stateCode {uf}^^xsd:string ; "
+                          "met:stateName {estado}^^xsd:string ; met:regionName {regiao}^^xsd:string .",
+         "SELECT sigla, municipio, uf, estado, regiao FROM station WHERE uf IS NOT NULL"),
+        ("station_alias", ":station/{sigla} skos:altLabel {alias}^^xsd:string .", "SELECT sigla, alias FROM station_alias"),
         ("station_sensor", ":station/{sigla} sosa:hosts :sensor/{sigla}/{var} . :sensor/{sigla}/{var} a sosa:Sensor .",
          "SELECT sigla, var FROM station_sensor"),
         ("report", ":report/{sigla}/{tmin} a met:WeatherReport ; met:reportOf :station/{sigla} ; "

@@ -60,6 +60,9 @@ def test_annual_rain_anchors(con):
 
 DST = ("(CAST(hora_observacao AS DATE) IN (DATE '2016-10-16', DATE '2017-10-15', DATE '2018-11-04') "
        "AND hour(hora_observacao) = 1)")
+# R1: linhas de 16 a 30/04/2021 (menos o lote de 19/04) com relógio incerto vão inteiras para a quarentena (col '*')
+TRANSITION = ("(hora_observacao >= TIMESTAMP '2021-04-16' AND hora_observacao < TIMESTAMP '2021-05-01' "
+              "AND CAST(hora_observacao AS DATE) <> DATE '2021-04-19')")
 
 
 @needs_duck
@@ -70,7 +73,7 @@ def test_every_raw_value_is_accounted_for(con, src, col, table):
     Nível 2 (trios distintos estação/instante/valor): dentro da faixa colapsa em trios;
     cada trio vira uma observação no grafo OU uma entrada de quarentena do controle de qualidade."""
     q = lambda s: con.execute(s).fetchone()[0]
-    base = f"FROM raw_{src} WHERE {col} IS NOT NULL AND NOT {DST}"
+    base = f"FROM raw_{src} WHERE {col} IS NOT NULL AND NOT {DST} AND NOT {TRANSITION}"
     raw = q(f"SELECT COUNT(*) {base}")
     out_of_range = q(f"SELECT COUNT(*) FROM clean.quarantine WHERE source='{src}' AND col='{col}' AND reason LIKE 'fora_da_faixa%'")
     in_range_ids = f"row_id NOT IN (SELECT row_id FROM clean.quarantine WHERE source='{src}' AND col='{col}' AND reason LIKE 'fora_da_faixa%')"

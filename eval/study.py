@@ -81,12 +81,26 @@ def main():
         ap.add_argument('--' + name, type=Path, required=True)
     ap.add_argument('--run', action='store_true')
     ap.add_argument('--budget', type=float)
+    ap.add_argument('--conditions', help='subconjunto das condições, separadas por vírgula (padrão: todas)')
+    ap.add_argument('--repetitions', type=int, default=3, help='quantas repetições da agenda rodar (1 a 3)')
+    ap.add_argument('--slice', help='fatia A:B da agenda filtrada, para rodar em blocos (cada bloco em outro --out)')
+    ap.add_argument('--authorize-usd', type=float, help='autorização extra no ledger (exige --authorized-by e --reason)')
+    ap.add_argument('--authorized-by')
+    ap.add_argument('--reason')
     args = ap.parse_args()
     document = json.loads(args.questions.read_text(encoding='utf-8'))
     if not document.get('reviewed_by'):
         raise ValueError('question/reference review required before study freeze')
     questions = document['questions']
     tasks = schedule(questions)
+    wanted = set(args.conditions.split(',')) if args.conditions else set(CONDITIONS)
+    if not wanted <= set(CONDITIONS) or not 1 <= args.repetitions <= 3:
+        raise ValueError('condição desconhecida ou repetições fora de 1..3')
+    # filtrar a agenda congelada preserva a ordem pseudoaleatória dela; nada é sorteado de novo
+    tasks = [t for t in tasks if t['condition'] in wanted and t['repetition'] <= args.repetitions]
+    if args.slice:
+        a, b = (int(x) for x in args.slice.split(':'))
+        tasks = tasks[a:b]
     from eval.freeze_set import check, seen_questions
     errors = check(questions, seen_questions())
     if errors:
@@ -100,6 +114,7 @@ def main():
     if args.run and (args.budget is None or args.budget <= 0):
         raise ValueError('--run requires an explicit positive --budget')
     manifest = {'tasks': tasks, 'reviewed_by': document['reviewed_by'], 'budget_usd': args.budget,
+                'conditions': sorted(wanted), 'repetitions': args.repetitions, 'slice': args.slice,
                 'inputs': {name: hashlib.sha256(getattr(args, name).read_bytes()).hexdigest()
                            for name in ('questions', 'references', 'snapshot')}}
     args.out.mkdir(parents=True, exist_ok=False)
@@ -111,6 +126,11 @@ def main():
     from metqa.app.cli import build
     from metqa.knowledge import EvoLexicon, OntologyLexicon
     settings = Settings.from_env(snapshot=args.snapshot, budget_usd=args.budget, exemplars=False, record_trajectories=False)
+    if args.authorize_usd:
+        if not (args.authorized_by and args.reason):
+            raise ValueError('--authorize-usd exige --authorized-by e --reason')
+        from metqa.llm.ledger import Ledger
+        Ledger(str(settings.ledger)).authorize(args.authorize_usd, by=args.authorized_by, reason=args.reason)
     full = build(settings, run='study:' + args.out.name)
     if settings.lexicon != 'evo':
         raise ValueError('full study requires EvoOntology')

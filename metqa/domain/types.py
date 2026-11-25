@@ -37,12 +37,12 @@ def hour_ranges(hours) -> str:
 
 @dataclass(frozen=True)
 class TimeScope:
-    """Recorte de tempo, sempre em hora local UTC−3 (D-85). Valores JÁ NORMALIZADOS (pelo LLM, conferidos por código e pelo usuário)."""
+    """Recorte de tempo, sempre na hora civil da estação (met:timeZone; D-115). Valores JÁ NORMALIZADOS (pelo LLM, conferidos por código e pelo usuário)."""
     start: date | None = None                 # janela [start, end], fim inclusivo; None = todo o histórico
     end: date | None = None
     hours: tuple[int, ...] | None = None      # CONJUNTO de horas locais (0–23): "das 18h às 6h" = 18..23 e 0..5, sem caso especial
     weekdays: tuple[int, ...] | None = None   # 0 = segunda ... 6 = domingo
-    instant: datetime | None = None           # "às 12h" (com fuso)
+    instant: datetime | None = None           # "às 12h": hora de relógio da estação, com o fuso dela (MetQA._localize)
 
     def describe(self) -> str:
         if self.instant is not None:

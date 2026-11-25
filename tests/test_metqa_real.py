@@ -17,10 +17,11 @@ from tests.test_real_pipeline import needs_ontop
 
 E = lambda **kw: kw
 NIGHT = list(range(18, 24)) + list(range(0, 6))
-CASES = {   # pergunta, interpretação normalizada, valor esperado (oráculo pandas; ver eval/frozen/*)
+CASES = {   # pergunta, interpretação normalizada, valor esperado (oráculo pandas; ver eval/frozen/*). Os casos de 2024 foram
+            # recalculados em 25/11/2026 por SQL independente na base limpa corrigida (R1, D-115): o relógio antigo deslocava o dia local.
     "dia_por_extenso": ("Qual foi a visibilidade mínima, em metros, em SBGL no dia 15 de fevereiro de 2024?",
                         nir("met:PrevailingVisibility", ["st:SBGL"], "min", "2024-02-15",
-                            evidence=E(measure="visibilidade", stations="SBGL", calc="mínima", time="no dia 15 de fevereiro de 2024")), 1000),
+                            evidence=E(measure="visibilidade", stations="SBGL", calc="mínima", time="no dia 15 de fevereiro de 2024")), 2500),
     "minutos_de_chuva": ("Quantos minutos de chuva, somando todas as horas, foram registrados em SBFZ em 2020?",
                          nir("met:PrecipitationDuration", ["st:SBFZ"], "sum", "2020-01-01", "2020-12-31",
                              evidence=E(measure="minutos de chuva", stations="SBFZ", calc="somando", time="em 2020")), 13959),
@@ -30,10 +31,10 @@ CASES = {   # pergunta, interpretação normalizada, valor esperado (oráculo pa
                             evidence=E(measure="chuva", stations="SBCY", calc="Quantas horas", conditions="com chuva", time="em 2022")), 360),
     "quantos_mm": ("sbcg, quantos mm choveu em janeiro de 2024?",
                    nir("met:Precipitation", ["st:SBCG"], "sum", "2024-01-01", "2024-01-31",
-                       evidence=E(measure="choveu", stations="sbcg", calc="quantos mm", time="em janeiro de 2024")), 64.1),
+                       evidence=E(measure="choveu", stations="sbcg", calc="quantos mm", time="em janeiro de 2024")), 53),
     "fins_de_semana": ("Qual a velocidade média do vento em SBNT nos fins de semana de 2024?",
                        nir("met:WindSpeed", ["st:SBNT"], "avg", "2024-01-01", "2024-12-31", weekdays=[5, 6],
-                           evidence=E(measure="velocidade média do vento", stations="SBNT", calc="média", time="nos fins de semana de 2024")), 8.81),
+                           evidence=E(measure="velocidade média do vento", stations="SBNT", calc="média", time="nos fins de semana de 2024")), 8.83),
     "madrugada": ("Quanto choveu em SBBE de madrugada em 2019?",
                   nir("met:Precipitation", ["st:SBBE"], "sum", "2019-01-01", "2019-12-31", hours=list(range(0, 6)),
                       evidence=E(measure="choveu", stations="SBBE", calc="Quanto", time="de madrugada em 2019")), 180.8),
@@ -41,7 +42,7 @@ CASES = {   # pergunta, interpretação normalizada, valor esperado (oráculo pa
     # usa o máximo de cada instante (várias cabeceiras); o sistema faz a média de todas as leituras (política de leituras múltiplas)
     "dias_uteis": ("Em dias de segunda a sexta de 2024, qual a velocidade média do vento de SBRB, em nós?",
                    nir("met:WindSpeed", ["st:SBRB"], "avg", "2024-01-01", "2024-12-31", weekdays=[0, 1, 2, 3, 4],
-                       evidence=E(measure="velocidade média do vento", stations="SBRB", calc="média", time="Em dias de segunda a sexta de 2024")), 3.42),
+                       evidence=E(measure="velocidade média do vento", stations="SBRB", calc="média", time="Em dias de segunda a sexta de 2024")), 3.44),
     # base de nuvem (grandeza PROVISÓRIA met:CloudBaseHeight, plano D6): E55 e E81 do novo_b, que eram "não suportado"
     "base_de_nuvem": ("A que altura, em metros, estava a base de nuvem mais baixa de SBCB em abril de 2020?",
                       nir("met:CloudBaseHeight", ["st:SBCB"], "min", "2020-04-01", "2020-04-30",
@@ -109,7 +110,7 @@ def test_mvp_compares_two_periods(real):
     ir["time"]["ranges"] = [{"start": "2016-01-01", "end": "2016-01-31"}, {"start": "2025-01-01", "end": "2025-01-31"}]
     r = ask(real, "SBPA esteve mais quente em janeiro de 2016 ou em janeiro de 2025?", ir).response
     assert r.status == Status.ANSWERED, [d.message for d in r.diagnostics]
-    assert "25,63" in r.answer_text and "25,44" in r.answer_text and "Maior em" in r.answer_text
+    assert "25,63" in r.answer_text and "25,45" in r.answer_text and "Maior em" in r.answer_text   # 2025 recalculado na base corrigida (D-115)
 
 
 @needs_ontop
