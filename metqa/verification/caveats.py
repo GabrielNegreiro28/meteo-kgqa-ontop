@@ -6,7 +6,7 @@ Existem porque a auditoria dos dados (docs/ANALISE_CRITICA.md, seção 4) achou 
   - grandeza com leitura censurada (visibilidade: 80% das leituras estão no teto de 20 km);
   - ranking que premia estação com quase nenhuma leitura (n=149 ao lado de n=16.773);
   - "n" que conta LEITURAS e não boletins (32% das leituras de vento são extras: uma por cabeceira);
-  - dias em horário de Brasília (UTC−3) para todas as estações (hipótese P-16).
+  - dias e horas na hora civil de cada estação (R1 e D-115: fuso conferido contra METAR).
 """
 from __future__ import annotations
 
@@ -93,7 +93,7 @@ def answer_caveats(interp, results: dict[str, Any] | None, index: OntologyIndex)
         out.append(f"{len(tiny)} resultado(s) vêm de menos de {ABS_MIN_READINGS} leituras: {shown}. Com tão pouca cobertura o valor não é representativo "
                    "(a estação pode ter quase não operado no período).")
     if getattr(interp, "daily", None):
-        out.append("A contagem é de DIAS (dia civil em UTC−3): um dia entra se a estatística do dia cumpre a condição. Só contam os dias com ao menos "
+        out.append("A contagem é de DIAS (dia civil local da estação): um dia entra se a estatística do dia cumpre a condição. Só contam os dias com ao menos "
                    "uma leitura; `n` é o número de dias com dados, e dia sem leitura não é dia que não cumpriu.")
     elif interp.aggregation == "count" and getattr(interp, "count_of", None) in (None, "readings"):   # horas/boletins distintos já não são leituras
         out.append("As contagens são de leituras, não de boletins: um boletim pode ter mais de uma leitura "

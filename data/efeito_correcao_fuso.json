@@ -1,0 +1,61 @@
+{
+ "leituras_de_temperatura_com_outro_dia_local": {
+  "ate_15_04_2021": {
+   "leituras": 4676319,
+   "fracao_dia_diferente": 0.0038,
+   "fracao_hora_diferente": 0.1305
+  },
+  "desde_16_04_2021": {
+   "leituras": 4214698,
+   "fracao_dia_diferente": 0.1017,
+   "fracao_hora_diferente": 0.9995
+  }
+ },
+ "chuva_diaria": {
+  "ate_15_04_2021": {
+   "estacao_dias": 241276,
+   "fracao_com_valor_diferente": 0.0116
+  },
+  "desde_16_04_2021": {
+   "estacao_dias": 215297,
+   "fracao_com_valor_diferente": 0.1045
+  }
+ },
+ "temperatura_maxima_diaria": {
+  "ate_15_04_2021": {
+   "estacao_dias": 256553,
+   "fracao_com_valor_diferente": 0.001
+  },
+  "desde_16_04_2021": {
+   "estacao_dias": 222626,
+   "fracao_com_valor_diferente": 0.02
+  }
+ },
+ "exemplo_SBGR_2023_maiores_chuvas_diarias": [
+  {
+   "dia": "2023-03-29",
+   "antes_mm": 71.1,
+   "depois_mm": 71.1
+  },
+  {
+   "dia": "2023-10-01",
+   "antes_mm": 64.9,
+   "depois_mm": 45.1
+  },
+  {
+   "dia": "2023-01-04",
+   "antes_mm": 52.9,
+   "depois_mm": 56.9
+  },
+  {
+   "dia": "2023-03-12",
+   "antes_mm": 46.9,
+   "depois_mm": 43.4
+  },
+  {
+   "dia": "2023-04-18",
+   "antes_mm": 19.9,
+   "depois_mm": 46.9
+  }
+ ]
+}

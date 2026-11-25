@@ -1,0 +1,325 @@
+{
+ "T1_fuso": {
+  "estacoes": 114,
+  "hipoteses": {
+   "UTC-3 fixo": {
+    "fase_solar_media_por_fuso_legal": {
+     "-5": 14.5,
+     "-4": 15.32,
+     "-3": 15.92
+    },
+    "n_por_fuso_legal": {
+     "-5": 3,
+     "-4": 16,
+     "-3": 95
+    },
+    "maior_desvio_entre_fusos_h": 1.42,
+    "inclinacao_fase_x_longitude_h_por_grau": 0.0254
+   },
+   "hora legal da UF": {
+    "fase_solar_media_por_fuso_legal": {
+     "-5": 16.5,
+     "-4": 16.32,
+     "-3": 15.92
+    },
+    "n_por_fuso_legal": {
+     "-5": 3,
+     "-4": 16,
+     "-3": 95
+    },
+    "maior_desvio_entre_fusos_h": 0.58,
+    "inclinacao_fase_x_longitude_h_por_grau": -0.0193
+   },
+   "UTC": {
+    "fase_solar_media_por_fuso_legal": {
+     "-5": 11.5,
+     "-4": 12.32,
+     "-3": 12.92
+    },
+    "n_por_fuso_legal": {
+     "-5": 3,
+     "-4": 16,
+     "-3": 95
+    },
+    "maior_desvio_entre_fusos_h": 1.42,
+    "inclinacao_fase_x_longitude_h_por_grau": 0.0254
+   }
+  },
+  "fase_no_relogio_estacoes_utc4_utc5": {
+   "SBAT": 15.87,
+   "SBBV": 17.1,
+   "SBBW": 16.1,
+   "SBCG": 15.74,
+   "SBCY": 16.25,
+   "SBCZ": 15.25,
+   "SBDO": 15.5,
+   "SBEG": 15.97,
+   "SBJI": 15.97,
+   "SBMN": 16.24,
+   "SBPP": 16.32,
+   "SBPV": 16.33,
+   "SBRB": 16.33,
+   "SBRD": 15.73,
+   "SBSI": 16.99,
+   "SBSO": 15.82,
+   "SBTG": 16.25,
+   "SBTT": 16.97,
+   "SBUY": 16.22
+  }
+ },
+ "T2_horario_de_verao": {
+  "mudanca_media_h_estados_com_horario_de_verao": -2.297,
+  "n_com": 33,
+  "mudanca_media_h_estados_sem": -2.325,
+  "n_sem": 25,
+  "diferenca_das_diferencas_h": 0.028,
+  "esperado_se_hora_legal": 1.0,
+  "esperado_se_relogio_fixo": 0.0
+ },
+ "T3_unidades": {
+  "visibilidade_valores_mais_comuns": [
+   [
+    2000.0,
+    6889876
+   ],
+   [
+    1000.0,
+    230689
+   ],
+   [
+    800.0,
+    215776
+   ],
+   [
+    1500.0,
+    194950
+   ],
+   [
+    500.0,
+    174275
+   ],
+   [
+    1200.0,
+    126085
+   ],
+   [
+    900.0,
+    120302
+   ],
+   [
+    600.0,
+    104119
+   ],
+   [
+    400.0,
+    97808
+   ],
+   [
+    700.0,
+    96659
+   ],
+   [
+    300.0,
+    82582
+   ],
+   [
+    200.0,
+    48668
+   ]
+  ],
+  "visibilidade_fracao_nos_degraus_metar": 1.0,
+  "visibilidade_max": 9000.0,
+  "visibilidade_fracao_2000": 0.801,
+  "base_nuvem_mediana_dam_por_genero": [
+   [
+    "ST",
+    20.0,
+    822491
+   ],
+   [
+    "SC",
+    60.0,
+    3046957
+   ],
+   [
+    "CU",
+    75.0,
+    3389812
+   ],
+   [
+    "TCU",
+    90.0,
+    625478
+   ],
+   [
+    "CB",
+    105.0,
+    286724
+   ],
+   [
+    "AS",
+    240.0,
+    628797
+   ],
+   [
+    "AC",
+    300.0,
+    2297785
+   ],
+   [
+    "CS",
+    900.0,
+    78359
+   ],
+   [
+    "CI",
+    900.0,
+    640861
+   ],
+   [
+    "CI e/ou CC",
+    900.0,
+    799152
+   ]
+  ],
+  "chuva_anual": {
+   "SBRF": {
+    "cidade": "Recife",
+    "media_mm": 1135,
+    "anos": 10,
+    "normal_aprox_mm": 2263,
+    "razao": 0.5
+   },
+   "SBCF": {
+    "cidade": "Belo Horizonte",
+    "media_mm": 977,
+    "anos": 10,
+    "normal_aprox_mm": 1600,
+    "razao": 0.61
+   },
+   "SBCT": {
+    "cidade": "Curitiba",
+    "media_mm": 1176,
+    "anos": 10,
+    "normal_aprox_mm": 1500,
+    "razao": 0.78
+   },
+   "SBEG": {
+    "cidade": "Manaus",
+    "media_mm": 2643,
+    "anos": 10,
+    "normal_aprox_mm": 2307,
+    "razao": 1.15
+   },
+   "SBSV": {
+    "cidade": "Salvador",
+    "media_mm": 846,
+    "anos": 10,
+    "normal_aprox_mm": 2144,
+    "razao": 0.39
+   },
+   "SBPA": {
+    "cidade": "Porto Alegre",
+    "media_mm": 1372,
+    "anos": 9,
+    "normal_aprox_mm": 1504,
+    "razao": 0.91
+   },
+   "SBBE": {
+    "cidade": "Belém",
+    "media_mm": 2612,
+    "anos": 10,
+    "normal_aprox_mm": 3084,
+    "razao": 0.85
+   },
+   "SBBR": {
+    "cidade": "Brasília",
+    "media_mm": 804,
+    "anos": 10,
+    "normal_aprox_mm": 1477,
+    "razao": 0.54
+   },
+   "SBFZ": {
+    "cidade": "Fortaleza",
+    "media_mm": 1212,
+    "anos": 10,
+    "normal_aprox_mm": 1608,
+    "razao": 0.75
+   },
+   "SBGR": {
+    "cidade": "Guarulhos",
+    "media_mm": 1232,
+    "anos": 10,
+    "normal_aprox_mm": 1450,
+    "razao": 0.85
+   }
+  }
+ },
+ "T4_fora_da_hora_cheia": {
+  "minutos_mais_comuns": [
+   [
+    0,
+    8059824,
+    0.933
+   ],
+   [
+    15,
+    123396,
+    0.0143
+   ],
+   [
+    30,
+    94536,
+    0.0109
+   ],
+   [
+    45,
+    82328,
+    0.0095
+   ],
+   [
+    20,
+    28244,
+    0.0033
+   ],
+   [
+    40,
+    24563,
+    0.0028
+   ],
+   [
+    35,
+    24442,
+    0.0028
+   ],
+   [
+    25,
+    24198,
+    0.0028
+   ]
+  ],
+  "hora_cheia_x_fora": {
+   "fora da hora cheia": {
+    "vis_media_dam": 1294.1,
+    "fracao_vis_abaixo_5km": 0.2196,
+    "boletins": 578859
+   },
+   "hora cheia": {
+    "vis_media_dam": 1799.0,
+    "fracao_vis_abaixo_5km": 0.0298,
+    "boletins": 8019860
+   }
+  }
+ },
+ "T5_consistencia": {
+  "orvalho_acima_da_temperatura": {
+   "pares": 8439485,
+   "mais_de_0_5C": 347,
+   "mais_de_2C": 149
+  },
+  "bulbo_umido_acima_do_seco": {
+   "pares": 8441665,
+   "mais_de_0_5C": 15
+  }
+ }
+}

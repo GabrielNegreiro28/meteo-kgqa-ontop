@@ -60,7 +60,8 @@ Início/fim não comprovam ausência de lacunas: `coverage_complete` permanece f
 
 O manifesto declara a carga ligada ao endpoint. O operador precisa garantir que o PostgreSQL servido pelo Ontop foi exportado desse
 mesmo snapshot e permaneça congelado durante o estudo; o endpoint atual não fornece um hash verificável do banco remoto.
-UTC−3 fixo, deduplicação, unidades de origem e descarte de picos continuam hipóteses sujeitas à revisão meteorológica.
+Deduplicação e descarte de picos continuam hipóteses sujeitas à revisão meteorológica. O fuso (antes UTC−3 fixo) e as unidades foram
+conferidos contra METAR em 25/11/2026 (`data/VERIFICACAO_PREMISSAS.md`, D-115).
 
 ## Avaliação independente
 

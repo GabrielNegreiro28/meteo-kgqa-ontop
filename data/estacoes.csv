@@ -1,0 +1,179 @@
+sigla,nome,municipio,apelidos,uf,estado,regiao,lat,lon,altitude_m,fuso_legal,fuso_iana,horario_verao_ate_2019,fonte_id,situacao
+SBAA,Conceição do Araguaia Airport,Conceição do Araguaia,,PA,Pará,Norte,-8.34835,-49.3015,199,-3,America/Belem,False,SBAA,ativo
+SBAC,Aracati Dragão do Mar Regional Airport,Aracati,,CE,Ceará,Nordeste,-4.5689,-37.80513,39,-3,America/Fortaleza,False,SBAC,ativo
+SBAE,Bauru/Arealva–Moussa Nakhal Tobias State Airport,Bauru,,SP,São Paulo,Sudeste,-22.16076,-49.07032,598,-3,America/Sao_Paulo,True,SBAE,ativo
+SBAF,Campo Délio Jardim de Mattos Airport,Rio de Janeiro,Campo dos Afonsos;Afonsos,RJ,Rio de Janeiro,Sudeste,-22.8751,-43.3847,34,-3,America/Sao_Paulo,True,SBAF,ativo
+SBAN,Anápolis Airbase,Anápolis,Base Aérea de Anápolis,GO,Goiás,Centro-Oeste,-16.2292,-48.9643,1137,-3,America/Sao_Paulo,True,SBAN,ativo
+SBAQ,Araraquara Airport,Araraquara,,SP,São Paulo,Sudeste,-21.812,-48.133,711,-3,America/Sao_Paulo,True,SBAQ,ativo
+SBAR,Aracaju - Santa Maria Airport,Aracaju,,SE,Sergipe,Nordeste,-10.98394,-37.07287,7,-3,America/Maceio,False,SBAR,ativo
+SBAT,Piloto Osvaldo Marques Dias Airport,Alta Floresta,,MT,Mato Grosso,Centro-Oeste,-9.86639,-56.1063,289,-4,America/Cuiaba,True,SBAT,ativo
+SBAU,Araçatuba Airport,Araçatuba,,SP,São Paulo,Sudeste,-21.14148,-50.42457,414,-3,America/Sao_Paulo,True,SBAU,ativo
+SBAX,Romeu Zema Airport,Araxá,,MG,Minas Gerais,Sudeste,-19.5632,-46.9604,999,-3,America/Sao_Paulo,True,SBAX,ativo
+SBBE,Val de Cans/Júlio Cezar Ribeiro International Airport,Belém,Val de Cans,PA,Pará,Norte,-1.37928,-48.47621,16,-3,America/Belem,False,SBBE,ativo
+SBBG,Comandante Gustavo Kraemer Airport,Bagé,,RS,Rio Grande do Sul,Sul,-31.3905,-54.1122,183,-3,America/Sao_Paulo,True,SBBG,ativo
+SBBH,Pampulha - Carlos Drummond de Andrade Airport,Belo Horizonte,Pampulha,MG,Minas Gerais,Sudeste,-19.85074,-43.95032,789,-3,America/Sao_Paulo,True,SBBH,ativo
+SBBI,Bacacheri Airport,Curitiba,Bacacheri,PR,Paraná,Sul,-25.4051,-49.232,932,-3,America/Sao_Paulo,True,SBBI,ativo
+SBBP,Estadual Arthur Siqueira Airport,Bragança Paulista,,SP,São Paulo,Sudeste,-22.97882,-46.53713,880,-3,America/Sao_Paulo,True,SBBP,ativo
+SBBQ,Major Brigadeiro Doorgal Borges Airport,Barbacena,,MG,Minas Gerais,Sudeste,-21.2672,-43.76101,1115,-3,America/Sao_Paulo,True,SBBQ,ativo
+SBBR,Presidente Juscelino Kubitschek International Airport,Brasília,Aeroporto de Brasília,DF,Distrito Federal,Centro-Oeste,-15.86917,-47.92083,1066,-3,America/Sao_Paulo,True,SBBR,ativo
+SBBU,Bauru Airport,Bauru,,SP,São Paulo,Sudeste,-22.345,-49.0538,617,-3,America/Sao_Paulo,True,SBBU,ativo
+SBBV,Atlas Brasil Cantanhede International Airport,Boa Vista,,RR,Roraima,Norte,2.84615,-60.69065,84,-4,America/Boa_Vista,False,SBBV,ativo
+SBBW,Barra do Garças Airport,Barra do Garças,,MT,Mato Grosso,Centro-Oeste,-15.86142,-52.38901,350,-4,America/Cuiaba,True,SBBW,ativo
+SBCA,Coronel Adalberto Mendes da Silva Airport,Cascavel,,PR,Paraná,Sul,-25.00032,-53.50121,756,-3,America/Sao_Paulo,True,SBCA,ativo
+SBCB,Cabo Frio Airport,Cabo Frio,,RJ,Rio de Janeiro,Sudeste,-22.92149,-42.07187,7,-3,America/Sao_Paulo,True,SBCB,ativo
+SBCC,Campo de Provas Brigadeiro Veloso,Novo Progresso,Cachimbo,PA,Pará,Norte,-9.33394,-54.9654,542,-3,America/Belem,False,SBCC,ativo
+SBCF,Tancredo Neves International Airport,Confins,Aeroporto de Confins,MG,Minas Gerais,Sudeste,-19.63571,-43.96693,829,-3,America/Sao_Paulo,True,SBCF,ativo
+SBCG,Campo Grande Airport,Campo Grande,,MS,Mato Grosso do Sul,Centro-Oeste,-20.47,-54.67399,559,-4,America/Campo_Grande,True,SBCG,ativo
+SBCH,Serafin Enoss Bertaso Airport,Chapecó,,SC,Santa Catarina,Sul,-27.1342,-52.6566,657,-3,America/Sao_Paulo,True,SBCH,ativo
+SBCI,Brig. Lysias Augusto Rodrigues Airport,Carolina,,MA,Maranhão,Nordeste,-7.32044,-47.4587,172,-3,America/Fortaleza,False,SBCI,ativo
+SBCJ,Carajás Airport,Parauapebas,,PA,Pará,Norte,-6.11784,-50.00337,629,-3,America/Belem,False,SBCJ,ativo
+SBCM,Forquilhinha - Criciúma  Airport,Criciúma,,SC,Santa Catarina,Sul,-28.72574,-49.42448,28,-3,America/Sao_Paulo,True,SBCM,ativo
+SBCN,Nelson Ribeiro Guimarães Airport,Caldas Novas,,GO,Goiás,Centro-Oeste,-17.7251,-48.60632,703,-3,America/Sao_Paulo,True,SBCN,ativo
+SBCO,Canoas Air Force Base,Canoas,Base Aérea de Canoas,RS,Rio Grande do Sul,Sul,-29.94593,-51.14441,8,-3,America/Sao_Paulo,True,SBCO,ativo
+SBCP,Bartolomeu Lisandro Airport,Campos dos Goytacazes,,RJ,Rio de Janeiro,Sudeste,-21.6983,-41.3017,18,-3,America/Sao_Paulo,True,SBCP,ativo
+SBCR,Corumbá International Airport,Corumbá,,MS,Mato Grosso do Sul,Centro-Oeste,-19.01193,-57.67277,141,-4,America/Campo_Grande,True,SBCR,ativo
+SBCT,Curitiba-Afonso Pena International Airport,São José dos Pinhais,Afonso Pena,PR,Paraná,Sul,-25.5285,-49.1758,911,-3,America/Sao_Paulo,True,SBCT,ativo
+SBCX,Hugo Cantergiani Regional Airport,Caxias Do Sul,,RS,Rio Grande do Sul,Sul,-29.19718,-51.18765,753,-3,America/Sao_Paulo,True,SBCX,ativo
+SBCY,Várzea Grande–Marechal Rondon International Airport,Várzea Grande,,MT,Mato Grosso,Centro-Oeste,-15.6529,-56.1167,188,-4,America/Cuiaba,True,SBCY,ativo
+SBCZ,Cruzeiro do Sul Airport,Cruzeiro Do Sul,,AC,Acre,Norte,-7.59991,-72.7695,194,-5,America/Rio_Branco,False,SBCZ,ativo
+SBDB,Bonito Airport,Bonito,,MS,Mato Grosso do Sul,Centro-Oeste,-21.2473,-56.4524,360,-4,America/Campo_Grande,True,SBDB,ativo
+SBDN,Presidente Prudente Airport,Presidente Prudente,,SP,São Paulo,Sudeste,-22.1751,-51.4246,450,-3,America/Sao_Paulo,True,SBDN,ativo
+SBDO,Dourados Airport,Dourados,,MS,Mato Grosso do Sul,Centro-Oeste,-22.2019,-54.9266,458,-4,America/Campo_Grande,True,SBDO,ativo
+SBEC,Petrobras P-15 Platform Helideck,Bacia de Campos (plataforma),,RJ,Rio de Janeiro,Sudeste,-22.6775,-40.6061,,-3,America/Sao_Paulo,True,BR-1981,fechado na fonte
+SBEG,Eduardo Gomes International Airport,Manaus,Eduardo Gomes,AM,Amazonas,Norte,-3.03861,-60.0497,80,-4,America/Manaus,False,SBEG,ativo
+SBEK,Jacareacanga Airport,Jacareacanga,,PA,Pará,Norte,-6.23316,-57.7769,90,-3,America/Belem,False,SBEK,ativo
+SBES,Tenente Jorge Henrique Möller Airport,São Pedro da Aldeia,,RJ,Rio de Janeiro,Sudeste,-22.8129,-42.0926,19,-3,America/Sao_Paulo,True,SBES,ativo
+SBFI,Cataratas International Airport,Foz do Iguaçu,Cataratas,PR,Paraná,Sul,-25.59417,-54.48944,240,-3,America/Sao_Paulo,True,SBFI,ativo
+SBFL,Hercílio Luz International Airport,Florianópolis,Hercílio Luz,SC,Santa Catarina,Sul,-27.67028,-48.5525,5,-3,America/Sao_Paulo,True,SBFL,ativo
+SBFN,Fernando de Noronha Airport,Fernando de Noronha,,PE,Pernambuco,Nordeste,-3.85453,-32.42302,59,-2,America/Noronha,False,SBFN,ativo
+SBFS,Farol de São Tomé Heliport,Campos dos Goytacazes,,RJ,Rio de Janeiro,Sudeste,-22.03059,-41.06862,3,-3,America/Sao_Paulo,True,SBFS,ativo
+SBFZ,Pinto Martins International Airport,Fortaleza,Pinto Martins,CE,Ceará,Nordeste,-3.77583,-38.53222,25,-3,America/Fortaleza,False,SBFZ,ativo
+SBGL,Rio de Janeiro Galeão – Tom Jobim International Airport,Rio de Janeiro,Galeão;Tom Jobim,RJ,Rio de Janeiro,Sudeste,-22.81,-43.25056,9,-3,America/Sao_Paulo,True,SBGL,ativo
+SBGM,Guajará-Mirim Airport,Guajará-Mirim,,RO,Rondônia,Norte,-10.78641,-65.28486,146,-4,America/Porto_Velho,False,SBGM,ativo
+SBGO,Santa Genoveva International Airport,Goiânia,,GO,Goiás,Centro-Oeste,-16.632,-49.2207,747,-3,America/Sao_Paulo,True,SBGO,ativo
+SBGP,EMBRAER - Unidade Gavião Peixoto Airport,Gavião Peixoto,,SP,São Paulo,Sudeste,-21.7737,-48.4051,609,-3,America/Sao_Paulo,True,SBGP,ativo
+SBGR,São Paulo/Guarulhos–Governor André Franco Montoro International Airport,Guarulhos,Cumbica;Aeroporto de Guarulhos,SP,São Paulo,Sudeste,-23.43127,-46.46995,750,-3,America/Sao_Paulo,True,SBGR,ativo
+SBGV,Coronel Altino Machado Airport,Governador Valadares,,MG,Minas Gerais,Sudeste,-18.89588,-41.98287,171,-3,America/Sao_Paulo,True,SBGV,ativo
+SBGW,Edu Chaves Field,Guaratinguetá,,SP,São Paulo,Sudeste,-22.7916,-45.2048,537,-3,America/Sao_Paulo,True,SBGW,ativo
+SBHT,Altamira Interstate Airport,Altamira,,PA,Pará,Norte,-3.25314,-52.25394,112,-3,America/Belem,False,SBHT,ativo
+SBIC,Itacoatiara Airport,Itacoatiara,,AM,Amazonas,Norte,-3.12654,-58.48167,43,-4,America/Manaus,False,SBIC,ativo
+SBIH,Itaituba Airport,Itaituba,,PA,Pará,Norte,-4.24213,-56.00065,34,-3,America/Belem,False,SBIH,ativo
+SBIL,Ilha Solteira,Ilha Solteira,,SP,São Paulo,Sudeste,-20.4217,-51.3314,297,-3,America/Sao_Paulo,True,BR-0006,fechado na fonte
+SBIP,Usiminas Airport,Ipatinga,,MG,Minas Gerais,Sudeste,-19.4707,-42.4876,240,-3,America/Sao_Paulo,True,SBIP,ativo
+SBIT,Francisco Vilela do Amaral Airport,Itumbiara,,GO,Goiás,Centro-Oeste,-18.4447,-49.2134,497,-3,America/Sao_Paulo,True,SBIT,ativo
+SBIZ,Prefeito Renato Moreira Airport,Imperatriz,,MA,Maranhão,Nordeste,-5.53129,-47.46,131,-3,America/Fortaleza,False,SBIZ,ativo
+SBJA,Humberto Ghizzo Bortoluzzi Regional Airport,Jaguaruna,,SC,Santa Catarina,Sul,-28.6753,-49.0596,37,-3,America/Sao_Paulo,True,SBJA,ativo
+SBJC,Belém/Brigadeiro Protásio de Oliveira Airport,Belém,Júlio César,PA,Pará,Norte,-1.41505,-48.45981,16,-3,America/Belem,False,BR-1960,fechado na fonte
+SBJD,Comte. Rolim Adolfo Amaro–Jundiaí State Airport,Jundiaí,,SP,São Paulo,Sudeste,-23.18086,-46.94392,753,-3,America/Sao_Paulo,True,SBJD,ativo
+SBJE,Comandante Ariston Pessoa Airport,Cruz,,CE,Ceará,Nordeste,-2.90643,-40.35734,27,-3,America/Fortaleza,False,SBJE,ativo
+SBJF,Francisco de Assis Airport,Juiz de Fora,,MG,Minas Gerais,Sudeste,-21.79148,-43.38607,911,-3,America/Sao_Paulo,True,SBJF,ativo
+SBJH,São Paulo Catarina Executive Airport,São Roque,,SP,São Paulo,Sudeste,-23.42689,-47.16566,776,-3,America/Sao_Paulo,True,SBJH,ativo
+SBJI,Ji-Paraná Airport,Ji-Paraná,,RO,Rondônia,Norte,-10.87074,-61.84667,182,-4,America/Porto_Velho,False,SBJI,ativo
+SBJP,Presidente Castro Pinto International Airport,João Pessoa,,PB,Paraíba,Nordeste,-7.14869,-34.95055,66,-3,America/Fortaleza,False,SBJP,ativo
+SBJR,Jacarepaguá - Roberto Marinho Airport,Rio de Janeiro,Jacarepaguá,RJ,Rio de Janeiro,Sudeste,-22.98677,-43.37219,3,-3,America/Sao_Paulo,True,SBJR,ativo
+SBJU,Orlando Bezerra de Menezes Airport,Juazeiro do Norte,,CE,Ceará,Nordeste,-7.21932,-39.2691,409,-3,America/Fortaleza,False,SBJU,ativo
+SBJV,Lauro Carneiro de Loyola Airport,Joinville,,SC,Santa Catarina,Sul,-26.2245,-48.7974,5,-3,America/Sao_Paulo,True,SBJV,ativo
+SBKG,Presidente João Suassuna Airport,Campina Grande,,PB,Paraíba,Nordeste,-7.26966,-35.89606,502,-3,America/Fortaleza,False,SBKG,ativo
+SBKP,Viracopos International Airport,Campinas,Viracopos,SP,São Paulo,Sudeste,-23.0074,-47.1345,661,-3,America/Sao_Paulo,True,SBKP,ativo
+SBLB,Petrobras P-25 Platform Helideck,Bacia de Campos (plataforma),,RJ,Rio de Janeiro,Sudeste,-22.1094,-39.9169,21,-3,America/Sao_Paulo,True,SBLB,ativo
+SBLE,Coronel Horácio de Mattos Airport,Lençóis,,BA,Bahia,Nordeste,-12.4823,-41.277,511,-3,America/Bahia,False,SBLE,ativo
+SBLJ,Lages Airport,Lages,,SC,Santa Catarina,Sul,-27.7821,-50.2815,934,-3,America/Sao_Paulo,True,SBLJ,ativo
+SBLO,Governor José Richa Airport,Londrina,,PR,Paraná,Sul,-23.33438,-51.12837,569,-3,America/Sao_Paulo,True,SBLO,ativo
+SBLP,Bom Jesus da Lapa Airport,Bom Jesus da Lapa,,BA,Bahia,Nordeste,-13.2621,-43.4081,443,-3,America/Bahia,False,SBLP,ativo
+SBLS,Lagoa Santa Air Base,Lagoa Santa,Base Aérea de Lagoa Santa,MG,Minas Gerais,Sudeste,-19.66175,-43.8974,852,-3,America/Sao_Paulo,True,SBLS,ativo
+SBMA,João Correa da Rocha Airport,Marabá,,PA,Pará,Norte,-5.36859,-49.138,109,-3,America/Belem,False,SBMA,ativo
+SBMD,Monte Dourado - Serra do Areão Airport,Almeirim,,PA,Pará,Norte,-0.88984,-52.6022,206,-3,America/Belem,False,SBMD,ativo
+SBME,Macaé Benedito Lacerda Airport,Macaé,,RJ,Rio de Janeiro,Sudeste,-22.343,-41.766,2,-3,America/Sao_Paulo,True,SBME,ativo
+SBMG,Regional de Maringá - Sílvio Name Júnior Airport,Maringá,,PR,Paraná,Sul,-23.47606,-52.01619,549,-3,America/Sao_Paulo,True,SBMG,ativo
+SBMI,Maricá Airport,Maricá,,RJ,Rio de Janeiro,Sudeste,-22.9195,-42.8309,2,-3,America/Sao_Paulo,True,SDMC,ativo
+SBMI1,,,,,,,,,,-3,America/Sao_Paulo,,,sem cadastro
+SBMI2,,,,,,,,,,-3,America/Sao_Paulo,,,sem cadastro
+SBMI3,,,,,,,,,,-3,America/Sao_Paulo,,,sem cadastro
+SBMK,Mário Ribeiro Airport,Montes Claros,,MG,Minas Gerais,Sudeste,-16.70692,-43.8189,668,-3,America/Sao_Paulo,True,SBMK,ativo
+SBML,Frank Miloye Milenkowichi–Marília State Airport,Marília,,SP,São Paulo,Sudeste,-22.1969,-49.92648,650,-3,America/Sao_Paulo,True,SBML,ativo
+SBMM,Petrobras P-20 Platform Helideck,Bacia de Campos (plataforma),,RJ,Rio de Janeiro,Sudeste,-22.3572,-40.0906,32,-3,America/Sao_Paulo,True,SBMM,ativo
+SBMN,Ponta Pelada Airport / Manaus Air Base,Manaus,Ponta Pelada,AM,Amazonas,Norte,-3.14604,-59.9863,81,-4,America/Manaus,False,SBMN,ativo
+SBMO,Zumbi dos Palmares International Airport,Maceió,Zumbi dos Palmares,AL,Alagoas,Nordeste,-9.51256,-35.79184,118,-3,America/Maceio,False,SBMO,ativo
+SBMQ,Macapá - Alberto Alcolumbre International Airport,Macapá,,AP,Amapá,Norte,0.05066,-51.0722,17,-3,America/Belem,False,SBMQ,ativo
+SBMS,Dix-Sept Rosado Airport,Mossoró,,RN,Rio Grande do Norte,Nordeste,-5.20192,-37.3643,23,-3,America/Fortaleza,False,SBMS,ativo
+SBMT,Campo de Marte Airport,São Paulo,Campo de Marte,SP,São Paulo,Sudeste,-23.5091,-46.6378,723,-3,America/Sao_Paulo,True,SBMT,ativo
+SBMY,Manicoré Airport,Manicoré,,AM,Amazonas,Norte,-5.81138,-61.2783,53,-4,America/Manaus,False,SBMY,ativo
+SBNF,Ministro Victor Konder International Airport,Navegantes,,SC,Santa Catarina,Sul,-26.87943,-48.65098,5,-3,America/Sao_Paulo,True,SBNF,ativo
+SBNM,Santo Ângelo Airport,Santo Ângelo,,RS,Rio Grande do Sul,Sul,-28.2825,-54.16962,322,-3,America/Sao_Paulo,True,SBNM,ativo
+SBNT,Natal Air Force Base,Parnamirim,Base Aérea de Natal,RN,Rio Grande do Norte,Nordeste,-5.91142,-35.2477,52,-3,America/Fortaleza,False,SBNT,ativo
+SBNV,Aeródromo Nacional de Aviação,Goiânia,,GO,Goiás,Centro-Oeste,-16.62584,-49.34883,825,-3,America/Sao_Paulo,True,SWNV,ativo
+SBOI,Oiapoque Airport,Oiapoque,,AP,Amapá,Norte,3.85412,-51.79706,16,-3,America/Belem,False,SBOI,ativo
+SBPA,Porto Alegre-Salgado Filho International Airport,Porto Alegre,Salgado Filho,RS,Rio Grande do Sul,Sul,-29.99398,-51.16748,3,-3,America/Sao_Paulo,True,SBPA,ativo
+SBPB,Parnaíba - Prefeito Doutor João Silva Filho International Airport,Parnaíba,,PI,Piauí,Nordeste,-2.89375,-41.732,7,-3,America/Fortaleza,False,SBPB,ativo
+SBPC,Poços de Caldas - Embaixador Walther Moreira Salles Airport,Poços de Caldas,,MG,Minas Gerais,Sudeste,-21.84253,-46.56977,1261,-3,America/Sao_Paulo,True,SBPC,ativo
+SBPF,Lauro Kurtz Airport,Passo Fundo,,RS,Rio Grande do Sul,Sul,-28.24398,-52.32777,725,-3,America/Sao_Paulo,True,SBPF,ativo
+SBPG,Ponta Grossa Airport - Comandante Antonio Amilton Beraldo,Ponta Grossa,,PR,Paraná,Sul,-25.18448,-50.14382,789,-3,America/Sao_Paulo,True,SBPG,ativo
+SBPJ,Brigadeiro Lysias Rodrigues Airport,Palmas,,TO,Tocantins,Norte,-10.2915,-48.357,236,-3,America/Araguaina,False,SBPJ,ativo
+SBPK,João Simões Lopes Neto International Airport,Pelotas,,RS,Rio Grande do Sul,Sul,-31.71719,-52.3278,18,-3,America/Sao_Paulo,True,SBPK,ativo
+SBPL,Senador Nilo Coelho Airport,Petrolina,,PE,Pernambuco,Nordeste,-9.36242,-40.5691,385,-3,America/Recife,False,SBPL,ativo
+SBPO,Juvenal Loureiro Cardoso Airport,Pato Branco,,PR,Paraná,Sul,-26.21718,-52.69446,822,-3,America/Sao_Paulo,True,SBPO,ativo
+SBPP,Ponta Porã Airport,Ponta Porã,,MS,Mato Grosso do Sul,Centro-Oeste,-22.5496,-55.7026,657,-4,America/Campo_Grande,True,SBPP,ativo
+SBPR,Carlos Prates Airport,Belo Horizonte,Carlos Prates,MG,Minas Gerais,Sudeste,-19.90963,-43.98918,928,-3,America/Sao_Paulo,True,SBPR,ativo
+SBPS,Porto Seguro International Airport,Porto Seguro,,BA,Bahia,Nordeste,-16.43843,-39.08058,52,-3,America/Bahia,False,SBPS,ativo
+SBPV,Governador Jorge Teixeira de Oliveira International Airport,Porto Velho,,RO,Rondônia,Norte,-8.70849,-63.90234,90,-4,America/Porto_Velho,False,SBPV,ativo
+SBPW,Porto do Açu Airport,São João da Barra,,RJ,Rio de Janeiro,Sudeste,-21.80453,-41.10951,5,-3,America/Sao_Paulo,True,BR-1552,ativo
+SBQV,Pedro Otacílio Figueiredo Airport,Vitória da Conquista,Aeroporto antigo de Vitória da Conquista,BA,Bahia,Nordeste,-14.86257,-40.86319,915,-3,America/Bahia,False,BR-1961,fechado na fonte
+SBRB,Rio Branco-Plácido de Castro International Airport,Rio Branco,,AC,Acre,Norte,-9.86903,-67.89398,193,-5,America/Rio_Branco,False,SBRB,ativo
+SBRD,Maestro Marinho Franco Airport,Rondonópolis,,MT,Mato Grosso,Centro-Oeste,-16.58429,-54.7248,447,-4,America/Cuiaba,True,SBRD,ativo
+SBRF,Recife/Guararapes - Gilberto Freyre International Airport,Recife,Guararapes,PE,Pernambuco,Nordeste,-8.12747,-34.92296,10,-3,America/Recife,False,SBRF,ativo
+SBRJ,Santos Dumont Airport,Rio de Janeiro,Santos Dumont,RJ,Rio de Janeiro,Sudeste,-22.9104,-43.16282,3,-3,America/Sao_Paulo,True,SBRJ,ativo
+SBRP,Leite Lopes Airport,Ribeirão Preto,,SP,São Paulo,Sudeste,-21.13431,-47.77405,550,-3,America/Sao_Paulo,True,SBRP,ativo
+SBSC,Santa Cruz Air Force Base,Rio de Janeiro,Base Aérea de Santa Cruz,RJ,Rio de Janeiro,Sudeste,-22.9324,-43.7191,3,-3,America/Sao_Paulo,True,SBSC,ativo
+SBSG,Rio Grande do Norte/São Gonçalo do Amarante–Governador Aluízio Alves International Airport,São Gonçalo do Amarante,Aeroporto de São Gonçalo do Amarante,RN,Rio Grande do Norte,Nordeste,-5.76982,-35.36661,83,-3,America/Fortaleza,False,SBSG,ativo
+SBSI,Presidente João Batista Figueiredo Airport,Sinop,,MT,Mato Grosso,Centro-Oeste,-11.885,-55.58611,374,-4,America/Cuiaba,True,SBSI,ativo
+SBSJ,Professor Urbano Ernesto Stumpf Airport,São José dos Campos,,SP,São Paulo,Sudeste,-23.2292,-45.8615,646,-3,America/Sao_Paulo,True,SBSJ,ativo
+SBSL,Marechal Cunha Machado International Airport,São Luís,,MA,Maranhão,Nordeste,-2.58639,-44.23501,54,-3,America/Fortaleza,False,SBSL,ativo
+SBSM,Santa Maria Airport,Santa Maria,,RS,Rio Grande do Sul,Sul,-29.7114,-53.6882,87,-3,America/Sao_Paulo,True,SBSM,ativo
+SBSN,Santarém - Maestro Wilson Fonseca International Airport,Santarém,,PA,Pará,Norte,-2.42242,-54.79306,60,-3,America/Belem,False,SBSN,ativo
+SBSO,Adolino Bedin Regional Airport,Sorriso,,MT,Mato Grosso,Centro-Oeste,-12.47918,-55.67234,386,-4,America/Cuiaba,True,SBSO,ativo
+SBSP,Congonhas–Deputado Freitas Nobre Airport,São Paulo,Congonhas,SP,São Paulo,Sudeste,-23.62766,-46.6546,802,-3,America/Sao_Paulo,True,SBSP,ativo
+SBSR,Prof. Eribelto Manoel Reino State Airport,São José do Rio Preto,,SP,São Paulo,Sudeste,-20.81711,-49.40696,544,-3,America/Sao_Paulo,True,SBSR,ativo
+SBST,Santos Nero Moura Air Base / Guarujá Airport,Guarujá,Base Aérea de Santos,SP,São Paulo,Sudeste,-23.92819,-46.3002,4,-3,America/Sao_Paulo,True,SBST,ativo
+SBSV,Deputado Luiz Eduardo Magalhães International Airport,Salvador,Aeroporto de Salvador,BA,Bahia,Nordeste,-12.90861,-38.3225,20,-3,America/Bahia,False,SBSV,ativo
+SBTA,Base de Aviação de Taubaté,Taubaté,Base de Aviação de Taubaté,SP,São Paulo,Sudeste,-23.0401,-45.51615,580,-3,America/Sao_Paulo,True,SBTA,ativo
+SBTB,Trombetas Airport,Oriximiná,,PA,Pará,Norte,-1.4896,-56.3968,51,-3,America/Belem,False,SBTB,ativo
+SBTC,Una-Comandatuba Airport,Una,,BA,Bahia,Nordeste,-15.35436,-38.99873,7,-3,America/Bahia,False,SBTC,ativo
+SBTD,Toledo - Luiz Dalcanale Filho Municipal Airport,Toledo,,PR,Paraná,Sul,-24.6863,-53.6975,562,-3,America/Sao_Paulo,True,SBTD,ativo
+SBTE,Senador Petrônio Portela Airport,Teresina,,PI,Piauí,Nordeste,-5.06025,-42.82371,67,-3,America/Fortaleza,False,SBTE,ativo
+SBTF,Tefé Airport,Tefé,,AM,Amazonas,Norte,-3.38294,-64.7241,57,-4,America/Manaus,False,SBTF,ativo
+SBTG,Plínio Alarcom Airport,Três Lagoas,,MS,Mato Grosso do Sul,Centro-Oeste,-20.75264,-51.68203,324,-4,America/Campo_Grande,True,SBTG,ativo
+SBTK,Tarauacá Airport,Tarauacá,,AC,Acre,Norte,-8.15553,-70.78298,197,-5,America/Rio_Branco,False,SBTK,ativo
+SBTS,Tiriós Airport,Aldeia Tiriós,,PA,Pará,Norte,2.22454,-55.94471,344,-3,America/Belem,False,SBTS,ativo
+SBTT,Tabatinga International Airport,Tabatinga,,AM,Amazonas,Norte,-4.25567,-69.9358,80,-5,America/Eirunepe,False,SBTT,ativo
+SBTU,Tucuruí Airport,Tucuruí,,PA,Pará,Norte,-3.78601,-49.7203,253,-3,America/Belem,False,SBTU,ativo
+SBTV,Terravista Airport,Porto Seguro,,BA,Bahia,Nordeste,-16.54142,-39.10811,50,-3,America/Bahia,False,SBTV,ativo
+SBUA,São Gabriel da Cachoeira Airport,São Gabriel da Cachoeira,,AM,Amazonas,Norte,-0.14835,-66.9855,76,-4,America/Manaus,False,SBUA,ativo
+SBUF,Paulo Afonso Airport,Paulo Afonso,,BA,Bahia,Nordeste,-9.40088,-38.2506,269,-3,America/Bahia,False,SBUF,ativo
+SBUG,Rubem Berta Airport,Uruguaiana,,RS,Rio Grande do Sul,Sul,-29.7822,-57.0382,78,-3,America/Sao_Paulo,True,SBUG,ativo
+SBUL,Ten. Cel. Aviador César Bombonato Airport,Uberlândia,,MG,Minas Gerais,Sudeste,-18.88358,-48.22594,943,-3,America/Sao_Paulo,True,SBUL,ativo
+SBUR,Mário de Almeida Franco Airport,Uberaba,,MG,Minas Gerais,Sudeste,-19.76504,-47.9648,809,-3,America/Sao_Paulo,True,SBUR,ativo
+SBUY,Urucu Airport,Urucu,,AM,Amazonas,Norte,-4.88426,-65.35542,64,-4,America/Manaus,False,SBUY,ativo
+SBVC,Glauber de Andrade Rocha Airport,Vitória da Conquista,,BA,Bahia,Nordeste,-14.90789,-40.9148,896,-3,America/Bahia,False,BR-0569,ativo
+SBVG,Major Brigadeiro Trompowsky Airport,Varginha,,MG,Minas Gerais,Sudeste,-21.59137,-45.47412,922,-3,America/Sao_Paulo,True,SBVG,ativo
+SBVH,Brigadeiro Camarão Airport,Vilhena,,RO,Rondônia,Norte,-12.6944,-60.0983,615,-4,America/Porto_Velho,False,SBVH,ativo
+SBVT,Eurico de Aguiar Salles International Airport,Vitória,,ES,Espírito Santo,Sudeste,-20.258,-40.285,10,-3,America/Sao_Paulo,True,SBVT,ativo
+SBYS,Campo Fontenelle,Pirassununga,Academia da Força Aérea,SP,São Paulo,Sudeste,-21.98469,-47.34121,600,-3,America/Sao_Paulo,True,SBYS,ativo
+SBZM,Presidente Itamar Franco Airport,Juiz de Fora,,MG,Minas Gerais,Sudeste,-21.51309,-43.17307,411,-3,America/Sao_Paulo,True,SBZM,ativo
+SDAM,Estadual de Campos dos Amarais - Prefeito Francisco Amaral Airport,Campinas,,SP,São Paulo,Sudeste,-22.85987,-47.10757,612,-3,America/Sao_Paulo,True,SDAM,ativo
+SDAM1,,,,,,,,,,-3,America/Sao_Paulo,,,sem cadastro
+SDAM2,,,,,,,,,,-3,America/Sao_Paulo,,,sem cadastro
+SDAM3,,,,,,,,,,-3,America/Sao_Paulo,,,sem cadastro
+SDCO,Sorocaba Airport,Sorocaba,,SP,São Paulo,Sudeste,-23.478,-47.49,635,-3,America/Sao_Paulo,True,SDCO,ativo
+SDSC,Mário Pereira Lopes–São Carlos International Airport,São Carlos,,SP,São Paulo,Sudeste,-21.87503,-47.90385,807,-3,America/Sao_Paulo,True,SDSC,ativo
+SIHL,Rio Centro Heliport,Rio de Janeiro,,RJ,Rio de Janeiro,Sudeste,-22.97978,-43.40943,10,-3,America/Sao_Paulo,True,SIHL,ativo
+SIMK,Tenente Lund Pressoto Airport,Franca,,SP,São Paulo,Sudeste,-20.5922,-47.3829,1003,-3,America/Sao_Paulo,True,SIMK,ativo
+SIMK1,,,,,,,,,,-3,America/Sao_Paulo,,,sem cadastro
+SIMK2,,,,,,,,,,-3,America/Sao_Paulo,,,sem cadastro
+SIMK3,,,,,,,,,,-3,America/Sao_Paulo,,,sem cadastro
+SNCP,Planalto Serrano Regional Airport,Correia Pinto,,SC,Santa Catarina,Sul,-27.63413,-50.35825,880,-3,America/Sao_Paulo,True,SNCP,ativo
+SSGG,Fazenda Jacaré de Chifre Airport,Porto Murtinho,,MS,Mato Grosso do Sul,Centro-Oeste,-21.02778,-57.49842,116,-4,America/Campo_Grande,True,BR-2926,ativo
+SSKW,Cacoal Airport,Cacoal,,RO,Rondônia,Norte,-11.496,-61.4508,237,-4,America/Porto_Velho,False,SSKW,ativo
+SSVL,Telêmaco Borba Airport,Telêmaco Borba,,PR,Paraná,Sul,-24.3178,-50.6516,796,-3,America/Sao_Paulo,True,SBTL,ativo
+SSXK,Kartódromo Ayrton Senna Heliport,São Paulo,,SP,São Paulo,Sudeste,-23.70302,-46.69258,776,-3,America/Sao_Paulo,True,BR-1710,ativo
+SWGN,Araguaína Airport,Araguaína,,TO,Tocantins,Norte,-7.22787,-48.2405,235,-3,America/Araguaina,False,SWGN,ativo
+XXXX,,,,,,,,,,-3,America/Sao_Paulo,,,sem cadastro

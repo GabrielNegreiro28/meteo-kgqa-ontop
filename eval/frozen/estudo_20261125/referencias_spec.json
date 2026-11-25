@@ -1,0 +1,1084 @@
+{
+ "cases": [
+  {
+   "id": "S001",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT min(value) AS value FROM clean.obs_rel_humidity WHERE sigla = 'SBBR' AND local_date BETWEEN DATE '2019-09-01' AND DATE '2019-09-30'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/PERCENT"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S003",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT sum(value) AS value FROM clean.obs_precip WHERE sigla = 'SBFL' AND local_date BETWEEN DATE '2020-01-01' AND DATE '2020-12-31' AND isodow(local_date) IN (6, 7)",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/MilliM"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S004",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT year(local_date) AS year, avg(value) AS value FROM clean.obs_rel_humidity WHERE sigla = 'SBEG' AND local_date BETWEEN DATE '2016-01-01' AND DATE '2025-12-31' GROUP BY 1 ORDER BY 1",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/PERCENT"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S006",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "01/01/2016 a 31/12/2016",
+     "sql": "SELECT max(value) AS value FROM clean.obs_wind_speed WHERE sigla = 'SBFL' AND local_date BETWEEN DATE '2016-01-01' AND DATE '2016-12-31'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/KN"
+     }
+    },
+    {
+     "label": "01/01/2025 a 31/12/2025",
+     "sql": "SELECT max(value) AS value FROM clean.obs_wind_speed WHERE sigla = 'SBFL' AND local_date BETWEEN DATE '2025-01-01' AND DATE '2025-12-31'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/KN"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S007",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT month(local_date) AS month, avg(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBBR' AND local_date BETWEEN DATE '2016-01-01' AND DATE '2025-12-31' GROUP BY 1 ORDER BY 1",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/DEG_C"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S008",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT avg(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBMO' AND local_date BETWEEN DATE '2016-01-01' AND DATE '2016-12-31'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/DEG_C"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S009",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT count(*) AS value FROM clean.obs_cloud_layer WHERE sigla = 'SBEG' AND local_date BETWEEN DATE '2021-01-01' AND DATE '2021-12-31' AND genus = 'CB'",
+     "units": {}
+    }
+   ]
+  },
+  {
+   "id": "S010",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT 'https://example.org/kgqa-met/data/station/' || sigla AS station, max(value) AS value FROM clean.obs_wind_gust WHERE sigla IN ('SBBG','SBBI','SBCA','SBCH','SBCM','SBCO','SBCT','SBCX','SBFI','SBFL','SBJA','SBJV','SBLJ','SBLO','SBMG','SBNF','SBNM','SBPA','SBPF','SBPG','SBPK','SBPO','SBSM','SBTD','SBUG','SNCP','SSVL') AND local_date BETWEEN DATE '2021-01-01' AND DATE '2021-12-31' GROUP BY sigla ORDER BY value DESC, sigla LIMIT 5",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/KN"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S011",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT avg(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBMT' AND local_date BETWEEN DATE '2020-12-21' AND DATE '2021-03-20'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/DEG_C"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S012",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT local_date AS day, sum(value) AS value FROM clean.obs_precip WHERE sigla = 'SBRF' AND local_date BETWEEN DATE '2022-06-01' AND DATE '2022-06-10' GROUP BY 1 ORDER BY 1",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/MilliM"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S013",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT min(value) AS value FROM clean.obs_qnh WHERE sigla = 'SBAR' AND local_date BETWEEN DATE '2025-01-01' AND DATE '2025-12-31'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/HectoPA"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S014",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT count(*) AS value FROM clean.obs_visibility WHERE sigla = 'SBGR' AND local_date BETWEEN DATE '2018-01-01' AND DATE '2018-12-31' AND value < 1000",
+     "units": {}
+    }
+   ]
+  },
+  {
+   "id": "S015",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT sum(value) AS value FROM clean.obs_precip WHERE sigla = 'SBBV' AND local_date BETWEEN DATE '2024-05-01' AND DATE '2024-07-31'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/MilliM"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S017",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "01/01/2018 a 31/12/2018",
+     "sql": "SELECT avg(value) AS value FROM clean.obs_rel_humidity WHERE sigla = 'SBEG' AND local_date BETWEEN DATE '2018-01-01' AND DATE '2018-12-31'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/PERCENT"
+     }
+    },
+    {
+     "label": "01/01/2019 a 31/12/2019",
+     "sql": "SELECT avg(value) AS value FROM clean.obs_rel_humidity WHERE sigla = 'SBEG' AND local_date BETWEEN DATE '2019-01-01' AND DATE '2019-12-31'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/PERCENT"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S019",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT 'https://example.org/kgqa-met/data/station/' || sigla AS station, avg(value) AS value FROM clean.obs_air_temp WHERE sigla IN ('SBFL','SBNF','SBJV') AND local_date BETWEEN DATE '2022-01-01' AND DATE '2022-12-31' GROUP BY sigla ORDER BY sigla",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/DEG_C"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S021",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT year(local_date) AS year, month(local_date) AS month, sum(value) AS value FROM clean.obs_precip WHERE sigla = 'SBBE' AND local_date BETWEEN DATE '2022-01-01' AND DATE '2022-12-31' GROUP BY 1,2 ORDER BY 1,2",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/MilliM"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S024",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT sum(value) AS value FROM clean.obs_precip WHERE sigla = 'SBNT' AND local_date BETWEEN DATE '2023-01-01' AND DATE '2023-06-30'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/MilliM"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S025",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT count(*) AS value FROM clean.obs_wind_speed WHERE sigla = 'SBBR' AND local_date BETWEEN DATE '2021-01-01' AND DATE '2021-12-31' AND condition = 'calm'",
+     "units": {}
+    }
+   ]
+  },
+  {
+   "id": "S026",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT avg(value) AS value FROM clean.obs_runway_temp WHERE sigla = 'SBGR' AND local_date BETWEEN DATE '2023-02-01' AND DATE '2023-02-28'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/DEG_C"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S027",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT avg(value) AS value FROM clean.obs_rel_humidity WHERE sigla = 'SBEG' AND local_date BETWEEN DATE '2022-01-01' AND DATE '2022-12-31'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/PERCENT"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S030",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT count(*) AS value FROM clean.obs_wind_gust WHERE sigla = 'SBSM' AND local_date BETWEEN DATE '2016-01-01' AND DATE '2025-12-31' AND value >= 30",
+     "units": {}
+    }
+   ]
+  },
+  {
+   "id": "S031",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT year(local_date) AS year, month(local_date) AS month, avg(value) AS value FROM clean.obs_qnh WHERE sigla = 'SBCT' AND local_date BETWEEN DATE '2022-01-01' AND DATE '2022-12-31' GROUP BY 1,2 ORDER BY 1,2",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/HectoPA"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S033",
+   "expected_status": "no_results",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT sum(value) AS value FROM clean.obs_precip WHERE sigla = 'SBMM' AND local_date BETWEEN DATE '2021-01-01' AND DATE '2021-12-31'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/MilliM"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S034",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT year(local_date) AS year, avg(value) AS value FROM clean.obs_visibility WHERE sigla = 'SBGR' AND local_date BETWEEN DATE '2016-01-01' AND DATE '2025-12-31' GROUP BY 1 ORDER BY 1",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/M"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S035",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT 'https://example.org/kgqa-met/data/station/' || sigla AS station, min(value) AS value FROM clean.obs_air_temp WHERE sigla IN ('SBAE','SBAQ','SBAU','SBBP','SBBU','SBDN','SBGP','SBGR','SBGW','SBIL','SBJD','SBJH','SBKP','SBML','SBMT','SBRP','SBSJ','SBSP','SBSR','SBST','SBTA','SBYS','SDAM','SDCO','SDSC','SIMK','SSXK') AND local_date BETWEEN DATE '2021-01-01' AND DATE '2021-12-31' GROUP BY sigla ORDER BY value ASC, sigla LIMIT 5",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/DEG_C"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S036",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT 'https://example.org/kgqa-met/data/station/' || sigla AS station, avg(value) AS value FROM clean.obs_air_temp WHERE sigla IN ('SBAA','SBBE','SBCC','SBCJ','SBEK','SBHT','SBIH','SBJC','SBMA','SBMD','SBSN','SBTB','SBTS','SBTU') AND local_date BETWEEN DATE '2022-01-01' AND DATE '2022-12-31' GROUP BY sigla ORDER BY value DESC, sigla LIMIT 3",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/DEG_C"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S037",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "01/01/2016 a 31/12/2016",
+     "sql": "SELECT count(*) AS value FROM clean.obs_air_temp WHERE sigla = 'SBGO' AND local_date BETWEEN DATE '2016-01-01' AND DATE '2016-12-31' AND value > 30",
+     "units": {}
+    },
+    {
+     "label": "01/01/2024 a 31/12/2024",
+     "sql": "SELECT count(*) AS value FROM clean.obs_air_temp WHERE sigla = 'SBGO' AND local_date BETWEEN DATE '2024-01-01' AND DATE '2024-12-31' AND value > 30",
+     "units": {}
+    }
+   ]
+  },
+  {
+   "id": "S039",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT count(*) AS value FROM clean.obs_rel_humidity WHERE sigla = 'SBBR' AND local_date BETWEEN DATE '2024-01-01' AND DATE '2024-12-31' AND value < 20",
+     "units": {}
+    }
+   ]
+  },
+  {
+   "id": "S040",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT avg(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBCG' AND local_date BETWEEN DATE '2023-01-01' AND DATE '2023-12-31' AND hour(t_local) BETWEEN 0 AND 5",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/DEG_C"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S041",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "01/07/2019 a 31/07/2019",
+     "sql": "SELECT avg(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBBR' AND local_date BETWEEN DATE '2019-07-01' AND DATE '2019-07-31'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/DEG_C"
+     }
+    },
+    {
+     "label": "01/07/2020 a 31/07/2020",
+     "sql": "SELECT avg(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBBR' AND local_date BETWEEN DATE '2020-07-01' AND DATE '2020-07-31'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/DEG_C"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S043",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT 'https://example.org/kgqa-met/data/station/' || sigla AS station, avg(value) AS value FROM clean.obs_wind_speed WHERE sigla IN ('SBAF','SBCB','SBCP','SBEC','SBES','SBFS','SBGL','SBJR','SBLB','SBME','SBMI','SBMM','SBPW','SBRJ','SBSC','SIHL') AND local_date BETWEEN DATE '2022-01-01' AND DATE '2022-12-31' GROUP BY sigla ORDER BY value DESC, sigla LIMIT 3",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/KN"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S045",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT year(local_date) AS year, avg(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBBR' AND local_date BETWEEN DATE '2016-01-01' AND DATE '2025-12-31' GROUP BY 1 ORDER BY 1",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/DEG_C"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S046",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT 'https://example.org/kgqa-met/data/station/' || sigla AS station, max(value) AS value FROM clean.obs_air_temp WHERE sigla IN ('SBAN','SBAT','SBBR','SBBW','SBCG','SBCN','SBCR','SBCY','SBDB','SBDO','SBGO','SBIT','SBNV','SBPP','SBRD','SBSI','SBSO','SBTG','SSGG') AND local_date BETWEEN DATE '2024-01-01' AND DATE '2024-12-31' GROUP BY sigla ORDER BY value DESC, sigla LIMIT 3",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/DEG_C"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S048",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT sum(value) AS value FROM clean.obs_precip WHERE sigla = 'SBBE' AND local_date BETWEEN DATE '2021-03-01' AND DATE '2021-03-31'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/MilliM"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S049",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT count(*) AS value FROM clean.obs_precip WHERE sigla = 'SBPA' AND local_date BETWEEN DATE '2024-01-01' AND DATE '2024-12-31' AND value > 0 AND isodow(local_date) BETWEEN 1 AND 5",
+     "units": {}
+    }
+   ]
+  },
+  {
+   "id": "S053",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT avg(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBFN' AND local_date BETWEEN DATE '2018-01-01' AND DATE '2018-12-31'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/DEG_C"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S054",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT max(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBPA' AND local_date BETWEEN DATE '2022-01-01' AND DATE '2022-01-31' AND hour(t_local) BETWEEN 12 AND 17",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/DEG_C"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S055",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT 'https://example.org/kgqa-met/data/station/' || sigla AS station, avg(value) AS value FROM clean.obs_visibility WHERE sigla IN ('SBAX','SBBH','SBBQ','SBCF','SBGV','SBIP','SBJF','SBLS','SBMK','SBPC','SBPR','SBUL','SBUR','SBVG','SBZM') AND local_date BETWEEN DATE '2018-01-01' AND DATE '2018-12-31' GROUP BY sigla ORDER BY value ASC, sigla LIMIT 3",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/M"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S057",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT avg(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBGO' AND local_date BETWEEN DATE '2018-01-01' AND DATE '2018-12-31' AND isodow(local_date) = 7",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/DEG_C"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S058",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT 'https://example.org/kgqa-met/data/station/' || sigla AS station, avg(value) AS value FROM clean.obs_rel_humidity WHERE sigla IN ('SBAC','SBAR','SBCI','SBFN','SBFZ','SBIZ','SBJE','SBJP','SBJU','SBKG','SBLE','SBLP','SBMO','SBMS','SBNT','SBPB','SBPL','SBPS','SBQV','SBRF','SBSG','SBSL','SBSV','SBTC','SBTE','SBTV','SBUF','SBVC') AND local_date BETWEEN DATE '2019-01-01' AND DATE '2019-12-31' GROUP BY sigla ORDER BY value ASC, sigla LIMIT 3",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/PERCENT"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S060",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT local_date AS day, max(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBRJ' AND local_date BETWEEN DATE '2023-03-05' AND DATE '2023-03-11' GROUP BY 1 ORDER BY 1",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/DEG_C"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S061",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "01/06/2022 a 30/06/2022",
+     "sql": "SELECT min(value) AS value FROM clean.obs_visibility WHERE sigla = 'SBCT' AND local_date BETWEEN DATE '2022-06-01' AND DATE '2022-06-30'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/M"
+     }
+    },
+    {
+     "label": "01/06/2023 a 30/06/2023",
+     "sql": "SELECT min(value) AS value FROM clean.obs_visibility WHERE sigla = 'SBCT' AND local_date BETWEEN DATE '2023-06-01' AND DATE '2023-06-30'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/M"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S063",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT count(*) AS value FROM clean.obs_wind_dir WHERE sigla = 'SBFZ' AND local_date BETWEEN DATE '2022-01-01' AND DATE '2022-12-31' AND value BETWEEN 90 AND 180",
+     "units": {}
+    }
+   ]
+  },
+  {
+   "id": "S064",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT max(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBTE' AND local_date BETWEEN DATE '2023-10-01' AND DATE '2023-10-31'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/DEG_C"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S065",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT 'https://example.org/kgqa-met/data/station/' || sigla AS station, sum(value) AS value FROM clean.obs_precip WHERE sigla IN ('SBFZ','SBNT','SBRF') AND local_date BETWEEN DATE '2020-01-01' AND DATE '2020-12-31' GROUP BY sigla ORDER BY sigla",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/MilliM"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S066",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT count(*) AS value FROM clean.obs_air_temp WHERE sigla = 'SBCY' AND local_date BETWEEN DATE '2020-01-01' AND DATE '2020-12-31' AND value > 35",
+     "units": {}
+    }
+   ]
+  },
+  {
+   "id": "S067",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT max(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBSP' AND local_date BETWEEN DATE '2019-01-01' AND DATE '2019-12-31'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/DEG_C"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S068",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT year(local_date) AS year, min(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBPA' AND local_date BETWEEN DATE '2016-01-01' AND DATE '2025-12-31' GROUP BY 1 ORDER BY 1",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/DEG_C"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S069",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT avg(value) AS value FROM clean.obs_visibility WHERE sigla = 'SBRJ' AND local_date BETWEEN DATE '2019-01-01' AND DATE '2019-12-31' AND hour(t_local) = 7",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/M"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S070",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT max(value) AS value FROM clean.obs_wind_speed WHERE sigla = 'SBFI' AND local_date BETWEEN DATE '2023-10-01' AND DATE '2023-10-31'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/KN"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S071",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT year(local_date) AS year, count(*) AS value FROM clean.obs_cloud_layer WHERE sigla = 'SBBE' AND genus = 'CB' AND local_date BETWEEN DATE '2016-01-01' AND DATE '2025-12-31' GROUP BY 1 ORDER BY 1",
+     "units": {}
+    }
+   ]
+  },
+  {
+   "id": "S072",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT sum(value) AS value FROM clean.obs_precip_duration WHERE sigla = 'SBRF' AND local_date BETWEEN DATE '2022-05-01' AND DATE '2022-05-31'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/MIN"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S073",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT year(local_date) AS year, count(*) AS value FROM clean.obs_air_temp WHERE sigla = 'SBCY' AND value > 35 AND local_date BETWEEN DATE '2016-01-01' AND DATE '2025-12-31' GROUP BY 1 ORDER BY 1",
+     "units": {}
+    }
+   ]
+  },
+  {
+   "id": "S074",
+   "expected_status": "no_results",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT avg(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBFN' AND local_date BETWEEN DATE '2023-01-01' AND DATE '2023-12-31'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/DEG_C"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S076",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT avg(value) AS value FROM clean.obs_qnh WHERE sigla = 'SBBR' AND local_date BETWEEN DATE '2018-08-01' AND DATE '2018-08-31'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/HectoPA"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S078",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT max(value) AS value FROM clean.obs_precip WHERE sigla = 'SBBH' AND local_date BETWEEN DATE '2022-01-01' AND DATE '2022-12-31'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/MilliM"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S080",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT min(value) AS value FROM clean.obs_visibility WHERE sigla = 'SBGL' AND local_date BETWEEN DATE '2017-01-01' AND DATE '2017-12-31'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/M"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S081",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT sum(value) AS value FROM clean.obs_precip WHERE sigla = 'SBRF' AND local_date BETWEEN DATE '2019-01-01' AND DATE '2019-12-31'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/MilliM"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S082",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT avg(value) AS value FROM clean.obs_dew_point WHERE sigla = 'SBFZ' AND local_date BETWEEN DATE '2024-01-01' AND DATE '2024-01-31'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/DEG_C"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S083",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT local_date AS day, avg(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBBR' AND local_date BETWEEN DATE '2024-01-01' AND DATE '2024-01-07' GROUP BY 1 ORDER BY 1",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/DEG_C"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S084",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT min(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBCT' AND local_date BETWEEN DATE '2021-07-01' AND DATE '2021-07-31'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/DEG_C"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S085",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "22/02/2020 a 26/02/2020",
+     "sql": "SELECT avg(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBLO' AND local_date BETWEEN DATE '2020-02-22' AND DATE '2020-02-26'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/DEG_C"
+     }
+    },
+    {
+     "label": "10/02/2024 a 14/02/2024",
+     "sql": "SELECT avg(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBLO' AND local_date BETWEEN DATE '2024-02-10' AND DATE '2024-02-14'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/DEG_C"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S086",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT count(*) AS value FROM clean.obs_precip WHERE sigla = 'SBBE' AND local_date BETWEEN DATE '2023-01-01' AND DATE '2023-12-31' AND value > 0",
+     "units": {}
+    }
+   ]
+  },
+  {
+   "id": "S091",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT 'https://example.org/kgqa-met/data/station/' || sigla AS station, max(value) AS value FROM clean.obs_precip WHERE sigla IN ('SBAA','SBBE','SBBV','SBCC','SBCJ','SBCZ','SBEG','SBEK','SBGM','SBHT','SBIC','SBIH','SBJC','SBJI','SBMA','SBMD','SBMN','SBMQ','SBMY','SBOI','SBPJ','SBPV','SBRB','SBSN','SBTB','SBTF','SBTK','SBTS','SBTT','SBTU','SBUA','SBUY','SBVH','SSKW','SWGN') AND local_date BETWEEN DATE '2023-01-01' AND DATE '2023-12-31' GROUP BY sigla ORDER BY value DESC, sigla LIMIT 5",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/MilliM"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S092",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "01/03/2022 a 31/03/2022",
+     "sql": "SELECT sum(value) AS value FROM clean.obs_precip WHERE sigla = 'SBBE' AND local_date BETWEEN DATE '2022-03-01' AND DATE '2022-03-31'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/MilliM"
+     }
+    },
+    {
+     "label": "01/03/2023 a 31/03/2023",
+     "sql": "SELECT sum(value) AS value FROM clean.obs_precip WHERE sigla = 'SBBE' AND local_date BETWEEN DATE '2023-03-01' AND DATE '2023-03-31'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/MilliM"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S093",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT max(value) AS value FROM clean.obs_wind_gust WHERE sigla = 'SBSM' AND local_date BETWEEN DATE '2020-01-01' AND DATE '2020-12-31'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/KN"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S096",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT year(local_date) AS year, month(local_date) AS month, max(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBGO' AND local_date BETWEEN DATE '2023-01-01' AND DATE '2023-12-31' GROUP BY 1,2 ORDER BY 1,2",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/DEG_C"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S097",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT count(DISTINCT local_date) AS value FROM clean.obs_air_temp WHERE sigla = 'SBBI' AND local_date BETWEEN DATE '2021-01-01' AND DATE '2021-12-31' AND value < 5",
+     "units": {}
+    }
+   ]
+  },
+  {
+   "id": "S098",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT avg(value) AS value FROM clean.obs_visibility WHERE sigla = 'SBGR' AND local_date BETWEEN DATE '2019-01-01' AND DATE '2019-12-31' AND isodow(local_date) = 7",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/M"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S099",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT avg(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBVT' AND local_date BETWEEN DATE '2017-01-01' AND DATE '2017-12-31'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/DEG_C"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S101",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT avg(value) AS value FROM clean.obs_wind_speed WHERE sigla = 'SBNT' AND local_date BETWEEN DATE '2022-01-01' AND DATE '2022-12-31' AND hour(t_local) = 15",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/KN"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S104",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "01/01/2017 a 31/12/2017",
+     "sql": "SELECT avg(value) AS value FROM clean.obs_qnh WHERE sigla = 'SBSV' AND local_date BETWEEN DATE '2017-01-01' AND DATE '2017-12-31'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/HectoPA"
+     }
+    },
+    {
+     "label": "01/01/2023 a 31/12/2023",
+     "sql": "SELECT avg(value) AS value FROM clean.obs_qnh WHERE sigla = 'SBSV' AND local_date BETWEEN DATE '2023-01-01' AND DATE '2023-12-31'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/HectoPA"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S106",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT year(local_date) AS year, max(value) AS value FROM clean.obs_wind_gust WHERE sigla = 'SBSM' AND local_date BETWEEN DATE '2016-01-01' AND DATE '2025-12-31' GROUP BY 1 ORDER BY 1",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/KN"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S109",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT count(*) AS value FROM clean.obs_cloud_layer WHERE sigla = 'SBCT' AND local_date BETWEEN DATE '2022-07-01' AND DATE '2022-07-31' AND okta = 8",
+     "units": {}
+    }
+   ]
+  },
+  {
+   "id": "S110",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT avg(base_m) AS value FROM clean.obs_cloud_layer WHERE sigla = 'SBCY' AND local_date BETWEEN DATE '2019-01-01' AND DATE '2019-12-31' AND genus = 'CU'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/M"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S111",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "01/09/2019 a 30/09/2019",
+     "sql": "SELECT max(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBCY' AND local_date BETWEEN DATE '2019-09-01' AND DATE '2019-09-30'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/DEG_C"
+     }
+    },
+    {
+     "label": "01/09/2023 a 30/09/2023",
+     "sql": "SELECT max(value) AS value FROM clean.obs_air_temp WHERE sigla = 'SBCY' AND local_date BETWEEN DATE '2023-09-01' AND DATE '2023-09-30'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/DEG_C"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S113",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT 'https://example.org/kgqa-met/data/station/' || sigla AS station, sum(value) AS value FROM clean.obs_precip WHERE sigla IN ('SBGL','SBRJ') AND local_date BETWEEN DATE '2019-01-01' AND DATE '2019-12-31' GROUP BY sigla ORDER BY sigla",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/MilliM"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S115",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT year(local_date) AS year, month(local_date) AS month, avg(value) AS value FROM clean.obs_wind_speed WHERE sigla = 'SBNT' AND local_date BETWEEN DATE '2021-01-01' AND DATE '2021-12-31' GROUP BY 1,2 ORDER BY 1,2",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/KN"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S118",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "01/01/2021 a 31/01/2021",
+     "sql": "SELECT sum(value) AS value FROM clean.obs_precip WHERE sigla = 'SBGR' AND local_date BETWEEN DATE '2021-01-01' AND DATE '2021-01-31'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/MilliM"
+     }
+    },
+    {
+     "label": "01/01/2022 a 31/01/2022",
+     "sql": "SELECT sum(value) AS value FROM clean.obs_precip WHERE sigla = 'SBGR' AND local_date BETWEEN DATE '2022-01-01' AND DATE '2022-01-31'",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/MilliM"
+     }
+    }
+   ]
+  },
+  {
+   "id": "S120",
+   "expected_status": "answered",
+   "parts": [
+    {
+     "label": "",
+     "sql": "SELECT 'https://example.org/kgqa-met/data/station/' || sigla AS station, avg(value) AS value FROM clean.obs_air_temp WHERE sigla IN ('SBGR','SBGL','SBSP') AND local_date BETWEEN DATE '2021-01-01' AND DATE '2021-12-31' GROUP BY sigla ORDER BY sigla",
+     "units": {
+      "value": "http://qudt.org/vocab/unit/DEG_C"
+     }
+    }
+   ]
+  }
+ ]
+}

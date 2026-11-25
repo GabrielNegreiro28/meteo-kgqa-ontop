@@ -15,7 +15,7 @@ SCHEMA = """{"status": "ok" | "needs_clarification" | "unsupported",
  "time": {"ranges": [{"start": "AAAA-MM-DD", "end": "AAAA-MM-DD"}],
           "local_hours": [h, ...] | null,
           "weekdays": [0..6] | null,
-          "instant": "AAAA-MM-DDThh:mm:00-03:00" | null},
+          "instant": "AAAA-MM-DDThh:mm" | null},
  "calc": {"aggregation": "avg" | "min" | "max" | "sum" | "count" | null,
           "count_of": "readings" | "hours" | "days" | "reports" | null,
           "daily": {"agg": "max" | "min" | "avg" | "sum", "op": ">" | ">=" | "<" | "<=" | "=", "value": número, "unit": "unit:X"} | null},
@@ -27,8 +27,8 @@ SCHEMA = """{"status": "ok" | "needs_clarification" | "unsupported",
 
 RULES = """Regras:
 1. Use SÓ as grandezas, estações, unidades, dimensões e atributos do <cardapio>. Fora dele: status "unsupported" com o motivo em "reason"
-   (ex.: cidade, estado, coordenadas, previsão do futuro, grandeza que não existe, estação que não está nos dados).
-2. NORMALIZE você mesmo, em horário local de Brasília (UTC−3):
+   (ex.: lugar sem estação no cardápio, coordenadas, previsão do futuro, grandeza que não existe, estação que não está nos dados).
+2. NORMALIZE você mesmo, na hora local da estação (o sistema aplica o fuso de cada uma):
    - "time.ranges": as janelas de datas, com início e fim INCLUSIVOS (um dia: início = fim; um mês: do dia 1 ao último dia; um ano: 01-01 a 12-31).
      Uma janela só, exceto quando a pergunta compara períodos (aí, uma por período, até 4: "junho de 2018 e de 2023" = duas janelas,
      sem agrupar por ano). Sem período na pergunta: [] (todo o histórico).
@@ -49,6 +49,8 @@ RULES = """Regras:
 5. "shape": "por estação/ano/mês/dia", "anual", "mensal", "cada cabeceira" = group_by; "as N … com maior/menor" = group_by + order;
    "o mês/ano mais X" (um só) = group_by + order com limit 1; "a maior X e em qual <atributo>" = attributes.
    Várias estações citadas = um valor por estação (group_by ["station"]); não é ambiguidade, o sistema não mistura estações.
+   Cidade, estado ou região: as estações que o cardápio lista para aquele trecho. Se o trecho cobre várias e a pergunta não diz qual
+   ("no Rio de Janeiro"), status "needs_clarification" com as estações em "alternatives"; "todas as estações do Paraná" = todas as listadas.
    "shape.unit": a unidade em que a pergunta pede o resultado ("em km", "em hPa"); sem pedido: null.
 6. "evidence": para cada parte decidida, o TRECHO LITERAL da pergunta que a justifica, copiado como está. O trecho time deve incluir horas, dias da semana e todos os intervalos. Parte sem trecho na pergunta
    (um padrão que você assumiu) vai em "assumptions", não em "evidence".
@@ -69,9 +71,9 @@ KEYS = {"status", "measure", "stations", "time", "calc", "conditions", "shape", 
 KEYS_B = KEYS | {"paraphrase"}
 
 # Releitura isolada do trecho de tempo (plano, D1b): sem a pergunta e sem exemplos, para que o erro não se repita por contexto.
-REREAD_TIME = """Você normaliza UMA expressão de tempo em português (horário de Brasília, UTC−3). Responda SOMENTE com um objeto JSON:
+REREAD_TIME = """Você normaliza UMA expressão de tempo em português (hora local, sem fuso). Responda SOMENTE com um objeto JSON:
 {"ranges": [{"start": "AAAA-MM-DD", "end": "AAAA-MM-DD"}], "local_hours": [h, ...] | null, "weekdays": [0..6] | null,
- "instant": "AAAA-MM-DDThh:mm:00-03:00" | null}
+ "instant": "AAAA-MM-DDThh:mm" | null}
 - "ranges": janelas de datas com início e fim INCLUSIVOS (um dia: início = fim; um mês: do dia 1 ao último dia; um ano: 01-01 a 12-31);
   uma janela por período quando a expressão cita períodos a comparar (até 4); nenhuma data: [].
 - "local_hours": conjunto de horas locais (0 a 23) quando a expressão recorta parte do dia; o fim de uma faixa é exclusivo. Sem recorte: null.

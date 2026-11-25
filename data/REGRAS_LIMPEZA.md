@@ -10,11 +10,11 @@ tabela `quarantine` com origem (arquivo + linha do CSV), valor bruto e motivo. C
 ## Regras estruturais
 | Regra | O que faz | Por quê |
 |---|---|---|
-| R1 Tempo | `hora_observacao` = hora local fixa UTC−3; `t_utc = t + 3 h` | Ciclo diurno e artefato de horário de verão (P-16) |
+| R1 Tempo | até 15/04/2021 (e o lote de 19/04/2021), `hora_observacao` é a hora legal padrão da estação (UTC−2 a UTC−5, `estacoes.csv`); desde 16/04/2021, UTC. `t_local` e `local_date` são a hora e o dia civis da estação (zona IANA, com horário de verão quando vigorou). Linhas de 16 a 30/04/2021 fora da nuvem → quarentena `transicao_de_relogio_2021` (376) | Conferido contra METAR em UTC (`VERIFICACAO_PREMISSAS.md`); corrigido em 25/11/2026, antes era UTC−3 fixo |
 | R2 Horário de verão | linhas às 01:xx de 16/10/2016, 15/10/2017 e 04/11/2018 → quarentena (2.504) | Não dá para saber qual das duas era a das 00:xx |
 | R4 Duplicatas | valores idênticos no mesmo boletim colapsam; valores distintos viram observações `seq` 0, 1… com `met:multipleReadings true` | A fonte não identifica qual sensor/pista gerou cada valor (9,3 % das temperaturas do ar) |
 | R5 Chuva | só boletins da hora cheia; acumulado em [t−1 h, t]; dia = dia do início do intervalo | Boletins extras têm 0/vazio; a chuva das 23–24 h pertence ao dia anterior |
-| R6 Unidades | visibilidade e base de nuvem dam→m; direção do vento dezenas de graus→graus | P-17 (a confirmar com o professor) |
+| R6 Unidades | visibilidade e base de nuvem dam→m; direção do vento dezenas de graus→graus | Degraus do METAR e medianas por gênero de nuvem (`VERIFICACAO_PREMISSAS.md`) |
 | R7 Vazio | nunca vira zero | — |
 
 ## Faixas físicas (quarentena por valor)
@@ -36,6 +36,8 @@ Efeito verificado: SBSC 2024 passou de 11.920 mm para 708 mm; maior chuva diári
 44,3 °C (SBME, 18/09/2019 13h); maior rajada 81 kt. Totais anuais de Belém e Guarulhos em 2019 inalterados.
 
 ## Limitações conhecidas
+- Chuva: totais anuais abaixo da climatologia em várias estações e instáveis entre anos (`VERIFICACAO_PREMISSAS.md`, seção 4); limitação
+  da fonte, dita em toda resposta sobre chuva.
 - Q1b escolhe confiar na quantidade de chuva; é uma hipótese, não um fato.
 - Médias usam todas as leituras válidas; boletins com dois sensores pesam o dobro (efeito pequeno: diferenças de 0,1 °C).
 - Nenhum teste cruzado entre variáveis além de Q1b e Q4 (ex.: ponto de orvalho > temperatura).

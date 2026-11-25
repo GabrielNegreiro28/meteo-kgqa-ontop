@@ -6,6 +6,7 @@ Confere TIPOS e VALORES (datas válidas, início <= fim, horas 0–23, dias 0–
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from zoneinfo import ZoneInfo
 from datetime import date, datetime
 from typing import Any
 import math
@@ -136,11 +137,10 @@ def parse(raw: dict[str, Any]) -> Parsed:
     instant = None
     if time.get("instant"):
         try:
-            instant = datetime.fromisoformat(str(time["instant"]))
-            if instant.tzinfo is None:
-                raise ValueError
+            # hora de relógio LOCAL da estação: o fuso que o LLM escreva é descartado; vale o de Brasília até a pipeline aplicar o da estação
+            instant = datetime.fromisoformat(str(time["instant"])).replace(tzinfo=ZoneInfo("America/Sao_Paulo"))
         except ValueError:
-            e.append("time.instant deve ser AAAA-MM-DDThh:mm:00-03:00 (com fuso)")
+            e.append("time.instant deve ser AAAA-MM-DDThh:mm (hora local da estação)")
         if ranges:
             e.append("time.instant e time.ranges juntos: um horário de um dia usa só 'instant'")
 

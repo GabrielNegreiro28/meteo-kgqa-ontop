@@ -15,9 +15,10 @@ import json
 import time
 import uuid
 from concurrent.futures import ThreadPoolExecutor
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from datetime import datetime, timezone
 from typing import Any, Callable
+from zoneinfo import ZoneInfo
 
 from metqa.domain.contract import CONTRACT_VERSION, Diagnostic, Provenance, QueryResponse, Status
 from metqa.llm.client import LLMClient, LLMError
@@ -74,7 +75,7 @@ class MetQA:
             "module": SYSTEM, "contract": CONTRACT_VERSION, "language": "pt-BR", "source": self.source.source_id,
             "ontology": self.catalog.index.fingerprint, "lexicon": self.lexicon.version,
             "coverage": {"start": cov[0].isoformat(), "end": cov[1].isoformat()} if cov else None,
-            "timezone": "UTC-03:00 (horário de Brasília, fixo)",
+            "timezone": "hora civil de cada estação (met:timeZone)",
             "stations": len(self.catalog.index.entities),
             "measures": [{"iri": m.iri, "label": m.label, "unit": m.unit, "symbol": m.symbol, "aggregations": sorted(m.aggregations),
                           "attributes": list(m.attributes), "accumulated": m.accumulated}
@@ -83,7 +84,8 @@ class MetQA:
             "time_filters": ["date_ranges", "local_hours", "weekdays", "instant"],
             "limits": {"comparison_parts": MAX_PARTS, "max_rows": self.settings.max_rows, "timeout_s": self.settings.timeout_s,
                        "question_chars": self.settings.max_question_chars},
-            "not_supported": ["previsões", "dados fora da cobertura", "cidade, estado ou coordenadas", "grandezas fora do catálogo"],
+            "places": ["código ICAO", "apelido do aeroporto", "município", "estado", "região"],
+            "not_supported": ["previsões", "dados fora da cobertura", "coordenadas", "lugar sem estação", "grandezas fora do catálogo"],
         }
 
     def confirmation_token(self, question: str, interpretation: dict) -> str:
@@ -115,6 +117,14 @@ class MetQA:
     def _log(self, res: Result, t0: float):
         return lambda event, **kw: res.trace.append({"t_ms": round((time.perf_counter() - t0) * 1000, 1), "event": event, **kw})
 
+    def _localize(self, p: Parsed) -> None:
+        """O horário pedido ("às 14h") é hora civil da estação: recebe o fuso dela (met:timeZone), não o de Brasília."""
+        for _, cq in p.parts:
+            t = cq.scope.instant
+            if t is not None and cq.stations:
+                zone = self.catalog.index.station_zone(cq.stations[0]["iri"])
+                cq.scope = replace(cq.scope, instant=t.replace(tzinfo=ZoneInfo(zone)))
+
     def _reading(self, q: str, hit, framing: str, exemplars, corrections, previous, log) -> Reading:
         """Uma leitura do LLM, validada no mundo fechado (esquema + catálogo), com uma rodada de reparo."""
         feedback = ""
@@ -130,6 +140,7 @@ class MetQA:
                     continue
                 return Reading(stop=Stop.of(Status.EXECUTION_ERROR, e.kind.upper(), str(e), "error"))
             p = parse(prop.raw)
+            self._localize(p)
             problems, findings, stop = list(p.errors), [], None
             if p.status == "ok" and not problems:
                 for _, cq in p.parts:
@@ -197,6 +208,11 @@ class MetQA:
                                      station_matches=frozenset(self.catalog.stations_in(other.evidence.get('stations', ''))),
                                      conservation=self.settings.conservation)
                 risk.strong = list(dict.fromkeys(risk.strong + second_risk.strong))
+            # nome que cobre várias estações ("Rio de Janeiro") e a leitura escolheu só algumas, sem outra menção que as identifique
+            asked = " ".join([q, *corrections])
+            for r_ in ok:
+                chosen = {s["iri"] for _, part in r_.parsed.parts for s in part.stations}
+                risk.strong = list(dict.fromkeys(risk.strong + self.catalog.index.ambiguous_mentions(asked, chosen)))
             if b is not None and len(ok) == 1 and not differ:
                 risk.weak.append("só uma das duas leituras foi válida (a outra falhou no LLM)")
             if options and not differ and self.settings.reread and self.settings.conservation and needs_reread(base.evidence, [x for _, x in base.parts]):

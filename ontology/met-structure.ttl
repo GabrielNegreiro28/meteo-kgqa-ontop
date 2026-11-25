@@ -161,6 +161,7 @@ met:answerCaveat a owl:AnnotationProperty ;
 met:PrevailingVisibility met:answerCaveat "Visibilidade: 20.000 m é o teto do registro (significa 20 km ou mais); a maior parte das leituras (cerca de 80%) está nesse teto, então a média e o máximo ficam limitados por ele. A escala da fonte (dam convertido para metros) é uma hipótese ainda não confirmada com o fornecedor dos dados."@pt .
 met:WindGust             met:answerCaveat "Rajada só é registrada quando há rajada: a ausência de registro não significa vento calmo."@pt .
 met:RunwayTemperature    met:answerCaveat "A fonte não identifica a pista, e a temperatura da pista existe só em parte dos aeródromos."@pt .
+met:Precipitation        met:answerCaveat "Chuva: os totais desta base ficam abaixo da climatologia em várias estações (Salvador, Recife e Brasília somam de 40% a 60% da normal anual) e variam muito de um ano para outro sem falta de boletins (data/VERIFICACAO_PREMISSAS.md); use os totais como indicativos."@pt .
 met:PressureQNH          met:answerCaveat "QNH é a pressão reduzida ao nível médio do mar (padrão ICAO), não a pressão medida na estação."@pt .
 
 # ---------- Camada de dados: origem, tipo e faixa física de cada grandeza (ontology/catalog.py) ----------

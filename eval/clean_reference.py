@@ -81,14 +81,21 @@ def compare(response, reference):
     expected = {p["label"]: p for p in reference["parts"]}
     if len(expected) != len(parts) or len({p['label'] for p in parts}) != len(parts):
         return False
-    for part, shape in zip(parts, shapes):
+    queries = [i.get("query", {}) for i in (response.interpretations or [])]
+    for k, (part, shape) in enumerate(zip(parts, shapes)):
         ref = expected.get(part["label"])
         if ref is None or shape.get("units", {}) != ref["units"]:
             return False
         variables = part['results'].get('head', {}).get('vars', [])
-        if any(c not in variables for c in ref['columns']):
+        # a coluna "value" da referência é o valor que o ResultShape declara (numa contagem de leituras ele se chama "n")
+        columns = [shape.get("value") or "value" if c == "value" else c for c in ref["columns"]]
+        if any(c not in variables for c in columns):
             return False
-        actual = [[row.get(c) for c in ref["columns"]] for row in typed_rows(part["results"])]
+        actual = [[row.get(c) for c in columns] for row in typed_rows(part["results"])]
+        order = (queries[k] if k < len(queries) else {}).get("order") or {}
+        if order.get("limit") and len(actual) == order["limit"] + 1:
+            # o ranking busca uma linha a mais só para detectar empate no limite; ela não faz parte da resposta pedida
+            actual = actual[:order["limit"]]
         wanted = [[decode(v) for v in row] for row in ref["rows"]]
         if not match_rows(actual, wanted):
             return False

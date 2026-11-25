@@ -2,10 +2,10 @@
 
 Cada tabela ganha `tmin` = minutos desde 1970-01-01 UTC (inteiro), usado nos templates de IRI do
 mapeamento: junções entre observação, boletim e instante viram igualdade de inteiros.
-Toda tabela de observação ganha também a hora e o dia da semana locais (UTC−3, D-85), colunas geradas a partir de `tmin` e `local_date`,
-que o mapeamento expõe como met:localHour e met:localWeekday.
+Toda tabela de observação leva também a hora civil local da estação (`local_hour`, da camada limpa) e o dia da semana (`local_weekday`,
+gerado de `local_date`), que o mapeamento expõe como met:localHour e met:localWeekday. A estação leva o cadastro (data/estacoes.csv).
 Uso: python ingest/export_pg.py <duckdb> "<conninfo postgres>"
-     python ingest/export_pg.py --local-time ["<conninfo>"]      # só acrescenta as colunas locais a um banco já carregado
+     python ingest/export_pg.py --local-time ["<conninfo>"]      # só acrescenta o dia da semana a um banco já carregado
 """
 import os, sys, time
 from pathlib import Path
@@ -23,29 +23,35 @@ WIND = ["wind_speed", "wind_dir", "wind_gust"]          # com cabeceira (e condi
 # instantâneas de tabela própria e sem cabeceira, do catálogo de grandezas
 SCALAR = [q.sensor for q in quantities().values() if q.table == f"obs_{q.sensor}" and not q.accumulated and q.sensor not in WIND]
 T = "epoch(t_utc)::BIGINT // 60 AS tmin, strftime(t_utc, '%Y-%m-%d %H:%M:%S+00') AS t_utc"
+H = "hour(t_local) AS local_hour"                 # hora civil da estação (R1); nos acumulados, do fim do intervalo
+STATIONS = Path(__file__).resolve().parent.parent / "data" / "estacoes.csv"
+CSV = f"read_csv('{STATIONS}', header = true, all_varchar = true)"
 TABLES = {
-    "station": ("sigla text PRIMARY KEY", "SELECT sigla FROM clean.station"),
+    "station": ("sigla text PRIMARY KEY, municipio text, uf text, estado text, regiao text, fuso_iana text NOT NULL",
+                "SELECT s.sigla, NULLIF(c.municipio, ''), NULLIF(c.uf, ''), NULLIF(c.estado, ''), NULLIF(c.regiao, ''), c.fuso_iana "
+                f"FROM clean.station s JOIN {CSV} c USING (sigla)"),
+    "station_alias": ("sigla text, alias text",
+                      f"SELECT sigla, trim(unnest(string_split(apelidos, ';'))) FROM {CSV} WHERE coalesce(apelidos, '') <> ''"),
     "report": ("sigla text, tmin integer, t_utc timestamptz, local_date date, is_hourly boolean",
                f"SELECT sigla, {T}, local_date, is_hourly FROM clean.report"),
-    **{f"obs_{n}": ("sigla text, tmin integer, t_utc timestamptz, local_date date, value numeric, seq smallint, multi boolean, src_row bigint",
-                    f"SELECT sigla, {T}, local_date, value, seq, multi, src_row FROM clean.obs_{n}") for n in SCALAR},
-    "obs_wind_speed": ("sigla text, tmin integer, t_utc timestamptz, local_date date, runway text, value numeric, condition text, seq smallint, multi boolean, src_row bigint",
-                       f"SELECT sigla, {T}, local_date, runway, value, condition, seq, multi, src_row FROM clean.obs_wind_speed"),
-    **{f"obs_{n}": ("sigla text, tmin integer, t_utc timestamptz, local_date date, runway text, value numeric, seq smallint, multi boolean, src_row bigint",
-                    f"SELECT sigla, {T}, local_date, runway, value, seq, multi, src_row FROM clean.obs_{n}") for n in WIND[1:]},
-    **{f"obs_{n}": ("sigla text, tmin integer, t_utc timestamptz, start_utc timestamptz, local_date date, value numeric, seq smallint, multi boolean, src_row bigint",
-                    f"SELECT sigla, {T}, strftime(start_utc, '%Y-%m-%d %H:%M:%S+00'), local_date, value, seq, multi, src_row FROM clean.obs_{n}")
+    **{f"obs_{n}": ("sigla text, tmin integer, t_utc timestamptz, local_date date, local_hour smallint, value numeric, seq smallint, multi boolean, src_row bigint",
+                    f"SELECT sigla, {T}, local_date, {H}, value, seq, multi, src_row FROM clean.obs_{n}") for n in SCALAR},
+    "obs_wind_speed": ("sigla text, tmin integer, t_utc timestamptz, local_date date, local_hour smallint, runway text, value numeric, condition text, seq smallint, multi boolean, src_row bigint",
+                       f"SELECT sigla, {T}, local_date, {H}, runway, value, condition, seq, multi, src_row FROM clean.obs_wind_speed"),
+    **{f"obs_{n}": ("sigla text, tmin integer, t_utc timestamptz, local_date date, local_hour smallint, runway text, value numeric, seq smallint, multi boolean, src_row bigint",
+                    f"SELECT sigla, {T}, local_date, {H}, runway, value, seq, multi, src_row FROM clean.obs_{n}") for n in WIND[1:]},
+    **{f"obs_{n}": ("sigla text, tmin integer, t_utc timestamptz, start_utc timestamptz, local_date date, local_hour smallint, value numeric, seq smallint, multi boolean, src_row bigint",
+                    f"SELECT sigla, {T}, strftime(start_utc, '%Y-%m-%d %H:%M:%S+00'), local_date, {H}, value, seq, multi, src_row FROM clean.obs_{n}")
        for n in [q.sensor for q in quantities().values() if q.accumulated]},
-    "obs_cloud_layer": ("sigla text, tmin integer, t_utc timestamptz, local_date date, okta smallint, sky_obscured boolean, base_m integer, genus text, cloud_movement text, seq smallint, src_row bigint",
-                        f"SELECT sigla, {T}, local_date, okta, sky_obscured, base_m, genus, movement AS cloud_movement, seq, src_row FROM clean.obs_cloud_layer"),
+    "obs_cloud_layer": ("sigla text, tmin integer, t_utc timestamptz, local_date date, local_hour smallint, okta smallint, sky_obscured boolean, base_m integer, genus text, cloud_movement text, seq smallint, src_row bigint",
+                        f"SELECT sigla, {T}, local_date, {H}, okta, sky_obscured, base_m, genus, movement AS cloud_movement, seq, src_row FROM clean.obs_cloud_layer"),
     "quarantine": ("source text, row_id bigint, sigla text, t_local timestamp, col text, raw text, reason text",
                    "SELECT * FROM clean.quarantine"),
 }
 assert {t for t in TABLES if t.startswith("obs_")} == set(tables()), "tabelas de observação fora do catálogo de grandezas"
 
-# hora local do instante da leitura (fim do intervalo, nos acumulados) e dia da semana de local_date: 0 = segunda (1970-01-05) ... 6 = domingo
-LOCAL_TIME = ("local_hour smallint GENERATED ALWAYS AS (((tmin - 180) / 60) % 24) STORED",
-              "local_weekday smallint GENERATED ALWAYS AS ((local_date - DATE '1970-01-05') % 7) STORED")
+# dia da semana de local_date: 0 = segunda (1970-01-05) ... 6 = domingo (a hora local vem pronta da camada limpa)
+LOCAL_TIME = ("local_weekday smallint GENERATED ALWAYS AS ((local_date - DATE '1970-01-05') % 7) STORED",)
 
 
 def add_local_time(pg, name):

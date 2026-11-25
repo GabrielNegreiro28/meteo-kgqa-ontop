@@ -118,13 +118,13 @@ def reread_agrees(raw: dict, parts: list[CanonicalQuery]) -> bool:
             return False
         if any(type(d) is not int or not 0 <= d <= 6 for d in days or []):
             return False
-        instant = str(datetime.fromisoformat(raw["instant"])) if raw.get("instant") else None
+        instant = str(datetime.fromisoformat(raw["instant"]).replace(tzinfo=None)) if raw.get("instant") else None
     except (KeyError, TypeError, ValueError):
         return False
     scopes = [q.scope for q in parts]
     if _merged(ranges) != _merged([(s.start, s.end) for s in scopes if s.start and s.end]):
         return False
-    if {instant} - {None} != {str(s.instant) for s in scopes if s.instant}:
+    if {instant} - {None} != {str(s.instant.replace(tzinfo=None)) for s in scopes if s.instant}:
         return False
     if hours is not None and set(hours) != {h for s in scopes for h in s.hours or []}:
         return False

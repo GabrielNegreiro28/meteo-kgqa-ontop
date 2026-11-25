@@ -28,8 +28,9 @@ def coverage_from_database(database):
     with duckdb.connect(str(database), read_only=True, config={"enable_external_access": False}) as db:
         for q in catalog_load()[0].values():
             # Identificadores vêm exclusivamente do catálogo versionado.
-            if not db.execute("SELECT count(*) FROM information_schema.tables WHERE table_schema='clean' AND table_name=?", [q.table]).fetchone()[0]:
-                continue
+            if not db.execute("SELECT count(*) FROM information_schema.columns WHERE table_schema='clean' AND table_name=? AND column_name=?",
+                              [q.table, q.column]).fetchone()[0]:
+                continue                       # tabela ou coluna ausente (ex.: met:CloudCover não tem coluna de valor própria)
             for station, start, end, n in db.execute(
                 f'SELECT sigla, min(local_date), max(local_date), count(*) FROM clean."{q.table}" '
                 f'WHERE "{q.column}" IS NOT NULL GROUP BY sigla'
@@ -43,12 +44,13 @@ def build(raw, coverage, database=None):
     files = sorted(Path(raw).glob('*.csv'))
     if not files:
         raise ValueError('no raw CSV files')
-    artifacts = [*sorted((ROOT / 'ingest').glob('*.py')), ROOT / 'mapping/met.obda', ROOT / 'ontology/catalog.py',
+    artifacts = [*sorted((ROOT / 'ingest').glob('*.py')), ROOT / 'mapping/met.obda', ROOT / 'ontology/catalog.py', ROOT / 'data/estacoes.csv',
                  *sorted((ROOT / 'ontology').rglob('*.ttl'))]
     body = {'version': 1, 'raw': {p.name: digest(p) for p in files},
             'artifacts': {str(p.relative_to(ROOT)): digest(p) for p in artifacts},
             'coverage': coverage, 'coverage_complete': False,
-            'hypotheses': {'timezone': 'UTC-03:00', 'quality_policy': 'R1-R7/Q1-Q5',
+            'hypotheses': {'timezone': 'relógio = hora legal padrão da estação até 2021-04-15, UTC desde 2021-04-16 (METAR); '
+                                       'local = hora civil da estação', 'quality_policy': 'R1-R7/Q1-Q5',
                            'expert_approved': False}}
     if database is not None:
         body['clean_database_sha256'] = digest(database)

@@ -79,6 +79,8 @@ class OntologyIndex:
     check_disjoint: set[frozenset] = field(default_factory=set)       # disjuntas + incompatíveis: SÓ para checar consultas (não vai ao contexto)
     entities: dict[str, list[str]] = field(default_factory=dict)      # IRI da estação -> rótulos
     labels: set[str] = field(default_factory=set)                     # rótulos válidos de estações
+    aliases: dict[str, list[str]] = field(default_factory=dict)       # IRI da estação -> apelidos (skos:altLabel: "Congonhas", "Galeão")
+    places: dict[str, dict[str, str]] = field(default_factory=dict)   # IRI da estação -> cadastro (municipio, uf, estado, regiao, tz)
     direct_types: set[str] = field(default_factory=set)               # classes com instâncias diretas no grafo
     data_predicates: set[str] = field(default_factory=set)            # propriedades com asserções no grafo (perfil dos dados)
     properties_with_data: set[str] = field(default_factory=set)       # grandezas com ao menos uma observação
@@ -172,6 +174,10 @@ class OntologyIndex:
             labels = [str(o) for o in dg.objects(s, RDFS.label)]
             idx.entities[str(s)] = labels
             idx.labels.update(labels)
+            idx.aliases[str(s)] = [str(o) for o in dg.objects(s, SKOS.altLabel)]
+            place = {k: str(v) for k, p in PLACE_PROPS.items() if (v := dg.value(s, URIRef(MET + p))) is not None}
+            if place:
+                idx.places[str(s)] = place
         return idx
 
     @classmethod
@@ -198,6 +204,13 @@ class OntologyIndex:
             idx.labels.add(b["l"]["value"])
         if not idx.entities:
             raise RuntimeError("índice real: o grafo não tem nenhuma estação")
+        if MET + "timeZone" in idx.data_predicates:                        # cadastro das estações (mapeamento com station_place)
+            skos = str(SKOS)
+            for b in ask(f"SELECT ?s ?a WHERE {{ ?s a <{MET}WeatherStation> ; <{skos}altLabel> ?a }}")["results"]["bindings"]:
+                idx.aliases.setdefault(b["s"]["value"], []).append(b["a"]["value"])
+            opt = " ".join(f"OPTIONAL {{ ?s <{MET}{p}> ?{k} }}" for k, p in PLACE_PROPS.items() if k != "tz")
+            for b in ask(f"SELECT * WHERE {{ ?s a <{MET}WeatherStation> ; <{MET}timeZone> ?tz . {opt} }}")["results"]["bindings"]:
+                idx.places[b["s"]["value"]] = {k: v["value"] for k, v in b.items() if k != "s"}
         cov = ask(f"SELECT (MIN(?d) AS ?a) (MAX(?d) AS ?b) WHERE {{ ?r a <{MET}WeatherReport> ; <{MET}localDate> ?d }}")["results"]["bindings"]
         if cov and "a" in cov[0]:
             idx.coverage = (date.fromisoformat(cov[0]["a"]["value"]), date.fromisoformat(cov[0]["b"]["value"]))
@@ -236,18 +249,67 @@ class OntologyIndex:
                 found.setdefault(iri, label)
         return found
 
+    def mention_names(self, iri: str) -> list[tuple[str, bool]]:
+        """(nome, exclusivo) pelos quais uma pergunta cita a estação: código, rótulo e apelidos são dela só; município, estado e
+        "região X" podem ser de várias (cadastro em data/estacoes.csv). Município que é palavra comum ("Bonito") não conta."""
+        names = [(n, True) for n in [*self.entities.get(iri, []), iri.rsplit("/", 1)[-1], *self.aliases.get(iri, [])]]
+        p = self.places.get(iri, {})
+        if p.get("municipio") and fold(p["municipio"]) not in COMMON_WORD_PLACES:
+            names.append((p["municipio"], False))
+        if p.get("estado"):
+            names.append((p["estado"], False))
+        if p.get("regiao"):
+            names.append((f"região {p['regiao']}", False))
+        return names
+
+    def _mentions(self, question: str) -> dict[str, set[str]]:
+        """Nome citado na pergunta -> estações que ele designa. Nome mais longo vence o contido nele ("Rio Grande do Sul" e não
+        "Rio Grande"); a contagem de quem é dono do nome é feita sobre TODAS as estações, não só as citadas."""
+        q = fold(question)
+        owners: dict[str, set[str]] = {}
+        for iri in self.entities:
+            for name, _ in self.mention_names(iri):
+                if fold(name):
+                    owners.setdefault(fold(name), set()).add(iri)
+        spans = []
+        for n, iris in owners.items():
+            for m in re.finditer(rf"(?<![a-z0-9]){re.escape(n)}(?![a-z0-9])", q):
+                spans.append((m.start(), m.end(), n, iris))
+        return {n: iris for s, e, n, iris in spans
+                if not any(s2 <= s and e <= e2 and (e2 - s2) > (e - s) for s2, e2, _, _ in spans)}
+
     def link_entities(self, question: str) -> dict[str, str]:
-        """Estações que a PERGUNTA cita (por rótulo ou código), sem LLM: IRI -> trecho encontrado.
+        """Estações que a PERGUNTA cita (código, rótulo, apelido, município, estado ou região), sem LLM: IRI -> nome encontrado.
         É a verdade de referência para conferir as entidades da interpretação (omitidas ou inventadas)."""
-        q, found = fold(question), {}
-        for iri, labels in self.entities.items():
-            code = iri.rsplit("/", 1)[-1]
-            for name in [*labels, code]:
-                n = fold(name)
-                if n and re.search(rf"(?<![a-z0-9]){re.escape(n)}(?![a-z0-9])", q):
-                    found[iri] = name
-                    break
+        found: dict[str, str] = {}
+        names = {fold(n): n for iri in self.entities for n, _ in self.mention_names(iri)}
+        for n, iris in sorted(self._mentions(question).items(), key=lambda kv: len(kv[1])):
+            for iri in sorted(iris):
+                found.setdefault(iri, names.get(n, n))
         return found
+
+    def ambiguous_mentions(self, question: str, chosen: set[str]) -> list[str]:
+        """Nome citado que cobre várias estações ("Rio de Janeiro": cidade com 6 estações, estado com 15) e a leitura escolheu só parte
+        delas, sem outra menção que identifique a escolhida ("Galeão", "SBGL"). Escolher todas é legítimo (um valor por estação)."""
+        mentions = self._mentions(question)
+        specific = set().union(*(iris for iris in mentions.values() if len(iris) == 1)) if mentions else set()
+        out = []
+        for n, iris in mentions.items():
+            picked = chosen & iris
+            if len(iris) > 1 and picked and picked != iris and not (picked & specific):
+                codes = ", ".join(self.station_display(i) for i in sorted(iris))
+                out.append(f"'{n}' corresponde a {len(iris)} estações ({codes}); diga qual, ou peça todas")
+        return out
+
+    def station_display(self, iri: str) -> str:
+        """'SBGR (Guarulhos/SP)': o código com o lugar do cadastro, quando há."""
+        code = iri.rsplit("/", 1)[-1]
+        p = self.places.get(iri, {})
+        return f"{code} ({p['municipio']}/{p['uf']})" if p.get("municipio") and p.get("uf") else code
+
+    def station_zone(self, iri: str) -> str:
+        """Zona IANA da hora civil da estação (met:timeZone); sem cadastro, a de Brasília."""
+        return self.places.get(iri, {}).get("tz") or "America/Sao_Paulo"
 
     def is_known_iri(self, iri: str) -> bool:
         if iri.startswith(MET):
@@ -420,6 +482,10 @@ class OntologyIndex:
                          f"{'acumulada (soma permitida)' if p.accumulated else 'instantânea (sem soma)'}")
         lines += self._station_lines()
         return "\n".join(lines)
+
+
+PLACE_PROPS = {"municipio": "municipalityName", "uf": "stateCode", "estado": "stateName", "regiao": "regionName", "tz": "timeZone"}
+COMMON_WORD_PLACES = {"bonito", "sorriso", "cruz", "una", "bacia de campos (plataforma)"}   # municípios que também são palavras comuns
 
 
 def fold(text: str) -> str:

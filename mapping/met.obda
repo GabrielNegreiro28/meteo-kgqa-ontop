@@ -11,8 +11,16 @@ skos:		http://www.w3.org/2004/02/skos/core#
 
 [MappingDeclaration] @collection [[
 mappingId	station
-target		:station/{sigla} a met:WeatherStation ; met:stationCode {sigla}^^xsd:string ; rdfs:label {sigla}^^xsd:string . :site/{sigla} a met:Site ; met:siteOf :station/{sigla} .
-source		SELECT sigla FROM station
+target		:station/{sigla} a met:WeatherStation ; met:stationCode {sigla}^^xsd:string ; rdfs:label {sigla}^^xsd:string ; met:timeZone {fuso_iana}^^xsd:string . :site/{sigla} a met:Site ; met:siteOf :station/{sigla} .
+source		SELECT sigla, fuso_iana FROM station
+
+mappingId	station_place
+target		:station/{sigla} met:municipalityName {municipio}^^xsd:string ; met:stateCode {uf}^^xsd:string ; met:stateName {estado}^^xsd:string ; met:regionName {regiao}^^xsd:string .
+source		SELECT sigla, municipio, uf, estado, regiao FROM station WHERE uf IS NOT NULL
+
+mappingId	station_alias
+target		:station/{sigla} skos:altLabel {alias}^^xsd:string .
+source		SELECT sigla, alias FROM station_alias
 
 mappingId	station_sensor
 target		:station/{sigla} sosa:hosts :sensor/{sigla}/{var} . :sensor/{sigla}/{var} a sosa:Sensor .
